@@ -14,6 +14,6 @@ Wykonanie:
 - Katarzyna Węsierska
 - Michał Czerwiak
 - Mikołaj Kalata
-- Bartosz Kamiński
+- Bartosz Kamiński  
 Polsko-Japońska Akademia Technik Komputerowych - Gdańsk 
 
