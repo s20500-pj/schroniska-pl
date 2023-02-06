@@ -4,20 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import shelter.backend.models.Role;
 import shelter.backend.models.User;
 import shelter.backend.repositories.UserRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -35,15 +32,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
                 .disabled(user.isDisabled())
-                .authorities(getAuthorities(user)).build();
+                .authorities(getAuthorities(user))
+                .build();
     }
 
     private Collection<GrantedAuthority> getAuthorities(User user) {
-        Set<Role> userRoles = user.getRoles();
-        Collection<GrantedAuthority> authorities = new ArrayList<>(userRoles.size());
-        for (Role role : userRoles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName().name()));
-        }
-        return authorities;
+        return user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .collect(Collectors.toList());
     }
 }

@@ -3,7 +3,7 @@ package shelter.backend.models;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shelter.backend.dtos.UserDto;
 
@@ -13,7 +13,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
 @Entity
 @Table(name = "users")
 public class User {
@@ -22,12 +21,17 @@ public class User {
     private Long id;
     private String firstName;
     private String lastName;
+    private String shelterName;
+    @Getter
     @Column(unique = true, nullable = false)
     private String email;
+    @Getter
     private String password;
+    @Getter
     private boolean isDisabled;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @Getter
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -38,6 +42,7 @@ public class User {
                 .id(userDTO.getId())
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
+                .shelterName(userDTO.getShelterName())
                 .email(userDTO.getEmail())
                 .password(userDTO.getPassword())
                 .isDisabled(userDTO.isDisabled())
@@ -46,11 +51,12 @@ public class User {
 
     public UserDto dto(User user) {
         UserDto userDto = new UserDto();
-        userDto.setId(userDto.getId());
-        userDto.setFirstName(userDto.getFirstName());
-        userDto.setLastName(userDto.getLastName());
-        userDto.setEmail(userDto.getEmail());
-        userDto.setDisabled(userDto.isDisabled());
+        userDto.setId(id);
+        userDto.setFirstName(firstName);
+        userDto.setLastName(lastName);
+        userDto.setShelterName(shelterName);
+        userDto.setEmail(email);
+        userDto.setDisabled(isDisabled);
         return userDto;
     }
 }

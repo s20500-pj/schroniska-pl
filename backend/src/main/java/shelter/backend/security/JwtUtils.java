@@ -4,7 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -12,10 +12,10 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-@Component
+@Service
 public class JwtUtils {
 
-    private String jwtSigningKey = "secret";
+    private final String jwtSigningKey = "96fd4be987f87f769f00b0f7bef39b3b125b5bc76c7d118b5936d4725b0bac8e";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
