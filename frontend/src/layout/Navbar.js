@@ -5,9 +5,7 @@ export default function Navbar() {
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
                 <div className="container-fluid">
-                    <a className="navbar-brand" href="#">
-                        schroniska-pl
-                    </a>
+                    <img src='logo.svg'/>
                     <Link className="btn btn-outline-danger" to="/">Home</Link>
                     <Link className="btn btn-outline-light" to="/adduser">Zarejestruj się</Link>
                     <Link className="btn btn-outline-light" to="/addshelter">Zarejestruj schronisko</Link>
