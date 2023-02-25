@@ -1,0 +1,10 @@
+package shelter.backend.rest.feign.openapikrs.res;
+
+import java.util.ArrayList;
+
+public class WzmiankiOZlozonychDokumentach{
+    private ArrayList<WzmiankaOZlozeniuRocznegoSprawozdaniaFinansowego> wzmiankaOZlozeniuRocznegoSprawozdaniaFinansowego;
+    private ArrayList<WzmiankaOZlozeniuOpiniiBieglegoRewidentaSprawozdaniaZBadanium> wzmiankaOZlozeniuOpiniiBieglegoRewidentaSprawozdaniaZBadania;
+    private ArrayList<WzmiankaOZlozeniuUchwalyPostanowieniaOZatwierdzeniuRocznegoSprawozdaniaFinansowego> wzmiankaOZlozeniuUchwalyPostanowieniaOZatwierdzeniuRocznegoSprawozdaniaFinansowego;
+    private ArrayList<WzmiankaOZlozeniuSprawozdaniaZDzialalnosci> wzmiankaOZlozeniuSprawozdaniaZDzialalnosci;
+}

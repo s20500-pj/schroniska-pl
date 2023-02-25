@@ -30,6 +30,26 @@ W przypadku zaakceptowania jest on scalany z developem.
 
 Jeśli nasz merge request nie przejdzie code review to musimy się na niego przełączyć poleceniem git checkout, następnie wprowadzić poprawki, zacomitować i znowu spushować(nowe zmiany powinny wskoczyć na poprzedniego pull requesta). Dajemy znać oceniającemu o ponowne spojrzenie na kod.
 
+## Odpalanie apki
+1. Potrzebny jest Postgres z odpalonym serverem, jeśli odpalamy profil dev
+2. Potrzebny jest Redis z odpalonym serwerem. By odpalić serwer command: redis-server (https://redis.io/docs/getting-started/installation/)
+3. Zaimportować kolekcję i environment do postmana (backend/src/main/resources/postman)
+4. Odpalić apke z profilu 'dev' (postgres z migracjami z załadowanymi danymi, potrzebne do admina) lub 'dev2' (h2 bez migracji = bez danych wstępnych)
+5. endpointy wraz z wymaganymi requestami widoczne w postmanie: 
+   * REJESTRACJA 
+     * /registerUser, /registerShelter -> rejestracja usera, schroniska
+     * przychodzi mail z linkiem potwierdzającym. Aktulanie serwis mailowy jest wyłączony. link dostępny w logach po zarejestrowaniu.
+   * LOGOWANIE
+     * /api/auth/authenticate -> logowanie. w odpowiedzi token zapisywany w postmanie -> token służy do autentykacji użytkownika. 
+   * ZATWIERDZANIE SCHRONISKA
+     * Trzeba zalogować się jako admin (a więc odpalić apkę z profilu 'dev' z postgresem)
+     * /admin/getShelters -> zwraca listę wszystkich schronisk (te zaakceptowane i niezaakceptowane przez admina)
+     * /admin/enableShelters -> akceptuje wybrane schroniska (w requeście lista z nazwa schroniska, email + adres). Response: zwraca listę niezaakceptowanych schronisk niezaakceptowanych przez admina.
+
+
+
+
+
 
 
 
