@@ -39,7 +39,7 @@ public class ShelterGlobalExceptionHandler {
     public ResponseEntity<String> onMethodArgumentNotValidException(
             MethodArgumentNotValidException methodArgumentNotValidException) {
         log.info("Validation error. Exception: ", methodArgumentNotValidException);
-        List<FieldError> violations =  methodArgumentNotValidException.getBindingResult().getFieldErrors();
+        List<FieldError> violations = methodArgumentNotValidException.getBindingResult().getFieldErrors();
         String errorMessage = "";
         if (!violations.isEmpty()) {
             StringBuilder builder = new StringBuilder();
@@ -52,7 +52,7 @@ public class ShelterGlobalExceptionHandler {
     }
 
     @ExceptionHandler(UsernameAlreadyExist.class)
-    public ResponseEntity<String> onUsernameAlreadyExist(UsernameAlreadyExist e){
+    public ResponseEntity<String> onUsernameAlreadyExist(UsernameAlreadyExist e) {
         log.info("Registration error. Exception: ", e);
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }

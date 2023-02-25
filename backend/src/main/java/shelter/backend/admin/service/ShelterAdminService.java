@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ShelterAdminService implements AdminService{
+public class ShelterAdminService implements AdminService {
 
     private final UserRepository userRepository;
 

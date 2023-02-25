@@ -22,7 +22,7 @@ public class Address {
 
     private String postal_code;
 
-    private String  building_number;
+    private String building_number;
 
     private String flat_number;
 
