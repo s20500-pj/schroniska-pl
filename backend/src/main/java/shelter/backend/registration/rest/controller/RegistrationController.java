@@ -19,6 +19,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin("http://localhost:3000")
 @Validated
 @RequestMapping(value = ShelterPathConstants.REGISTRATION, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RegistrationController {
