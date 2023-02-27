@@ -188,10 +188,10 @@ export default function AddUser() {
                             </div>
                         </div>
                         <button type="submit" className="btn btn-outline-primary">
-                            Submit
+                            Zarejestruj
                         </button>
                         <Link type="submit" className="btn btn-danger mx-2" to="/">
-                            Cancel
+                            Anuluj
                         </Link>
                     </form>
                 </div>
