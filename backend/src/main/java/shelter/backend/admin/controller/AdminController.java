@@ -10,16 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import shelter.backend.admin.model.AdminShelterRequest;
-import shelter.backend.admin.model.AdminShelterResponse;
+import shelter.backend.admin.model.AdminShelterRequestDto;
+import shelter.backend.admin.model.AdminShelterResponseDto;
 import shelter.backend.admin.service.AdminService;
-import shelter.backend.configuration.security.validator.KRSConstraint;
-import shelter.backend.configuration.security.validator.ShelterNameConstraint;
 import shelter.backend.registration.service.RegistrationShelterService;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.utils.constants.ShelterPathConstants;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = ShelterPathConstants.ADMIN, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -36,14 +35,20 @@ public class AdminController {
     }
 
     @GetMapping("/getShelters")
-    ResponseEntity<List<AdminShelterResponse>> getShelters() {
-        List<AdminShelterResponse> list = adminService.getShelters();
+    ResponseEntity<List<AdminShelterResponseDto>> getShelters() {
+        List<AdminShelterResponseDto> list = adminService.getShelters();
         return ResponseEntity.ok(list);
     }
 
     @PostMapping("/enableShelters")
-    ResponseEntity<List<AdminShelterResponse>> enableShelters(@RequestBody @Valid List<AdminShelterRequest> shelterList) {
-        List<AdminShelterResponse> list = registrationShelterService.enableShelterAccounts(shelterList);
+    ResponseEntity<List<AdminShelterResponseDto>> enableShelters(@RequestBody @Valid List<AdminShelterRequestDto> shelterList) {
+        List<AdminShelterResponseDto> list = registrationShelterService.enableShelterAccounts(shelterList);
         return ResponseEntity.ok(list);
+    } //TODO do zmiany, będziemy przyjmowac listę id i zwracać listę UserDto, bez sensu jest AdminShelterResponseDto jak te pola są w UserDto
+
+    @PostMapping("/searchUsers")
+    ResponseEntity<List<UserDto>> search(@RequestBody Map<String, String> searchParams) {
+        List<UserDto> all = adminService.search(searchParams);
+        return ResponseEntity.ok(all);
     }
 }

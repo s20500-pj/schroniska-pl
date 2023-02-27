@@ -5,5 +5,5 @@ import shelter.backend.rest.model.dtos.UserDto;
 import java.util.List;
 
 public interface RegistrationUserService {
-    List<UserDto> registerUser(UserDto userDto);
+    UserDto registerUser(UserDto userDto);
 }
