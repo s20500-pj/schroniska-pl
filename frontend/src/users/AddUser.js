@@ -45,7 +45,7 @@ export default function AddUser() {
         <div className="container">
             <div className="row">
                 <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-                    <h2 className="text-center m-4">Register User</h2>
+                    <h2 className="text-center m-4">Załóż konto</h2>
                     <form onSubmit={(e)=>onSubmit(e)}>
                         <div className="mb-3">
                             <label htmlFor="Firstname" className="form-label">
@@ -169,7 +169,6 @@ export default function AddUser() {
                                     name="flat_number"
                                     value={flat_number}
                                     onChange={(e)=>onInputChange(e)}
-                                    required
                                 />
                             </div>
                             <div className="mb-3">
