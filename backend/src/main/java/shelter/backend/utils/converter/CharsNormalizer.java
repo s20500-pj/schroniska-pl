@@ -20,14 +20,6 @@ public class CharsNormalizer {
 
     public static String convertToEngChars(String stringToReplace) {
 
-//        stringToReplace = stringToReplace.chars()
-//                        .mapToObj(i -> {
-//                    char c = (char) i;
-//                    String letter = charsToReplaceMap.get(c);
-//                    return letter == null ? c : letter;
-//                })
-//                .map(String::valueOf)
-//                .collect(Collectors.joining());
         stringToReplace = Arrays.stream(stringToReplace.split(""))
                 .map(c -> {
                     String letter = charsToReplaceMap.get(c);

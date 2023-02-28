@@ -7,7 +7,7 @@ import shelter.backend.rest.model.enums.ApprovalStatus;
 
 @Data
 @Builder
-public class AdminShelterResponse {
+public class AdminShelterResponseDto {
     private UserDto userDto;
 
     private boolean isDisabled;

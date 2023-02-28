@@ -15,11 +15,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtils {
-/*TODO
-*  LOGOUT process, example solution:
-*   1. token need to be saved to DB-> create token table with expiration field
-*   2. token revocation -> logout
-* */
+
     @Value("${shelter.security.jwt.key}")
     private String jwtSigningKey;
 

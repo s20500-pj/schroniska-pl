@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b402cf97-9aac-40d1-bd2e-c0feb646e26f",
+		"_postman_id": "4ad289dd-cd58-48cf-a2ca-aa8f124c2b9b",
 		"name": "schroniska",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -76,6 +76,45 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "searchUsers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"shelter\",\n    \"userType\": \"SHELTER\",\n    \"sortBy\": \"shelterName\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/searchUsers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"searchUsers"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -86,7 +125,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"firstName\": \"testName\",\n\"lastName\": \"testLastname\",\n\"email\": \"test@test1.com\",\n\"password\": \"jajo\",\n\"address\": {\n    \"street\": \"street\",\n    \"city\": \"city\",\n    \"postal_code\": \"321\",\n    \"building_number\": \"1\",\n    \"phone\": \"505555123\"\n}\n}",
+					"raw": "{\n\"firstName\": \"testName\",\n\"lastName\": \"testLastname\",\n\"email\": \"test@test1.com\",\n\"password\": \"jajo\",\n\"userType\": \"PERSON\",\n\"address\": {\n    \"street\": \"street\",\n    \"city\": \"city\",\n    \"postal_code\": \"321\",\n    \"building_number\": \"1\",\n    \"phone\": \"505555123\"\n}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -115,7 +154,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"email\": \"test@test2.com\",\n\"password\": \"jajo\",\n\"shelterName\": \"shelterTest\",\n\"address\": {\n    \"street\": \"street\",\n    \"city\": \"city\",\n    \"postal_code\": \"34123\",\n    \"building_number\": \"5\",\n    \"phone\": \"8795124714\",\n    \"krs_number\": \"1234567891\"\n}\n}",
+					"raw": "{\n\"email\": \"test@test2.com\",\n\"password\": \"jajo\",\n\"shelterName\": \"shelterTest\",\n\"userType\": \"PERSON\",\n\"address\": {\n    \"street\": \"street\",\n    \"city\": \"city\",\n    \"postal_code\": \"34123\",\n    \"building_number\": \"5\",\n    \"phone\": \"8795124714\",\n    \"krs_number\": \"1234567891\"\n}\n}",
 					"options": {
 						"raw": {
 							"language": "json"

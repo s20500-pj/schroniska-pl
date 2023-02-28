@@ -1,7 +1,5 @@
 package shelter.backend.rest.advice;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,28 +10,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import shelter.backend.utils.exception.UsernameAlreadyExist;
 
 import java.util.List;
-import java.util.Set;
 
 @RestControllerAdvice
 @Slf4j
 public class ShelterGlobalExceptionHandler {
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException constraintViolationException) {
-        log.info("Validation error. Exception: ", constraintViolationException);
-        Set<ConstraintViolation<?>> violations = constraintViolationException.getConstraintViolations();
-        String errorMessage = "";
-        if (!violations.isEmpty()) {
-            StringBuilder builder = new StringBuilder();
-            violations.forEach(violation -> builder.append(" ").append(violation.getMessage()));
-            errorMessage = builder.toString();
-        } else if (constraintViolationException.getMessage() != null) {
-            errorMessage = constraintViolationException.getMessage();
-        } else {
-            errorMessage = "Validation Error";
-        }
-        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
-    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> onMethodArgumentNotValidException(

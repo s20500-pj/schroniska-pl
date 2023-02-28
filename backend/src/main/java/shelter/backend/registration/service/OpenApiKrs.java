@@ -3,15 +3,12 @@ package shelter.backend.registration.service;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import shelter.backend.rest.feign.openapikrs.OpenApiKrsFeignClient;
 import shelter.backend.rest.feign.openapikrs.req.Rejestr;
 import shelter.backend.rest.feign.openapikrs.res.OpenApiKrsResponse;
 import shelter.backend.rest.model.entity.Address;
-import shelter.backend.rest.model.entity.User;
 import shelter.backend.utils.converter.CharsNormalizer;
-
 
 @Service
 @Slf4j
@@ -25,7 +22,7 @@ public class OpenApiKrs implements ApprovalProvider {
 
     @Override
     public boolean validateShelterDetails(Address address) {
-        String krs = address.getKRS_number();
+        String krs = address.getKrsNumber();
         if (krs == null) {
             return false;
         }
@@ -60,18 +57,18 @@ public class OpenApiKrs implements ApprovalProvider {
 
         String cityRegistered = CharsNormalizer.convertToEngChars(address.getCity().trim());
         String cityResponse = CharsNormalizer.convertToEngChars(response.getOdpis().getDane().getDzial1().getSiedzibaIAdres().getAdres().getMiejscowosc().trim());
-        String postalRegistered = address.getPostal_code().replace("-", "").trim();
+        String postalRegistered = address.getPostalCode().replace("-", "").trim();
         String postalResponse = response.getOdpis().getDane().getDzial1().getSiedzibaIAdres().getAdres().getKodPocztowy().replace("-", "").trim();
         String streetRegistered = CharsNormalizer.convertToEngChars(address.getStreet().trim());
         String streetResponse = CharsNormalizer.convertToEngChars(response.getOdpis().getDane().getDzial1().getSiedzibaIAdres().getAdres().getUlica().trim());
-        String buildingRegistered = address.getBuilding_number().trim();
+        String buildingRegistered = address.getBuildingNumber().trim();
         String buildingResponse = response.getOdpis().getDane().getDzial1().getSiedzibaIAdres().getAdres().getNrDomu().trim();
         if (StringUtils.equalsIgnoreCase(cityRegistered, cityResponse)) {
             if (StringUtils.equals(postalRegistered, postalResponse)) {
                 if (StringUtils.equalsIgnoreCase(streetRegistered, streetResponse)) {
                     if (StringUtils.equalsIgnoreCase(buildingRegistered, buildingResponse)) {
                         return true;
-                    }
+                    } //TODO delete IFSm, use &&
                 }
             }
         }
