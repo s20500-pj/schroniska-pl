@@ -24,10 +24,8 @@ public class ShelterAuthenticationService implements AuthenticationService {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
             final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
             log.info("Authentication successful for: {}", userDetails.getUsername());
-            //TODO store the token in redis
             return jwtUtils.generateToken(userDetails);
         } catch (Exception e) {
-            //TODO add this exception to global ex handler
             log.error("Unable to authenticate the user: {}, exception message: {}", request.getEmail(), e.getMessage());
             throw new AuthenticationException("Failed to authenticate user", e);
         }

@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import shelter.backend.registration.service.RegistrationService;
-import shelter.backend.registration.service.RegistrationShelterService;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.utils.constants.ShelterPathConstants;
 
@@ -16,23 +15,15 @@ import shelter.backend.utils.constants.ShelterPathConstants;
 @RequestMapping(value = ShelterPathConstants.REGISTRATION, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RegistrationController {
 
-    private final RegistrationShelterService registrationShelterService;
-
     private final RegistrationService registrationService;
 
-    public RegistrationController(RegistrationShelterService registrationShelterService, RegistrationService registrationService) {
-        this.registrationShelterService = registrationShelterService;
+    public RegistrationController(RegistrationService registrationService) {
         this.registrationService = registrationService;
     }
 
-    @PostMapping("/registerUser")
-    ResponseEntity<UserDto> registerUser(@RequestBody @Valid UserDto userDto) {
-        return ResponseEntity.ok(registrationShelterService.registerShelter(userDto));
-    }
-
-    @PostMapping("/registerShelter") //TODO delete one request
-    ResponseEntity<UserDto> registerShelter(@RequestBody @Valid UserDto userDto) {
-        return ResponseEntity.ok(registrationShelterService.registerShelter(userDto));
+    @PostMapping("/register")
+    ResponseEntity<UserDto> register(@RequestBody @Valid UserDto userDto) {
+        return ResponseEntity.ok(registrationService.register(userDto));
     }
 
     @GetMapping("/confirmation")
