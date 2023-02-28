@@ -10,14 +10,15 @@ export default function AddShelter() {
         email:"",
         shelterName:"",
         password:"",
+        userType:"SHELTER",
         address: {
             street:"",
             city:"",
-            postal_code:"",
-            building_number:"",
-            flat_number:"",
+            postalCode:"",
+            buildingNumber:"",
+            flatNumber:"",
             phone:"",
-            krs_number:""
+            krsNumber:""
         }
     });
     const onInputChange=(e)=>{
@@ -33,11 +34,11 @@ export default function AddShelter() {
     };
     const onSubmit = async (e)=>{
         e.preventDefault();
-        await axios.post("http://localhost:8080/registration/registerShelter", shelter);
+        await axios.post("http://localhost:8080/registration/register", shelter);
         navigate("/");
     };
 
-    const {email, password, shelterName, street, city, postal_code, building_number, flat_number, phone, krs_number} = shelter
+    const {email, password, shelterName, street, city, postalCode, buildingNumber, flatNumber, phone, krsNumber} = shelter
 
     return (
         <div className="container">
@@ -122,8 +123,8 @@ export default function AddShelter() {
                                     type={"text"}
                                     className="form-control"
                                     placeholder="Podaj kod pocztowy."
-                                    name="postal_code"
-                                    value={postal_code}
+                                    name="postalCode"
+                                    value={postalCode}
                                     onChange={(e)=>onInputChange(e)}
                                     required
                                 />
@@ -136,8 +137,8 @@ export default function AddShelter() {
                                     type={"text"}
                                     className="form-control"
                                     placeholder="Podaj numer budynku."
-                                    name="building_number"
-                                    value={building_number}
+                                    name="buildingNumber"
+                                    value={buildingNumber}
                                     onChange={(e)=>onInputChange(e)}
                                     required
                                 />
@@ -150,8 +151,8 @@ export default function AddShelter() {
                                     type={"text"}
                                     className="form-control"
                                     placeholder="Podaj numer mieszkania."
-                                    name="flat_number"
-                                    value={flat_number}
+                                    name="flatNumber"
+                                    value={flatNumber}
                                     onChange={(e)=>onInputChange(e)}
                                 />
                             </div>
@@ -177,8 +178,8 @@ export default function AddShelter() {
                                     type={"text"}
                                     className="form-control"
                                     placeholder="Podaj numer KRS."
-                                    name="krs_number"
-                                    value={krs_number}
+                                    name="krsNumber"
+                                    value={krsNumber}
                                     onChange={(e)=>onInputChange(e)}
                                     required
                                 />
