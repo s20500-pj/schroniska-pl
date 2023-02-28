@@ -30,10 +30,9 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-//FIXME fix this config
         http
                 .csrf()
-                .disable()//TODO csrf should be able during logging/registration process!
+                .disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/authenticate", "/registration/**")
                 .permitAll()

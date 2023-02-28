@@ -63,14 +63,12 @@ public class OpenApiKrs implements ApprovalProvider {
         String streetResponse = CharsNormalizer.convertToEngChars(response.getOdpis().getDane().getDzial1().getSiedzibaIAdres().getAdres().getUlica().trim());
         String buildingRegistered = address.getBuildingNumber().trim();
         String buildingResponse = response.getOdpis().getDane().getDzial1().getSiedzibaIAdres().getAdres().getNrDomu().trim();
-        if (StringUtils.equalsIgnoreCase(cityRegistered, cityResponse)) {
-            if (StringUtils.equals(postalRegistered, postalResponse)) {
-                if (StringUtils.equalsIgnoreCase(streetRegistered, streetResponse)) {
-                    if (StringUtils.equalsIgnoreCase(buildingRegistered, buildingResponse)) {
-                        return true;
-                    } //TODO delete IFSm, use &&
-                }
-            }
+        if (StringUtils.equalsIgnoreCase(cityRegistered, cityResponse) &&
+                StringUtils.equals(postalRegistered, postalResponse) &&
+                StringUtils.equalsIgnoreCase(streetRegistered, streetResponse) &&
+                StringUtils.equalsIgnoreCase(buildingRegistered, buildingResponse))
+        {
+            return true;
         }
         log.info("Shelter details are not valid. AddressRegistered: {},{},{},{} ResponseAddress: {},{},{},{}",
                 cityRegistered, postalRegistered, streetRegistered, buildingRegistered,

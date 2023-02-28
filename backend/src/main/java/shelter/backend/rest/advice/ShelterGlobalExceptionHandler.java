@@ -7,6 +7,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import shelter.backend.utils.exception.AuthenticationException;
+import shelter.backend.utils.exception.MessageNotSendException;
+import shelter.backend.utils.exception.RequiredFieldException;
 import shelter.backend.utils.exception.UsernameAlreadyExist;
 
 import java.util.List;
@@ -33,7 +36,25 @@ public class ShelterGlobalExceptionHandler {
 
     @ExceptionHandler(UsernameAlreadyExist.class)
     public ResponseEntity<String> onUsernameAlreadyExist(UsernameAlreadyExist e) {
-        log.info("Registration error. Exception: ", e);
+        log.info("Registration error occurred. Exception: ", e);
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> onAuthenticationException(AuthenticationException e) {
+        log.info("Authentication exception occurred. Exception: ", e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RequiredFieldException.class)
+    public ResponseEntity<String> onRequiredFieldException(RequiredFieldException e) {
+        log.info("Registration exception occurred. Exception: ", e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MessageNotSendException.class)
+    public ResponseEntity<String> onMessageNotSendException(MessageNotSendException e) {
+        log.info("Problem with sending email. Exception: ", e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

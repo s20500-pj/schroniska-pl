@@ -1,8 +1,6 @@
 package shelter.backend.admin.service;
 
 import org.springframework.stereotype.Service;
-import shelter.backend.admin.model.AdminShelterResponseDto;
-import shelter.backend.admin.model.AdminResponseConverter;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.mapper.UserMapper;
@@ -18,20 +16,18 @@ import java.util.stream.Collectors;
 public class ShelterAdminService implements AdminService {
 
     private final UserRepository userRepository;
-    private final AddressRepository addressRepository;
     private final UserMapper userMapper;
 
     public ShelterAdminService(UserRepository userRepository, AddressRepository addressRepository) {
         this.userRepository = userRepository;
-        this.addressRepository = addressRepository;
         this.userMapper = new UserMapper(userRepository, addressRepository);
     }
 
     @Override
-    public List<AdminShelterResponseDto> getShelters() {//TODO change response body
+    public List<UserDto> getShelters() {
         List<User> shelterList = userRepository.findAllByShelterNameIsNotNull();
         return shelterList.stream()
-                .map(AdminResponseConverter::toAdminGetShelterResponse)
+                .map(userMapper::toDto)
                 .collect(Collectors.toList());
     }
 

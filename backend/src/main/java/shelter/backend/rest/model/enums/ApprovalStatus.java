@@ -2,14 +2,14 @@ package shelter.backend.rest.model.enums;
 
 /*
  * ApprovalStatus used to trace shelter status
- * EMAIL_NIEPOTWIERDZONY - awaits for email confirmation from user's side
- * OCZEKUJE - awaits for ApprovalProvider check
- * ODRZUCONY - declined by ApprovalProvider
- * POTWIERDZONY - accepted by ApprovalProvider
+ * EMAIL_NOT_CONFIRMED - awaits for email confirmation from user's side
+ * PENDING - awaits for ApprovalProvider check
+ * REJECTED - declined by ApprovalProvider
+ * CONFIRMED - accepted by ApprovalProvider
  */
 public enum ApprovalStatus {
-    EMAIL_NIEPOTWIERDZONY,
-    OCZEKUJE,
-    ODRZUCONY,
-    POTWIERDZONY
+    EMAIL_NOT_CONFIRMED,
+    PENDING,
+    REJECTED,
+    CONFIRMED
 }

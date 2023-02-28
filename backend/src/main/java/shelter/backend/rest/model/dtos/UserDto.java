@@ -1,6 +1,7 @@
 package shelter.backend.rest.model.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.Data;
 import shelter.backend.rest.model.enums.ApprovalStatus;
@@ -20,5 +21,6 @@ public class UserDto {
     private boolean isDisabled;
     private ApprovalStatus approvalStatus;
     private UserType userType;
+    @Valid
     private AddressDto address;
 }
