@@ -13,12 +13,13 @@ export default function AddUser() {
         lastName:"",
         email:"",
         password:"",
+        userType:"PERSON",
         address: {
             street:"",
             city:"",
-            postal_code:"",
-            building_number:"",
-            flat_number:"",
+            postalCode:"",
+            buildingNumber:"",
+            flatNumber:"",
             phone:""
         }
     });
@@ -35,11 +36,11 @@ export default function AddUser() {
     };
     const onSubmit = async (e)=>{
         e.preventDefault();
-        await axios.post("http://localhost:8080/registration/registerUser", user);
+        await axios.post("http://localhost:8080/registration/register", user);
         navigate("/");
     };
 
-    const {firstName, lastName, email, password, street, phone, city, building_number, flat_number, postal_code} = user
+    const {firstName, lastName, email, password, street, phone, city, buildingNumber, flatNumber, postalCode} = user
 
     return (
         <div className="container">
@@ -138,8 +139,8 @@ export default function AddUser() {
                                     type={"text"}
                                     className="form-control"
                                     placeholder="Podaj kod pocztowy."
-                                    name="postal_code"
-                                    value={postal_code}
+                                    name="postalCode"
+                                    value={postalCode}
                                     onChange={(e)=>onInputChange(e)}
                                     required
                                 />
@@ -152,8 +153,8 @@ export default function AddUser() {
                                     type={"text"}
                                     className="form-control"
                                     placeholder="Podaj numer budynku."
-                                    name="building_number"
-                                    value={building_number}
+                                    name="buildingNumber"
+                                    value={buildingNumber}
                                     onChange={(e)=>onInputChange(e)}
                                     required
                                 />
@@ -167,7 +168,7 @@ export default function AddUser() {
                                     className="form-control"
                                     placeholder="Podaj numer mieszkania."
                                     name="flat_number"
-                                    value={flat_number}
+                                    value={flatNumber}
                                     onChange={(e)=>onInputChange(e)}
                                 />
                             </div>
