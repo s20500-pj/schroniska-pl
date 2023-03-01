@@ -7,7 +7,7 @@ import Login from "./users/Login";
 import './index.css';
 function App() {
   return (
-    <div className="px-10 font-display">
+    <div className="px-10 font-display ">
       <Router>
         <Navbar />
         <Routes>
