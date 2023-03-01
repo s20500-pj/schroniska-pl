@@ -1,0 +1,5 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Chivo:ital,wght@0,400;0,600;0,900;1,400;1,600;1,900&family=Rubik:wght@300;400;500;600;700;900&display=swap');
