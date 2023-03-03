@@ -53,7 +53,7 @@ export default function AddShelter() {
                             </label>
                             <input
                                 type={"text"}
-                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                 placeholder="Podaj nazwę schroniska."
                                 name="shelterName"
                                 value={shelterName}
@@ -61,12 +61,12 @@ export default function AddShelter() {
                                 required
                             />
                             <div className="mb-3">
-                                <label htmlFor="Email" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                <label htmlFor="Email" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     E-mail:
                                 </label>
                                 <input
                                     type={"text"}
-                                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     placeholder="Podaj adres e-mail."
                                     name="email"
                                     value={email}
@@ -75,12 +75,12 @@ export default function AddShelter() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="Password" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                <label htmlFor="Password" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Hasło:
                                 </label>
                                 <input
                                     type={"text"}
-                                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     placeholder="Wpisz hasło."
                                     name="password"
                                     value={password}
@@ -89,12 +89,12 @@ export default function AddShelter() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="Street" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                <label htmlFor="Street" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Ulica:
                                 </label>
                                 <input
                                     type={"text"}
-                                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     placeholder="Podaj ulicę."
                                     name="street"
                                     value={street}
@@ -103,12 +103,12 @@ export default function AddShelter() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="City" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                <label htmlFor="City" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Miasto:
                                 </label>
                                 <input
                                     type={"text"}
-                                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     placeholder="Podaj miasto."
                                     name="city"
                                     value={city}
@@ -117,12 +117,12 @@ export default function AddShelter() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="Postal code" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                <label htmlFor="Postal code" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Kod pocztowy:
                                 </label>
                                 <input
                                     type={"text"}
-                                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     placeholder="Podaj kod pocztowy."
                                     name="postalCode"
                                     value={postalCode}
@@ -131,12 +131,12 @@ export default function AddShelter() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="Building number" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                <label htmlFor="Building number" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Numer budynku:
                                 </label>
                                 <input
                                     type={"text"}
-                                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     placeholder="Podaj numer budynku."
                                     name="buildingNumber"
                                     value={buildingNumber}
@@ -145,12 +145,12 @@ export default function AddShelter() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="Flat number" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                <label htmlFor="Flat number" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Numer mieszkania:
                                 </label>
                                 <input
                                     type={"text"}
-                                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     placeholder="Podaj numer mieszkania."
                                     name="flatNumber"
                                     value={flatNumber}
@@ -158,12 +158,12 @@ export default function AddShelter() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="Phone" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                <label htmlFor="Phone" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Telefon kontaktowy:
                                 </label>
                                 <input
                                     type={"text"}
-                                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     placeholder="Podaj numer telefonu kontaktowego."
                                     name="phone"
                                     value={phone}
@@ -172,12 +172,12 @@ export default function AddShelter() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="KRS_number" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                <label htmlFor="KRS_number" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Numer KRS:
                                 </label>
                                 <input
                                     type={"text"}
-                                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     placeholder="Podaj numer KRS."
                                     name="krsNumber"
                                     value={krsNumber}
