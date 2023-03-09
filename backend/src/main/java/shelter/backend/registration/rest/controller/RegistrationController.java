@@ -7,12 +7,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import shelter.backend.registration.service.RegistrationService;
 import shelter.backend.rest.model.dtos.UserDto;
-import shelter.backend.utils.constants.ShelterPathConstants;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
 @Validated
-@RequestMapping(value = ShelterPathConstants.REGISTRATION, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/registration", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RegistrationController {
 
     private final RegistrationService registrationService;

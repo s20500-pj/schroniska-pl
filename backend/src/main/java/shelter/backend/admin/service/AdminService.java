@@ -9,4 +9,6 @@ public interface AdminService {
     List<UserDto> getShelters();
 
     List<UserDto> search(Map<String, String> searchParams);
+
+    UserDto getUserById(Long userId);
 }

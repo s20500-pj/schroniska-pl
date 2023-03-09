@@ -1,6 +1,7 @@
 package shelter.backend.registration.service;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
+@RequiredArgsConstructor
 @Service
 @Slf4j
 public class ShelterRegistrationService implements RegistrationService {
@@ -39,19 +41,6 @@ public class ShelterRegistrationService implements RegistrationService {
     private final ApprovalProvider approvalProvider;
     private final UserValidator userValidator;
     private final UserMapper userMapper;
-
-
-    public ShelterRegistrationService(EmailService shelterEmailService, UserRepository userRepository, RoleRepository roleRepository, AddressRepository addressRepository, PasswordEncoder passwordEncoder, TokenService tokenService, ApprovalProvider approvalProvider) {
-        this.shelterEmailService = shelterEmailService;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.addressRepository = addressRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.tokenService = tokenService;
-        this.approvalProvider = approvalProvider;
-        this.userValidator = new UserValidator(userRepository);
-        this.userMapper = new UserMapper(userRepository, addressRepository);
-    }
 
     public UserDto register(UserDto userDto) {
         log.debug("Registration started for username: {}", userDto.getEmail());
@@ -124,9 +113,9 @@ public class ShelterRegistrationService implements RegistrationService {
     }
 
     @Override
-    public List<UserDto> enableShelterAccounts(List<Long> shelterIdList) {
+    public List<UserDto> enableShelterAccounts(List<Long> shelterIds) {
         List<UserDto> enabledShelters = new ArrayList<>();
-        shelterIdList.forEach(id -> {
+        shelterIds.forEach(id -> {
             Optional<User> userOptional = userRepository.findById(id);
             if (userOptional.isPresent()) {
                 User user = userOptional.get();

@@ -6,9 +6,7 @@ import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.enums.ApprovalStatus;
 import shelter.backend.rest.model.enums.UserType;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -43,7 +41,11 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy="user")
+    private List<Animal> animals = new ArrayList<>();
+
     public User toEntity(UserDto dto) {
+        this.id = dto.getId();
         this.firstName = dto.getFirstName();
         this.lastName = dto.getLastName();
         this.shelterName = dto.getShelterName();

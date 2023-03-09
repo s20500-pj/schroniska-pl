@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import shelter.backend.login.rest.dtos.AuthenticationResponseDto;
 import shelter.backend.login.service.AuthenticationService;
 import shelter.backend.rest.model.dtos.AuthenticationRequestDto;
 
@@ -17,11 +18,7 @@ public class AuthController {
     private final AuthenticationService authService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<String> authenticate(@RequestBody AuthenticationRequestDto request) {
-        String token = authService.authenticate(request);
-        if (token != null) {
-            return ResponseEntity.ok(token);
-        }
-        return ResponseEntity.status(400).body("Authentication failed");
+    public ResponseEntity<AuthenticationResponseDto> authenticate(@RequestBody AuthenticationRequestDto request) {
+        return ResponseEntity.ok(authService.authenticate(request));
     }
 }
