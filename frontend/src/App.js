@@ -4,12 +4,14 @@ import Home from "./layout/Home";
 import AddUser from "./users/AddUser";
 import AddShelter from "./users/AddShelter";
 import Login from "./users/Login";
+import Hero from "./layout/Hero";
 import './index.css';
 function App() {
   return (
     <div className="m-auto font-display">
       <Router>
         <Navbar/>
+          <Hero/>
         <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/adduser" element={<AddUser />} />
