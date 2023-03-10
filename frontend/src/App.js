@@ -7,9 +7,9 @@ import Login from "./users/Login";
 import './index.css';
 function App() {
   return (
-    <div className="px-10 font-display ">
+    <div className="m-auto font-display">
       <Router>
-        <Navbar />
+        <Navbar/>
         <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/adduser" element={<AddUser />} />
