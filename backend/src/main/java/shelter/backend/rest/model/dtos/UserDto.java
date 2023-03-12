@@ -21,6 +21,7 @@ public class UserDto {
     private boolean isDisabled;
     private ApprovalStatus approvalStatus;
     private UserType userType;
+    private String information;
     @Valid
     private AddressDto address;
 }

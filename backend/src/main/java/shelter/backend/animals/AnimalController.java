@@ -1,10 +1,16 @@
 package shelter.backend.animals;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import shelter.backend.rest.model.dtos.AnimalDto;
+import shelter.backend.rest.model.dtos.UserDto;
+
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -13,18 +19,29 @@ public class AnimalController {
 
     private final AnimalService animalService;
 
-    @GetMapping("/animal/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<AnimalDto> getAnimalById(@PathVariable @NotNull Long id) {
         return ResponseEntity.ok(animalService.getAnimalById(id));
     }
 
-    @PostMapping("/animal/add")
-    ResponseEntity<AnimalDto> addAnimalToShelter(@RequestBody AnimalDto animalDto){
+    @PostMapping("/add")
+    ResponseEntity<AnimalDto> addAnimalToShelter(@RequestBody AnimalDto animalDto) {
         return ResponseEntity.ok(animalService.addAnimalToShelter(animalDto));
     }
 
-    @PutMapping("/animal/update")
-    ResponseEntity<AnimalDto> updateAnimal(@RequestBody AnimalDto animalDto){
+    @PutMapping("/update")
+    ResponseEntity<AnimalDto> updateAnimal(@RequestBody AnimalDto animalDto) {
         return ResponseEntity.ok(animalService.updateAnimal(animalDto));
+    }
+
+    @PutMapping("/delete/{animalId}")
+    ResponseEntity<Void> deleteAnimal(@PathVariable @NotNull Long animalId) {
+        animalService.deleteAnimal(animalId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/search")
+    ResponseEntity<List<AnimalDto>> search(@RequestBody @Valid Map<String, String> searchParams) {
+        return ResponseEntity.ok(animalService.search(searchParams));
     }
 }

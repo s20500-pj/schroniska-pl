@@ -3,6 +3,7 @@ package shelter.backend.registration.service;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.storage.repository.UserRepository;
@@ -15,6 +16,7 @@ import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Slf4j
+@Component
 public class UserValidator implements Validator<UserDto> {
 
     public static final Pattern KRS_PATTERN = Pattern.compile("^\\d{10}$");

@@ -5,5 +5,6 @@ public enum AnimalStatus {
     NEEDS_MEDICAL_TREATMENT,
     READY_FOR_ADOPTION,
     ADOPTED,
-    DEAD
+    DEAD,
+    DELETED
 }

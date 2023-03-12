@@ -1,31 +1,25 @@
-package shelter.backend.admin.service;
+package shelter.backend.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import shelter.backend.login.JwtUtils;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.mapper.UserMapper;
 import shelter.backend.rest.model.specification.UserSpecification;
 import shelter.backend.storage.repository.UserRepository;
+import shelter.backend.utils.basic.ClientInterceptor;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class ShelterAdminService implements AdminService {
+public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-
-    @Override
-    public List<UserDto> getShelters() {
-        List<User> shelterList = userRepository.findAllByShelterNameIsNotNull();
-        return shelterList.stream()
-                .map(userMapper::toDto)
-                .collect(Collectors.toList());
-    }
+    private final JwtUtils jwtUtils;
 
     public List<UserDto> search(Map<String, String> searchParams) {
         UserSpecification userSpecification = new UserSpecification(searchParams);
@@ -34,5 +28,17 @@ public class ShelterAdminService implements AdminService {
 
     public UserDto getUserById(Long userId) {
         return userMapper.toDto(userRepository.findUserById(userId));
+    }
+
+    public UserDto update(UserDto userDto) {
+        return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
+    }
+
+    public void delete() {
+        String token = ClientInterceptor.getBearerTokenHeader();
+        User user = userRepository.findUserByEmail(jwtUtils.extractUsername(token.substring(7)));
+        if (user != null) {
+            userRepository.delete(user);
+        }
     }
 }

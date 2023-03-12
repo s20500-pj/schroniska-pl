@@ -1,6 +1,7 @@
 package shelter.backend.rest.model.specification;
 
 import jakarta.persistence.criteria.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.ApprovalStatus;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 public class UserSpecification implements Specification<User> {
 
     private static final String FIRST_NAME = "firstName";
@@ -20,10 +22,6 @@ public class UserSpecification implements Specification<User> {
     private static final String APPROVAL_STATUS = "approvalStatus";
     private static final String USER_TYPE = "userType";
     private static final String SORT_BY = "sortBy";
-
-    public UserSpecification(Map<String, String> searchParams) {
-        this.searchParams = searchParams;
-    }
 
     private final Map<String, String> searchParams;
 

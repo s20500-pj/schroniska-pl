@@ -35,7 +35,6 @@ public class ShelterRegistrationService implements RegistrationService {
     private final EmailService shelterEmailService;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final ApprovalProvider approvalProvider;

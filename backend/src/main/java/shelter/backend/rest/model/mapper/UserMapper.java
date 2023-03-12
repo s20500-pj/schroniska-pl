@@ -1,6 +1,7 @@
 package shelter.backend.rest.model.mapper;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.Address;
 import shelter.backend.rest.model.entity.User;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Component
 public class UserMapper implements DtoEntityMapper<User, UserDto> {
 
     private final UserRepository userRepository;

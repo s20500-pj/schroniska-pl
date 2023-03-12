@@ -1,9 +1,9 @@
 package shelter.backend.rest.model.mapper;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import shelter.backend.rest.model.dtos.AnimalDto;
 import shelter.backend.rest.model.entity.Animal;
-import shelter.backend.rest.model.mapper.DtoEntityMapper;
 import shelter.backend.storage.repository.AnimalRepository;
 
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Component
 public class AnimalMapper implements DtoEntityMapper<Animal, AnimalDto> {
 
     private final AnimalRepository animalRepository;
