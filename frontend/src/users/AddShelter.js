@@ -43,7 +43,6 @@ export default function AddShelter() {
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
             <div className="px-10 font-display bg-white bg-opacity-80">
-                <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
                     <h2 className="text-center text-2xl text-orange font-bold p-10">Zarejestruj schronisko</h2>
                     <form onSubmit={(e)=>onSubmit(e)} className="w-full max-w-lg m-auto py-10">
                         <div className="flex flex-wrap">
@@ -60,7 +59,8 @@ export default function AddShelter() {
                                 onChange={(e)=>onInputChange(e)}
                                 required
                             />
-                            <div className="mb-3">
+                            </div>
+                                <div className="w-full md:w-1/2 px-3">
                                 <label htmlFor="Email" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     E-mail:
                                 </label>
@@ -74,12 +74,12 @@ export default function AddShelter() {
                                     required
                                 />
                             </div>
-                            <div className="mb-3">
+                                <div className="w-full md:w-1/2 px-3">
                                 <label htmlFor="Password" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Hasło:
                                 </label>
                                 <input
-                                    type={"text"}
+                                    type={"password"}
                                     className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     placeholder="Wpisz hasło."
                                     name="password"
@@ -88,7 +88,7 @@ export default function AddShelter() {
                                     required
                                 />
                             </div>
-                            <div className="mb-3">
+                                <div className="w-full md:w-1/2 px-3">
                                 <label htmlFor="Street" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Ulica:
                                 </label>
@@ -102,7 +102,7 @@ export default function AddShelter() {
                                     required
                                 />
                             </div>
-                            <div className="mb-3">
+                                <div className="w-full md:w-1/2 px-3">
                                 <label htmlFor="City" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Miasto:
                                 </label>
@@ -116,7 +116,7 @@ export default function AddShelter() {
                                     required
                                 />
                             </div>
-                            <div className="mb-3">
+                                <div className="w-full md:w-1/2 px-3">
                                 <label htmlFor="Postal code" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Kod pocztowy:
                                 </label>
@@ -130,7 +130,7 @@ export default function AddShelter() {
                                     required
                                 />
                             </div>
-                            <div className="mb-3">
+                                <div className="w-full md:w-1/2 px-3">
                                 <label htmlFor="Building number" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Numer budynku:
                                 </label>
@@ -144,7 +144,7 @@ export default function AddShelter() {
                                     required
                                 />
                             </div>
-                            <div className="mb-3">
+                                <div className="w-full md:w-1/2 px-3">
                                 <label htmlFor="Flat number" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Numer mieszkania:
                                 </label>
@@ -157,7 +157,7 @@ export default function AddShelter() {
                                     onChange={(e)=>onInputChange(e)}
                                 />
                             </div>
-                            <div className="mb-3">
+                                <div className="w-full md:w-1/2 px-3">
                                 <label htmlFor="Phone" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Telefon kontaktowy:
                                 </label>
@@ -171,7 +171,7 @@ export default function AddShelter() {
                                     required
                                 />
                             </div>
-                            <div className="mb-3">
+                                <div className="w-full md:w-1/2 px-3">
                                 <label htmlFor="KRS_number" className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Numer KRS:
                                 </label>
@@ -186,16 +186,18 @@ export default function AddShelter() {
                                 />
                             </div>
                         </div>
-                        </div>
                         <button type="submit"  className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                            <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Zarejestruj</p>
+                            <p className="py-15 justify-center text-base text-center text-brown font-medium	">Zarejestruj</p>
                         </button>
-                        <Link type="submit" className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown " to="/">
-                            <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Anuluj</p>
-                        </Link>
+                        <button type="submit"  className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                            <a
+                                href="/"
+                                className= 'py-15 justify-center text-base	 text-center text-brown font-medium	'
+                            >
+                                Anuluj                            </a>
+                        </button>
                     </form>
                 </div>
-            </div>
         </div>
     )
 }
