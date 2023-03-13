@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7f067509-845f-4a6b-806f-8fbf6f3926b7",
+		"_postman_id": "804fbecf-ab80-4313-a2a2-e2cbb7f05736",
 		"name": "schroniska",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -203,7 +203,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2Nzg3MzI4NTgsImlhdCI6MTY3ODY0NjQ1OCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.bSqIAP7i1W0OioQjD9Y557t3bRKuaN2favk9KkDTaS8",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -271,7 +271,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2Nzg3MzI4NTgsImlhdCI6MTY3ODY0NjQ1OCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.bSqIAP7i1W0OioQjD9Y557t3bRKuaN2favk9KkDTaS8",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -335,7 +335,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2Nzg3MzQwNTgsImlhdCI6MTY3ODY0NzY1OCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.FJE_BQtqzuYjyyQ8VtT5dlLVgJLsaa8QLim2Y_K1ZDU",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -344,7 +344,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 1,\r\n  \"name\": \"Max\",\r\n  \"information\": \"Friendly and loves to play fetch\",\r\n  \"species\": \"Dog\",\r\n  \"sex\": \"MALE\",\r\n  \"age\": \"ADULT\",\r\n  \"birthDate\": \"2019-01-01\",\r\n  \"animalStatus\": \"NEEDS_MEDICAL_TREATMENT\",\r\n  \"sterilized\": true,\r\n  \"vaccinated\": true,\r\n  \"kidsFriendly\": true,\r\n  \"couchPotato\": false,\r\n  \"needsActiveness\": true,\r\n  \"catsFriendly\": true,\r\n  \"dogsFriendly\": true\r\n}",
+							"raw": "{\r\n  \"name\": \"Max\",\r\n  \"information\": \"Friendly and loves to play fetch\",\r\n  \"species\": \"Dog\",\r\n  \"sex\": \"MALE\",\r\n  \"age\": \"ADULT\",\r\n  \"birthDate\": \"2019-01-01\",\r\n  \"animalStatus\": \"NEEDS_MEDICAL_TREATMENT\",\r\n  \"sterilized\": true,\r\n  \"vaccinated\": true,\r\n  \"kidsFriendly\": true,\r\n  \"couchPotato\": false,\r\n  \"needsActiveness\": true,\r\n  \"catsFriendly\": true,\r\n  \"dogsFriendly\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -374,7 +374,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2Nzg3MzQwNTgsImlhdCI6MTY3ODY0NzY1OCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.FJE_BQtqzuYjyyQ8VtT5dlLVgJLsaa8QLim2Y_K1ZDU",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -408,7 +408,7 @@
 				{
 					"name": "deleteAnimal",
 					"request": {
-						"method": "DELETE",
+						"method": "PUT",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8080/animal/delete/1",
@@ -434,7 +434,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2Nzg3MzQwNTgsImlhdCI6MTY3ODY0NzY1OCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.FJE_BQtqzuYjyyQ8VtT5dlLVgJLsaa8QLim2Y_K1ZDU",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -478,7 +478,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2Nzg3MzQwNTgsImlhdCI6MTY3ODY0NzY1OCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.FJE_BQtqzuYjyyQ8VtT5dlLVgJLsaa8QLim2Y_K1ZDU",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -587,7 +587,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"firstName\": \"testName\",\n\"lastName\": \"testLastname\",\n\"email\": \"test@test1.com\",\n\"password\": \"jajo\",\n\"userType\": \"PERSON\",\n\"address\": {\n    \"street\": \"street\",\n    \"city\": \"city\",\n    \"postal_code\": \"321\",\n    \"building_number\": \"1\",\n    \"phone\": \"505555123\"\n}\n}",
+					"raw": "{\n\"firstName\": \"testName\",\n\"lastName\": \"testLastname\",\n\"email\": \"test@test1.com\",\n\"password\": \"jajo\",\n\"userType\": \"PERSON\",\n\"address\": {\n    \"street\": \"street\",\n    \"city\": \"city\",\n    \"postalCode\": \"321\",\n    \"buildingNumber\": \"1\",\n    \"phone\": \"505555123\"\n}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -595,7 +595,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/registration/registerUser",
+					"raw": "http://localhost:8080/registration/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -603,7 +603,7 @@
 					"port": "8080",
 					"path": [
 						"registration",
-						"registerUser"
+						"register"
 					]
 				}
 			},
@@ -616,7 +616,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"firstName\": \"testName\",\n\"lastName\": \"testLastname\",\n\"email\": \"test@test1.com\",\n\"password\": \"jajo\",\n\"userType\": \"PERSON\",\n\"address\": {\n    \"street\": \"street\",\n    \"city\": \"city\",\n    \"postal_code\": \"321\",\n    \"building_number\": \"1\",\n    \"phone\": \"505555123\"\n}\n}",
+					"raw": "{\n\"shelterName\": \"shelterName\",\n\"email\": \"test@test1.com\",\n\"password\": \"jajo\",\n\"userType\": \"SHELTER\",\n\"address\": {\n    \"street\": \"street\",\n    \"city\": \"city\",\n    \"postalCode\": \"321\",\n    \"buildingNumber\": \"1\",\n    \"phone\": \"505555123\",\n    \"krsNumber\": \"1234567890\"\n}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -624,7 +624,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/registration/registerUser",
+					"raw": "http://localhost:8080/registration/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -632,7 +632,7 @@
 					"port": "8080",
 					"path": [
 						"registration",
-						"registerUser"
+						"register"
 					]
 				}
 			},
@@ -646,7 +646,8 @@
 					"script": {
 						"exec": [
 							"if (pm.response.status == 200 || pm.response.status == \"OK\") {",
-							"pm.environment.set(\"token\", responseBody);",
+							"    var token = JSON.parse(responseBody).authToken",
+							"    pm.environment.set(\"token\", token);",
 							"}",
 							""
 						],
