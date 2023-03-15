@@ -7,6 +7,7 @@ import Hero from "./layout/Hero";
 import Login from "./users/Login/Login";
 import './index.css';
 import LoggedInUser from "./users/Login/LoggedInUser";
+import Footer from "./layout/Footer";
 function App() {
     const token = localStorage.getItem("token")
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route exact path="/login" element= {token ? <Navigate to="/loggedinuser" /> : <Login />} />
         </Routes>
       </Router>
+        <Footer/>
 
     </div>
   );

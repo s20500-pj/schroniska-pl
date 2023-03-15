@@ -73,10 +73,11 @@ export default function Nav() {
 
 
                                 {/* Profile dropdown */}
-                                <Menu as="div" className="relative ml-3 hidden lg:block">
+                                <Menu as="div" className="relative ml-3 hidden md:block">
                                     <div>
                                         <Menu.Button className="flex rounded-2xl p-1 bg-orange text-sm focus:ring-1 focus:ring-brown focus:ring-offset-1 sm:rounded sm:p-1">
-                                            <a className="text-sm pl-1">Zarejestruj</a>
+                                            <a className="text-sm pl-1"
+                                            href="">Zarejestruj</a>
                                             <svg
                                                 className="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                                                 xmlns="http://www.w3.org/2000/svg">
