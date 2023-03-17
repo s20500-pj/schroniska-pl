@@ -6,6 +6,7 @@ import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.enums.Age;
 import shelter.backend.rest.model.enums.AnimalStatus;
 import shelter.backend.rest.model.enums.Sex;
+import shelter.backend.rest.model.enums.Species;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,7 +17,7 @@ public class AnimalDto {
     private Long id;
     private String name;
     private String information;
-    private String species;
+    private Species species;
     private Sex sex;
     private Age age;
     private LocalDate birthDate;

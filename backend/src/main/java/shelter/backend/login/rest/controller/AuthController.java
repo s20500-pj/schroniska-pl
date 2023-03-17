@@ -2,15 +2,13 @@ package shelter.backend.login.rest.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import shelter.backend.login.rest.dtos.AuthenticationResponseDto;
 import shelter.backend.login.service.AuthenticationService;
 import shelter.backend.rest.model.dtos.AuthenticationRequestDto;
 
 @RestController
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {

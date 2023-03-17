@@ -12,6 +12,9 @@ import java.util.Set;
 public class AuthenticationResponseDto {
     private Long userId;
     private String userEmail;
+    private String firstName;
+    private String lastName;
+    private String shelterName;
     private UserType userType;
     private String authToken;
     private Set<Role> roles;

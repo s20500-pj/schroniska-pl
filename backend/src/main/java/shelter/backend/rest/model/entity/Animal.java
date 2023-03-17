@@ -6,6 +6,7 @@ import shelter.backend.rest.model.dtos.AnimalDto;
 import shelter.backend.rest.model.enums.Age;
 import shelter.backend.rest.model.enums.AnimalStatus;
 import shelter.backend.rest.model.enums.Sex;
+import shelter.backend.rest.model.enums.Species;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class Animal {
     private Long id;
     private String name;
     private String information;
-    private String species;
+    private Species species;
     private Sex sex;
     private Age age;
     private LocalDate birthDate;
@@ -38,6 +39,7 @@ public class Animal {
     private boolean needsActiveness;
     private boolean catsFriendly;
     private boolean dogsFriendly;
+    private boolean availableForWalk;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
