@@ -1,41 +1,191 @@
-import {Link} from "react-router-dom";
 import logo from "./LogoSchroniska-pl.png";
-import hero_img from "./hero_img.jpeg";
-import React from "react";
+import {Link} from "react-router-dom";
+import React, { Fragment } from 'react'
+import { Disclosure, Menu, Transition } from '@headlessui/react'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
-export default function Navbar() {
+const navigation = [
+    { name: 'Home', href: '#', current: true },
+    { name: 'O nas', href: '#', current: false },
+    { name: 'Kontakt', href: '#', current: false }
+
+]
+
+function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+}
+
+export default function Nav() {
     return (
-        <div>
-            <nav className="flex shadow-md rounded-2xl">
-                <div className="align-top">
-                    <img src={logo} className="w-64" alt="Logo schronisko.pl"/></div>
-                    <div className="m-auto flex justify-between">
-                    <button
-                        className="px-10 py-2 m-5 border-2 border-orange rounded-2xl hover:bg-orange text-white active:bg-brown ">
-                        <Link className="justify-center text-base text-center text-brown font-medium hover:text-white" to="/">Home</Link>
-                    </button>
-                        <button
-                            className="px-10 py-2 m-5 border-2 border-orange rounded-2xl  hover:bg-orange text-white active:bg-brown ">
-                            <Link className="justify-center text-base text-center text-brown font-medium	 " to="/adduser">Zarejestruj się</Link>
-                        </button>
-                        <button
-                            className="px-10 py-2 m-5 border-2 border-orange rounded-2xl  hover:bg-orange text-white active:bg-brown ">
-                            <Link className="py-15 justify-center text-base	 text-center text-brown font-medium	" to="/addshelter">Zarejestruj schronisko</Link>
-                        </button>
-                        <button
-                            className="px-10 py-2 m-5 border-2 border-orange rounded-2xl  hover:bg-orange text-white active:bg-brown ">
-                            <Link className="py-15 px-15 justify-center text-base text-center text-brown font-medium " to="/login">Zaloguj się</Link>
-                        </button>
+        <Disclosure as="nav" className="bg-white">
+            {({ open }) => (
+                <>
+                    <div className="mx-auto max-w-6xl px-2 sm:px-6 lg:px-6">
+                        <div className="relative flex h-16 items-center justify-between">
+                            <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                                {/* Mobile menu button*/}
+                                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-brown  hover:text-orange focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                                    <span className="sr-only">Open main menu</span>
+                                    {open ? (
+                                        <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                                    ) : (
+                                        <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                                    )}
+                                </Disclosure.Button>
+                            </div>
+                            <div className="flex flex-1 items-start justify-center sm:items-stretch sm:justify-start">
+                                <Link to="/">
+                                    <div className="flex">
+                                        <img
+                                            className="block h-10 w-32 lg:hidden"
+                                            src={logo}
+                                            alt="Logo schronisko.pl"
+                                        />
+                                        <img
+                                            className="hidden h-10 w-32 lg:block"
+                                            src={logo}
+                                            alt="Logo schronisko.pl"
+                                        />
+                                    </div>
+                                </Link>
+
+                                <div className="hidden sm:ml-6 sm:block">
+                                    <div className="flex space-x-4">
+                                        {navigation.map((item) => (
+                                            <a
+                                                key={item.name}
+                                                href={item.href}
+                                                className={classNames(
+                                                    item.current ? ' text-brown' : 'text-brown hover:text-orange',
+                                                    'rounded-md px-3 py-2 text-sm font-medium'
+                                                )}
+                                                aria-current={item.current ? 'page' : undefined}
+                                            >
+                                                {item.name}
+                                            </a>
+
+                                        ))}
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+
+
+                                {/* Profile dropdown */}
+                                <Menu as="div" className="relative ml-3 hidden md:block">
+                                    <div>
+                                        <Menu.Button className="flex rounded-2xl p-1 bg-orange text-sm focus:ring-1 focus:ring-brown focus:ring-offset-1 sm:rounded sm:p-1">
+                                            <a className="text-sm pl-1"
+                                            href="">Zarejestruj</a>
+                                            <svg
+                                                className="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                      clip-rule="evenodd"></path>
+                                            </svg>
+                                        </Menu.Button>
+                                    </div>
+                                    <Transition
+                                        as={Fragment}
+                                        enter="transition ease-out duration-100"
+                                        enterFrom="transform opacity-0 scale-95"
+                                        enterTo="transform opacity-100 scale-100"
+                                        leave="transition ease-in duration-75"
+                                        leaveFrom="transform opacity-100 scale-100"
+                                        leaveTo="transform opacity-0 scale-95"
+                                    >
+                                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                            <Menu.Item>
+                                                {({ active }) => (
+                                                    <Link to="/adduser">
+                                                        <a
+                                                            href="#"
+                                                            className={classNames(active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-brown')}
+                                                        >
+                                                            użytkownika
+                                                        </a>
+                                                    </Link>
+                                                )}
+                                            </Menu.Item>
+                                            <Menu.Item>
+                                                {({ active }) => (
+                                                    <Link to="/addshelter">
+                                                        <a
+                                                            href="#"
+                                                            className={classNames(active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-brown')}
+                                                        >
+                                                            schronisko
+                                                        </a>
+                                                    </Link>
+                                                )}
+                                            </Menu.Item>
+
+                                        </Menu.Items>
+                                    </Transition>
+                                </Menu>
+                                <button className="flex ml-4 hover:text-orange ">
+                                    <Link to="/login">
+                                    <div className="flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6"
+                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="#64290F"
+                                                  d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        <p className="text-brown hidden lg:block">Zaloguj się</p>
+                                     </div>
+                                    </Link>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-            </nav>
-            <header>
-                <div className="relative py-8">
-                    <img src={hero_img} className="m-auto rounded-2xl" alt="Dogs in shelter"/>
-                    <div className="w-50 h-100 backdrop-opacity-10 backdrop-invert bg-brown/60  rounded-2xl  absolute top-1/4 -right-1/4 -translate-x-1/2 -translate-y-1/2">
-                        <h2 className="text-3xl text-white text-center p-10 indent-8 font-bold">Znajdź czworonoga i zaopiekuj się nim!</h2>
-                    </div>
-                    </div>
-            </header>
-        </div>
+
+                    <Disclosure.Panel className="sm:hidden">
+                        <div className="space-y-1 px-2 pt-2 pb-3">
+                            {navigation.map((item) => (
+                                <Disclosure.Button
+                                    key={item.name}
+                                    as="a"
+                                    href={item.href}
+                                    className={classNames(
+                                        item.current ? 'bg-orange text-brown' : 'text-orange hover:bg-orange hover:text-brown',
+                                        'block rounded-md px-3 py-2 text-base font-medium'
+                                    )}
+                                    aria-current={item.current ? 'page' : undefined}
+                                >
+                                    {item.name}
+
+                                </Disclosure.Button>
+
+                            ))}
+                            <div className="space-y-1 px-2 pt-2 pb-3">
+                            <Disclosure.Button>
+                            <a
+                                href="/adduser"
+                                className= 'text-orange hover:bg-orange hover:text-brown block rounded-md px-3 py-2 text-base font-medium'
+                            >
+                                Rejestracja użytkownika
+                            </a>
+
+                            </Disclosure.Button>
+                            </div>
+                            <div className="space-y-1 px-2 pt-2 pb-3">
+                                <Disclosure.Button>
+                                    <a
+                                        href="/addshelter"
+                                        className= 'text-orange hover:bg-orange hover:text-brown block rounded-md px-3 py-2 text-base font-medium'
+                                    >
+                                        Rejestracja schroniska
+                                    </a>
+
+                                </Disclosure.Button>
+                            </div>
+
+                        </div>
+                    </Disclosure.Panel>
+                </>
+            )}
+        </Disclosure>
     )
 }
