@@ -1,5 +1,6 @@
 package shelter.backend.registration.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +12,7 @@ import shelter.backend.utils.exception.TokenNotFound;
 import java.util.Date;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 @Slf4j
 public class ShelterTokenService implements TokenService {
@@ -18,10 +20,6 @@ public class ShelterTokenService implements TokenService {
     private int expirationTime;
 
     private final TokenRepository tokenRepository;
-
-    public ShelterTokenService(TokenRepository tokenRepository) {
-        this.tokenRepository = tokenRepository;
-    }
 
     @Override
     public Token getToken(String tokenId) {

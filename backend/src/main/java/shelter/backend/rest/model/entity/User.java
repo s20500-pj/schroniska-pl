@@ -6,9 +6,7 @@ import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.enums.ApprovalStatus;
 import shelter.backend.rest.model.enums.UserType;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,29 +25,35 @@ public class User {
     private String email;
     @Setter
     private String password;
-    @Setter // check if this is good approach, enabling user by the setter
+    @Setter
     private boolean isDisabled;
     @Setter
     @Enumerated(EnumType.STRING)
     private ApprovalStatus approvalStatus;
     @Enumerated(EnumType.STRING)
     private UserType userType;
+    private String information;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "shelter")
+    private List<Animal> animals = new ArrayList<>();
+
     public User toEntity(UserDto dto) {
+        this.id = dto.getId();
         this.firstName = dto.getFirstName();
         this.lastName = dto.getLastName();
         this.shelterName = dto.getShelterName();
         this.email = dto.getEmail();
         this.approvalStatus = dto.getApprovalStatus();
         this.userType = dto.getUserType();
+        this.information = dto.getInformation();
         return this;
     }
 
@@ -63,6 +67,7 @@ public class User {
                 .isDisabled(isDisabled)
                 .approvalStatus(approvalStatus)
                 .userType(userType)
+                .information(information)
                 .address(Objects.nonNull(address) ? address.dto() : null)
                 .build();
     }

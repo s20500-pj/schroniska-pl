@@ -12,5 +12,5 @@ public interface RegistrationService {
 
     void checkApprovalStatus(User User);
 
-    List<UserDto> enableShelterAccounts(List<Long> shelterIdList);
+    List<UserDto> enableShelterAccounts(List<Long> shelterIds);
 }

@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shelter.backend.login.rest.filter.JwtAthFilter;
 import shelter.backend.login.service.UserDetailsService;
 import shelter.backend.utils.constants.ShelterPathConstants;
@@ -34,6 +35,8 @@ public class WebSecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**"))//TODO delete it on PROD, used for H2 console to work properly
+                .permitAll()
                 .requestMatchers("/api/auth/authenticate", "/registration/**")
                 .permitAll()
                 .anyRequest()

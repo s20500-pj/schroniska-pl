@@ -17,4 +17,6 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaSpecifica
     List<User> findAllByShelterNameIsNotNullAndIsDisabledIsTrue();
 
     List<User> findAllByShelterNameIsNotNull();
+
+    User findUserById(Long id);
 }

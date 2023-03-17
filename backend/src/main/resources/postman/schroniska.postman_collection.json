@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "967daac2-deae-4f11-a129-0220692bdf9f",
+		"_postman_id": "804fbecf-ab80-4313-a2a2-e2cbb7f05736",
 		"name": "schroniska",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -163,13 +163,431 @@
 			]
 		},
 		{
+			"name": "shelter",
+			"item": [
+				{
+					"name": "getShelterById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2Nzg3MzI4NTgsImlhdCI6MTY3ODY0NjQ1OCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.bSqIAP7i1W0OioQjD9Y557t3bRKuaN2favk9KkDTaS8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/shelter/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shelter",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchShelters",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"approvalStatus\": \"CONFIRMED\",\r\n    \"sortBy\": \"shelterName\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/shelter/searchShelters",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shelter",
+								"searchShelters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "enableShelters",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[1,2,3]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/shelter/enable",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shelter",
+								"enable"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateShelter",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": 3,\r\n        \"firstName\": null,\r\n        \"lastName\": null,\r\n        \"email\": \"shelter2@shelter\",\r\n        \"shelterName\": \"Kociłapka\",\r\n        \"approvalStatus\": \"CONFIRMED\",\r\n        \"userType\": \"SHELTER\",\r\n        \"information\": \"Schronisko o nazwie Kociłapka jest the best\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/shelter/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shelter",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "animal",
+			"item": [
+				{
+					"name": "getAnimalById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/animal/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"animal",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addAnimal (zwierzę doda się do aktualnie zalogowanego użytkownika wykonującego endpoint)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Max\",\r\n  \"information\": \"Friendly and loves to play fetch\",\r\n  \"species\": \"Dog\",\r\n  \"sex\": \"MALE\",\r\n  \"age\": \"ADULT\",\r\n  \"birthDate\": \"2019-01-01\",\r\n  \"animalStatus\": \"NEEDS_MEDICAL_TREATMENT\",\r\n  \"sterilized\": true,\r\n  \"vaccinated\": true,\r\n  \"kidsFriendly\": true,\r\n  \"couchPotato\": false,\r\n  \"needsActiveness\": true,\r\n  \"catsFriendly\": true,\r\n  \"dogsFriendly\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/animal/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"animal",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateAnimal",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"name\": \"Max\",\r\n  \"information\": \"Friendly and loves to play fetch\",\r\n  \"species\": \"Dog\",\r\n  \"sex\": \"MALE\",\r\n  \"age\": \"ADULT\",\r\n  \"birthDate\": \"2019-01-01\",\r\n  \"animalStatus\": \"ADOPTED\",\r\n  \"sterilized\": true,\r\n  \"vaccinated\": true,\r\n  \"kidsFriendly\": true,\r\n  \"couchPotato\": false,\r\n  \"needsActiveness\": true,\r\n  \"catsFriendly\": true,\r\n  \"dogsFriendly\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/animal/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"animal",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteAnimal",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/animal/delete/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"animal",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchAnimal",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"species\": \"Dog\",\r\n    \"sortBy\": \"sex\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/animal/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"animal",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "getUserById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/user/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchUsers",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"bolek\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/user/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"firstName\": \"Marian\",\r\n    \"lastName\": \"Kowalski\",\r\n    \"email\": \"admin@admin\",\r\n    \"shelterName\": null,\r\n    \"approvalStatus\": null,\r\n    \"userType\": \"PERSON\",\r\n    \"information\": \"pijak i złodziej\",\r\n    \"disabled\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/user/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete (UWAGA, usuwa aktualnie zalogowanego usera)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/user/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "registerUser",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"firstName\": \"testName\",\n\"lastName\": \"testLastname\",\n\"email\": \"test@test1.com\",\n\"password\": \"jajo\",\n\"userType\": \"PERSON\",\n\"address\": {\n    \"street\": \"street\",\n    \"city\": \"city\",\n    \"postal_code\": \"321\",\n    \"building_number\": \"1\",\n    \"phone\": \"505555123\"\n}\n}",
+					"raw": "{\n\"firstName\": \"testName\",\n\"lastName\": \"testLastname\",\n\"email\": \"test@test1.com\",\n\"password\": \"jajo\",\n\"userType\": \"PERSON\",\n\"address\": {\n    \"street\": \"street\",\n    \"city\": \"city\",\n    \"postalCode\": \"321\",\n    \"buildingNumber\": \"1\",\n    \"phone\": \"505555123\"\n}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -177,7 +595,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/registration/registerUser",
+					"raw": "http://localhost:8080/registration/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -185,7 +603,7 @@
 					"port": "8080",
 					"path": [
 						"registration",
-						"registerUser"
+						"register"
 					]
 				}
 			},
@@ -198,7 +616,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"firstName\": \"testName\",\n\"lastName\": \"testLastname\",\n\"email\": \"test@test1.com\",\n\"password\": \"jajo\",\n\"userType\": \"PERSON\",\n\"address\": {\n    \"street\": \"street\",\n    \"city\": \"city\",\n    \"postal_code\": \"321\",\n    \"building_number\": \"1\",\n    \"phone\": \"505555123\"\n}\n}",
+					"raw": "{\n\"shelterName\": \"shelterName\",\n\"email\": \"test@test1.com\",\n\"password\": \"jajo\",\n\"userType\": \"SHELTER\",\n\"address\": {\n    \"street\": \"street\",\n    \"city\": \"city\",\n    \"postalCode\": \"321\",\n    \"buildingNumber\": \"1\",\n    \"phone\": \"505555123\",\n    \"krsNumber\": \"1234567890\"\n}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -206,7 +624,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/registration/registerUser",
+					"raw": "http://localhost:8080/registration/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -214,7 +632,7 @@
 					"port": "8080",
 					"path": [
 						"registration",
-						"registerUser"
+						"register"
 					]
 				}
 			},
@@ -228,7 +646,8 @@
 					"script": {
 						"exec": [
 							"if (pm.response.status == 200 || pm.response.status == \"OK\") {",
-							"pm.environment.set(\"token\", responseBody);",
+							"    var token = JSON.parse(responseBody).authToken",
+							"    pm.environment.set(\"token\", token);",
 							"}",
 							""
 						],
