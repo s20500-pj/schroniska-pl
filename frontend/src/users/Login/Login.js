@@ -27,9 +27,8 @@ function Login() {
                 email,
                 password,
             });
-            localStorage.setItem("token", response.data.token);
-            const { token } = await response.data;
-            localStorage.setItem("token", token);
+            localStorage.setItem("authToken", response.data.authToken);
+            localStorage.setItem("firstName", response.data.firstName);
             navigate("/loggedinuser");
         } catch (error) {
             setError(error.response?.data?.message || "Something went wrong");

@@ -9,7 +9,7 @@ import './index.css';
 import LoggedInUser from "./users/Login/LoggedInUser";
 import Footer from "./layout/Footer";
 function App() {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("authToken")
   return (
     <div className="m-auto font-display">
       <Router>
