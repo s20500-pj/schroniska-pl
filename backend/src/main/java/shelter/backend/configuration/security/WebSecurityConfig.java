@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shelter.backend.login.rest.filter.JwtAthFilter;
 import shelter.backend.login.service.UserDetailsService;
-import shelter.backend.utils.constants.ShelterPathConstants;
 
 @Configuration
 @RequiredArgsConstructor
@@ -44,9 +43,11 @@ public class WebSecurityConfig {
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().logout().deleteCookies(CookieAuthenticationFilter.COOKIE_NAME)
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new CookieAuthenticationFilter(), JwtAthFilter.class)
                 .headers().frameOptions().disable();//TODO delete it on PROD, used for H2 console to work properly
         return http.build();
     }

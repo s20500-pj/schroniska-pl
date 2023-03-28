@@ -34,8 +34,8 @@ public class ShelterAuthenticationService implements AuthenticationService {
             log.info("Authentication successful for: {}", userDetails.getUsername());
             String token = jwtUtils.generateToken(userDetails);
             User user = userRepository.findUserByEmail(request.getEmail());
-            return buildAuthenticationResponseDto(user.getId(), token, user.getEmail(),
-                    user.getFirstName(), user.getLastName(), user.getShelterName(), user.getUserType(), user.getRoles());
+            return buildAuthenticationResponseDto(user.getId(), token, user.getFirstName(),
+                    user.getLastName(), user.getEmail(), user.getShelterName(), user.getUserType(), user.getRoles());
         } catch (Exception e) {
             log.error("Unable to authenticate the user: {}, exception message: {}", request.getEmail(), e.getMessage());
             throw new AuthenticationException("Failed to authenticate user", e);
