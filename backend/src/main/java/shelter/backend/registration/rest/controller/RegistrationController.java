@@ -9,7 +9,6 @@ import shelter.backend.registration.service.RegistrationService;
 import shelter.backend.rest.model.dtos.UserDto;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
 @Validated
 @RequestMapping(value = "/registration", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RegistrationController {

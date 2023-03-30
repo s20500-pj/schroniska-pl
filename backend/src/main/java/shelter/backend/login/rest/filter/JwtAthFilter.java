@@ -3,6 +3,7 @@ package shelter.backend.login.rest.filter;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
@@ -14,10 +15,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import shelter.backend.configuration.security.CookieAuthenticationFilter;
 import shelter.backend.login.JwtUtils;
 import shelter.backend.login.service.UserDetailsService;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -32,27 +36,30 @@ public class JwtAthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        final String authHeader = request.getHeader(AUTHORIZATION);
         final String jwt;
         String userEmail = null;
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
+
+        Optional<Cookie> cookie = Arrays.stream(request.getCookies() != null ? request.getCookies() : new Cookie[0])
+                .filter(c -> c.getName().equals(CookieAuthenticationFilter.COOKIE_NAME))
+                .findFirst();
+
+        if (cookie.isPresent()) {
+            jwt = cookie.get().getValue();
+            try {
+                userEmail = jwtUtils.extractUsername(jwt);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Unable to get JWT Token");
+            } catch (ExpiredJwtException e) {
+                System.out.println("JWT Token has expired");
+            }
+            setAuthentication(request, jwt, userEmail);
         }
-        jwt = authHeader.substring(7);
-        try {
-            userEmail = jwtUtils.extractUsername(jwt);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Unable to get JWT Token");
-        } catch (ExpiredJwtException e) {
-            System.out.println("JWT Token has expired");
-        }
-        setAuthentication(request, jwt, userEmail);
+
         filterChain.doFilter(request, response);
     }
 
     private void setAuthentication(HttpServletRequest request, String jwt, String userEmail) {
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userEmail != null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
             if (jwtUtils.isTokenValid(jwt, userDetails)) {
                 log.debug("JWT Valid for: {}", userDetails.getUsername());
