@@ -37,7 +37,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/auth/authenticate",
+							"raw": "http://localhost:8080/auth/authenticate",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -668,7 +668,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/auth/authenticate",
+					"raw": "http://localhost:8080/auth/authenticate",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -699,7 +699,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/test/user",
+					"raw": "http://localhost:8080/test/user",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -730,7 +730,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/test/all",
+					"raw": "http://localhost:8080/test/all",
 					"protocol": "http",
 					"host": [
 						"localhost"

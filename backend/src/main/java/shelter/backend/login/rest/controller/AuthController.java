@@ -16,8 +16,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

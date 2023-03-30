@@ -8,7 +8,7 @@ export default function LoggedInUser() {
     const firstName = localStorage.getItem("firstName");
     const shelterName = localStorage.getItem("shelterName");
     const handleLogout = async () => {
-        await axios.get("http://localhost:8080/api/auth/logout");
+        await axios.get("http://localhost:8080/auth/logout");
         localStorage.clear();
         navigate('/');
     };

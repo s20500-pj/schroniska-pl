@@ -23,7 +23,7 @@ function Login() {
         setError("");
 
         try {
-            const response = await axios.post("http://localhost:8080/api/auth/authenticate", {
+            const response = await axios.post("http://localhost:8080/auth/authenticate", {
                 email,
                 password,
             });

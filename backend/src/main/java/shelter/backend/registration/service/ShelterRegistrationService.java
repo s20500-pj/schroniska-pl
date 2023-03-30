@@ -54,15 +54,14 @@ public class ShelterRegistrationService implements RegistrationService {
         Token token = tokenService.generateToken(user.hashCode(), user.getEmail());
         log.debug("Confirmation token {} created for user: {}", token.getId(), user.getEmail());
         try {
-
-        if (isShelter(user)) {
-            shelterEmailService.sendShelterConfirmationEmail(user.getEmail(), token.getId());
-            user.setApprovalStatus(ApprovalStatus.EMAIL_NOT_CONFIRMED);
-            userRepository.save(user);
-        } else {
-            shelterEmailService.sendUserConfirmationEmail(user.getEmail(), token.getId());
-        }
-        }catch (MessageNotSendException e){
+            if (isShelter(user)) {
+                shelterEmailService.sendShelterConfirmationEmail(user.getEmail(), token.getId());
+                user.setApprovalStatus(ApprovalStatus.EMAIL_NOT_CONFIRMED);
+                userRepository.save(user);
+            } else {
+                shelterEmailService.sendUserConfirmationEmail(user.getEmail(), token.getId());
+            }
+        } catch (MessageNotSendException e) {
             userRepository.deleteById(user.getId());
             throw e;
         }
