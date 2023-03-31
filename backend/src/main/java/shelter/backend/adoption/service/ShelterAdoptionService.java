@@ -1,9 +1,9 @@
-package shelter.backend.adoption;
+package shelter.backend.adoption.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class AdoptionService {
+public class ShelterAdoptionService implements AdoptionService {
 }

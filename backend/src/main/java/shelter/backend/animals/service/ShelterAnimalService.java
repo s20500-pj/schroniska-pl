@@ -1,4 +1,4 @@
-package shelter.backend.animals;
+package shelter.backend.animals.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
-public class AnimalService {
+public class ShelterAnimalService implements AnimalService{
     private final AnimalRepository animalRepository;
     private final AnimalMapper animalMapper;
     private final UserRepository userRepository;

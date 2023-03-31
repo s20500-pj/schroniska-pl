@@ -26,6 +26,8 @@ import shelter.backend.login.service.UserDetailsService;
 public class WebSecurityConfig {
 
     private final JwtAthFilter jwtAuthFilter;
+    private final CookieAuthenticationFilter cookieAuthenticationFilter;
+    private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -46,8 +48,10 @@ public class WebSecurityConfig {
                 .and().logout().deleteCookies(CookieAuthenticationFilter.COOKIE_NAME)
                 .and()
                 .authenticationProvider(authenticationProvider())
+                .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
+                .and()
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new CookieAuthenticationFilter(), JwtAthFilter.class)
+                .addFilterBefore(cookieAuthenticationFilter, JwtAthFilter.class)
                 .headers().frameOptions().disable();//TODO delete it on PROD, used for H2 console to work properly
         return http.build();
     }

@@ -1,43 +1,44 @@
-package shelter.backend.shelter;
+package shelter.backend.user.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import shelter.backend.login.JwtUtils;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.User;
-import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.UserMapper;
 import shelter.backend.rest.model.specification.UserSpecification;
 import shelter.backend.storage.repository.UserRepository;
+import shelter.backend.utils.basic.ClientInterceptor;
 
 import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
-public class ShelterService {
+public class ShelterUserService implements UserService {
 
-    private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final JwtUtils jwtUtils;
 
-    public static final String USER_TYPE = "userType";
-
-    public UserDto getShelterById(Long shelterId) {
-        User shelter = userRepository.findUserById(shelterId);
-        if (shelter == null || !shelter.getUserType().equals(UserType.SHELTER)) {
-            throw new EntityNotFoundException("Schronisko o podanym id nie istnieje");
-        }
-        return userMapper.toDto(shelter);
-    }
-
-    public List<UserDto> searchShelters(Map<String, String> searchParams) {
-        searchParams.remove(USER_TYPE);
-        searchParams.put(USER_TYPE, UserType.SHELTER.name());
+    public List<UserDto> search(Map<String, String> searchParams) {
         UserSpecification userSpecification = new UserSpecification(searchParams);
         return userMapper.toDtoList(userRepository.findAll(userSpecification));
     }
 
+    public UserDto getUserById(Long userId) {
+        return userMapper.toDto(userRepository.findUserById(userId));
+    }
+
     public UserDto update(UserDto userDto) {
         return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
+    }
+
+    public void delete() {
+        String token = ClientInterceptor.getBearerTokenHeader();
+        User user = userRepository.findUserByEmail(jwtUtils.extractUsername(token.substring(7)));
+        if (user != null) {
+            userRepository.delete(user);
+        }
     }
 }
