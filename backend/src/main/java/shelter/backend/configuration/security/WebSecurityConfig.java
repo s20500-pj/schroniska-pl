@@ -38,7 +38,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**"))//TODO delete it on PROD, used for H2 console to work properly
                 .permitAll()
-                .requestMatchers("/api/auth/authenticate", "/registration/**")
+                .requestMatchers("/auth/authenticate", "/registration/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
