@@ -19,7 +19,6 @@ public class ShelterUserService implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final JwtUtils jwtUtils;
 
     public List<UserDto> search(Map<String, String> searchParams) {
         UserSpecification userSpecification = new UserSpecification(searchParams);
@@ -35,8 +34,8 @@ public class ShelterUserService implements UserService {
     }
 
     public void delete() {
-        String token = ClientInterceptor.getBearerTokenHeader();
-        User user = userRepository.findUserByEmail(jwtUtils.extractUsername(token.substring(7)));
+        String username = ClientInterceptor.getCurrentUsername();
+        User user = userRepository.findUserByEmail(username);
         if (user != null) {
             userRepository.delete(user);
         }

@@ -23,16 +23,15 @@ public class ShelterAnimalService implements AnimalService{
     private final AnimalRepository animalRepository;
     private final AnimalMapper animalMapper;
     private final UserRepository userRepository;
-    private final JwtUtils jwtUtils;
 
     public AnimalDto getAnimalById(Long id) {
         return animalMapper.toDto(animalRepository.findAnimalById(id));
     }
 
     public AnimalDto addAnimalToShelter(AnimalDto animalDto) {
-        String token = ClientInterceptor.getBearerTokenHeader();
+        String currentUsername = ClientInterceptor.getCurrentUsername();
         Animal animal = animalMapper.toEntity(animalDto);
-        User user = userRepository.findUserByEmail(jwtUtils.extractUsername(token.substring(7)));
+        User user = userRepository.findUserByEmail(currentUsername);
         animal.addShelter(user);
         animal = animalRepository.save(animal);
         user.getAnimals().add(animal);

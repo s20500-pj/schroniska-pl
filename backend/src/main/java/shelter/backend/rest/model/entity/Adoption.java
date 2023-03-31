@@ -25,6 +25,7 @@ public class Adoption {
     private AdoptionType adoptionType;
     private AdoptionStatus adoptionStatus;
     //powiązanie one way, do zapisu usera
+    //TODO przetestowac to powiązanie na Postgresie i/lub h2
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

@@ -1,7 +1,9 @@
 package shelter.backend.rest.model.dtos;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.enums.Age;
 import shelter.backend.rest.model.enums.AnimalStatus;
@@ -13,6 +15,8 @@ import java.util.List;
 
 @Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnimalDto {
     private Long id;
     private String name;
