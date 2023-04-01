@@ -1,8 +1,10 @@
 package shelter.backend.adoption.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import shelter.backend.rest.model.dtos.AdoptionDto;
 import shelter.backend.rest.model.dtos.AnimalDto;
 import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.entity.Animal;
@@ -15,6 +17,11 @@ import shelter.backend.storage.repository.AnimalRepository;
 import shelter.backend.storage.repository.UserRepository;
 import shelter.backend.utils.basic.ClientInterceptor;
 import shelter.backend.utils.exception.AdoptionException;
+import shelter.backend.utils.exception.MessageNotSendException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -42,6 +49,26 @@ public class ShelterAdoptionService implements AdoptionService {
         } else throw new AdoptionException("Zwierzę nie istnieje dla wybranego id");
     }
 
+    @Override
+    public List<AdoptionDto> approveRealAdoption(List<Long> adoptionIds) {
+        log.debug("Approve real adoption, adoptionIds: {}", adoptionIds);
+        List<AdoptionDto> adoptionDtoList = new ArrayList<>()
+        adoptionIds.forEach(adoptionId -> {
+            Optional<Adoption> adoptionOpt = adoptionRepository.findById(adoptionId);
+            adoptionOpt.ifPresent((adoption -> {
+                adoption.setAdoptionStatus(AdoptionStatus.REQUEST_ACCEPETED);
+                adoptionRepository.save(adoption);
+                try {
+                    
+                } catch (MessageNotSendException e) {
+                    adoption.setAdoptionStatus(AdoptionStatus.REQUIRES_MANUAL_INVITATION);
+                }
+            }));
+        });
+        return adoptionDtoList;
+    }
+
+    @Transactional
     private void registerRealAdoption(Animal animal) {
         User user = getUser();
         Adoption adoption = Adoption.builder()

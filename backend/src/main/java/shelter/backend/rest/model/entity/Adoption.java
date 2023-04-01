@@ -1,14 +1,12 @@
 package shelter.backend.rest.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import shelter.backend.rest.model.dtos.AdoptionDto;
 import shelter.backend.rest.model.enums.AdoptionStatus;
 import shelter.backend.rest.model.enums.AdoptionType;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -23,9 +21,10 @@ public class Adoption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private AdoptionType adoptionType;
+    @Setter
     private AdoptionStatus adoptionStatus;
-    //powiązanie one way, do zapisu usera
-    //TODO przetestowac to powiązanie na Postgresie i/lub h2
+    @Setter
+    private LocalDate validUntil;
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -46,6 +45,7 @@ public class Adoption {
                 .id(id)
                 .adoptionType(adoptionType)
                 .adoptionStatus(adoptionStatus)
+                .validUntil(validUntil)
                 .user(Objects.nonNull(user) ? user.toSimpleDto() : null)
                 .animal(Objects.nonNull(animal) ? animal.toSimpleDto() : null)
                 .build();

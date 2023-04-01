@@ -1,6 +1,7 @@
 package shelter.backend.animals.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shelter.backend.login.JwtUtils;
@@ -28,6 +29,7 @@ public class ShelterAnimalService implements AnimalService{
         return animalMapper.toDto(animalRepository.findAnimalById(id));
     }
 
+    @Transactional
     public AnimalDto addAnimalToShelter(AnimalDto animalDto) {
         String currentUsername = ClientInterceptor.getCurrentUsername();
         Animal animal = animalMapper.toEntity(animalDto);

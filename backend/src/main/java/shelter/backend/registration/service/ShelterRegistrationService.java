@@ -111,16 +111,17 @@ public class ShelterRegistrationService implements RegistrationService {
 
     @Override
     public List<UserDto> enableShelterAccounts(List<Long> shelterIds) {
+        log.debug("[enableShleterAccounts] :: list of ids: {}", shelterIds);
         List<UserDto> enabledShelters = new ArrayList<>();
         shelterIds.forEach(id -> {
             Optional<User> userOptional = userRepository.findById(id);
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
                 if (user.isDisabled()) {
-                    log.info("Shelter: {}, for username: {} accepted by admin", user.getShelterName(), user.getEmail());
                     user.setDisabled(false);
                     userRepository.save(user);
                     enabledShelters.add(userMapper.toDto(user));
+                    log.info("Shelter: {}, for username: {} accepted by admin", user.getShelterName(), user.getEmail());
                 }
                 log.debug("Shelter for username {} already enabled", user.getEmail());
             }
