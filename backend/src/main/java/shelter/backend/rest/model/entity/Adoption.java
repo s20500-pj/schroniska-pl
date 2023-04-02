@@ -21,10 +21,13 @@ public class Adoption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private AdoptionType adoptionType;
+
     @Setter
     private AdoptionStatus adoptionStatus;
+
     @Setter
     private LocalDate validUntil;
+
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

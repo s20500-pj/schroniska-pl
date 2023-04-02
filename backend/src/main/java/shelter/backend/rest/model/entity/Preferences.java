@@ -20,11 +20,13 @@ public class Preferences {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    LocalTime timeOfWalking;
+    private LocalTime timeOfWalking;
 
-    @ManyToOne
+    private Long realAdoptionTTL;
+
+    @OneToOne
     @JoinColumn(name = "shelter_id", nullable = true)
-    User shelter;
+    private User shelter;
 }
 
 

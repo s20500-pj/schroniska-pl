@@ -1,5 +1,6 @@
 package shelter.backend.adoption.rest.controller;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +18,7 @@ import java.util.List;
 public class AdoptionController {
 
     private final AdoptionService shelterAdoptionService;
-
+    ///////REAL
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/real/{animalId}")
     ResponseEntity<AnimalDto> beginRealAdoption(@PathVariable Long animalId) {
@@ -26,9 +27,39 @@ public class AdoptionController {
 
     @PreAuthorize("hasRole('SHELTER')")
     @PostMapping("/real/approveAdoption")
-    ResponseEntity<List<AdoptionDto>> approveRealAdoption(@RequestBody List<Long> adoptionIds){
+    ResponseEntity<List<AdoptionDto>> approveRealAdoption(@RequestBody List<Long> adoptionIds) {
         return ResponseEntity.ok(shelterAdoptionService.approveRealAdoption(adoptionIds));
     }
 
-    //FIXME maaybe decouple virtual controller from real? we'll see
+    @PreAuthorize("hasRole('SHELTER')")
+    @PutMapping("/real/acceptManualInvited")
+    ResponseEntity<List<AdoptionDto>> acceptManualInvitedAdoption(@RequestBody List<Long> adoptionIds) {
+        return ResponseEntity.ok(shelterAdoptionService.acceptManualInvitedAdoption(adoptionIds));
+    }
+
+    @PreAuthorize("hasRole('SHELTER')")
+    @GetMapping("/real/getAll")
+    ResponseEntity<List<AdoptionDto>> getAll() {
+        return ResponseEntity.ok(shelterAdoptionService.getAll());
+    }
+    //TODO ADD ADOPTED CONTROLLER (finishadoption)
+    ///////
+    ///////VIRTUAL
+
+    ///////
+    ///////BOTH
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/getUserAdoptions/{userId}")
+    ResponseEntity<List<AdoptionDto>> getUserAdoptions(@PathVariable Long userId) {
+        return ResponseEntity.ok(shelterAdoptionService.getUserAdoptions(userId));
+    }
+
+    @PreAuthorize("hasRole('SHELTER')")
+    @DeleteMapping("/decline/{adoptionId}")
+    ResponseEntity<AdoptionDto> declineAdoption(@PathVariable @NotNull Long adoptionId) {
+        return ResponseEntity.ok(shelterAdoptionService.declineAdoption(adoptionId));
+    }
+    ///////
+
+    //FIXME maaybe decouple virtual controller from real? we'll see...
 }

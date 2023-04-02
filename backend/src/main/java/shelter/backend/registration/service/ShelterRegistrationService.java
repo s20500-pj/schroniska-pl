@@ -3,6 +3,7 @@ package shelter.backend.registration.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,8 @@ public class ShelterRegistrationService implements RegistrationService {
     private final ApprovalProvider approvalProvider;
     private final UserValidator userValidator;
     private final UserMapper userMapper;
+    @Value("${shelter.redis.token.expiration.minutes}")
+    private String expTime;
 
     public UserDto register(UserDto userDto) {
         log.debug("Registration started for username: {}", userDto.getEmail());
@@ -54,15 +57,15 @@ public class ShelterRegistrationService implements RegistrationService {
         log.debug("Confirmation token {} created for user: {}", token.getId(), user.getEmail());
         try {
             if (isShelter(user)) {
-                shelterEmailService.sendShelterConfirmationEmail(user.getEmail(), token.getId());
+                shelterEmailService.sendConfirmationEmail(user.getEmail(), token.getId(), expTime, user.getUserType());
                 user.setApprovalStatus(ApprovalStatus.EMAIL_NOT_CONFIRMED);
                 userRepository.save(user);
             } else {
-                shelterEmailService.sendUserConfirmationEmail(user.getEmail(), token.getId());
+                shelterEmailService.sendConfirmationEmail(user.getEmail(), token.getId(), expTime, user.getUserType());
             }
         } catch (MessageNotSendException e) {
             userRepository.deleteById(user.getId());
-            throw e;
+            throw new MessageNotSendException("Problem z rejestracją schroniska. Prosimy spróbować zarejestrować się później");
         }
     }
 
@@ -129,7 +132,6 @@ public class ShelterRegistrationService implements RegistrationService {
         return enabledShelters;
     }
 
-    @Transactional
     private void removeExpTokenAndAssocUser(Token token, String username) {
         User user = userRepository.findUserByEmail(username);
         if (user != null && user.isDisabled()) {

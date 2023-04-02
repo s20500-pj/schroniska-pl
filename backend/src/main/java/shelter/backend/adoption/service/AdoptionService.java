@@ -9,4 +9,12 @@ public interface AdoptionService {
     AnimalDto beginRealAdoption(Long animalId);
 
     List<AdoptionDto> approveRealAdoption(List<Long> adoptionIds);
+
+    List<AdoptionDto> acceptManualInvitedAdoption(List<Long> adoptionIds);
+
+    AdoptionDto declineAdoption(Long adoptionId);
+
+    List<AdoptionDto> getAll();
+
+    List<AdoptionDto> getUserAdoptions(Long userId);
 }
