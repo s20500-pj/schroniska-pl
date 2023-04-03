@@ -40,7 +40,7 @@ public class AdoptionController {
     @PreAuthorize("hasRole('SHELTER')")
     @GetMapping("/real/getAll")
     ResponseEntity<List<AdoptionDto>> getAll() {
-        return ResponseEntity.ok(shelterAdoptionService.getAll());
+        return ResponseEntity.ok(shelterAdoptionService.getAllForSpecifigShleter());
     }
     //TODO ADD ADOPTED CONTROLLER (finishadoption)
     ///////
@@ -49,9 +49,9 @@ public class AdoptionController {
     ///////
     ///////BOTH
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/getUserAdoptions/{userId}")
-    ResponseEntity<List<AdoptionDto>> getUserAdoptions(@PathVariable Long userId) {
-        return ResponseEntity.ok(shelterAdoptionService.getUserAdoptions(userId));
+    @GetMapping("/getUserAdoptions")
+    ResponseEntity<List<AdoptionDto>> getUserAdoptions() {
+        return ResponseEntity.ok(shelterAdoptionService.getUserAdoptions());
     }
 
     @PreAuthorize("hasRole('SHELTER')")

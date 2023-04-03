@@ -1,6 +1,7 @@
 package shelter.backend.rest.model.mapper;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import shelter.backend.rest.model.dtos.AdoptionDto;
 import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.storage.repository.AdoptionRepository;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Component
 public class AdoptionMapper implements DtoEntityMapper<Adoption, AdoptionDto> {
 
     private final AdoptionRepository adoptionRepository;

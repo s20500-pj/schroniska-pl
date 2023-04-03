@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface AdoptionRepository extends JpaRepository<Adoption, Long> {
     List<Adoption> findAdoptionByUserId(Long userId);
+    List<Adoption> findAdoptionByAnimal_ShelterId(Long shelterID);
 }

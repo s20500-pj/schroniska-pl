@@ -14,7 +14,7 @@ public interface AdoptionService {
 
     AdoptionDto declineAdoption(Long adoptionId);
 
-    List<AdoptionDto> getAll();
+    List<AdoptionDto> getAllForSpecifigShleter();
 
-    List<AdoptionDto> getUserAdoptions(Long userId);
+    List<AdoptionDto> getUserAdoptions();
 }

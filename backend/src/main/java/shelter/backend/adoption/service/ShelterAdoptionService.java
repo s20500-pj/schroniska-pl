@@ -13,7 +13,7 @@ import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.AdoptionStatus;
 import shelter.backend.rest.model.enums.AdoptionType;
-import shelter.backend.rest.model.enums.AnimalStatus;
+import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.AdoptionMapper;
 import shelter.backend.rest.model.mapper.AnimalMapper;
 import shelter.backend.storage.repository.AdoptionRepository;
@@ -105,12 +105,13 @@ public class ShelterAdoptionService implements AdoptionService {
 
     @Override
     public AdoptionDto declineAdoption(Long adoptionId) {
+        log.debug("[declineAdoption] :: adoptionId: {}", adoptionId);
         Adoption adoption = adoptionRepository.findById(adoptionId)
                 .orElseThrow(() -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
         adoption.setAdoptionStatus(AdoptionStatus.DECLINED);
         adoptionRepository.save(adoption);
         try { //TODO
-            emailService.sendAdoptionCancellation();
+//            emailService.sendAdoptionCancellation();
         } catch (MessageNotSendException e) {
 
         }
@@ -118,14 +119,21 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public List<AdoptionDto> getAll() {
-        List<Adoption> adoptionList = adoptionRepository.findAll();
+    public List<AdoptionDto> getAllForSpecifigShleter() {
+        List<Adoption> adoptionList = new ArrayList<>();
+        User user = getUser();
+        log.debug("[getAllForSpecifigShleter] :: shelterId: {}, shelterMail: {}", user.getId(), user.getEmail());
+        if (user.getUserType() == UserType.SHELTER) {
+            adoptionList = adoptionRepository.findAdoptionByAnimal_ShelterId(user.getId());
+        }
         return adoptionMapper.toDtoList(adoptionList);
     }
 
     @Override
-    public List<AdoptionDto> getUserAdoptions(Long userId) {
-        List<Adoption> adoptionList = adoptionRepository.findAdoptionByUserId(userId);
+    public List<AdoptionDto> getUserAdoptions() {
+        User user = getUser();
+        log.debug("[getUserAdoptions] :: userId: {}, userMail: {}", user.getId(), user.getEmail());
+        List<Adoption> adoptionList = adoptionRepository.findAdoptionByUserId(user.getId());
         return adoptionMapper.toDtoList(adoptionList);
     }
 
