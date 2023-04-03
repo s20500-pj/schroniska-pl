@@ -57,6 +57,12 @@ public class AdoptionController {
 
     ///////BOTH
     @PreAuthorize("hasRole('USER')")
+    @GetMapping("/{id}")
+    ResponseEntity<AdoptionDto> getAdoptionById(@PathVariable Long id) {
+        return ResponseEntity.ok(shelterAdoptionService.getAdoptionById(id));
+    }
+
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/getUserAdoptions")
     ResponseEntity<List<AdoptionDto>> getUserAdoptions() {
         return ResponseEntity.ok(shelterAdoptionService.getUserAdoptions());
@@ -67,7 +73,6 @@ public class AdoptionController {
     ResponseEntity<AdoptionDto> declineAdoption(@PathVariable @NotNull Long adoptionId) {
         return ResponseEntity.ok(shelterAdoptionService.declineAdoption(adoptionId));
     }
-    ///////
 
     @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")
     @PostMapping("/search")

@@ -34,4 +34,6 @@ public interface AdoptionService {
      * finish the adoption process succesfully. After the user adopts the animal.
      * */
     AdoptionDto finalizeAdoption(Long id);
+
+    AdoptionDto getAdoptionById(Long id);
 }

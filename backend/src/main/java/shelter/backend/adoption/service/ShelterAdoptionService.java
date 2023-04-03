@@ -167,6 +167,13 @@ public class ShelterAdoptionService implements AdoptionService {
         return adoption.toDto();
     }
 
+    @Override
+    public AdoptionDto getAdoptionById(Long id) {
+        Adoption adoption =  adoptionRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
+        return adoption.toDto();
+    }
+
     private Adoption registerRealAdoption(Animal animal) {
         User user = getUser();
         Adoption adoption = Adoption.builder()
