@@ -84,6 +84,7 @@ public class Animal {
                 .needsActiveness(needsActiveness)
                 .catsFriendly(catsFriendly)
                 .dogsFriendly(dogsFriendly)
+                .adoptions((Objects.nonNull(adoptions) ?  adoptions.stream().map(Adoption::toDto).toList(): null))
                 .shelter(Objects.nonNull(shelter) ? shelter.toSimpleDto() : null)
                 .build();
     }

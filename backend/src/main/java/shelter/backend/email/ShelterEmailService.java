@@ -45,10 +45,18 @@ public class ShelterEmailService implements EmailService {
     }
 
     @Override
-    public void sendAdoptionInvitation(String email, String shelterName, String adoptionValidDate) {
+    public void sendAdoptionInvitation(String email, String shelterName, String adoptionValidDate, long id) {
         final String messageProperty = ADOPTION_PROPERTIES + ".invitation";
         final String subjectProperty = ADOPTION_PROPERTIES + "invitation.subject";
-        String[] params = {shelterName, adoptionValidDate};
+        String[] params = {shelterName, adoptionValidDate, String.valueOf(id)};
+        sendEmail(email, subjectProperty, messageProperty, params);
+    }
+
+    @Override
+    public void sendAdoptionCancellation(String email, long id) {
+        final String messageProperty = ADOPTION_PROPERTIES + ".cancellation";
+        final String subjectProperty = ADOPTION_PROPERTIES + "cancellation.subject";
+        String[] params = {String.valueOf(id)};
         sendEmail(email, subjectProperty, messageProperty, params);
     }
 

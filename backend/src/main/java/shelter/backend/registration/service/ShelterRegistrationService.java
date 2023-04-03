@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -157,6 +158,7 @@ public class ShelterRegistrationService implements RegistrationService {
         return userRepository.save(newUser);
     }
 
+    @Async
     @Scheduled(fixedDelay = 1800000)   //check every 30min
     @Transactional
     public void deleteUnusedTokensUnconfirmedUsers() {

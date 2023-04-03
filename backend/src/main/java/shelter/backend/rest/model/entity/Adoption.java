@@ -50,7 +50,7 @@ public class Adoption {
                 .adoptionStatus(adoptionStatus)
                 .validUntil(validUntil)
                 .user(Objects.nonNull(user) ? user.toSimpleDto() : null)
-                .animal(Objects.nonNull(animal) ? animal.toSimpleDto() : null)
+                .animalId(animal.getId())
                 .build();
     }
 

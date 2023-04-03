@@ -1,5 +1,6 @@
 package shelter.backend.adoption.rest.controller;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -8,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import shelter.backend.adoption.service.AdoptionService;
 import shelter.backend.rest.model.dtos.AdoptionDto;
 import shelter.backend.rest.model.dtos.AnimalDto;
-import shelter.backend.rest.model.entity.Adoption;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,7 +22,7 @@ public class AdoptionController {
     ///////REAL
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/real/{animalId}")
-    ResponseEntity<AnimalDto> beginRealAdoption(@PathVariable Long animalId) {
+    ResponseEntity<AdoptionDto> beginRealAdoption(@PathVariable Long animalId) {
         return ResponseEntity.ok(shelterAdoptionService.beginRealAdoption(animalId));
     }
 
@@ -40,13 +41,20 @@ public class AdoptionController {
     @PreAuthorize("hasRole('SHELTER')")
     @GetMapping("/real/getAll")
     ResponseEntity<List<AdoptionDto>> getAll() {
-        return ResponseEntity.ok(shelterAdoptionService.getAllForSpecifigShleter());
+        return ResponseEntity.ok(shelterAdoptionService.getAllForSpecificShleter());
     }
-    //TODO ADD ADOPTED CONTROLLER (finishadoption)
+
+    @PreAuthorize("hasRole('SHELTER')")
+    @PostMapping("/real/complete/{id}")
+    ResponseEntity<AdoptionDto> complete(@PathVariable Long id) {
+        return ResponseEntity.ok(shelterAdoptionService.finalizeAdoption(id));
+    }
     ///////
+
     ///////VIRTUAL
 
     ///////
+
     ///////BOTH
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/getUserAdoptions")
@@ -55,11 +63,17 @@ public class AdoptionController {
     }
 
     @PreAuthorize("hasRole('SHELTER')")
-    @DeleteMapping("/decline/{adoptionId}")
+    @PostMapping("/decline/{adoptionId}")
     ResponseEntity<AdoptionDto> declineAdoption(@PathVariable @NotNull Long adoptionId) {
         return ResponseEntity.ok(shelterAdoptionService.declineAdoption(adoptionId));
     }
     ///////
+
+    @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")
+    @PostMapping("/search")
+    ResponseEntity<List<AdoptionDto>> search(@RequestBody @Valid Map<String, String> searchParams) {
+        return ResponseEntity.ok(shelterAdoptionService.search(searchParams));
+    }
 
     //FIXME maaybe decouple virtual controller from real? we'll see...
 }

@@ -1,5 +1,7 @@
 package shelter.backend.rest.model.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +29,7 @@ public class AnimalDto {
     private LocalDate birthDate;
     private AnimalStatus animalStatus;
     private UserDto shelter;
-    private List<Adoption> adoptions;
+    private List<AdoptionDto> adoptions;
     private boolean sterilized;
     private boolean vaccinated;
     private boolean kidsFriendly;

@@ -29,9 +29,17 @@ public class EmailServiceMock implements EmailService {
     }
 
     @Override
-    public void sendAdoptionInvitation(String email, String shelterName, String adoptionValidDate) {
+    public void sendAdoptionInvitation(String email, String shelterName, String adoptionValidDate, long id) {
         final String messageProperty = ADOPTION_PROPERTIES + ".invitation";
-        String[] params = {shelterName, adoptionValidDate};
+        String[] params = {shelterName, adoptionValidDate, String.valueOf(id)};
+        final String text = messageSource.getMessage(messageProperty, params, Locale.getDefault());
+        log.info(text);
+    }
+
+    @Override
+    public void sendAdoptionCancellation(String email, long id) {
+        final String messageProperty = ADOPTION_PROPERTIES + ".cancellation";
+        String[] params = {String.valueOf(id)};
         final String text = messageSource.getMessage(messageProperty, params, Locale.getDefault());
         log.info(text);
     }
