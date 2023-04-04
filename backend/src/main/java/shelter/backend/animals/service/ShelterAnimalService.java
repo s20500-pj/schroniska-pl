@@ -1,14 +1,17 @@
-package shelter.backend.animals;
+package shelter.backend.animals.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shelter.backend.login.JwtUtils;
 import shelter.backend.rest.model.dtos.AnimalDto;
+import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.AnimalStatus;
 import shelter.backend.rest.model.mapper.AnimalMapper;
+import shelter.backend.rest.model.specification.AdoptionSpecification;
 import shelter.backend.rest.model.specification.AnimalSpecification;
 import shelter.backend.storage.repository.AnimalRepository;
 import shelter.backend.storage.repository.UserRepository;
@@ -19,20 +22,20 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
-public class AnimalService {
+public class ShelterAnimalService implements AnimalService{
     private final AnimalRepository animalRepository;
     private final AnimalMapper animalMapper;
     private final UserRepository userRepository;
-    private final JwtUtils jwtUtils;
 
     public AnimalDto getAnimalById(Long id) {
         return animalMapper.toDto(animalRepository.findAnimalById(id));
     }
 
+    @Transactional
     public AnimalDto addAnimalToShelter(AnimalDto animalDto) {
-        String token = ClientInterceptor.getBearerTokenHeader();
+        String currentUsername = ClientInterceptor.getCurrentUsername();
         Animal animal = animalMapper.toEntity(animalDto);
-        User user = userRepository.findUserByEmail(jwtUtils.extractUsername(token.substring(7)));
+        User user = userRepository.findUserByEmail(currentUsername);
         animal.addShelter(user);
         animal = animalRepository.save(animal);
         user.getAnimals().add(animal);

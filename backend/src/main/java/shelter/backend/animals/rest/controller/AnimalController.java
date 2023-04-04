@@ -1,4 +1,4 @@
-package shelter.backend.animals;
+package shelter.backend.animals.rest.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import shelter.backend.animals.service.AnimalService;
+import shelter.backend.animals.service.ShelterAnimalService;
 import shelter.backend.rest.model.dtos.AnimalDto;
 
 import java.util.List;

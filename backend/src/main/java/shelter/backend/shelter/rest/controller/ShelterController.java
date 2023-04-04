@@ -1,4 +1,4 @@
-package shelter.backend.shelter;
+package shelter.backend.shelter.rest.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +9,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import shelter.backend.registration.service.RegistrationService;
 import shelter.backend.rest.model.dtos.UserDto;
+import shelter.backend.shelter.service.DefaultShelterService;
+import shelter.backend.shelter.service.ShelterService;
 
 import java.util.List;
 import java.util.Map;

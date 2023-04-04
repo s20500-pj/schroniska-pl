@@ -1,4 +1,4 @@
-package shelter.backend.user;
+package shelter.backend.user.rest.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import shelter.backend.rest.model.dtos.UserDto;
+import shelter.backend.user.service.ShelterUserService;
+import shelter.backend.user.service.UserService;
 
 import java.util.List;
 import java.util.Map;
