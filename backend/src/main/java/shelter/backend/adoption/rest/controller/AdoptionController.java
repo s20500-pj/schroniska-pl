@@ -8,7 +8,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import shelter.backend.adoption.service.AdoptionService;
 import shelter.backend.rest.model.dtos.AdoptionDto;
-import shelter.backend.rest.model.dtos.AnimalDto;
 
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,7 @@ import java.util.Map;
 public class AdoptionController {
 
     private final AdoptionService shelterAdoptionService;
+
     ///////REAL
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/real/{animalId}")
@@ -29,7 +29,7 @@ public class AdoptionController {
     @PreAuthorize("hasRole('SHELTER')")
     @PostMapping("/real/approveAdoption")
     ResponseEntity<List<AdoptionDto>> approveRealAdoption(@RequestBody List<Long> adoptionIds) {
-        return ResponseEntity.ok(shelterAdoptionService.approveRealAdoption(adoptionIds));
+        return ResponseEntity.ok(shelterAdoptionService.sendInvitationRealAdoption(adoptionIds));
     }
 
     @PreAuthorize("hasRole('SHELTER')")
@@ -39,15 +39,27 @@ public class AdoptionController {
     }
 
     @PreAuthorize("hasRole('SHELTER')")
-    @GetMapping("/real/getAll")
-    ResponseEntity<List<AdoptionDto>> getAll() {
-        return ResponseEntity.ok(shelterAdoptionService.getAllForSpecificShleter());
+    @PutMapping("/real/confirmVisit/{adoptionId}")
+    ResponseEntity<AdoptionDto> confirmVisit(@PathVariable Long adoptionId) {
+        return ResponseEntity.ok(shelterAdoptionService.confirmVisit(adoptionId));
     }
 
     @PreAuthorize("hasRole('SHELTER')")
-    @PostMapping("/real/complete/{id}")
-    ResponseEntity<AdoptionDto> complete(@PathVariable Long id) {
-        return ResponseEntity.ok(shelterAdoptionService.finalizeAdoption(id));
+    @PutMapping("/real/extendTimeForAdoption/{adoptionId}/{extendBy}")
+    ResponseEntity<AdoptionDto> extendTimeForAdoption(@PathVariable Long adoptionId, @PathVariable Long extendBy) {
+        return ResponseEntity.ok(shelterAdoptionService.extendTimeForAdoption(adoptionId, extendBy));
+    }
+
+    @PreAuthorize("hasRole('SHELTER')")
+    @GetMapping("/real/getAll")
+    ResponseEntity<List<AdoptionDto>> getAll() {
+        return ResponseEntity.ok(shelterAdoptionService.getAll());
+    }
+
+    @PreAuthorize("hasRole('SHELTER')")
+    @PostMapping("/real/complete/{adoptionId}")
+    ResponseEntity<AdoptionDto> complete(@PathVariable Long adoptionId) {
+        return ResponseEntity.ok(shelterAdoptionService.finalizeRealAdoption(adoptionId));
     }
     ///////
 
@@ -57,9 +69,9 @@ public class AdoptionController {
 
     ///////BOTH
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/{id}")
-    ResponseEntity<AdoptionDto> getAdoptionById(@PathVariable Long id) {
-        return ResponseEntity.ok(shelterAdoptionService.getAdoptionById(id));
+    @GetMapping("/{adoptionId}")
+    ResponseEntity<AdoptionDto> getAdoptionById(@PathVariable Long adoptionId) {
+        return ResponseEntity.ok(shelterAdoptionService.getAdoptionById(adoptionId));
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -71,7 +83,7 @@ public class AdoptionController {
     @PreAuthorize("hasRole('SHELTER')")
     @PostMapping("/decline/{adoptionId}")
     ResponseEntity<AdoptionDto> declineAdoption(@PathVariable @NotNull Long adoptionId) {
-        return ResponseEntity.ok(shelterAdoptionService.declineAdoption(adoptionId));
+        return ResponseEntity.ok(shelterAdoptionService.declineRealAdoption(adoptionId, false));
     }
 
     @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")

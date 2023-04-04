@@ -1,6 +1,7 @@
 package shelter.backend.rest.mockService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import shelter.backend.email.EmailService;
@@ -42,5 +43,10 @@ public class EmailServiceMock implements EmailService {
         String[] params = {String.valueOf(id)};
         final String text = messageSource.getMessage(messageProperty, params, Locale.getDefault());
         log.info(text);
+    }
+
+    @Override
+    public void sendAdoptionSuspension(String email, String shelterName, long id) {
+        log.info("immplement sendAdoptionSuspension "); //TODO
     }
 }

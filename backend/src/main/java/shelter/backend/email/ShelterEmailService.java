@@ -1,6 +1,7 @@
 package shelter.backend.email;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
@@ -58,6 +59,11 @@ public class ShelterEmailService implements EmailService {
         final String subjectProperty = ADOPTION_PROPERTIES + "cancellation.subject";
         String[] params = {String.valueOf(id)};
         sendEmail(email, subjectProperty, messageProperty, params);
+    }
+
+    @Override
+    public void sendAdoptionSuspension(String email, String shelterName, long id) {
+        throw new NotImplementedException(); // TODO
     }
 
     private void sendEmail(String email, String subjectPropertyName, String messagePropertyName, String[] params) {
