@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 
 @Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class AddressDto {
     private Long id;
     @NotBlank(message = "Ulica jest wymagana")

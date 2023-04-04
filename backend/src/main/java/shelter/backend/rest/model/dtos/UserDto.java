@@ -11,8 +11,8 @@ import shelter.backend.rest.model.enums.UserType;
 
 @Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
 
     private Long id;
