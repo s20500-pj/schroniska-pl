@@ -1,5 +1,6 @@
 package shelter.backend.rest.advice;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,12 +38,6 @@ public class ShelterGlobalExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<String> onAuthenticationException(AuthenticationException e) {
-        log.info("Authentication exception occurred. Exception: ", e);
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(RequiredFieldException.class)
     public ResponseEntity<String> onRequiredFieldException(RequiredFieldException e) {
         log.info("Registration exception occurred. Exception: ", e);
@@ -61,9 +56,9 @@ public class ShelterGlobalExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(ShelterException.class)
-    public ResponseEntity<String> onShelterException(ShelterException e) {
-        log.info("General exception occurred. Exception: ", e);
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<String> onEntityNotFoundException(EntityNotFoundException e) {
+        log.info("Entity not found. Exception: ", e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

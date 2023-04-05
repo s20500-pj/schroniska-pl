@@ -590,7 +590,7 @@
 						"header": [
 							{
 								"key": "Cookie",
-								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHVzZXIiLCJleHAiOjE2ODA2MTc4OTMsImlhdCI6MTY4MDUzMTQ5MywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XX0.AIu9rKypE6nl1QsyakLcXWvbwtkjQnj9GWoVkbDzqaU; Path=/; Secure; HttpOnly; Expires=Tue, 04 Apr 2023 14:18:13 GMT;",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHVzZXIiLCJleHAiOjE2ODA3NjEzNDEsImlhdCI6MTY4MDY3NDk0MSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XX0.6NscHnSXl-9HHbT59bvlgxQab71ePpQ2Q3RlnQiZgCA; Path=/; Secure; HttpOnly; Expires=Thu, 06 Apr 2023 06:09:01 GMT;",
 								"type": "default"
 							}
 						],
@@ -611,40 +611,13 @@
 					"response": []
 				},
 				{
-					"name": "getAllForSpecificShelter (SHELTER)",
+					"name": "GetUsersAdoption (USER)",
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "Cookie",
-								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA2MDA4NDUsImlhdCI6MTY4MDUxNDQ0NSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.6-hpu1ILZUxqNkV9_sHQyo8IsipkhJIpp_YhnrhzP7Q; Path=/; Secure; HttpOnly; Expires=Tue, 04 Apr 2023 09:34:05 GMT;",
-								"type": "default"
-							}
-						],
-						"url": {
-							"raw": "http://localhost:8080/adoption/real/getAll",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"adoption",
-								"real",
-								"getAll"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getUserAdoptions (USER)",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Cookie",
-								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHVzZXIiLCJleHAiOjE2ODA2MDA1NTksImlhdCI6MTY4MDUxNDE1OSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XX0.6be9IWBLzvn7bqqxy7maDmYr2GAZQiU9Miwv0mUpyJw; Path=/; Secure; HttpOnly; Expires=Tue, 04 Apr 2023 09:29:19 GMT;",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHVzZXIiLCJleHAiOjE2ODA3NjEzNDEsImlhdCI6MTY4MDY3NDk0MSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XX0.6NscHnSXl-9HHbT59bvlgxQab71ePpQ2Q3RlnQiZgCA; Path=/; Secure; HttpOnly; Expires=Thu, 06 Apr 2023 06:09:01 GMT;",
 								"type": "default"
 							}
 						],
@@ -664,13 +637,39 @@
 					"response": []
 				},
 				{
-					"name": "approveAdoptionREAL (SHELTER)",
+					"name": "ListAllAdoptions (SHELTER or ADMIN)",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Cookie",
-								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA2MTcyMTAsImlhdCI6MTY4MDUzMDgxMCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.AW4VQr5K5JpVWlmOtTvv0L2Du9BqIUqEsdrret8Fpws; Path=/; Secure; HttpOnly; Expires=Tue, 04 Apr 2023 14:06:50 GMT;",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA3NjE1NzMsImlhdCI6MTY4MDY3NTE3MywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.PJjvAtQyfYrA0q_k3WF0nczdphWWmZ5BsZnSkajqahc; Path=/; Secure; HttpOnly; Expires=Thu, 06 Apr 2023 06:12:53 GMT;",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/adoption/getAll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"adoption",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Invitation to Shelter (SHELTER)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA3NjE1NzMsImlhdCI6MTY4MDY3NTE3MywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.PJjvAtQyfYrA0q_k3WF0nczdphWWmZ5BsZnSkajqahc; Path=/; Secure; HttpOnly; Expires=Thu, 06 Apr 2023 06:12:53 GMT;",
 								"type": "default"
 							}
 						],
@@ -684,7 +683,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/adoption/real/approveAdoption",
+							"raw": "http://localhost:8080/adoption/real/inviteRealAdoption",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -693,25 +692,61 @@
 							"path": [
 								"adoption",
 								"real",
-								"approveAdoption"
+								"inviteRealAdoption"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "allAdoptionsInSpecificShelter (SHELTER)",
+					"name": "Accept Manual Invited (SHELTER) if mail not sent autmatiically",
 					"request": {
-						"method": "GET",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Cookie",
-								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA2MTcyMTAsImlhdCI6MTY4MDUzMDgxMCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.AW4VQr5K5JpVWlmOtTvv0L2Du9BqIUqEsdrret8Fpws; Path=/; Secure; HttpOnly; Expires=Tue, 04 Apr 2023 14:06:50 GMT;",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA3NjE1NzMsImlhdCI6MTY4MDY3NTE3MywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.PJjvAtQyfYrA0q_k3WF0nczdphWWmZ5BsZnSkajqahc; Path=/; Secure; HttpOnly; Expires=Thu, 06 Apr 2023 06:12:53 GMT;",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[1]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/adoption/real/acceptManualInvited",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"adoption",
+								"real",
+								"acceptManualInvited"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Shelter Visited Confirmation (SHELTER) suspend others",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA3NjE1NzMsImlhdCI6MTY4MDY3NTE3MywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.PJjvAtQyfYrA0q_k3WF0nczdphWWmZ5BsZnSkajqahc; Path=/; Secure; HttpOnly; Expires=Thu, 06 Apr 2023 06:12:53 GMT;",
 								"type": "default"
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/adoption/real/getAll",
+							"raw": "http://localhost:8080/adoption/real/confirmVisit/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -720,20 +755,50 @@
 							"path": [
 								"adoption",
 								"real",
-								"getAll"
+								"confirmVisit",
+								"1"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "completeTheAdoptionProcessReal (SHELTER)",
+					"name": "Extend Time(weeks) For AdoptionReal (SHELTER) /{id}/{plusWeeks}",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Cookie",
-								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA2MTcyMTAsImlhdCI6MTY4MDUzMDgxMCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.AW4VQr5K5JpVWlmOtTvv0L2Du9BqIUqEsdrret8Fpws; Path=/; Secure; HttpOnly; Expires=Tue, 04 Apr 2023 14:06:50 GMT;",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA3NjE1NzMsImlhdCI6MTY4MDY3NTE3MywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.PJjvAtQyfYrA0q_k3WF0nczdphWWmZ5BsZnSkajqahc; Path=/; Secure; HttpOnly; Expires=Thu, 06 Apr 2023 06:12:53 GMT;",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/adoption/real/extendTimeForAdoption/1/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"adoption",
+								"real",
+								"extendTimeForAdoption",
+								"1",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Complete AdoptionReal Process (SHELTER) delete others",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA3NjE1NzMsImlhdCI6MTY4MDY3NTE3MywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.PJjvAtQyfYrA0q_k3WF0nczdphWWmZ5BsZnSkajqahc; Path=/; Secure; HttpOnly; Expires=Thu, 06 Apr 2023 06:12:53 GMT;",
 								"type": "default"
 							}
 						],
@@ -755,18 +820,18 @@
 					"response": []
 				},
 				{
-					"name": "Decline Adoption (SHELTER) Copy",
+					"name": "Decline AdoptionReal (SHELTER) resume others",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Cookie",
-								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA2MTcyMTAsImlhdCI6MTY4MDUzMDgxMCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.AW4VQr5K5JpVWlmOtTvv0L2Du9BqIUqEsdrret8Fpws; Path=/; Secure; HttpOnly; Expires=Tue, 04 Apr 2023 14:06:50 GMT;",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA3NjE1NzMsImlhdCI6MTY4MDY3NTE3MywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.PJjvAtQyfYrA0q_k3WF0nczdphWWmZ5BsZnSkajqahc; Path=/; Secure; HttpOnly; Expires=Thu, 06 Apr 2023 06:12:53 GMT;",
 								"type": "default"
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/adoption/decline/1",
+							"raw": "http://localhost:8080/adoption/real/decline/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -774,6 +839,7 @@
 							"port": "8080",
 							"path": [
 								"adoption",
+								"real",
 								"decline",
 								"1"
 							]
@@ -788,7 +854,7 @@
 						"header": [
 							{
 								"key": "Cookie",
-								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA2MTcyMTAsImlhdCI6MTY4MDUzMDgxMCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.AW4VQr5K5JpVWlmOtTvv0L2Du9BqIUqEsdrret8Fpws; Path=/; Secure; HttpOnly; Expires=Tue, 04 Apr 2023 14:06:50 GMT;",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA3NjE1NzMsImlhdCI6MTY4MDY3NTE3MywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.PJjvAtQyfYrA0q_k3WF0nczdphWWmZ5BsZnSkajqahc; Path=/; Secure; HttpOnly; Expires=Thu, 06 Apr 2023 06:12:53 GMT;",
 								"type": "default"
 							}
 						],
@@ -811,6 +877,32 @@
 							"path": [
 								"adoption",
 								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAdoptionById (SHELTER or ADMIN)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA3NjE1NzMsImlhdCI6MTY4MDY3NTE3MywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.PJjvAtQyfYrA0q_k3WF0nczdphWWmZ5BsZnSkajqahc; Path=/; Secure; HttpOnly; Expires=Thu, 06 Apr 2023 06:12:53 GMT;",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/adoption/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"adoption",
+								"1"
 							]
 						}
 					},
@@ -907,7 +999,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\":\"admin@admin\",\n    \"password\":\"password\"\n}\n// \n// {\n//     \"email\":\"user@user\",\n//     \"password\":\"password\"\n// }\n// ",
+					"raw": "{\n    \"email\":\"shelter@shelter\",\n    \"password\":\"password\"\n}\n// \n// {\n//     \"email\":\"user@user\",\n//     \"password\":\"password\"\n// }\n// ",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -915,14 +1007,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/auth/authenticate",
+					"raw": "http://localhost:8080/auth/authenticate",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"api",
 						"auth",
 						"authenticate"
 					]
