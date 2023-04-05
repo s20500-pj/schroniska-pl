@@ -38,7 +38,7 @@ public class ShelterAuthenticationService implements AuthenticationService {
                     user.getLastName(), user.getEmail(), user.getShelterName(), user.getUserType(), user.getRoles());
         } catch (Exception e) {
             log.error("Unable to authenticate the user: {}, exception message: {}", request.getEmail(), e.getMessage());
-            throw new AuthenticationException("Failed to authenticate user", e);
+            throw new AuthenticationException("Nie można uwierzytelnić użytkownika", e);
         }
     }
 

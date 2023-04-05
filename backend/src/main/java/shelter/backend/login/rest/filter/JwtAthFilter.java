@@ -18,6 +18,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import shelter.backend.configuration.security.CookieAuthenticationFilter;
 import shelter.backend.login.JwtUtils;
 import shelter.backend.login.service.UserDetailsService;
+import shelter.backend.utils.exception.AdoptionException;
+import shelter.backend.utils.exception.AuthenticationException;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -48,9 +50,10 @@ public class JwtAthFilter extends OncePerRequestFilter {
             try {
                 userEmail = jwtUtils.extractUsername(jwt);
             } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
+                log.info("Unable to get JWT Token. Message: {}", e.getMessage());
             } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
+                log.info("JWT Token has expired for username: {}", e.getClaims().getSubject());
+                throw new AdoptionException("Token nieważny. Zaloguj się ponownie");
             }
             setAuthentication(request, jwt, userEmail);
         }

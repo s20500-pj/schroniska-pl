@@ -27,8 +27,8 @@ public class AdoptionController {
     }
 
     @PreAuthorize("hasRole('SHELTER')")
-    @PostMapping("/real/approveAdoption")
-    ResponseEntity<List<AdoptionDto>> approveRealAdoption(@RequestBody List<Long> adoptionIds) {
+    @PutMapping("/real/inviteRealAdoption")
+    ResponseEntity<List<AdoptionDto>> sendInvitationRealAdoption(@RequestBody List<Long> adoptionIds) {
         return ResponseEntity.ok(shelterAdoptionService.sendInvitationRealAdoption(adoptionIds));
     }
 
@@ -51,15 +51,15 @@ public class AdoptionController {
     }
 
     @PreAuthorize("hasRole('SHELTER')")
-    @GetMapping("/real/getAll")
-    ResponseEntity<List<AdoptionDto>> getAll() {
-        return ResponseEntity.ok(shelterAdoptionService.getAll());
+    @PutMapping("/real/complete/{adoptionId}")
+    ResponseEntity<AdoptionDto> complete(@PathVariable Long adoptionId) {
+        return ResponseEntity.ok(shelterAdoptionService.finalizeRealAdoption(adoptionId));
     }
 
     @PreAuthorize("hasRole('SHELTER')")
-    @PostMapping("/real/complete/{adoptionId}")
-    ResponseEntity<AdoptionDto> complete(@PathVariable Long adoptionId) {
-        return ResponseEntity.ok(shelterAdoptionService.finalizeRealAdoption(adoptionId));
+    @PutMapping ("/real/decline/{adoptionId}")
+    ResponseEntity<AdoptionDto> declineAdoption(@PathVariable @NotNull Long adoptionId) {
+        return ResponseEntity.ok(shelterAdoptionService.declineRealAdoption(adoptionId, false));
     }
     ///////
 
@@ -68,7 +68,7 @@ public class AdoptionController {
     ///////
 
     ///////BOTH
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")
     @GetMapping("/{adoptionId}")
     ResponseEntity<AdoptionDto> getAdoptionById(@PathVariable Long adoptionId) {
         return ResponseEntity.ok(shelterAdoptionService.getAdoptionById(adoptionId));
@@ -80,17 +80,18 @@ public class AdoptionController {
         return ResponseEntity.ok(shelterAdoptionService.getUserAdoptions());
     }
 
-    @PreAuthorize("hasRole('SHELTER')")
-    @PostMapping("/decline/{adoptionId}")
-    ResponseEntity<AdoptionDto> declineAdoption(@PathVariable @NotNull Long adoptionId) {
-        return ResponseEntity.ok(shelterAdoptionService.declineRealAdoption(adoptionId, false));
-    }
-
     @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")
     @PostMapping("/search")
     ResponseEntity<List<AdoptionDto>> search(@RequestBody @Valid Map<String, String> searchParams) {
         return ResponseEntity.ok(shelterAdoptionService.search(searchParams));
     }
+
+    @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")
+    @GetMapping("/getAll")
+    ResponseEntity<List<AdoptionDto>> getAll() {
+        return ResponseEntity.ok(shelterAdoptionService.getAll());
+    }
+
 
     //FIXME maaybe decouple virtual controller from real? we'll see...
 }

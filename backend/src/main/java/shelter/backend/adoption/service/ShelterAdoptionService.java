@@ -64,7 +64,7 @@ public class ShelterAdoptionService implements AdoptionService {
 
     @Override
     public List<AdoptionDto> sendInvitationRealAdoption(List<Long> adoptionIds) {
-        log.debug("[approveRealAdoption] :: adoptionIds: {}", adoptionIds);
+        log.debug("[sendInvitationRealAdoption] :: adoptionIds: {}", adoptionIds);
         List<AdoptionDto> adoptionDtoList = new ArrayList<>();
         adoptionIds.forEach(adoptionId -> {
             Optional<Adoption> adoptionOpt = adoptionRepository.findById(adoptionId);
@@ -222,7 +222,7 @@ public class ShelterAdoptionService implements AdoptionService {
     public List<AdoptionDto> getAll() {
         List<Adoption> adoptionList;
         User user = getUser();
-        log.debug("[getAllForSpecifigShleter] :: shelterId: {}, shelterMail: {}", user.getId(), user.getEmail());
+        log.debug("[getAll] :: userId: {}, userName: {}", user.getId(), user.getEmail());
         if (user.getUserType() == UserType.SHELTER) {
             adoptionList = adoptionRepository.findAdoptionByAnimal_ShelterId(user.getId());
         } else {
@@ -273,6 +273,7 @@ public class ShelterAdoptionService implements AdoptionService {
 
     @Override
     public AdoptionDto getAdoptionById(Long id) {
+        log.debug("[finalizeAdoption] :: adoptionId: {}, userName: {}", id, getUser().getEmail());
         Adoption adoption = adoptionRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
         return adoption.toDto();
