@@ -1,11 +1,18 @@
 package shelter.backend.adoption.rest.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import shelter.backend.adoption.service.AdoptionService;
 import shelter.backend.rest.model.dtos.AdoptionDto;
 
@@ -15,6 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/adoption")
+@Tag(name = "adoption", description = "dfsafsadf")
 public class AdoptionController {
 
     private final AdoptionService shelterAdoptionService;
@@ -56,7 +64,7 @@ public class AdoptionController {
         return ResponseEntity.ok(shelterAdoptionService.finalizeRealAdoption(adoptionId));
     }
 
-    @PreAuthorize("hasRole('SHELTER')")
+    @PreAuthorize("hasRole('SHELTER') or hasRole('USER')")
     @PutMapping ("/real/decline/{adoptionId}")
     ResponseEntity<AdoptionDto> declineAdoption(@PathVariable @NotNull Long adoptionId) {
         return ResponseEntity.ok(shelterAdoptionService.declineRealAdoption(adoptionId, false));

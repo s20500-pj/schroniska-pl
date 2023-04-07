@@ -45,7 +45,8 @@ Jeśli nasz merge request nie przejdzie code review to musimy się na niego prze
      * Trzeba zalogować się jako admin (a więc odpalić apkę z profilu 'dev' z postgresem)
      * /admin/getShelters -> zwraca listę wszystkich schronisk (te zaakceptowane i niezaakceptowane przez admina)
      * /admin/enableShelters -> akceptuje wybrane schroniska (w requeście lista z nazwa schroniska, email + adres). Response: zwraca listę niezaakceptowanych schronisk niezaakceptowanych przez admina.
-
+   * DO UZUPEŁNIENIA 
+6. Aplikacja posiada dokumentacje API stworzoną przy pomocy Swaggera. Aby się do niej dostać należy odpalić apkę i uderzeżyć w endpoint /shelter-doc (lub /swagger-ui)
 
 
 

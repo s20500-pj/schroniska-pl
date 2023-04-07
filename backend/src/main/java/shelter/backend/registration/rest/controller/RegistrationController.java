@@ -1,5 +1,7 @@
 package shelter.backend.registration.rest.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +21,13 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
+    @SecurityRequirements()
     @PostMapping("/register")
     ResponseEntity<UserDto> register(@RequestBody @Valid UserDto userDto) {
         return ResponseEntity.ok(registrationService.register(userDto));
     }
 
+    @SecurityRequirements()
     @GetMapping("/confirmation")
     Boolean confirmToken(@RequestParam(name = "token") String token) {
         return registrationService.confirmToken(token);
