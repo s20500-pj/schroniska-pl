@@ -1,14 +1,12 @@
 import logo from "./LogoSchroniska-pl.png";
 import {Link} from "react-router-dom";
-import React, { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import React, {Fragment} from 'react'
+import {Disclosure, Menu, Transition} from '@headlessui/react'
+import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 
 const navigation = [
-    { name: 'Home', href: '#', current: true },
-    { name: 'O nas', href: '#', current: false },
-    { name: 'Kontakt', href: '#', current: false }
-
+    {name: 'O nas', href: '#', current: false},
+    {name: 'Kontakt', href: '#', current: false}
 ]
 
 function classNames(...classes) {
@@ -18,18 +16,19 @@ function classNames(...classes) {
 export default function Nav() {
     return (
         <Disclosure as="nav" className="bg-white">
-            {({ open }) => (
+            {({open}) => (
                 <>
                     <div className="mx-auto max-w-6xl px-2 sm:px-6 lg:px-6">
                         <div className="relative flex h-16 items-center justify-between">
                             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                                 {/* Mobile menu button*/}
-                                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-brown  hover:text-orange focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                                <Disclosure.Button
+                                    className="inline-flex items-center justify-center rounded-md p-2 text-brown  hover:text-orange focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                                     <span className="sr-only">Open main menu</span>
                                     {open ? (
-                                        <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                                        <XMarkIcon className="block h-6 w-6" aria-hidden="true"/>
                                     ) : (
-                                        <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                                        <Bars3Icon className="block h-6 w-6" aria-hidden="true"/>
                                     )}
                                 </Disclosure.Button>
                             </div>
@@ -69,17 +68,20 @@ export default function Nav() {
                                 </div>
 
                             </div>
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                            <div
+                                className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 
 
                                 {/* Profile dropdown */}
                                 <Menu as="div" className="relative ml-3 hidden md:block">
                                     <div>
-                                        <Menu.Button className="flex rounded-2xl p-1 bg-orange text-sm focus:ring-1 focus:ring-brown focus:ring-offset-1 sm:rounded sm:p-1">
+                                        <Menu.Button
+                                            className="flex rounded-2xl p-1 bg-orange text-sm focus:ring-1 focus:ring-brown focus:ring-offset-1 sm:rounded sm:p-1">
                                             <a className="text-sm pl-1"
-                                            href="">Zarejestruj</a>
+                                               href="">Zarejestruj</a>
                                             <svg
-                                                className="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                                className="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor"
+                                                viewBox="0 0 20 20"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd"
                                                       d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -96,9 +98,10 @@ export default function Nav() {
                                         leaveFrom="transform opacity-100 scale-100"
                                         leaveTo="transform opacity-0 scale-95"
                                     >
-                                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                        <Menu.Items
+                                            className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                             <Menu.Item>
-                                                {({ active }) => (
+                                                {({active}) => (
                                                     <Link to="/adduser">
                                                         <a
                                                             href="#"
@@ -110,7 +113,7 @@ export default function Nav() {
                                                 )}
                                             </Menu.Item>
                                             <Menu.Item>
-                                                {({ active }) => (
+                                                {({active}) => (
                                                     <Link to="/addshelter">
                                                         <a
                                                             href="#"
@@ -127,14 +130,15 @@ export default function Nav() {
                                 </Menu>
                                 <button className="flex ml-4 hover:text-orange ">
                                     <Link to="/login">
-                                    <div className="flex">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6"
-                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="#64290F"
-                                                  d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                        <p className="text-brown hidden lg:block">Zaloguj się</p>
-                                     </div>
+                                        <div className="flex">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6"
+                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                      stroke="#64290F"
+                                                      d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            <p className="text-brown hidden lg:block">Zaloguj się</p>
+                                        </div>
                                     </Link>
                                 </button>
                             </div>
@@ -160,21 +164,21 @@ export default function Nav() {
 
                             ))}
                             <div className="space-y-1 px-2 pt-2 pb-3">
-                            <Disclosure.Button>
-                            <a
-                                href="/adduser"
-                                className= 'text-orange hover:bg-orange hover:text-brown block rounded-md px-3 py-2 text-base font-medium'
-                            >
-                                Rejestracja użytkownika
-                            </a>
+                                <Disclosure.Button>
+                                    <a
+                                        href="/adduser"
+                                        className='text-orange hover:bg-orange hover:text-brown block rounded-md px-3 py-2 text-base font-medium'
+                                    >
+                                        Rejestracja użytkownika
+                                    </a>
 
-                            </Disclosure.Button>
+                                </Disclosure.Button>
                             </div>
                             <div className="space-y-1 px-2 pt-2 pb-3">
                                 <Disclosure.Button>
                                     <a
                                         href="/addshelter"
-                                        className= 'text-orange hover:bg-orange hover:text-brown block rounded-md px-3 py-2 text-base font-medium'
+                                        className='text-orange hover:bg-orange hover:text-brown block rounded-md px-3 py-2 text-base font-medium'
                                     >
                                         Rejestracja schroniska
                                     </a>
