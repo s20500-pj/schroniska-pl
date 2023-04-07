@@ -4,21 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import shelter.backend.rest.model.enums.AdoptionStatus;
-import shelter.backend.rest.model.enums.AdoptionType;
+import shelter.backend.rest.model.enums.ActivityType;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdoptionDto {
-
+public class ActivityDto {
     private Long id;
-    private AdoptionType adoptionType;
-    private AdoptionStatus adoptionStatus;
-    private LocalDate validUntil;
+    private ActivityType activityType;
+    private LocalDateTime activityTime;
     private UserDto user;
     private Long animalId;
 }

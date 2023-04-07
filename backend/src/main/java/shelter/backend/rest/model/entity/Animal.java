@@ -1,7 +1,18 @@
 package shelter.backend.rest.model.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import shelter.backend.rest.model.dtos.AnimalDto;
 import shelter.backend.rest.model.enums.Age;
 import shelter.backend.rest.model.enums.AnimalStatus;
@@ -48,6 +59,9 @@ public class Animal {
     @OneToMany(mappedBy = "animal")
     private List<Adoption> adoptions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "animal")
+    private List<Activity> activities = new ArrayList<>();
+
     public Animal toEntity(AnimalDto dto) {
         this.id = dto.getId();
         this.name = dto.getName();
@@ -84,7 +98,8 @@ public class Animal {
                 .needsActiveness(needsActiveness)
                 .catsFriendly(catsFriendly)
                 .dogsFriendly(dogsFriendly)
-                .adoptions((Objects.nonNull(adoptions) ?  adoptions.stream().map(Adoption::toDto).toList(): null))
+                .adoptions((Objects.nonNull(adoptions) ?  adoptions.stream().map(Adoption::toDto).toList() : null))
+                .activities((Objects.nonNull(activities) ?  activities.stream().map(Activity::toDto).toList() : null))
                 .shelter(Objects.nonNull(shelter) ? shelter.toSimpleDto() : null)
                 .build();
     }

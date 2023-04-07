@@ -15,34 +15,29 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import shelter.backend.rest.model.dtos.AdoptionDto;
-import shelter.backend.rest.model.enums.AdoptionStatus;
-import shelter.backend.rest.model.enums.AdoptionType;
+import shelter.backend.rest.model.dtos.ActivityDto;
+import shelter.backend.rest.model.enums.ActivityType;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "adoptions")
+@Table(name = "activities")
 @Getter
-public class Adoption {
+public class Activity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private AdoptionType adoptionType;
+    private ActivityType activityType;
 
     @Setter
-    @Enumerated(EnumType.STRING)
-    private AdoptionStatus adoptionStatus;
-
-    @Setter
-    private LocalDate validUntil;
+    private LocalDateTime activityTime;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -52,26 +47,25 @@ public class Adoption {
     @JoinColumn(name = "animal_id", nullable = false)
     private Animal animal;
 
-    public Adoption toEntity(AdoptionDto dto) {
+    public Activity toEntity(ActivityDto dto) {
         this.id = dto.getId();
-        this.adoptionType = dto.getAdoptionType();
-        this.adoptionStatus = dto.getAdoptionStatus();
+        this.activityType = dto.getActivityType();
+        this.activityTime = dto.getActivityTime();
         return this;
     }
 
-    public AdoptionDto toDto() {
-        return AdoptionDto.builder()
+    public ActivityDto toDto() {
+        return ActivityDto.builder()
                 .id(id)
-                .adoptionType(adoptionType)
-                .adoptionStatus(adoptionStatus)
-                .validUntil(validUntil)
+                .activityType(activityType)
+                .activityTime(activityTime)
                 .user(Objects.nonNull(user) ? user.toSimpleDto() : null)
                 .animalId(animal.getId())
                 .build();
     }
 
     public void addAnimal(Animal animal) {
-        animal.getAdoptions().add(this);
+        animal.getActivities().add(this);
         this.animal = animal;
     }
 }
