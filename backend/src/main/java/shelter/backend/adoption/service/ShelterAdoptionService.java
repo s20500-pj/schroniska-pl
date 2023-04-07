@@ -44,7 +44,7 @@ public class ShelterAdoptionService implements AdoptionService {
     private final UserRepository userRepository;
     private final AdoptionMapper adoptionMapper;
     private final EmailService emailService;
-    private final long validUntil = 2L;
+    private final long validUntil = 2L; //TODO add this to Preferences
 
     @Override
     @Transactional
@@ -319,7 +319,7 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Async
-    @Scheduled(cron = "5 0 * * * ?")   //check every day at 00:05 AM
+    @Scheduled(cron = "0 5 0 * * ?")   //check every day at 00:05 AM
     @Transactional
     public void deleteExpiredRealAdoptions() {
         log.debug("adoption scheduler started");

@@ -22,7 +22,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/adoption")
-@Tag(name = "adoption", description = "dfsafsadf")
 public class AdoptionController {
 
     private final AdoptionService shelterAdoptionService;

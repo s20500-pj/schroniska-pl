@@ -8,7 +8,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import shelter.backend.utils.exception.*;
+import shelter.backend.utils.exception.ActivityException;
+import shelter.backend.utils.exception.AdoptionException;
+import shelter.backend.utils.exception.MessageNotSendException;
+import shelter.backend.utils.exception.RequiredFieldException;
+import shelter.backend.utils.exception.UsernameAlreadyExist;
 
 import java.util.List;
 
@@ -51,8 +55,14 @@ public class ShelterGlobalExceptionHandler {
     }
 
     @ExceptionHandler(AdoptionException.class)
-    public ResponseEntity<String> onShelterException(AdoptionException e) {
+    public ResponseEntity<String> onAdoptionException(AdoptionException e) {
         log.info("Exception occurred during adoption process. Exception: ", e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ActivityException.class)
+    public ResponseEntity<String> onActivityException(ActivityException e) {
+        log.info("Exception occurred during activity process. Exception: ", e);
         return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
