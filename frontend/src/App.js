@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Navbar from "./layout/Navbar";
 import Home from "./layout/Home";
 import AddUser from "./users/AddUser";
@@ -8,25 +8,34 @@ import Login from "./users/Login/Login";
 import './index.css';
 import LoggedInUser from "./users/Login/LoggedInUser";
 import Footer from "./layout/Footer";
-function App() {
-    const token = localStorage.getItem("authToken")
-  return (
-    <div className="m-auto font-display">
-      <Router>
-        <Navbar/>
-          <Hero/>
-        <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/adduser" element={<AddUser />} />
-            <Route exact path="/addshelter" element={<AddShelter />} />
-            <Route exact path="/loggedinuser" element={<LoggedInUser />} />
-            <Route exact path="/login" element= {token ? <Navigate to="/loggedinuser" /> : <Login />} />
-        </Routes>
-      </Router>
-        <Footer/>
+import {useState} from "react";
+import NavbarLoggedIn from "./layout/NavbarLoggedIn";
 
-    </div>
-  );
+function App() {
+
+    const [storageFilled, setStorageFilled] = useState(false)
+    const loggingInfo = (info) => {
+        setStorageFilled(info)
+    }
+
+    return (
+        <div className="m-auto font-display">
+            <Router>
+
+                {localStorage.getItem("userLoggedIn") ? <NavbarLoggedIn/> : <Navbar/>}
+                <Hero/>
+                <Routes>
+                    <Route exact path="/" element={<Home/>}/>
+                    <Route exact path="/adduser" element={<AddUser/>}/>
+                    <Route exact path="/addshelter" element={<AddShelter/>}/>
+                    <Route exact path="/loggedinuser" element={<LoggedInUser/>}/>
+                    <Route exact path="/login" element={<Login loggingInfo={loggingInfo}/>}/>
+                </Routes>
+            </Router>
+            <Footer/>
+
+        </div>
+    );
 }
 
 export default App;

@@ -2,13 +2,14 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
-function Login() {
+function Login({loggingInfo}) {
     axios.defaults.withCredentials = true
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const [storageFilled, setStorageFilled] = useState(false);
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
     };
@@ -32,6 +33,11 @@ function Login() {
             localStorage.setItem("lastName", response.data.lastName);
             localStorage.setItem("shelterName", response.data.shelterName);
             localStorage.setItem("userType", response.data.userType);
+            if (localStorage.getItem("userId") !== null) {
+                setStorageFilled(true);
+                loggingInfo(true);
+                localStorage.setItem("userLoggedIn", "userLoggedIn")
+            }
             navigate("/loggedinuser");
         } catch (error) {
             setError(error.response?.data?.message || "Something went wrong");
@@ -64,6 +70,9 @@ function Login() {
                         </div>
                         <button type="submit"
                                 className=" px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown mb-10"
+                                onClick={() => {
+                                    loggingInfo(storageFilled);
+                                }}
                                 disabled={loading}>
                             <p className="py-15 justify-center text-base text-center text-brown font-medium	">Zaloguj</p>
                         </button>
