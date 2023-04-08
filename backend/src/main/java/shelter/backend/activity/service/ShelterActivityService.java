@@ -9,11 +9,15 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import shelter.backend.activity.rest.req.ActivityRegisterReq;
 import shelter.backend.rest.model.dtos.ActivityDto;
+import shelter.backend.rest.model.dtos.AdoptionDto;
 import shelter.backend.rest.model.entity.Activity;
+import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.ActivityMapper;
+import shelter.backend.rest.model.specification.ActivitySpecification;
+import shelter.backend.rest.model.specification.AdoptionSpecification;
 import shelter.backend.storage.repository.ActivityRepository;
 import shelter.backend.storage.repository.AnimalRepository;
 import shelter.backend.storage.repository.UserRepository;
@@ -24,6 +28,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -71,7 +77,7 @@ public class ShelterActivityService implements ActivityService {
 
     private boolean hasFreeTime(Animal animal, LocalDate activityDate) {
         return animal.getActivities().stream()
-                .anyMatch(activity -> activity.getActivityTime().toLocalDate().isEqual(activityDate));
+                .noneMatch(activity -> activity.getActivityTime().toLocalDate().isEqual(activityDate));
     }
 
     @Override
@@ -87,6 +93,35 @@ public class ShelterActivityService implements ActivityService {
             throw new ActivityException("Aktynowść o podanym ID nie isnieje");
         }
         activityRepository.delete(activity);
+    }
+
+    @Override
+    public List<ActivityDto> getAll() {
+        List<Activity> adoptionList;
+        User user = getUser();
+        log.debug("[getAll] :: userId: {}, userName: {}", user.getId(), user.getEmail());
+        if (user.getUserType() == UserType.SHELTER) {
+            adoptionList = activityRepository.findActivitiesByAnimal_ShelterId(user.getId());
+        } else {
+            adoptionList = activityRepository.findAll();
+        }
+        return activityMapper.toDtoList(adoptionList);
+    }
+
+    @Override
+    public List<ActivityDto> search(Map<String, String> searchParams) {
+            log.debug("[search] :: searchParams: {}", searchParams);
+            ActivitySpecification activitySpecification = new ActivitySpecification(searchParams);
+            List<Activity> activityList = activityRepository.findAll(activitySpecification);
+            User currentUser = getUser();
+            if (currentUser.getUserType() == UserType.SHELTER) {
+                List<Activity> activitySpecificForTheShelter = activityList.stream()
+                        .filter(activity -> Objects.equals(activity.getAnimal().getShelter().getId(), currentUser.getId()))
+                        .toList();
+                return activityMapper.toDtoList(activitySpecificForTheShelter);
+            } else {
+                return activityMapper.toDtoList(activityList);
+            }
     }
 
     private boolean isEntitled(User currentUser, Long activityId) {
@@ -117,3 +152,4 @@ public class ShelterActivityService implements ActivityService {
         log.debug("activity scheduler finished");
     }
 }
+

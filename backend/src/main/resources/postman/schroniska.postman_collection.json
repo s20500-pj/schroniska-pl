@@ -350,7 +350,7 @@
 						"header": [
 							{
 								"key": "Cookie",
-								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA5NTcxNDIsImlhdCI6MTY4MDg3MDc0MiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.lo8kOxmGqzgkbd6KOT0s_WR9TGCP0qwlQAaph7ySMTg; Path=/; Secure; HttpOnly; Expires=Sat, 08 Apr 2023 12:32:22 GMT;",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODEwNDk3NDksImlhdCI6MTY4MDk2MzM0OSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.V6BFAb0M6ByJU3kCgSc4vxyeb373Iru04ZvOUInvSb8; Path=/; Secure; HttpOnly; Expires=Sun, 09 Apr 2023 14:15:49 GMT;",
 								"type": "default"
 							}
 						],
@@ -921,6 +921,134 @@
 							"path": [
 								"adoption",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "activity",
+			"item": [
+				{
+					"name": "Register Activity (USER)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHVzZXIiLCJleHAiOjE2ODEwNTAzOTcsImlhdCI6MTY4MDk2Mzk5NywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XX0.ZHGV_fXVtZJYwZ7MhYVYVP59s8pJ4cD9U_IEnkcvdNE; Path=/; Secure; HttpOnly; Expires=Sun, 09 Apr 2023 14:26:37 GMT;",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"animalId\": 1,\n  \"activityType\": \"WALKING\",\n  \"activityDate\": \"2023-04-08\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/activity/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"activity",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListAllActivities (SHELTER or ADMIN)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODEwNDk3NDksImlhdCI6MTY4MDk2MzM0OSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.V6BFAb0M6ByJU3kCgSc4vxyeb373Iru04ZvOUInvSb8; Path=/; Secure; HttpOnly; Expires=Sun, 09 Apr 2023 14:15:49 GMT;",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/activity/getAll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"activity",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete  Activity (USER or SHELTER)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODEwNDk3NDksImlhdCI6MTY4MDk2MzM0OSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.V6BFAb0M6ByJU3kCgSc4vxyeb373Iru04ZvOUInvSb8; Path=/; Secure; HttpOnly; Expires=Sun, 09 Apr 2023 14:15:49 GMT;",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/activity/delete/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"activity",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search Activity (ADMIN or SHELTER)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODEwNDk3NDksImlhdCI6MTY4MDk2MzM0OSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.V6BFAb0M6ByJU3kCgSc4vxyeb373Iru04ZvOUInvSb8; Path=/; Secure; HttpOnly; Expires=Sun, 09 Apr 2023 14:15:49 GMT;",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"activityType\":\"WALKING\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/activity/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"activity",
+								"search"
 							]
 						}
 					},
