@@ -458,7 +458,13 @@
 							]
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODA3NjE1NzMsImlhdCI6MTY4MDY3NTE3MywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.PJjvAtQyfYrA0q_k3WF0nczdphWWmZ5BsZnSkajqahc; Path=/; Secure; HttpOnly; Expires=Thu, 06 Apr 2023 06:12:53 GMT;",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"species\": \"Dog\",\r\n    \"sortBy\": \"sex\"\r\n}",

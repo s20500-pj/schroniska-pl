@@ -64,7 +64,7 @@ export default function AddShelter() {
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
             <div className="px-10 font-display bg-white bg-opacity-80">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Zarejestruj schronisko</h2>
-                {showPopup && <SuccessPopup/>}
+                {showPopup && <SuccessPopup message="Rejestracja pomyślna. Dziękujemy za rejestrację." />}
                 <form onSubmit={(e) => onSubmit(e)} className="w-full max-w-lg m-auto py-10">
                     <div className="flex flex-wrap">
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">

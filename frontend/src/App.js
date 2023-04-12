@@ -10,9 +10,12 @@ import LoggedInUser from "./users/Login/LoggedInUser";
 import Footer from "./layout/Footer";
 import {useState} from "react";
 import NavbarLoggedIn from "./layout/NavbarLoggedIn";
+import AnimalList from "./animal/AnimalList";
+import AddAnimal from "./animal/AddAnimal";
+import axios from "axios";
 
 function App() {
-
+    axios.defaults.withCredentials = true
     const [storageFilled, setStorageFilled] = useState(false)
     const loggingInfo = (info) => {
         setStorageFilled(info)
@@ -30,10 +33,11 @@ function App() {
                     <Route exact path="/addshelter" element={<AddShelter/>}/>
                     <Route exact path="/loggedinuser" element={<LoggedInUser/>}/>
                     <Route exact path="/login" element={<Login loggingInfo={loggingInfo}/>}/>
+                    <Route exact path="/animalList" element={<AnimalList/>}/>
+                    <Route exact path="/addAnimal" element={<AddAnimal/>}/>
                 </Routes>
             </Router>
             <Footer/>
-
         </div>
     );
 }

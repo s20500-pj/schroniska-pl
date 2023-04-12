@@ -1,7 +1,7 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
 
-function SuccessPopup() {
+function SuccessPopup({message}) {
 
     let navigate = useNavigate();
     const handleOkClick = () => {
@@ -11,8 +11,7 @@ function SuccessPopup() {
     return (
         <div className="popup-container">
             <div className="popup">
-                <p>Rejestracja pomyślna. Wysłaliśmy Tobie mail z linkem aktywacyjnym w celu weryfikacji konta. Podążaj
-                    za wskazówkami zawartymi w mailu. Dziękujemy za rejestrację.</p>
+                <p>{message}</p>
                 <button onClick={handleOkClick}>OK</button>
             </div>
         </div>

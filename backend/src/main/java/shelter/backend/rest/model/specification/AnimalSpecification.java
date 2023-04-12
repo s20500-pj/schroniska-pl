@@ -40,7 +40,7 @@ public class AnimalSpecification implements Specification<Animal> {
 //TODO podowawać wszędzie toLowerCase
             switch (key) {
                 case NAME -> predicates.add(criteriaBuilder.like(root.get(NAME), "%" + value + "%"));
-                case SPECIES -> predicates.add(criteriaBuilder.like(root.get(SPECIES), "%" + value + "%"));
+                case SPECIES -> predicates.add(criteriaBuilder.equal(root.get(SPECIES), Species.valueOf(value)));
                 case SEX -> predicates.add(criteriaBuilder.equal(root.get(SEX), Sex.valueOf(value)));
                 case AGE -> predicates.add(criteriaBuilder.equal(root.get(AGE), Age.valueOf(value)));
                 case ANIMAL_STATUS -> predicates.add(criteriaBuilder.equal(root.get(AGE), AnimalStatus.valueOf(value)));

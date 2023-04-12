@@ -39,6 +39,7 @@ function Login({loggingInfo}) {
                 localStorage.setItem("userLoggedIn", "userLoggedIn")
             }
             navigate("/loggedinuser");
+            await window.location.reload();
         } catch (error) {
             setError(error.response?.data?.message || "Something went wrong");
         } finally {
