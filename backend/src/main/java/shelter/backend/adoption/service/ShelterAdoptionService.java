@@ -44,7 +44,7 @@ public class ShelterAdoptionService implements AdoptionService {
     private final UserRepository userRepository;
     private final AdoptionMapper adoptionMapper;
     private final EmailService emailService;
-    private final long validUntil = 2L;
+    private final long validUntil = 2L; //TODO add this to Preferences
 
     @Override
     @Transactional
@@ -181,6 +181,13 @@ public class ShelterAdoptionService implements AdoptionService {
         log.debug("[declineAdoption] :: adoptionId: {}", adoptionId);
         Adoption adoption = adoptionRepository.findById(adoptionId)
                 .orElseThrow(() -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
+        User currentUser = getUser();
+        if (currentUser.getUserType() == UserType.PERSON && !isEntitled(currentUser, adoptionId)) {
+            // check if is security breach
+            log.warn("User called for adoption not assigned to the user! User details: {}, Adoption details:{}",
+                    currentUser, adoption);
+            throw new AdoptionException("Adopcja o podanym ID nie isnieje");
+        }
         if (!declineAll) {
             updateOtherAdoptionsToPreviousStatus(adoption);
         }
@@ -194,6 +201,12 @@ public class ShelterAdoptionService implements AdoptionService {
             throw new MessageNotSendException("Adopcja (id: " + adoptionId + ") została anulowana, jednak nie można wysłać wiadomości mailowej.");
         }
         return adoption.toDto();
+    }
+
+    private boolean isEntitled(User currentUser, Long adoptionId) {
+        Adoption adoption = adoptionRepository.findById(adoptionId)
+                .orElseThrow(() -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
+        return adoption.getUser().equals(currentUser);
     }
 
     private void updateOtherAdoptionsToPreviousStatus(Adoption adoption) {
@@ -306,7 +319,7 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Async
-    @Scheduled(cron = "5 0 * * * ?")   //check every day at 00:05 AM
+    @Scheduled(cron = "0 5 0 * * ?")   //check every day at 00:05 AM
     @Transactional
     public void deleteExpiredRealAdoptions() {
         log.debug("adoption scheduler started");

@@ -311,7 +311,13 @@
 					"name": "getAnimalById",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHVzZXIiLCJleHAiOjE2ODA5NTcyMzcsImlhdCI6MTY4MDg3MDgzNywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XX0.ZP8ITF5MgQsjQ6S-RBAY8oLMHvza5FAmThu9EZIQf8I; Path=/; Secure; HttpOnly; Expires=Sat, 08 Apr 2023 12:33:57 GMT;",
+								"type": "default"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/animal/1",
 							"protocol": "http",
@@ -341,10 +347,16 @@
 							]
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODEwNDk3NDksImlhdCI6MTY4MDk2MzM0OSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.V6BFAb0M6ByJU3kCgSc4vxyeb373Iru04ZvOUInvSb8; Path=/; Secure; HttpOnly; Expires=Sun, 09 Apr 2023 14:15:49 GMT;",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Max\",\r\n  \"information\": \"Friendly and loves to play fetch\",\r\n  \"species\": \"Dog\",\r\n  \"sex\": \"MALE\",\r\n  \"age\": \"ADULT\",\r\n  \"birthDate\": \"2019-01-01\",\r\n  \"animalStatus\": \"NEEDS_MEDICAL_TREATMENT\",\r\n  \"sterilized\": true,\r\n  \"vaccinated\": true,\r\n  \"kidsFriendly\": true,\r\n  \"couchPotato\": false,\r\n  \"needsActiveness\": true,\r\n  \"catsFriendly\": true,\r\n  \"dogsFriendly\": true\r\n}",
+							"raw": "{\r\n  \"name\": \"Max\",\r\n  \"information\": \"Friendly and loves to play fetch\",\r\n  \"species\": \"DOG\",\r\n  \"sex\": \"MALE\",\r\n  \"age\": \"ADULT\",\r\n  \"birthDate\": \"2019-01-01\",\r\n  \"animalStatus\": \"NEEDS_MEDICAL_TREATMENT\",\r\n  \"sterilized\": true,\r\n  \"vaccinated\": true,\r\n  \"kidsFriendly\": true,\r\n  \"couchPotato\": false,\r\n  \"needsActiveness\": true,\r\n  \"catsFriendly\": true,\r\n  \"dogsFriendly\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -380,10 +392,16 @@
 							]
 						},
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHVzZXIiLCJleHAiOjE2ODA5NTcyMzcsImlhdCI6MTY4MDg3MDgzNywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XX0.ZP8ITF5MgQsjQ6S-RBAY8oLMHvza5FAmThu9EZIQf8I; Path=/; Secure; HttpOnly; Expires=Sat, 08 Apr 2023 12:33:57 GMT;",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 1,\r\n  \"name\": \"Max\",\r\n  \"information\": \"Friendly and loves to play fetch\",\r\n  \"species\": \"Dog\",\r\n  \"sex\": \"MALE\",\r\n  \"age\": \"ADULT\",\r\n  \"birthDate\": \"2019-01-01\",\r\n  \"animalStatus\": \"ADOPTED\",\r\n  \"sterilized\": true,\r\n  \"vaccinated\": true,\r\n  \"kidsFriendly\": true,\r\n  \"couchPotato\": false,\r\n  \"needsActiveness\": true,\r\n  \"catsFriendly\": true,\r\n  \"dogsFriendly\": true\r\n}",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"name\": \"Maxio\",\r\n  \"information\": \"Friendly and loves to play fetch\",\r\n  \"species\": \"DOG\",\r\n  \"sex\": \"MALE\",\r\n  \"age\": \"ADULT\",\r\n  \"birthDate\": \"2019-01-01\",\r\n  \"animalStatus\": \"ADOPTED\",\r\n  \"sterilized\": true,\r\n  \"vaccinated\": true,\r\n  \"kidsFriendly\": true,\r\n  \"couchPotato\": false,\r\n  \"needsActiveness\": true,\r\n  \"catsFriendly\": true,\r\n  \"dogsFriendly\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -590,7 +608,7 @@
 						"header": [
 							{
 								"key": "Cookie",
-								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHVzZXIiLCJleHAiOjE2ODA3NjEzNDEsImlhdCI6MTY4MDY3NDk0MSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XX0.6NscHnSXl-9HHbT59bvlgxQab71ePpQ2Q3RlnQiZgCA; Path=/; Secure; HttpOnly; Expires=Thu, 06 Apr 2023 06:09:01 GMT;",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHVzZXIiLCJleHAiOjE2ODA5NTcyMzcsImlhdCI6MTY4MDg3MDgzNywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XX0.ZP8ITF5MgQsjQ6S-RBAY8oLMHvza5FAmThu9EZIQf8I; Path=/; Secure; HttpOnly; Expires=Sat, 08 Apr 2023 12:33:57 GMT;",
 								"type": "default"
 							}
 						],
@@ -911,6 +929,134 @@
 			]
 		},
 		{
+			"name": "activity",
+			"item": [
+				{
+					"name": "Register Activity (USER)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHVzZXIiLCJleHAiOjE2ODEwNTAzOTcsImlhdCI6MTY4MDk2Mzk5NywiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XX0.ZHGV_fXVtZJYwZ7MhYVYVP59s8pJ4cD9U_IEnkcvdNE; Path=/; Secure; HttpOnly; Expires=Sun, 09 Apr 2023 14:26:37 GMT;",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"animalId\": 1,\n  \"activityType\": \"WALKING\",\n  \"activityDate\": \"2023-04-08\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/activity/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"activity",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListAllActivities (SHELTER or ADMIN)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODEwNDk3NDksImlhdCI6MTY4MDk2MzM0OSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.V6BFAb0M6ByJU3kCgSc4vxyeb373Iru04ZvOUInvSb8; Path=/; Secure; HttpOnly; Expires=Sun, 09 Apr 2023 14:15:49 GMT;",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/activity/getAll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"activity",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete  Activity (USER or SHELTER)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODEwNDk3NDksImlhdCI6MTY4MDk2MzM0OSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.V6BFAb0M6ByJU3kCgSc4vxyeb373Iru04ZvOUInvSb8; Path=/; Secure; HttpOnly; Expires=Sun, 09 Apr 2023 14:15:49 GMT;",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/activity/delete/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"activity",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search Activity (ADMIN or SHELTER)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGVsdGVyQHNoZWx0ZXIiLCJleHAiOjE2ODEwNDk3NDksImlhdCI6MTY4MDk2MzM0OSwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfU0hFTFRFUiJ9XX0.V6BFAb0M6ByJU3kCgSc4vxyeb373Iru04ZvOUInvSb8; Path=/; Secure; HttpOnly; Expires=Sun, 09 Apr 2023 14:15:49 GMT;",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"activityType\":\"WALKING\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/activity/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"activity",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "registerUser",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -999,7 +1145,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\":\"shelter@shelter\",\n    \"password\":\"password\"\n}\n// \n// {\n//     \"email\":\"user@user\",\n//     \"password\":\"password\"\n// }\n// ",
+					"raw": "{\n    \"email\":\"user@user\",\n    \"password\":\"password\"\n}\n// \n// {\n//     \"email\":\"user@user\",\n//     \"password\":\"password\"\n// }\n// ",
 					"options": {
 						"raw": {
 							"language": "json"

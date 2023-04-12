@@ -30,6 +30,7 @@ public class AnimalDto {
     private AnimalStatus animalStatus;
     private UserDto shelter;
     private List<AdoptionDto> adoptions;
+    private List<ActivityDto> activities;
     private boolean sterilized;
     private boolean vaccinated;
     private boolean kidsFriendly;
