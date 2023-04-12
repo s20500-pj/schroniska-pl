@@ -8,14 +8,15 @@ import axios from "axios";
 const navigation = [
     {name: 'O nas', href: '#', current: false},
     {name: 'Kontakt', href: '#', current: false},
-    {name: 'Lista zwierząt', href: '/animalList', current: false}
+    {name: 'Lista zwierząt', href: '/animalList', current: false},
+    {name: 'Dodaj zwierzę', href: '/addAnimal', current: false}
 ]
 
-const userType = localStorage.getItem('userType');
+/*const userType = localStorage.getItem('userType');
 
 if (userType === 'SHELTER') {
     navigation.splice(2, 0, {name: 'Dodaj zwierzę', href: '/addAnimal', current: false});
-}
+}*/
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')

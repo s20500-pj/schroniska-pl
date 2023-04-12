@@ -54,7 +54,6 @@ function AnimalList() {
         UNKNOWN: "Nieznany"
     };
 
-
     const columns = useMemo(
         () => [
             {
