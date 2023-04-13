@@ -114,8 +114,9 @@ public class ShelterRegistrationService implements RegistrationService {
     }
 
     @Override
+    //TODO change this. enebale only one shelter at once. change param to request containing clientId, clientSecret, merchantPosId -> save this to DB (entity -> PayUClientCredentials)
     public List<UserDto> enableShelterAccounts(List<Long> shelterIds) {
-        log.debug("[enableShleterAccounts] :: list of ids: {}", shelterIds);
+        log.debug("[enableShelterAccounts] :: list of ids: {}", shelterIds);
         List<UserDto> enabledShelters = new ArrayList<>();
         shelterIds.forEach(id -> {
             Optional<User> userOptional = userRepository.findById(id);
