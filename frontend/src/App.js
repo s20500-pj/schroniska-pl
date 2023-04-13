@@ -18,6 +18,9 @@ import AdminPage from "./users/admin/AdminPage";
 import PersonPage from "./users/person/PersonPage";
 import NavbarAdmin from "./layout/Navbars/NavbarAdmin";
 import NavbarPerson from "./layout/Navbars/NavbarPerson";
+import ShelterAnimalList from "./animal/ShelterAnimalList";
+import UserVirtualAdoptionList from "./adoption/UserVirtualAdoptionList";
+import UserRealAdoptionList from "./adoption/UserRealAdoptionList";
 
 function App() {
     axios.defaults.withCredentials = true
@@ -45,6 +48,9 @@ function App() {
                     <Route exact path="/login" element={<Login loggingInfo={loggingInfo}/>}/>
                     <Route exact path="/animalList" element={<AnimalList/>}/>
                     {localStorage.getItem("userType") === "SHELTER" ? <Route exact path="/addAnimal" element={<AddAnimal/>}/> : <Route exact path="/" element={<Home/>}/>}
+                    {localStorage.getItem("userType") === "SHELTER" ? <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/> : <Route exact path="/" element={<Home/>}/>}
+                    {localStorage.getItem("userType") === "PERSON" ? <Route exact path="/userVirtualAdoptionList" element={<UserVirtualAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
+                    {localStorage.getItem("userType") === "PERSON" ? <Route exact path="/userRealAdoptionList" element={<UserRealAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
                 </Routes>
             </Router>
             <Footer/>

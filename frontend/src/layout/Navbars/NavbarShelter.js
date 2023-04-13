@@ -6,7 +6,7 @@ import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 import axios from "axios";
 
 const navigation = [
-    {name: 'Lista zwierząt w schronisku', href: '#', current: false},
+    {name: 'Lista zwierząt w schronisku', href: '/shelterAnimalList', current: false},
     {name: 'Dodaj zwierzę', href: '/addAnimal', current: false},
     {name: 'Adopcja', href: '#', current: false},
     {name: 'Adopcja wirtualna', href: '#', current: false},

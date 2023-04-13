@@ -7,8 +7,8 @@ import axios from "axios";
 
 const navigation = [
     {name: 'Lista zwierząt', href: '/animalList', current: false},
-    {name: 'Adopcja', href: '#', current: false},
-    {name: 'Adopcja wirtualna', href: '#', current: false},
+    {name: 'Adopcja', href: '/userRealAdoptionList', current: false},
+    {name: 'Adopcja wirtualna', href: '/userVirtualAdoptionList', current: false},
     {name: 'Wolontariat', href: '#', current: false}
 ]
 
