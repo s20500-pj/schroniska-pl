@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset s20157:2023_04_03_23_50_add_column_type_adoption.sql
+--changeset s20500:2023_04_12_21_23_add_file_path_and_admin_type.sql
 
 ALTER TABLE IF EXISTS adoptions
     ADD COLUMN IF NOT EXISTS image_path TEXT;
