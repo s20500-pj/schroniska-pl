@@ -245,10 +245,15 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public List<AdoptionDto> getUserAdoptions() {
+    public List<AdoptionDto> getUserAdoptions(String adoptionType) {
         User user = getUser();
+        List<Adoption> adoptionList = new ArrayList<>();
         log.debug("[getUserAdoptions] :: userId: {}, userMail: {}", user.getId(), user.getEmail());
-        List<Adoption> adoptionList = adoptionRepository.findAdoptionByUserId(user.getId());
+        if (adoptionType.equals(AdoptionType.REAL.name())) {
+            adoptionList = adoptionRepository.findAdoptionByUserIdAndAdoptionType(user.getId(), AdoptionType.REAL);
+        } else if (adoptionType.equals(AdoptionType.VIRTUAL.name())) {
+            adoptionList = adoptionRepository.findAdoptionByUserIdAndAdoptionType(user.getId(), AdoptionType.VIRTUAL);
+        }
         return adoptionMapper.toDtoList(adoptionList);
     }
 

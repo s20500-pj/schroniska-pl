@@ -11,6 +11,7 @@ public interface AnimalService {
     AnimalDto updateAnimal(AnimalDto animalDto);
     void deleteAnimal(Long animalId);
     List<AnimalDto> search(String searchParams);
+    List<AnimalDto> getShelterAnimals(String searchParams);
 }
 
 

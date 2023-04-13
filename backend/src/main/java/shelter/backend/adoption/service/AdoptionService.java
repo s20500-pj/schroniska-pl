@@ -40,7 +40,7 @@ public interface AdoptionService {
      * list of adoptions for specific user
      * */
 
-    List<AdoptionDto> getUserAdoptions();
+    List<AdoptionDto> getUserAdoptions(String adoptionType);
 
     List<AdoptionDto> search(Map<String, String> searchParams);
     /*

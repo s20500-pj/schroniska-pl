@@ -3,7 +3,9 @@ package shelter.backend.rest.model.specification;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
+import shelter.backend.rest.model.entity.Address;
 import shelter.backend.rest.model.entity.Animal;
+import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.*;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AnimalSpecification implements Specification<Animal> {
 
+    private static final String ID = "id";
     private static final String NAME = "name";
     private static final String SPECIES = "species";
     private static final String SEX = "sex";
@@ -26,14 +29,16 @@ public class AnimalSpecification implements Specification<Animal> {
     private static final String CATS_FRIENDLY = "catsFriendly";
     private static final String DOGS_FRIENDLY = "dogsFriendly";
     private static final String SORT_BY = "sortBy";
-
+    private static final String CITY = "city";
+    private static final String SHELTER_ID = "shelterId";
 
     private final Map<String, String> searchParams;
 
     @Override
     public Predicate toPredicate(Root<Animal> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
-
+        Join<Animal, User> userJoin = root.join("shelter");
+        Join<User, Address> addressJoin = userJoin.join("address");
         for (Map.Entry<String, String> entry : searchParams.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
@@ -56,6 +61,8 @@ public class AnimalSpecification implements Specification<Animal> {
                         predicates.add(criteriaBuilder.equal(root.get(CATS_FRIENDLY), Boolean.valueOf(value)));
                 case DOGS_FRIENDLY ->
                         predicates.add(criteriaBuilder.equal(root.get(DOGS_FRIENDLY), Boolean.valueOf(value)));
+                case CITY -> predicates.add(criteriaBuilder.like(addressJoin.get(CITY), "%" + value + "%"));
+                case SHELTER_ID -> predicates.add(criteriaBuilder.equal(userJoin.get(ID), value));
             }
         }
 
