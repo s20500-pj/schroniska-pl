@@ -10,7 +10,7 @@ public interface AnimalService {
     AnimalDto addAnimalToShelter(AnimalDto animalDto);
     AnimalDto updateAnimal(AnimalDto animalDto);
     void deleteAnimal(Long animalId);
-    List<AnimalDto> search(Map<String, String> searchParams);
+    List<AnimalDto> search(String searchParams);
 }
 
 

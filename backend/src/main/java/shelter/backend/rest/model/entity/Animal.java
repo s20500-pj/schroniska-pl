@@ -1,13 +1,6 @@
 package shelter.backend.rest.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,8 +31,11 @@ public class Animal {
     private Long id;
     private String name;
     private String information;
+    @Enumerated(EnumType.STRING)
     private Species species;
+    @Enumerated(EnumType.STRING)
     private Sex sex;
+    @Enumerated(EnumType.STRING)
     private Age age;
     private LocalDate birthDate;
     private AnimalStatus animalStatus;
@@ -51,6 +47,7 @@ public class Animal {
     private boolean catsFriendly;
     private boolean dogsFriendly;
     private boolean availableForWalk;
+    private String imagePath;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -78,6 +75,7 @@ public class Animal {
         this.needsActiveness = dto.isNeedsActiveness();
         this.catsFriendly = dto.isCatsFriendly();
         this.dogsFriendly = dto.isDogsFriendly();
+        this.imagePath = dto.getImagePath();
         return this;
     }
 
@@ -101,6 +99,7 @@ public class Animal {
                 .adoptions((Objects.nonNull(adoptions) ?  adoptions.stream().map(Adoption::toDto).toList() : null))
                 .activities((Objects.nonNull(activities) ?  activities.stream().map(Activity::toDto).toList() : null))
                 .shelter(Objects.nonNull(shelter) ? shelter.toSimpleDto() : null)
+                .imagePath(imagePath)
                 .build();
     }
 

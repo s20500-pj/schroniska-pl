@@ -39,6 +39,7 @@ public class ShelterEmailService implements EmailService {
         final String messageProperty = switch (userType) {
             case PERSON -> "user." + CONFIRMATION_PROPERTIES;
             case SHELTER -> "shelter." + CONFIRMATION_PROPERTIES;
+            case ADMIN -> "admin." + CONFIRMATION_PROPERTIES; //TODO do zmiany
         };
         final String subjectProperty = "confirmation.mail.subject";
         String[] params = {"/confirmation", token, expirationTime};

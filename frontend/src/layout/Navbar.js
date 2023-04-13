@@ -5,9 +5,17 @@ import {Disclosure, Menu, Transition} from '@headlessui/react'
 import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 
 const navigation = [
+    {name: 'Home', href: '#', current: true},
+    {name: 'Lista zwierząt', href: '/animalList', current: false},
     {name: 'O nas', href: '#', current: false},
     {name: 'Kontakt', href: '#', current: false}
 ]
+
+/*const userType = localStorage.getItem('userType');
+
+if (userType === 'SHELTER') {
+    navigation.splice(2, 0, {name: 'Dodaj zwierzę', href: '/addAnimal', current: false});
+}*/
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -62,7 +70,6 @@ export default function Nav() {
                                             >
                                                 {item.name}
                                             </a>
-
                                         ))}
                                     </div>
                                 </div>
@@ -133,7 +140,7 @@ export default function Nav() {
                                         <div className="flex">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6"
                                                  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                                                       stroke="#64290F"
                                                       d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                             </svg>

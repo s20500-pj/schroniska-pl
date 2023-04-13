@@ -1,12 +1,10 @@
 package shelter.backend.rest.model.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import shelter.backend.rest.model.entity.Adoption;
+import org.springframework.web.multipart.MultipartFile;
 import shelter.backend.rest.model.enums.Age;
 import shelter.backend.rest.model.enums.AnimalStatus;
 import shelter.backend.rest.model.enums.Sex;
@@ -38,4 +36,6 @@ public class AnimalDto {
     private boolean needsActiveness;
     private boolean catsFriendly;
     private boolean dogsFriendly;
+    private MultipartFile image;
+    private String imagePath;
 }

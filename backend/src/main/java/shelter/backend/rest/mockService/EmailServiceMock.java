@@ -23,6 +23,7 @@ public class EmailServiceMock implements EmailService {
         final String messageProperty = switch (userType) {
             case PERSON -> "user." + CONFIRMATION_PROPERTIES;
             case SHELTER -> "shelter." + CONFIRMATION_PROPERTIES;
+            case ADMIN -> "admin." + CONFIRMATION_PROPERTIES;
         };
         String[] params = {"/confirmation", token, expirationTime};
         final String text = messageSource.getMessage(messageProperty, params, Locale.getDefault());
