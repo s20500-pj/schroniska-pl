@@ -1,4 +1,4 @@
-import logo from "./LogoSchroniska-pl.png";
+import logo from "../LogoSchroniska-pl.png";
 import {Link, useNavigate} from "react-router-dom";
 import React from 'react'
 import {Disclosure} from '@headlessui/react'
@@ -6,23 +6,17 @@ import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 import axios from "axios";
 
 const navigation = [
-    {name: 'O nas', href: '#', current: false},
-    {name: 'Kontakt', href: '#', current: false},
     {name: 'Lista zwierząt', href: '/animalList', current: false},
-    {name: 'Dodaj zwierzę', href: '/addAnimal', current: false}
+    {name: 'Adopcja', href: '#', current: false},
+    {name: 'Adopcja wirtualna', href: '#', current: false},
+    {name: 'Wolontariat', href: '#', current: false}
 ]
-
-/*const userType = localStorage.getItem('userType');
-
-if (userType === 'SHELTER') {
-    navigation.splice(2, 0, {name: 'Dodaj zwierzę', href: '/addAnimal', current: false});
-}*/
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function NavbarLoggedIn() {
+export default function NavbarPerson() {
     axios.defaults.withCredentials = true
     const navigate = useNavigate();
 

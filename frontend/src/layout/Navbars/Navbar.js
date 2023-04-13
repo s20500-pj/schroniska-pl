@@ -1,12 +1,10 @@
-import logo from "./LogoSchroniska-pl.png";
+import logo from "../LogoSchroniska-pl.png";
 import {Link} from "react-router-dom";
 import React, {Fragment} from 'react'
 import {Disclosure, Menu, Transition} from '@headlessui/react'
 import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 
 const navigation = [
-    {name: 'Home', href: '#', current: true},
-    {name: 'Lista zwierząt', href: '/animalList', current: false},
     {name: 'O nas', href: '#', current: false},
     {name: 'Kontakt', href: '#', current: false}
 ]
@@ -85,7 +83,7 @@ export default function Nav() {
                                         <Menu.Button
                                             className="flex rounded-2xl p-1 bg-orange text-sm focus:ring-1 focus:ring-brown focus:ring-offset-1 sm:rounded sm:p-1">
                                             <a className="text-sm pl-1"
-                                               href="">Zarejestruj</a>
+                                               href="src/layout">Zarejestruj</a>
                                             <svg
                                                 className="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor"
                                                 viewBox="0 0 20 20"
@@ -111,7 +109,7 @@ export default function Nav() {
                                                 {({active}) => (
                                                     <Link to="/adduser">
                                                         <a
-                                                            href="#"
+                                                            href="src/layout#"
                                                             className={classNames(active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-brown')}
                                                         >
                                                             użytkownika
@@ -123,7 +121,7 @@ export default function Nav() {
                                                 {({active}) => (
                                                     <Link to="/addshelter">
                                                         <a
-                                                            href="#"
+                                                            href="src/layout#"
                                                             className={classNames(active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-brown')}
                                                         >
                                                             schronisko

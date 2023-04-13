@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import SuccessPopup from "../users/SuccessPopup";
+import SuccessPopup from "../users/unlogged/SuccessPopup";
 
 export default function AddAnimal() {
     axios.defaults.withCredentials = true
