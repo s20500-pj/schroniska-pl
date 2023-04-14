@@ -1,4 +1,4 @@
-package shelter.backend.payment.rest.model;
+package shelter.backend.payment.payu.rest.model;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-//package shelter.backend.payment.rest.controller;
+//package shelter.backend.payment.payu.rest.controller;
 //
 //import jakarta.validation.constraints.NotNull;
 //import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@
 //import org.springframework.web.bind.annotation.PathVariable;
 //import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RestController;
-//import shelter.backend.payment.service.PayUAuthenticationService;
+//import shelter.backend.payment.payu.service.PayUService;
 //import shelter.backend.rest.model.dtos.UserDto;
 //
 //@RestController
@@ -16,7 +16,12 @@
 //@RequestMapping("/payment")
 //public class PayUController {
 //
-//    private final PayUAuthenticationService payUAuthenticationService;
+//    private final PayUService payUService;
+//
+//    @GetMapping(value = "/payu-callback", produces = MediaType.APPLICATION_JSON_VALUE)
+//    ResponseEntity<UserDto> donate(@PathVariable @NotNull Long id) {
+//        return ResponseEntity.ok(shelterService.getShelterById(id));
+//    }
 //
 //    @GetMapping(value = "/payu-callback", produces = MediaType.APPLICATION_JSON_VALUE)
 //    ResponseEntity<UserDto> donate(@PathVariable @NotNull Long id) {
