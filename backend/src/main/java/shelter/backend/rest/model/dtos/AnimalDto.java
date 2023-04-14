@@ -1,5 +1,6 @@
 package shelter.backend.rest.model.dtos;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +28,9 @@ public class AnimalDto {
     private LocalDate birthDate;
     private AnimalStatus animalStatus;
     private UserDto shelter;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<AdoptionDto> adoptions;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<ActivityDto> activities;
     private boolean sterilized;
     private boolean vaccinated;

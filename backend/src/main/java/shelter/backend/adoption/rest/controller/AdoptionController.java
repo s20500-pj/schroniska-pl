@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shelter.backend.adoption.service.AdoptionService;
 import shelter.backend.rest.model.dtos.AdoptionDto;
+import shelter.backend.rest.model.dtos.AdoptionDto2;
 
 import java.util.List;
 import java.util.Map;
@@ -82,7 +83,7 @@ public class AdoptionController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/getUserAdoptions/{adoptionType}")
-    ResponseEntity<List<AdoptionDto>> getUserAdoptions(@PathVariable String adoptionType) {
+    ResponseEntity<List<AdoptionDto2>> getUserAdoptions(@PathVariable String adoptionType) {
         return ResponseEntity.ok(shelterAdoptionService.getUserAdoptions(adoptionType));
     }
 
