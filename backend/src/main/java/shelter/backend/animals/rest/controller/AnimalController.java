@@ -48,4 +48,9 @@ public class AnimalController {
     ResponseEntity<List<AnimalDto>> search(@RequestBody String searchParams) {
         return ResponseEntity.ok(animalService.search(searchParams));
     }
+
+    @PostMapping(value = "/getShelterAnimals", consumes = MediaType.TEXT_PLAIN_VALUE)
+    ResponseEntity<List<AnimalDto>> getShelterAnimals(@RequestBody String searchParams) {
+        return ResponseEntity.ok(animalService.getShelterAnimals(searchParams));
+    }
 }

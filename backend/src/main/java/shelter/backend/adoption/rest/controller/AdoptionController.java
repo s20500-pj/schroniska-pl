@@ -1,6 +1,5 @@
 package shelter.backend.adoption.rest.controller;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shelter.backend.adoption.service.AdoptionService;
 import shelter.backend.rest.model.dtos.AdoptionDto;
+import shelter.backend.rest.model.dtos.AdoptionDto2;
 
 import java.util.List;
 import java.util.Map;
@@ -82,9 +82,9 @@ public class AdoptionController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/getUserAdoptions")
-    ResponseEntity<List<AdoptionDto>> getUserAdoptions() {
-        return ResponseEntity.ok(shelterAdoptionService.getUserAdoptions());
+    @GetMapping("/getUserAdoptions/{adoptionType}")
+    ResponseEntity<List<AdoptionDto2>> getUserAdoptions(@PathVariable String adoptionType) {
+        return ResponseEntity.ok(shelterAdoptionService.getUserAdoptions(adoptionType));
     }
 
     @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")

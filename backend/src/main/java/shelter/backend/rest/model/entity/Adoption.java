@@ -16,6 +16,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import shelter.backend.rest.model.dtos.AdoptionDto;
+import shelter.backend.rest.model.dtos.AdoptionDto2;
+import shelter.backend.rest.model.dtos.AnimalDto;
 import shelter.backend.rest.model.enums.AdoptionStatus;
 import shelter.backend.rest.model.enums.AdoptionType;
 
@@ -67,6 +69,17 @@ public class Adoption {
                 .validUntil(validUntil)
                 .user(Objects.nonNull(user) ? user.toSimpleDto() : null)
                 .animalId(animal.getId())
+                .build();
+    }
+
+    public AdoptionDto2 toDto2(AnimalDto animalDto) {
+        return AdoptionDto2.builder()
+                .id(id)
+                .adoptionType(adoptionType)
+                .adoptionStatus(adoptionStatus)
+                .validUntil(validUntil)
+                .user(Objects.nonNull(user) ? user.toSimpleDto() : null)
+                .animalDto(animalDto)
                 .build();
     }
 

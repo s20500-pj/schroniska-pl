@@ -1,5 +1,6 @@
 package shelter.backend.adoption.service;
 
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import shelter.backend.email.EmailService;
 import shelter.backend.rest.model.dtos.AdoptionDto;
+import shelter.backend.rest.model.dtos.AdoptionDto2;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.entity.Animal;
@@ -245,11 +247,16 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public List<AdoptionDto> getUserAdoptions() {
+    public List<AdoptionDto2> getUserAdoptions(String adoptionType) {
         User user = getUser();
+        List<Adoption> adoptionList = new ArrayList<>();
         log.debug("[getUserAdoptions] :: userId: {}, userMail: {}", user.getId(), user.getEmail());
-        List<Adoption> adoptionList = adoptionRepository.findAdoptionByUserId(user.getId());
-        return adoptionMapper.toDtoList(adoptionList);
+        if (adoptionType.equals(AdoptionType.REAL.name())) {
+            adoptionList = adoptionRepository.findAdoptionByUserIdAndAdoptionType(user.getId(), AdoptionType.REAL);
+        } else if (adoptionType.equals(AdoptionType.VIRTUAL.name())) {
+            adoptionList = adoptionRepository.findAdoptionByUserIdAndAdoptionType(user.getId(), AdoptionType.VIRTUAL);
+        }
+        return adoptionMapper.toDto2List(adoptionList);
     }
 
     @Override

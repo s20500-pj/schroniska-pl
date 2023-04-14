@@ -2,7 +2,7 @@ import axios from "axios";
 import React, {useState, useEffect, useMemo} from "react";
 import Table from "../util/Table";
 
-function AnimalList() {
+function ShelterAnimalListt() {
     axios.defaults.withCredentials = true
 
     const [error, setError] = useState("");
@@ -62,6 +62,14 @@ function AnimalList() {
         ELDER: "stary"
     };
 
+    const ANIMAL_STATUS_OPTIONS = {
+        UNKNOWN: "nieznany",
+        NEEDS_MEDICAL_TREATMENT: "potrzebuje opieki medycznej",
+        READY_FOR_ADOPTION: "gotowy do adopcji",
+        ADOPTED: "zaadoptowany",
+        DEAD: "martwy"
+    };
+
     const columns = useMemo(
         () => [
             {
@@ -87,18 +95,15 @@ function AnimalList() {
                         Cell: ({value}) => SEX_OPTIONS[value]
                     },
                     {
-                        Header: "Nazwa schroniska",
-                        accessor: "shelter.shelterName"
-                    },
-                    {
-                        Header: "Miasto",
-                        accessor: "shelter.address.city"
-                    },
-                    {
                         Header: "Wiek",
                         accessor: "age",
                         Cell: ({value}) => AGE_OPTIONS[value]
-                    }
+                    },
+                    {
+                        Header: "Status",
+                        accessor: "animalStatus",
+                        Cell: ({value}) => ANIMAL_STATUS_OPTIONS[value]
+                    },
                 ]
             }
         ],
@@ -118,7 +123,7 @@ function AnimalList() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const result = await axios.post(
-            "http://localhost:8080/animal/search",
+            "http://localhost:8080/animal/getShelterAnimals",
             JSON.stringify(enteredAnimalFields), {
                 withCredentials: true,
                 headers: {
@@ -132,7 +137,7 @@ function AnimalList() {
     useEffect(() => {
         (async () => {
             const result = await axios.post(
-                "http://localhost:8080/animal/search",
+                "http://localhost:8080/animal/getShelterAnimals",
                 JSON.stringify(enteredAnimalFields), {
                     withCredentials: true,
                     headers: {
@@ -384,4 +389,4 @@ function AnimalList() {
     );
 }
 
-export default AnimalList;
+export default ShelterAnimalListt;

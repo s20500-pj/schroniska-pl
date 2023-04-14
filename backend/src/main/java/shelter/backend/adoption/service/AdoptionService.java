@@ -1,6 +1,7 @@
 package shelter.backend.adoption.service;
 
 import shelter.backend.rest.model.dtos.AdoptionDto;
+import shelter.backend.rest.model.dtos.AdoptionDto2;
 
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,7 @@ public interface AdoptionService {
      * list of adoptions for specific user
      * */
 
-    List<AdoptionDto> getUserAdoptions();
+    List<AdoptionDto2> getUserAdoptions(String adoptionType);
 
     List<AdoptionDto> search(Map<String, String> searchParams);
     /*

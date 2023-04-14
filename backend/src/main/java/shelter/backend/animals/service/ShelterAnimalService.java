@@ -38,10 +38,8 @@ public class ShelterAnimalService implements AnimalService {
 
     @Transactional
     public AnimalDto addAnimalToShelter(AnimalDto animalDto) {
-        String currentUsername = ClientInterceptor.getCurrentUsername();
-
         Animal animal = animalMapper.toEntity(animalDto);
-        User user = userRepository.findUserByEmail(currentUsername);
+        User user = getLoggedUser();
         animal.addShelter(user);
         animal = animalRepository.save(animal);
         user.getAnimals().add(animal);
@@ -88,6 +86,13 @@ public class ShelterAnimalService implements AnimalService {
         return animalMapper.toDtoList(animalRepository.findAll(animalSpecification));
     }
 
+    public List<AnimalDto> getShelterAnimals(String searchParams) {
+        Map<String, String> parsedSearchParams = parseSearchParams(searchParams);
+        parsedSearchParams.put("shelterId", getLoggedUser().getId().toString());
+        AnimalSpecification animalSpecification = new AnimalSpecification(parsedSearchParams);
+        return animalMapper.toDtoList(animalRepository.findAll(animalSpecification));
+    }
+
     private Map<String, String> parseSearchParams(String searchParams) {
         Map<String, String> params = new HashMap<>();
 
@@ -104,4 +109,8 @@ public class ShelterAnimalService implements AnimalService {
         return params;
     }
 
+    private User getLoggedUser() {
+        String currentUsername = ClientInterceptor.getCurrentUsername();
+        return userRepository.findUserByEmail(currentUsername);
+    }
 }
