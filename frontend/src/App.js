@@ -47,10 +47,10 @@ function App() {
                     <Route exact path="/loggedinuser" element={<LoggedInUser/>}/>
                     <Route exact path="/login" element={<Login loggingInfo={loggingInfo}/>}/>
                     <Route exact path="/animalList" element={<AnimalList/>}/>
-                    {localStorage.getItem("userType") === "SHELTER" ? <Route exact path="/addAnimal" element={<AddAnimal/>}/> : <Route exact path="/" element={<Home/>}/>}
-                    {localStorage.getItem("userType") === "SHELTER" ? <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/> : <Route exact path="/" element={<Home/>}/>}
-                    {localStorage.getItem("userType") === "PERSON" ? <Route exact path="/userVirtualAdoptionList" element={<UserVirtualAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
-                    {localStorage.getItem("userType") === "PERSON" ? <Route exact path="/userRealAdoptionList" element={<UserRealAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
+                    {userType === "SHELTER" ? <Route exact path="/addAnimal" element={<AddAnimal/>}/> : <Route exact path="/" element={<Home/>}/>}
+                    {userType === "SHELTER" ? <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/> : <Route exact path="/" element={<Home/>}/>}
+                    {userType === "PERSON" ? <Route exact path="/userVirtualAdoptionList" element={<UserVirtualAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
+                    {userType === "PERSON" ? <Route exact path="/userRealAdoptionList" element={<UserRealAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
                 </Routes>
             </Router>
             <Footer/>
