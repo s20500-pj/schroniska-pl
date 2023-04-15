@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, {useState, useEffect, useMemo} from "react";
 import Table from "../util/Table";
+import AnimalCard from "./AnimalCard";
 
 function ShelterAnimalListt() {
-    axios.defaults.withCredentials = true
+    axios.defaults.withCredentials = true;
 
     const [error, setError] = useState("");
     const [animal, setAnimal] = useState({
@@ -154,13 +155,13 @@ function ShelterAnimalListt() {
     };
 
     return (
-        <div className="App">
-            <div className="bg-background-pattern bg-opacity-20 max-w-none">
-                <div className="px-10 font-display bg-white bg-opacity-80">
+        <div className="flex p-5">
+            <div className="bg-background-pattern bg-opacity-20 max-w-none w-1/3">
+                <div className="px-5 font-display bg-white bg-opacity-80">
                     <h2 className="text-center text-2xl text-orange font-bold p-10">Filtry</h2>
-                    <form onSubmit={(e) => handleSubmit(e)} className="w-full max-w-lg m-auto py-10">
+                    <form onSubmit={(e) => handleSubmit(e)} className="w-full m-auto py-10">
                         <div className="flex flex-wrap">
-                            <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+                            <div className=" px-3 mb-6 md:mb-0">
                                 <label htmlFor="name"
                                        className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Imię:
@@ -168,27 +169,13 @@ function ShelterAnimalListt() {
                                 <input
                                     type={"text"}
                                     className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    placeholder="Podaj imię."
+                                    placeholder="Podaj imię"
                                     name="name"
                                     value={name}
                                     onChange={(e) => onInputChange(e)}
                                 />
                             </div>
-                            <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-                                <label htmlFor="city"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Miasto:
-                                </label>
-                                <input
-                                    type={"text"}
-                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    placeholder="Podaj miasto."
-                                    name="city"
-                                    value={city}
-                                    onChange={(e) => onInputChange(e)}
-                                />
-                            </div>
-                            <div className="w-full md:w-1/2 px-3">
+                            <div className=" w-full px-3 mb-6 md:mb-0">
                                 <label htmlFor="species"
                                        className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Gatunek:
@@ -204,7 +191,7 @@ function ShelterAnimalListt() {
                                     <option value="CAT">Kot</option>
                                 </select>
                             </div>
-                            <div className="w-full md:w-1/2 px-3">
+                            <div className="w-full px-3 mb-6 md:mb-0">
                                 <label htmlFor="sex"
                                        className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Płeć:
@@ -221,7 +208,7 @@ function ShelterAnimalListt() {
                                     <option value="UNKNOWN">nieznany</option>
                                 </select>
                             </div>
-                            <div className="w-full md:w-1/2 px-3">
+                            <div className=" w-full px-3 mb-6 md:mb-0">
                                 <label htmlFor="age"
                                        className=" block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Wiek:
@@ -239,7 +226,7 @@ function ShelterAnimalListt() {
                                     <option value="ELDER">stary</option>
                                 </select>
                             </div>
-                            <div className="w-full md:w-1/2 px-3">
+                            <div className="w-full px-3">
                                 <label htmlFor="animalStatus"
                                        className=" block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                     Status zwierzęcia:
@@ -257,10 +244,10 @@ function ShelterAnimalListt() {
                                     <option value="READY_FOR_ADOPTION">gotowy do adopcji</option>
                                 </select>
                             </div>
-                            <div className="w-full md:w-1/2 px-3">
+                            <div className="w-full px-3">
                                 <label htmlFor="sterilized"
                                        className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Wysterylizowany?:
+                                    Wysterylizowany:
                                 </label>
                                 <select
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
@@ -274,10 +261,10 @@ function ShelterAnimalListt() {
                                     <option value={true}>Tak</option>
                                 </select>
                             </div>
-                            <div className="w-full md:w-1/2 px-3">
+                            <div className="w-full px-3">
                                 <label htmlFor="vaccinated"
                                        className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Szczepienia?:
+                                    Szczepienia:
                                 </label>
                                 <select
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
@@ -291,10 +278,10 @@ function ShelterAnimalListt() {
                                     <option value={true}>Tak</option>
                                 </select>
                             </div>
-                            <div className="w-full md:w-1/2 px-3">
+                            <div className="w-full px-3">
                                 <label htmlFor="kidsFriendly"
                                        className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Przyjazny dzieciom?:
+                                    Przyjazny dzieciom:
                                 </label>
                                 <select
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
@@ -307,10 +294,10 @@ function ShelterAnimalListt() {
                                     <option value={true}>Tak</option>
                                 </select>
                             </div>
-                            <div className="w-full md:w-1/2 px-3">
+                            <div className="w-full px-3">
                                 <label htmlFor="couchPotato"
                                        className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Kanapowiec?:
+                                    Kanapowiec:
                                 </label>
                                 <select
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
@@ -323,10 +310,10 @@ function ShelterAnimalListt() {
                                     <option value={true}>Tak</option>
                                 </select>
                             </div>
-                            <div className="w-full md:w-1/2 px-3">
+                            <div className="w-full px-3">
                                 <label htmlFor="needsActiveness"
                                        className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Potrzebuje dużo ruchu?:
+                                    Potrzebuje dużo ruchu:
                                 </label>
                                 <select
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
@@ -339,10 +326,10 @@ function ShelterAnimalListt() {
                                     <option value={true}>Tak</option>
                                 </select>
                             </div>
-                            <div className="w-full md:w-1/2 px-3">
+                            <div className="w-full px-3">
                                 <label htmlFor="catsFriendly"
                                        className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Toleruje koty?:
+                                    Toleruje koty:
                                 </label>
                                 <select
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
@@ -355,10 +342,10 @@ function ShelterAnimalListt() {
                                     <option value={true}>Tak</option>
                                 </select>
                             </div>
-                            <div className="w-full md:w-1/2 px-3">
+                            <div className="w-full px-3">
                                 <label htmlFor="dogsFriendly"
                                        className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Toleruje psy?:
+                                    Toleruje psy:
                                 </label>
                                 <select
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
@@ -371,20 +358,23 @@ function ShelterAnimalListt() {
                                     <option value={true}>Tak</option>
                                 </select>
                             </div>
-                            <button type="submit"
-                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                                <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Filtruj</p>
-                            </button>
-                            <button onClick={handleClear}
-                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                                <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Czyść
-                                    filtry</p>
-                            </button>
+                            <div className="flex">
+                                <button type="submit"
+                                        className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                    <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Filtruj</p>
+                                </button>
+                                <button onClick={handleClear}
+                                        className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                    <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Czyść
+                                        filtry</p>
+                                </button>
+                            </div>
+
                         </div>
                     </form>
                 </div>
             </div>
-            <Table columns={columns} data={data} pageSize={20}/>
+            <AnimalCard data={data}/>
         </div>
     );
 }
