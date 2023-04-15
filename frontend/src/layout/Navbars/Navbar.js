@@ -24,7 +24,7 @@ export default function Nav() {
         <Disclosure as="nav" className="bg-white">
             {({open}) => (
                 <>
-                    <div className="mx-auto max-w-6xl px-2 sm:px-6 lg:px-6">
+                    <div className="mx-auto max-w-6xl px-2 sm:px-4 lg:px-4">
                         <div className="relative flex h-16 items-center justify-between">
                             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                                 {/* Mobile menu button*/}
@@ -40,14 +40,14 @@ export default function Nav() {
                             </div>
                             <div className="flex flex-1 items-start justify-center sm:items-stretch sm:justify-start">
                                 <Link to="/">
-                                    <div className="flex">
+                                    <div className="flex w-48">
                                         <img
-                                            className="block h-10 w-32 lg:hidden"
+                                            className="block lg:hidden"
                                             src={logo}
                                             alt="Logo schronisko.pl"
                                         />
                                         <img
-                                            className="hidden h-10 w-32 lg:block"
+                                            className="hidden lg:block"
                                             src={logo}
                                             alt="Logo schronisko.pl"
                                         />
@@ -55,14 +55,14 @@ export default function Nav() {
                                 </Link>
 
                                 <div className="hidden sm:ml-6 sm:block">
-                                    <div className="flex space-x-4">
+                                    <div className="flex">
                                         {navigation.map((item) => (
                                             <a
                                                 key={item.name}
                                                 href={item.href}
                                                 className={classNames(
                                                     item.current ? ' text-brown' : 'text-brown hover:text-orange',
-                                                    'rounded-md px-3 py-2 text-sm font-medium'
+                                                    'rounded-md px-3 py-5 text-sm font-medium active:text-bold'
                                                 )}
                                                 aria-current={item.current ? 'page' : undefined}
                                             >

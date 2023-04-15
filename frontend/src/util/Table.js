@@ -73,10 +73,10 @@ export default function Table({columns, data}) {
             </table>
             <div className="flex justify-center">
                 <button onClick={handlePreviousPage} disabled={!canPreviousPage} className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                    <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Poprzednia strona</p>
+                    <p className="py-15 justify-center text-base text-center text-brown font-medium	">Poprzednia strona</p>
                 </button>
                 <button onClick={handleNextPage} disabled={!canNextPage} className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                    <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Następna strona</p>
+                    <p className="py-15 justify-center text-base text-center text-brown font-medium	">Następna strona</p>
                 </button>
                 {pageIndex !== undefined && pageOptions !== undefined ? (
                     <div>

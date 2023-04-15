@@ -32,7 +32,7 @@ export default function NavbarShelter() {
         <Disclosure as="nav" className="bg-white">
             {({open}) => (
                 <>
-                    <div className="mx-auto max-w-6xl px-2 sm:px-6 lg:px-6">
+                    <div className="mx-auto max-w-6xl px-2 sm:px-4 lg:px-4">
                         <div className="relative flex h-16 items-center justify-between">
                             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                                 {/* Mobile menu button*/}
@@ -48,14 +48,14 @@ export default function NavbarShelter() {
                             </div>
                             <div className="flex flex-1 items-start justify-center sm:items-stretch sm:justify-start">
                                 <Link to="/">
-                                    <div className="flex">
+                                    <div className="flex w-48">
                                         <img
-                                            className="block h-10 w-32 lg:hidden"
+                                            className="block lg:hidden"
                                             src={logo}
                                             alt="Logo schronisko.pl"
                                         />
                                         <img
-                                            className="hidden h-10 w-32 lg:block"
+                                            className="hidden lg:block"
                                             src={logo}
                                             alt="Logo schronisko.pl"
                                         />
@@ -70,7 +70,7 @@ export default function NavbarShelter() {
                                                 href={item.href}
                                                 className={classNames(
                                                     item.current ? ' text-brown' : 'text-brown hover:text-orange',
-                                                    'rounded-md px-3 py-2 text-sm font-medium'
+                                                    'rounded-md px-3 py-5 text-sm font-medium'
                                                 )}
                                                 aria-current={item.current ? 'page' : undefined}
                                             >
@@ -85,7 +85,6 @@ export default function NavbarShelter() {
                             <div
                                 className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                                 <button className="flex ml-4 hover:text-orange " onClick={handleLogout}>
-
                                     <div className="flex">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6"
                                              fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -99,6 +98,25 @@ export default function NavbarShelter() {
                             </div>
                         </div>
                     </div>
+                    <Disclosure.Panel className="sm:hidden">
+                        <div className="space-y-1 px-2 pt-2 pb-3">
+                            {navigation.map((item) => (
+                                <Disclosure.Button
+                                    key={item.name}
+                                    as="a"
+                                    href={item.href}
+                                    className={classNames(
+                                        item.current ? 'bg-orange text-brown' : 'text-orange hover:bg-orange hover:text-brown',
+                                        'block rounded-md px-3 py-2 text-base font-medium'
+                                    )}
+                                    aria-current={item.current ? 'page' : undefined}
+                                >
+                                    {item.name}
+                                </Disclosure.Button>
+                            ))}
+
+                        </div>
+                    </Disclosure.Panel>
                 </>
             )}
         </Disclosure>

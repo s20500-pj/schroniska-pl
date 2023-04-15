@@ -53,7 +53,7 @@ export default function AddUser() {
 
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
-            <div className="px-10 font-display bg-white bg-opacity-80">
+            <div className="px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Załóż konto</h2>
                 {showPopup && <SuccessPopup message="Rejestracja pomyślna. Dziękujemy za rejestrację." />}
                 <form onSubmit={(e) => onSubmit(e)} className="w-full max-w-lg m-auto py-10">
