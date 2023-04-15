@@ -21,6 +21,7 @@ import NavbarPerson from "./layout/Navbars/NavbarPerson";
 import ShelterAnimalList from "./animal/ShelterAnimalList";
 import UserVirtualAdoptionList from "./adoption/UserVirtualAdoptionList";
 import UserRealAdoptionList from "./adoption/UserRealAdoptionList";
+import RODO from "./users/unlogged/RODO";
 
 function App() {
     axios.defaults.withCredentials = true
@@ -44,6 +45,7 @@ function App() {
                             <Hero/>}/>
                     <Route exact path="/adduser" element={<AddUser/>}/>
                     <Route exact path="/addshelter" element={<AddShelter/>}/>
+                    <Route exact path="/rodo" component={<RODO/>}/>
                     <Route exact path="/loggedinuser" element={<LoggedInUser/>}/>
                     <Route exact path="/login" element={<Login loggingInfo={loggingInfo}/>}/>
                     <Route exact path="/animalList" element={<AnimalList/>}/>
