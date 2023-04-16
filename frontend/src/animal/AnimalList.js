@@ -208,24 +208,6 @@ function AnimalList() {
                                 </select>
                             </div>
                             <div className="w-full px-3">
-                                <label htmlFor="animalStatus"
-                                       className=" block uppercase tracking-wide text-brown text-md font-bold">
-                                    Status zwierzęcia:
-                                </label>
-                                <select
-                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="animalStatus"
-                                    value={animalStatus}
-                                    defaultChecked={"UNKNOWN"}
-                                    onChange={(e) => onInputChange(e)}
-                                >
-                                    <option value="">---</option>
-                                    <option value="UNKNOWN">nieznany</option>
-                                    <option value="NEEDS_MEDICAL_TREATMENT">potrzebuje opieki medycznej</option>
-                                    <option value="READY_FOR_ADOPTION">gotowy do adopcji</option>
-                                </select>
-                            </div>
-                            <div className="w-full px-3">
                                 <label htmlFor="sterilized"
                                        className="block uppercase tracking-wide text-brown text-md font-bold ">
                                     Wysterylizowany:
