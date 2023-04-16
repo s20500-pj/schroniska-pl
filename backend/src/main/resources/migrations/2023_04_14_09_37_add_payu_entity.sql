@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset s20157:2023_04_14_09_37_add_payuentity.sql.sql
+--changeset s20157:2023_04_14_09_37_add_payu_entity.sql.sql
 
 CREATE TABLE IF NOT EXISTS payuclientCredentials
 (

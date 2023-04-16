@@ -6,16 +6,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import shelter.backend.rest.model.dtos.AnimalDto;
+import shelter.backend.rest.model.dtos.PayUClientCredentialsDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
 @Getter
+@Table(name = "payu_client_credentials")
 public class PayUClientCredentials {
 
     @Id
@@ -32,4 +36,12 @@ public class PayUClientCredentials {
     @JoinColumn(name = "shelter_id", nullable = false)
     private User shelter;
 
+    public PayUClientCredentials toEntity(PayUClientCredentialsDto dto, User shelter) {
+        this.id = dto.getId();
+        this.clientId = dto.getClientId();
+        this.clientSecret = dto.getClientSecret();
+        this.merchantPosId = dto.getMerchantPosId();
+        this.shelter = shelter;
+        return this;
+    }
 }

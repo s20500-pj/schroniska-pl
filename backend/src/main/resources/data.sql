@@ -33,6 +33,8 @@ UPDATE users SET approval_status = 'CONFIRMED' WHERE id = 3; /*shelter2@shelter*
 UPDATE users SET user_type = 'SHELTER' WHERE shelter_name IS NOT NULL;
 UPDATE users SET user_type = 'PERSON' WHERE first_name IS NOT NULL;
 
+INSERT INTO payu_client_credentials(client_id, client_secret, merchant_pos_id, shelter_id) VALUES ('463117', '913d4d4fc69fdadceb45f3469fc89341', '463117', 2)
+
 INSERT INTO animals(name,information,species,sex,age,birth_date,animal_status,sterilized,vaccinated,kids_friendly,couch_potato,needs_activeness,cats_friendly,dogs_friendly,available_for_walk,user_id) VALUES ('Max','Friendly and loves to play fetch','DOG','MALE','ADULT','2019-01-01',2,true,true,true,true,true,true,true,true,2);
 INSERT INTO animals(name,information,species,sex,age,birth_date,animal_status,sterilized,vaccinated,kids_friendly,couch_potato,needs_activeness,cats_friendly,dogs_friendly,available_for_walk,user_id) VALUES ('Majster','Friendly and loves to play fetch','DOG','MALE','ADULT','2019-01-01',2,true,true,true,true,true,true,true,true,2);
 INSERT INTO animals(name,information,species,sex,age,birth_date,animal_status,sterilized,vaccinated,kids_friendly,couch_potato,needs_activeness,cats_friendly,dogs_friendly,available_for_walk,user_id) VALUES ('ChinkiChinki','Friendly and loves to play fetch','DOG','MALE','ADULT','2019-01-01',2,true,true,true,true,true,true,true,true,3);

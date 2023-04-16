@@ -30,16 +30,17 @@ import java.util.List;
 public class ShelterRealAdoptionService extends ShelterAdoptionService implements RealAdoptionService {
 
 
-    private final long validUntil = 2L; //TODO add this to Preferences
+    private static final long VALID_UNTIL = 2L; //TODO add this to Preferences
 
-    public ShelterRealAdoptionService(AdoptionRepository adoptionRepository, AnimalRepository animalRepository, UserRepository userRepository, AdoptionMapper adoptionMapper, EmailService emailService) {
+    public ShelterRealAdoptionService(AdoptionRepository adoptionRepository, AnimalRepository animalRepository,
+                                      UserRepository userRepository, AdoptionMapper adoptionMapper, EmailService emailService) {
         super(adoptionRepository, animalRepository, userRepository, adoptionMapper, emailService);
     }
 
     @Override
     @Transactional
     public AdoptionDto2 beginRealAdoption(Long animalId) {
-        log.debug("[beginRealAdoption] :: adoptionId: {}", animalId);
+        log.debug("[beginRealAdoption] :: animalId: {}", animalId);
         Animal animal = animalRepository.findAnimalById(animalId);
         if (animal != null) {
             if (notAlreadyAdopted(animal)) {
@@ -70,7 +71,7 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
     private void sendInvitationEmail(Adoption adoption) {
         try {
             //TODO add preference for valudDate
-            adoption.setValidUntil(LocalDate.now().plusWeeks(validUntil));
+            adoption.setValidUntil(LocalDate.now().plusWeeks(VALID_UNTIL));
             emailService.sendAdoptionInvitation(adoption.getUser().getEmail(),
                     adoption.getAnimal().getShelter().getShelterName(), adoption.getValidUntil().toString(),
                     adoption.getId());
@@ -89,7 +90,7 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
         if (adoption.getAdoptionStatus() == AdoptionStatus.REQUIRES_MANUAL_INVITATION) {
             adoption.setAdoptionStatus(AdoptionStatus.SHELTER_INVITED);
             //TODO add preference for valudDate
-            adoption.setValidUntil(LocalDate.now().plusWeeks(validUntil));
+            adoption.setValidUntil(LocalDate.now().plusWeeks(VALID_UNTIL));
         }
         return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }

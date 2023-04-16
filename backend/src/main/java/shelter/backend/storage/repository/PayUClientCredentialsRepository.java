@@ -6,5 +6,5 @@ import shelter.backend.rest.model.entity.PayUClientCredentials;
 import shelter.backend.rest.model.entity.Token;
 
 @Repository
-public interface PayUClientCredentialsRepository extends CrudRepository<PayUClientCredentials, String> {
+public interface PayUClientCredentialsRepository extends CrudRepository<PayUClientCredentials, Long> {
 }

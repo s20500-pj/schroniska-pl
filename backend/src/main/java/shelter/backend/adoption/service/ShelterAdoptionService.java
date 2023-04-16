@@ -82,7 +82,7 @@ public class ShelterAdoptionService implements AdoptionService {
             return adoptionMapper.toDto2List(adoptionList);
         }
     }
-    
+
     @Override
     public AdoptionDto2 getAdoptionById(Long id) {
         log.debug("[finalizeAdoption] :: adoptionId: {}, userName: {}", id, getUser().getEmail());

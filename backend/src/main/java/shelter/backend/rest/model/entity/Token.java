@@ -12,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 public class Token implements Serializable {
+
     private String id;
 
     private String token;
