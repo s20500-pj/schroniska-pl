@@ -47,7 +47,7 @@ public class PayUService implements PaymentService {
         PayUClientCredentials payUClientCredentials = payUClientCredentialsRepository.findById(shelter.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje schronisko dla wybranego id"));
         String accessToken = getAccessToken(payUClientCredentials);
-        return makeOder(user, shelter, amount, purpose, accessToken);
+        return makeOrder(user, shelter, amount, purpose, accessToken);
     }
 
     private String getAccessToken(PayUClientCredentials payUClientCredentials) {
@@ -57,7 +57,7 @@ public class PayUService implements PaymentService {
         return payUAuthToken.getAccessToken();
     }
 
-    private String makeOder(User user, User shelter, long amount, Purpose purpose, String accessToken) {
+    private String makeOrder(User user, User shelter, long amount, Purpose purpose, String accessToken) {
 //        final OrderCreateRequest orderRequest = prepareOrderCreateRequest(payUForm, request);
 //
 //        log.info("Order request = {}", orderRequest);
