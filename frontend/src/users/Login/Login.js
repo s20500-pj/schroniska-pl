@@ -50,7 +50,7 @@ function Login({loggingInfo}) {
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
             {error && <p>{error}</p>}
-            <div className="px-10 font-display bg-white bg-opacity-80">
+            <div className="px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Zaloguj</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="block w-80 m-auto">

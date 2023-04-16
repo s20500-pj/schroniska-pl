@@ -84,10 +84,10 @@ export default function AddAnimal() {
 
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
-            <div className="px-10 font-display bg-white bg-opacity-80">
+            <div className="px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Dodaj zwięrzę do schroniska</h2>
                 {showPopup && <SuccessPopup message="Rejestracja pomyślna. Dziękujemy za rejestrację."/>}
-                <form onSubmit={(e) => onSubmit(e)} className="w-full max-w-lg m-auto py-10">
+                <form onSubmit={(e) => onSubmit(e)} className="w-full max-w-lg m-auto pb-5">
                     <div className="flex flex-wrap">
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">
                             <label htmlFor="name"

@@ -21,6 +21,8 @@ import NavbarPerson from "./layout/Navbars/NavbarPerson";
 import ShelterAnimalList from "./animal/ShelterAnimalList";
 import UserVirtualAdoptionList from "./adoption/UserVirtualAdoptionList";
 import UserRealAdoptionList from "./adoption/UserRealAdoptionList";
+import RODO from "./users/unlogged/RODO";
+import PersonSettings from "./users/person/PersonSettings";
 
 function App() {
     axios.defaults.withCredentials = true
@@ -31,7 +33,7 @@ function App() {
     const userType = localStorage.getItem("userType");
 
     return (
-        <div className="m-auto font-display">
+        <div className="m-auto font-display h-fit">
             <Router>
 
                 {(userType === "ADMIN") ? <NavbarAdmin/> :
@@ -44,6 +46,7 @@ function App() {
                             <Hero/>}/>
                     <Route exact path="/adduser" element={<AddUser/>}/>
                     <Route exact path="/addshelter" element={<AddShelter/>}/>
+                    <Route exact path="/rodo" component={<RODO/>}/>
                     <Route exact path="/loggedinuser" element={<LoggedInUser/>}/>
                     <Route exact path="/login" element={<Login loggingInfo={loggingInfo}/>}/>
                     <Route exact path="/animalList" element={<AnimalList/>}/>
@@ -51,6 +54,8 @@ function App() {
                     {userType === "SHELTER" ? <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/> : <Route exact path="/" element={<Home/>}/>}
                     {userType === "PERSON" ? <Route exact path="/userVirtualAdoptionList" element={<UserVirtualAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
                     {userType === "PERSON" ? <Route exact path="/userRealAdoptionList" element={<UserRealAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
+                    {userType === "PERSON" ? <Route exact path="/personsettings" element={<PersonSettings/>}/> : <Route exact path="/" element={<Home/>}/>}
+
                 </Routes>
             </Router>
             <Footer/>

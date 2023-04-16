@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import axios from "axios";
 import SuccessPopup from "./SuccessPopup";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function AddShelter() {
     const [error, setError] = useState("");
@@ -62,7 +62,7 @@ export default function AddShelter() {
 
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
-            <div className="px-10 font-display bg-white bg-opacity-80">
+            <div className="px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Zarejestruj schronisko</h2>
                 {showPopup && <SuccessPopup message="Rejestracja pomyślna. Dziękujemy za rejestrację." />}
                 <form onSubmit={(e) => onSubmit(e)} className="w-full max-w-lg m-auto py-10">
@@ -216,6 +216,16 @@ export default function AddShelter() {
                                 onChange={(e) => onInputChange(e)}
                                 required
                             />
+                        </div>
+                        <div className="py-3 px-4">
+                            <input id="default-radio-1" type="radio" value="" name="default-radio"
+                                   className="w-4 h-4 text-orange bg-orange border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                            <label htmlFor="default-radio-1"
+                                   className="ml-2 text-sm font-medium text-orange ">
+                                Oświadczam, że zapoznałem się z {' '}
+                                <Link to="/rodo" className="underline">Regulaminem Serwisu </Link>
+                                i akceptuje jego zasady.
+                            </label>
                         </div>
                     </div>
                     <button type="submit"

@@ -9,7 +9,9 @@ const navigation = [
     {name: 'Lista zwierząt', href: '/animalList', current: false},
     {name: 'Adopcja', href: '/userRealAdoptionList', current: false},
     {name: 'Adopcja wirtualna', href: '/userVirtualAdoptionList', current: false},
-    {name: 'Wolontariat', href: '#', current: false}
+    {name: 'Wolontariat', href: '#', current: false},
+    {name: 'Moje dane', href: '/personsettings', current: false}
+
 ]
 
 function classNames(...classes) {
@@ -31,7 +33,7 @@ export default function NavbarPerson() {
         <Disclosure as="nav" className="bg-white">
             {({open}) => (
                 <>
-                    <div className="mx-auto max-w-6xl px-2 sm:px-6 lg:px-6">
+                    <div className="mx-auto max-w-6xl px-2 sm:px-4 lg:px-4">
                         <div className="relative flex h-16 items-center justify-between">
                             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                                 {/* Mobile menu button*/}
@@ -47,14 +49,14 @@ export default function NavbarPerson() {
                             </div>
                             <div className="flex flex-1 items-start justify-center sm:items-stretch sm:justify-start">
                                 <Link to="/">
-                                    <div className="flex">
+                                    <div className="flex w-48">
                                         <img
-                                            className="block h-10 w-32 lg:hidden"
+                                            className="block  lg:hidden"
                                             src={logo}
                                             alt="Logo schronisko.pl"
                                         />
                                         <img
-                                            className="hidden h-10 w-32 lg:block"
+                                            className="hidden  lg:block"
                                             src={logo}
                                             alt="Logo schronisko.pl"
                                         />
@@ -69,7 +71,7 @@ export default function NavbarPerson() {
                                                 href={item.href}
                                                 className={classNames(
                                                     item.current ? ' text-brown' : 'text-brown hover:text-orange',
-                                                    'rounded-md px-3 py-2 text-sm font-medium'
+                                                    'rounded-md px-3 py-5 text-sm font-medium'
                                                 )}
                                                 aria-current={item.current ? 'page' : undefined}
                                             >
@@ -98,6 +100,28 @@ export default function NavbarPerson() {
                             </div>
                         </div>
                     </div>
+                    <Disclosure.Panel className="sm:hidden">
+                        <div className="space-y-1 px-2 pt-2 pb-3">
+                            {navigation.map((item) => (
+                                <Disclosure.Button
+                                    key={item.name}
+                                    as="a"
+                                    href={item.href}
+                                    className={classNames(
+                                        item.current ? 'bg-orange text-brown' : 'text-orange hover:bg-orange hover:text-brown',
+                                        'block rounded-md px-3 py-2 text-base font-medium'
+                                    )}
+                                    aria-current={item.current ? 'page' : undefined}
+                                >
+                                    {item.name}
+
+                                </Disclosure.Button>
+
+                            ))}
+
+
+                        </div>
+                    </Disclosure.Panel>
                 </>
             )}
         </Disclosure>
