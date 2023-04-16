@@ -162,6 +162,20 @@ function ShelterAnimalList() {
                     <form onSubmit={(e) => handleSubmit(e)} className="w-full m-auto">
                         <div className="flex flex-wrap p-5">
                             <div className=" w-full px-3 ">
+                                <label htmlFor="name"
+                                       className="block uppercase tracking-wide text-brown text-md font-bold">
+                                    Imię:
+                                </label>
+                                <input
+                                    type={"text"}
+                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    placeholder="Podaj imię."
+                                    name="name"
+                                    value={name}
+                                    onChange={(e) => onInputChange(e)}
+                                />
+                            </div>
+                            <div className=" w-full px-3 ">
                                 <label htmlFor="species"
                                        className="block uppercase tracking-wide text-brown text-md font-bold">
                                     Gatunek:
