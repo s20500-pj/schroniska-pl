@@ -8,4 +8,10 @@ public class ShelterConstants {
 
     public static final String CLIENT_SECRET = "client_secret";
 
+    public static final String PLN_CURRENCY = "PLN";
+
+    public static final String ORDER_LANG = "pl";
+
+    public static final String AUTHORIZATION_COOKIE_NAME = "authorization";
+
 }

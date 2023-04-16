@@ -235,14 +235,6 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
         return adoption;
     }
 
-    private boolean notAlreadyAdopted(Animal animal) {
-        return animal.getAdoptions().stream().noneMatch(adoption -> adoption.getAdoptionStatus() == AdoptionStatus.ADOPTED ||
-                adoption.getAdoptionStatus() == AdoptionStatus.VISITED) ||
-                animal.getAnimalStatus() == AnimalStatus.DEAD ||
-                animal.getAnimalStatus() == AnimalStatus.DELETED ||
-                animal.getAnimalStatus() == AnimalStatus.UNKNOWN;
-    }
-
     @Async
     @Scheduled(cron = "0 5 0 * * ?")   //check every day at 00:05 AM
     @Transactional

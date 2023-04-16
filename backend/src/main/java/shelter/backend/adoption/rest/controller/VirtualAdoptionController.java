@@ -1,5 +1,6 @@
 package shelter.backend.adoption.rest.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shelter.backend.adoption.service.VirtualAdoptionService;
+import shelter.backend.payment.payu.rest.model.OrderDataRequest;
 
 import java.net.URI;
 
@@ -19,9 +21,12 @@ public class VirtualAdoptionController {
 
     private final VirtualAdoptionService virtualAdoptionService;
 
+    private final OrderDataRequest requestData;
+
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/virtual/{animalId}/{amount}")
-    ResponseEntity<Void> beginVirtualAdoption(@PathVariable Long animalId, @PathVariable Long amount) {
+    ResponseEntity<Void> beginVirtualAdoption(@PathVariable Long animalId, @PathVariable Long amount, HttpServletRequest request) {
+        requestData.setIpAddress(request.getRemoteAddr());
         String redirect_uri = virtualAdoptionService.beginVirtualAdoption(animalId, amount);
         URI location = URI.create(redirect_uri);
         return ResponseEntity.status(HttpStatus.FOUND)

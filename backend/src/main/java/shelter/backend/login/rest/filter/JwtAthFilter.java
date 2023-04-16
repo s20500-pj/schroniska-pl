@@ -18,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import shelter.backend.configuration.security.CookieAuthenticationFilter;
 import shelter.backend.login.JwtUtils;
 import shelter.backend.login.service.UserDetailsService;
+import shelter.backend.utils.constants.ShelterConstants;
 import shelter.backend.utils.exception.AdoptionException;
 import shelter.backend.utils.exception.AuthenticationException;
 
@@ -42,7 +43,7 @@ public class JwtAthFilter extends OncePerRequestFilter {
         String userEmail = null;
 
         Optional<Cookie> cookie = Arrays.stream(request.getCookies() != null ? request.getCookies() : new Cookie[0])
-                .filter(c -> c.getName().equals(CookieAuthenticationFilter.COOKIE_NAME))
+                .filter(c -> c.getName().equals(ShelterConstants.AUTHORIZATION_COOKIE_NAME))
                 .findFirst();
 
         if (cookie.isPresent()) {

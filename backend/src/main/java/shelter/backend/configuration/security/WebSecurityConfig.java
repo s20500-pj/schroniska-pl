@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shelter.backend.login.rest.filter.JwtAthFilter;
 import shelter.backend.login.service.UserDetailsService;
+import shelter.backend.utils.constants.ShelterConstants;
 
 @Configuration
 @RequiredArgsConstructor
@@ -53,7 +54,7 @@ public class WebSecurityConfig {
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().logout().deleteCookies(CookieAuthenticationFilter.COOKIE_NAME)
+                .and().logout().deleteCookies(ShelterConstants.AUTHORIZATION_COOKIE_NAME)
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)

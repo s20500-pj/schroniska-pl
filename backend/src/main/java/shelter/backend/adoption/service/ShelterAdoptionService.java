@@ -9,8 +9,11 @@ import shelter.backend.email.EmailService;
 import shelter.backend.rest.model.dtos.AdoptionDto;
 import shelter.backend.rest.model.dtos.AdoptionDto2;
 import shelter.backend.rest.model.entity.Adoption;
+import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.User;
+import shelter.backend.rest.model.enums.AdoptionStatus;
 import shelter.backend.rest.model.enums.AdoptionType;
+import shelter.backend.rest.model.enums.AnimalStatus;
 import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.AdoptionMapper;
 import shelter.backend.rest.model.specification.AdoptionSpecification;
@@ -94,6 +97,14 @@ public class ShelterAdoptionService implements AdoptionService {
     protected User getUser() {
         String username = ClientInterceptor.getCurrentUsername();
         return userRepository.findUserByEmail(username);
+    }
+
+    protected boolean notAlreadyAdopted(Animal animal) {
+        return animal.getAdoptions().stream().noneMatch(adoption -> adoption.getAdoptionStatus() == AdoptionStatus.ADOPTED ||
+                adoption.getAdoptionStatus() == AdoptionStatus.VISITED) ||
+                animal.getAnimalStatus() == AnimalStatus.DEAD ||
+                animal.getAnimalStatus() == AnimalStatus.DELETED ||
+                animal.getAnimalStatus() == AnimalStatus.UNKNOWN;
     }
 
     @Override

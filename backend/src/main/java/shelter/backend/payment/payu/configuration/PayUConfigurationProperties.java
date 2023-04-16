@@ -15,6 +15,7 @@ public class PayUConfigurationProperties {
     private String orderUrl;
     private String grantType;
     private String callbackPath;
+    private String notifyPath;
 
 
     //    @Bean("payuApiRestTemplate")

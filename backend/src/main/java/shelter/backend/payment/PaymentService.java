@@ -6,6 +6,6 @@ import shelter.backend.rest.model.enums.Purpose;
 
 public interface PaymentService {
 
-    String commencePayment(long amount, User user, Animal animal, Purpose purpose);
+    String commencePayment(User user, Animal animal);
 
 }
