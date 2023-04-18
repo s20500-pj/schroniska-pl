@@ -1,6 +1,8 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useState} from "react";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
+import {Link} from "react-router-dom";
+
 export default function AnimalCard({data, rename}) {
     axios.defaults.withCredentials = true;
 
@@ -41,7 +43,10 @@ export default function AnimalCard({data, rename}) {
                 <div className="p-5 flex " key={data.id}>
                     <div className="bg-white rounded-3xl shadow-xl overflow-hidden hover:scale-105 ">
                         <div className="w-[200px] ">
-                            <img src={data.imagePath} alt="Zdjecie zwierzęcia" className="object-cover h-48 w-64" />
+                            <Link to={`/animalDetails/${data.id}`}>
+                                <img src={data.imagePath} alt="Zdjecie zwierzęcia"
+                                     className="object-cover h-48 w-64"/>
+                            </Link>
                             <div className="bg-orange p-4 w-30 sm:p-6 ">
                                 <p className="text-[22px] font-bold">{data.name}</p>
                                 <div className="flex">
@@ -54,8 +59,8 @@ export default function AnimalCard({data, rename}) {
                 </div>
             )
         })
-    const pageCount = Math.ceil(data.length/animalsPerPage);
-    const changePage = ({ selected }) => {
+    const pageCount = Math.ceil(data.length / animalsPerPage);
+    const changePage = ({selected}) => {
         setPageNumber(selected);
     };
 
@@ -66,14 +71,18 @@ export default function AnimalCard({data, rename}) {
                 {displayAnimals}
             </div>
             <ReactPaginate
-                previousLabel={ <button className="px-10 py-2  border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                    <p className="py-15 justify-center text-base text-center text-brown font-medium	">Poprzednia strona</p>
+                previousLabel={<button
+                    className="px-10 py-2  border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                    <p className="py-15 justify-center text-base text-center text-brown font-medium	">Poprzednia
+                        strona</p>
                 </button>
                 }
-                nextLabel={ <button className="px-10 py-2 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                    <p className="py-15 justify-center text-base text-center text-brown font-medium	">Następna strona</p>
+                nextLabel={<button
+                    className="px-10 py-2 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                    <p className="py-15 justify-center text-base text-center text-brown font-medium	">Następna
+                        strona</p>
                 </button>}
-                pageCount={ pageCount
+                pageCount={pageCount
                 }
                 pageClassName="block border-none text-brown hover:bg-orange border-2 rounded-2xl m-3 p-3"
                 onPageChange={changePage}
@@ -85,6 +94,5 @@ export default function AnimalCard({data, rename}) {
 
             />
         </div>
-
     )
 }

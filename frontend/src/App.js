@@ -23,6 +23,7 @@ import UserVirtualAdoptionList from "./adoption/UserVirtualAdoptionList";
 import UserRealAdoptionList from "./adoption/UserRealAdoptionList";
 import RODO from "./users/unlogged/RODO";
 import PersonSettings from "./users/person/PersonSettings";
+import AnimalDetails from "./animal/AnimalDetails";
 
 function App() {
     axios.defaults.withCredentials = true
@@ -50,6 +51,7 @@ function App() {
                     <Route exact path="/loggedinuser" element={<LoggedInUser/>}/>
                     <Route exact path="/login" element={<Login loggingInfo={loggingInfo}/>}/>
                     <Route exact path="/animalList" element={<AnimalList/>}/>
+                    <Route exact path="/animalDetails/:id" element={<AnimalDetails />} />
                     {userType === "SHELTER" ? <Route exact path="/addAnimal" element={<AddAnimal/>}/> : <Route exact path="/" element={<Home/>}/>}
                     {userType === "SHELTER" ? <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/> : <Route exact path="/" element={<Home/>}/>}
                     {userType === "PERSON" ? <Route exact path="/userVirtualAdoptionList" element={<UserVirtualAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}

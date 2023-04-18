@@ -20,5 +20,5 @@ public class AdoptionDto2 {
     private AdoptionStatus adoptionStatus;
     private LocalDate validUntil;
     private UserDto user;
-    private AnimalDto animalDto;
+    private AnimalDto animal;
 }
