@@ -1,34 +1,89 @@
 import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
-export default function AnimalCard({data}) {
+import ReactPaginate from "react-paginate";
+export default function AnimalCard({data, rename}) {
     axios.defaults.withCredentials = true;
 
+    const SPECIES_OPTIONS = {
+        CAT: "Kot",
+        DOG: "Pies"
+    };
+
+    const SEX_OPTIONS = {
+        MALE: "Samiec",
+        FEMALE: "Samica",
+        UNKNOWN: "Nieznany"
+    };
+
+    const AGE_OPTIONS = {
+        VERY_YOUNG: "Bardzo młody",
+        YOUNG: "młody",
+        ADULT: "dorosły",
+        ELDER: "stary"
+    };
+
+    const ANIMAL_STATUS_OPTIONS = {
+        UNKNOWN: "nieznany",
+        NEEDS_MEDICAL_TREATMENT: "potrzebuje opieki medycznej",
+        READY_FOR_ADOPTION: "gotowy do adopcji",
+        ADOPTED: "zaadoptowany",
+        DEAD: "martwy"
+    };
+
+
+    const [pageNumber, setPageNumber] = useState(0);
+    const animalsPerPage = 6;
+    const pagesVisited = pageNumber * animalsPerPage;
+    const displayAnimals = data
+        .slice(pagesVisited, pagesVisited + animalsPerPage)
+        .map(data => {
+            return (
+                <div className="p-5 flex " key={data.id}>
+                    <div className="bg-white rounded-3xl shadow-xl overflow-hidden hover:scale-105 ">
+                        <div className="w-[200px] ">
+                            <img src={data.imagePath} alt="Zdjecie zwierzęcia" className="object-cover h-48 w-64" />
+                            <div className="bg-orange p-4 w-30 sm:p-6 ">
+                                <p className="text-[22px] font-bold">{data.name}</p>
+                                <div className="flex">
+                                    <p className="font-bold text-gray-700 text-[16px] mb-1">{SEX_OPTIONS[data.sex]}</p>
+                                </div>
+                                <p className="font-[15px]">{AGE_OPTIONS[data.age]}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        })
+    const pageCount = Math.ceil(data.length/animalsPerPage);
+    const changePage = ({ selected }) => {
+        setPageNumber(selected);
+    };
 
     return (
         <div className="md:h-fit sm:h-fit ">
             <h3 className="font-display text-center text-brown font-bold text-2xl">Zwierzęta w schroniskach</h3>
             <div className="flex flex-wrap h-fit justify-start">
-                {data.map(data => {
-                    return (
-                        <div className="p-5 flex " key={data.id}>
-                            <div className="bg-white rounded-3xl shadow-xl overflow-hidden hover:scale-105 ">
-                                <div className="w-[200px] ">
-                                    <img src={data.imagePath} alt="Zdjecie zwierzęcia" className="object-cover h-48 w-64" />
-                                    <div className="bg-orange p-4 w-30 sm:p-6 ">
-                                        <p className="text-[22px] font-bold">{data.name}</p>
-                                        <div className="flex">
-                                            <p className="font-bold text-gray-700 text-[16px] mb-1">{data.sex}</p>
-                                        </div>
-                                        <p className="font-[15px]">{data.age}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                })
-                }
+                {displayAnimals}
             </div>
+            <ReactPaginate
+                previousLabel={ <button className="px-10 py-2  border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                    <p className="py-15 justify-center text-base text-center text-brown font-medium	">Poprzednia strona</p>
+                </button>
+                }
+                nextLabel={ <button className="px-10 py-2 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                    <p className="py-15 justify-center text-base text-center text-brown font-medium	">Następna strona</p>
+                </button>}
+                pageCount={ pageCount
+                }
+                pageClassName="block border-none text-brown hover:bg-orange border-2 rounded-2xl m-3 p-3"
+                onPageChange={changePage}
+                containerClassName={"flex items-center justify-center mt-8"}
+                previousLinkClassName={"previousBttn"}
+                nextLinkClassName={"nextBttn"}
+                disabledClassName={"paginationDisabled"}
+                activeClassName={"bg-orange"}
 
+            />
         </div>
 
     )
