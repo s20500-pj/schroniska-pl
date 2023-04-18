@@ -1,10 +1,37 @@
 import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
-export default function AnimalCard({data}) {
+export default function AnimalCard({data, rename}) {
     axios.defaults.withCredentials = true;
-    const [pageNumber, setPageNumber] = useState(0);
 
+    const SPECIES_OPTIONS = {
+        CAT: "Kot",
+        DOG: "Pies"
+    };
+
+    const SEX_OPTIONS = {
+        MALE: "Samiec",
+        FEMALE: "Samica",
+        UNKNOWN: "Nieznany"
+    };
+
+    const AGE_OPTIONS = {
+        VERY_YOUNG: "Bardzo młody",
+        YOUNG: "młody",
+        ADULT: "dorosły",
+        ELDER: "stary"
+    };
+
+    const ANIMAL_STATUS_OPTIONS = {
+        UNKNOWN: "nieznany",
+        NEEDS_MEDICAL_TREATMENT: "potrzebuje opieki medycznej",
+        READY_FOR_ADOPTION: "gotowy do adopcji",
+        ADOPTED: "zaadoptowany",
+        DEAD: "martwy"
+    };
+
+
+    const [pageNumber, setPageNumber] = useState(0);
     const animalsPerPage = 6;
     const pagesVisited = pageNumber * animalsPerPage;
     const displayAnimals = data
@@ -18,9 +45,9 @@ export default function AnimalCard({data}) {
                             <div className="bg-orange p-4 w-30 sm:p-6 ">
                                 <p className="text-[22px] font-bold">{data.name}</p>
                                 <div className="flex">
-                                    <p className="font-bold text-gray-700 text-[16px] mb-1">{data.sex}</p>
+                                    <p className="font-bold text-gray-700 text-[16px] mb-1">{SEX_OPTIONS[data.sex]}</p>
                                 </div>
-                                <p className="font-[15px]">{data.age}</p>
+                                <p className="font-[15px]">{AGE_OPTIONS[data.age]}</p>
                             </div>
                         </div>
                     </div>
