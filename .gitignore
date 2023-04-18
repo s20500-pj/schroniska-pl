@@ -155,4 +155,5 @@ psd
 thumb
 sketch
 .idea
-# End of https://www.toptal.com/developers/gitignore/api/intellij,java,react
+# images
+frontend/public/images
