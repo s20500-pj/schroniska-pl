@@ -2,6 +2,7 @@ package shelter.backend.adoption.service;
 
 import shelter.backend.rest.model.dtos.AdoptionDto;
 import shelter.backend.rest.model.dtos.AdoptionDto2;
+import shelter.backend.rest.model.enums.AdoptionType;
 
 import java.util.List;
 import java.util.Map;
@@ -11,18 +12,18 @@ public interface AdoptionService {
     AdoptionDto beginRealAdoption(Long animalId);
 
     /*
-    * aproove adoption in Shelter panel and send invitation email
-    * */
-    List<AdoptionDto> sendInvitationRealAdoption(List<Long> adoptionIds);
+     * aproove adoption in Shelter panel and send invitation email
+     * */
+    AdoptionDto sendInvitationRealAdoption(Long adoptionId);
 
     /*
      * in case when invitation email is not send. Shelter contact with user to invite him and accepts the adoption
      * */
-    List<AdoptionDto> acceptManualInvitedAdoption(List<Long> adoptionIds);
+    AdoptionDto acceptManualInvitedAdoption(Long adoptionId);
 
     /*
-    * when user visits the shelter to continue adoption
-    * */
+     * when user visits the shelter to continue adoption
+     * */
     AdoptionDto confirmVisit(Long adoptionId);
 
     AdoptionDto declineRealAdoption(Long adoptionId, boolean declineAll);
@@ -36,7 +37,7 @@ public interface AdoptionService {
     /////BOTH
     AdoptionDto extendTimeForAdoption(Long adoptionId, Long plusWeeks);
 
-    List<AdoptionDto> getAll();
+    List<AdoptionDto2> getAll(AdoptionType adoptionType);
     /*
      * list of adoptions for specific user
      * */
@@ -48,6 +49,6 @@ public interface AdoptionService {
      * finish the adoption process succesfully. After the user adopts the animal.
      * */
 
-    AdoptionDto getAdoptionById(Long id);
+    AdoptionDto2 getAdoptionById(Long id);
     /////
 }

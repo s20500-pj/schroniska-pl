@@ -1,6 +1,5 @@
 package shelter.backend.adoption.service;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import shelter.backend.email.EmailService;
 import shelter.backend.rest.model.dtos.AdoptionDto;
 import shelter.backend.rest.model.dtos.AdoptionDto2;
-import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.User;
@@ -33,8 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -65,28 +61,17 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public List<AdoptionDto> sendInvitationRealAdoption(List<Long> adoptionIds) {
-        log.debug("[sendInvitationRealAdoption] :: adoptionIds: {}", adoptionIds);
-        List<AdoptionDto> adoptionDtoList = new ArrayList<>();
-        adoptionIds.forEach(adoptionId -> {
-            Optional<Adoption> adoptionOpt = adoptionRepository.findById(adoptionId);
-            adoptionOpt.ifPresent(adoption -> {
-                sendInvitationEmail(adoption);
-                adoptionRepository.save(adoption);
-                adoptionDtoList.add(adoption.toDto());
-            });
-        });
-        List<AdoptionDto> manualAdoptions = adoptionDtoList.stream()
-                .filter(adoptionDto -> adoptionDto.getAdoptionStatus() == AdoptionStatus.REQUIRES_MANUAL_INVITATION)
-                .toList();
-        if (!manualAdoptions.isEmpty()) {
-            String userMails = manualAdoptions.stream()
-                    .map(AdoptionDto::getUser)
-                    .map(UserDto::getEmail)
-                    .collect(Collectors.joining(", "));
-            throw new MessageNotSendException("Problem z wysłaniem maila. Wymagany jest kontakt z użytkownikiem: " + userMails);
+    public AdoptionDto sendInvitationRealAdoption(Long adoptionId) {
+        log.debug("[sendInvitationRealAdoption] :: adoptionIds: {}", adoptionId);
+        Adoption adoption = adoptionRepository.findById(adoptionId).orElseThrow(() -> new AdoptionException("Nie znaleziono adopcji o podanym id"));
+        sendInvitationEmail(adoption);
+        adoptionRepository.save(adoption);
+
+        if (adoption.getAdoptionStatus().equals(AdoptionStatus.REQUIRES_MANUAL_INVITATION)) {
+            String userMail = adoption.getUser().getEmail();
+            throw new MessageNotSendException("Problem z wysłaniem maila. Wymagany jest kontakt z użytkownikiem: " + userMail);
         } else {
-            return adoptionDtoList;
+            return adoption.toDto();
         }
     }
 
@@ -106,21 +91,15 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public List<AdoptionDto> acceptManualInvitedAdoption(List<Long> adoptionIds) {
-        log.debug("[acceptManualInvitedAdoption] :: adoptionIds: {}", adoptionIds);
-        List<AdoptionDto> adoptionDtoList = new ArrayList<>();
-        adoptionIds.forEach(adoptionId -> {
-            Optional<Adoption> adoptionOpt = adoptionRepository.findById(adoptionId);
-            adoptionOpt.ifPresent(adoption -> {
-                if (adoption.getAdoptionStatus() == AdoptionStatus.REQUIRES_MANUAL_INVITATION) {
-                    adoption.setAdoptionStatus(AdoptionStatus.SHELTER_INVITED);
-                    //TODO add preference for valudDate
-                    adoption.setValidUntil(LocalDate.now().plusWeeks(validUntil));
-                    adoptionDtoList.add(adoption.toDto());
-                }
-            });
-        });
-        return adoptionDtoList;
+    public AdoptionDto acceptManualInvitedAdoption(Long adoptionId) {
+        log.debug("[acceptManualInvitedAdoption] :: adoptionId: {}", adoptionId);
+        Adoption adoption = adoptionRepository.findById(adoptionId).orElseThrow(() -> new AdoptionException("Nie znaleziono adopcji o podanym id"));
+        if (adoption.getAdoptionStatus() == AdoptionStatus.REQUIRES_MANUAL_INVITATION) {
+            adoption.setAdoptionStatus(AdoptionStatus.SHELTER_INVITED);
+            //TODO add preference for valudDate
+            adoption.setValidUntil(LocalDate.now().plusWeeks(validUntil));
+        }
+        return adoption.toDto();
     }
 
     @Override
@@ -234,16 +213,16 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public List<AdoptionDto> getAll() {
+    public List<AdoptionDto2> getAll(AdoptionType adoptionType) {
         List<Adoption> adoptionList;
         User user = getUser();
         log.debug("[getAll] :: userId: {}, userName: {}", user.getId(), user.getEmail());
         if (user.getUserType() == UserType.SHELTER) {
-            adoptionList = adoptionRepository.findAdoptionByAnimal_ShelterId(user.getId());
+            adoptionList = adoptionRepository.findAdoptionByAnimal_ShelterIdAndAdoptionType(user.getId(), adoptionType);
         } else {
             adoptionList = adoptionRepository.findAll();
         }
-        return adoptionMapper.toDtoList(adoptionList);
+        return adoptionMapper.toDto2List(adoptionList);
     }
 
     @Override
@@ -292,11 +271,11 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public AdoptionDto getAdoptionById(Long id) {
+    public AdoptionDto2 getAdoptionById(Long id) {
         log.debug("[finalizeAdoption] :: adoptionId: {}, userName: {}", id, getUser().getEmail());
         Adoption adoption = adoptionRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
-        return adoption.toDto();
+        return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }
 
     private Adoption registerRealAdoption(Animal animal) {

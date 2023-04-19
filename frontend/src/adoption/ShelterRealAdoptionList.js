@@ -1,12 +1,12 @@
 import axios from "axios";
-import React, {useState, useEffect, useMemo} from "react";
+import React, {useState, useEffect} from "react";
 import Table from "../util/Table";
 import {Link} from "react-router-dom";
 import {ADOPTION_STATUS_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "../util/Enums";
 
 const columns = [
     {
-        Header: "Twoje adopcje realne",
+        Header: "Adopcje realne schroniska",
         columns: [
             {
                 Header: "Zdjęcie",
@@ -28,10 +28,6 @@ const columns = [
                 Cell: ({value}) => SEX_OPTIONS[value]
             },
             {
-                Header: "Nazwa schroniska",
-                accessor: "animal.shelter.shelterName"
-            },
-            {
                 Header: "Status adopcji",
                 accessor: "adoptionStatus",
                 Cell: ({value}) => ADOPTION_STATUS_OPTIONS[value],
@@ -41,11 +37,20 @@ const columns = [
                 accessor: "validUntil",
             },
             {
-                Header: "Szczegóły",
+                Header: "Szczegóły zwierzaka",
                 accessor: "animal.id",
                 Cell: ({value}) => (
                     <Link to={`/animalDetails/${value}`}>
-                        Zobacz szczegóły
+                        Zobacz szczegóły zwierzaka
+                    </Link>
+                ),
+            },
+            {
+                Header: "Szczegóły adopcji",
+                accessor: "id",
+                Cell: ({value}) => (
+                    <Link to={`/adoptionDetails/${value}`}>
+                        Zobacz szczegóły adopcji
                     </Link>
                 ),
             }
@@ -53,7 +58,7 @@ const columns = [
     },
 ];
 
-function UserRealAdoptionList() {
+function ShelterRealAdoptionList() {
     axios.defaults.withCredentials = true;
 
     const [data, setData] = useState([]);
@@ -61,7 +66,7 @@ function UserRealAdoptionList() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await axios.get("http://localhost:8080/adoption/getUserAdoptions/REAL");
+                const result = await axios.get("http://localhost:8080/adoption/getAll/REAL");
                 setData(result.data);
             } catch (error) {
                 console.error(error);
@@ -77,4 +82,4 @@ function UserRealAdoptionList() {
     );
 }
 
-export default UserRealAdoptionList;
+export default ShelterRealAdoptionList;

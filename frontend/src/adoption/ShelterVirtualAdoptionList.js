@@ -2,11 +2,10 @@ import axios from "axios";
 import React, {useState, useEffect, useMemo} from "react";
 import Table from "../util/Table";
 import {Link} from "react-router-dom";
-import {ADOPTION_STATUS_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "../util/Enums";
 
 const columns = [
     {
-        Header: "Twoje adopcje realne",
+        Header: "Adopcje realne schroniska",
         columns: [
             {
                 Header: "Zdjęcie",
@@ -53,7 +52,7 @@ const columns = [
     },
 ];
 
-function UserRealAdoptionList() {
+function ShelterVirtualAdoptionList() {
     axios.defaults.withCredentials = true;
 
     const [data, setData] = useState([]);
@@ -61,7 +60,7 @@ function UserRealAdoptionList() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await axios.get("http://localhost:8080/adoption/getUserAdoptions/REAL");
+                const result = await axios.get("http://localhost:8080/adoption/getAll/VIRTUAL");
                 setData(result.data);
             } catch (error) {
                 console.error(error);
@@ -77,4 +76,4 @@ function UserRealAdoptionList() {
     );
 }
 
-export default UserRealAdoptionList;
+export default ShelterVirtualAdoptionList;

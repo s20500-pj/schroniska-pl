@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface AdoptionRepository extends JpaRepository<Adoption, Long>, JpaSpecificationExecutor<Adoption> {
     List<Adoption> findAdoptionByUserId(Long userId);
-    List<Adoption> findAdoptionByAnimal_ShelterId(Long shelterID);
+    List<Adoption> findAdoptionByAnimal_ShelterIdAndAdoptionType(Long shelterID, AdoptionType adoptionType);
     List<Adoption> findAdoptionByUserIdAndAdoptionType(Long userId, AdoptionType adoptionType);
 }

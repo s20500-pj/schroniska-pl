@@ -2,39 +2,12 @@ import React, {useState} from "react";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import {Link} from "react-router-dom";
+import {AGE_OPTIONS, SEX_OPTIONS} from "../util/Enums";
 
 export default function AnimalCard({data, rename}) {
     axios.defaults.withCredentials = true;
-
-    const SPECIES_OPTIONS = {
-        CAT: "Kot",
-        DOG: "Pies"
-    };
-
-    const SEX_OPTIONS = {
-        MALE: "Samiec",
-        FEMALE: "Samica",
-        UNKNOWN: "Nieznany"
-    };
-
-    const AGE_OPTIONS = {
-        VERY_YOUNG: "Bardzo młody",
-        YOUNG: "młody",
-        ADULT: "dorosły",
-        ELDER: "stary"
-    };
-
-    const ANIMAL_STATUS_OPTIONS = {
-        UNKNOWN: "nieznany",
-        NEEDS_MEDICAL_TREATMENT: "potrzebuje opieki medycznej",
-        READY_FOR_ADOPTION: "gotowy do adopcji",
-        ADOPTED: "zaadoptowany",
-        DEAD: "martwy"
-    };
-
-
     const [pageNumber, setPageNumber] = useState(0);
-    const animalsPerPage = 6;
+    const animalsPerPage = 12;
     const pagesVisited = pageNumber * animalsPerPage;
     const displayAnimals = data
         .slice(pagesVisited, pagesVisited + animalsPerPage)

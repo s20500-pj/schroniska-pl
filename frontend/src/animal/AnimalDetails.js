@@ -1,33 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
-
-const SPECIES_OPTIONS = {
-    CAT: "Kot",
-    DOG: "Pies",
-};
-
-const SEX_OPTIONS = {
-    MALE: "Samiec",
-    FEMALE: "Samica",
-    UNKNOWN: "Nieznany",
-};
-
-const AGE_OPTIONS = {
-    VERY_YOUNG: "Bardzo młody",
-    YOUNG: "młody",
-    ADULT: "dorosły",
-    ELDER: "stary",
-};
-
-const STATUS_OPTIONS = {
-    UNKNOWN: "nieznany",
-    NEEDS_MEDICAL_TREATMENT: "potrzebuje opieki medycznej",
-    READY_FOR_ADOPTION: "gotowy do adopcji",
-    ADOPTED: "zaadoptowany",
-    DEAD: "martwy",
-    DELETED: "usunięty"
-};
+import {ADOPTION_TYPE_OPTIONS, AGE_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS, STATUS_OPTIONS} from "../util/Enums";
 
 export default function AnimalDetails() {
     const {id} = useParams();
@@ -44,11 +18,11 @@ export default function AnimalDetails() {
         const hasValidRealAdoption = animal.adoptions.some(
             (adoption) =>
                 adoption.user.id === parseInt(userId) &&
-                adoption.adoptionType === "REAL"
+                adoption.adoptionType === ADOPTION_TYPE_OPTIONS.REAL.name
             /*&& new Date(adoption.validUntil) >= new Date()*/
         );
 
-        return !hasValidRealAdoption;
+        return !hasValidRealAdoption && animal.animalStatus === 'READY_FOR_ADOPTION';
     }
 
     function handleAdoption(animalId) {
