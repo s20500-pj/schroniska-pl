@@ -1,6 +1,5 @@
 import axios from "axios";
-import React, {useState, useEffect, useMemo} from "react";
-import Table from "../util/Table";
+import React, {useState, useEffect} from "react";
 import AnimalCard from "./AnimalCard";
 
 function ShelterAnimalList() {
@@ -22,7 +21,7 @@ function ShelterAnimalList() {
         needsActiveness: "",
         catsFriendly: "",
         dogsFriendly: "",
-        photo: ""
+        imagePath: ""
     });
 
     const onInputChange = (e) => {
@@ -44,73 +43,6 @@ function ShelterAnimalList() {
         catsFriendly,
         dogsFriendly
     } = animal;
-
-    const SPECIES_OPTIONS = {
-        CAT: "Kot",
-        DOG: "Pies"
-    };
-
-    const SEX_OPTIONS = {
-        MALE: "Samiec",
-        FEMALE: "Samica",
-        UNKNOWN: "Nieznany"
-    };
-
-    const AGE_OPTIONS = {
-        VERY_YOUNG: "Bardzo młody",
-        YOUNG: "młody",
-        ADULT: "dorosły",
-        ELDER: "stary"
-    };
-
-    const ANIMAL_STATUS_OPTIONS = {
-        UNKNOWN: "nieznany",
-        NEEDS_MEDICAL_TREATMENT: "potrzebuje opieki medycznej",
-        READY_FOR_ADOPTION: "gotowy do adopcji",
-        ADOPTED: "zaadoptowany",
-        DEAD: "martwy"
-    };
-
-    const columns = useMemo(
-        () => [
-            {
-                Header: "Zwierzęta",
-                columns: [
-                    {
-                        Header: "Zdjęcie",
-                        accessor: "imagePath",
-                        Cell: ({value}) => <img src={value} alt=""/>
-                    },
-                    {
-                        Header: "Imię",
-                        accessor: "name"
-                    },
-                    {
-                        Header: "Gatunek",
-                        accessor: "species",
-                        Cell: ({value}) => SPECIES_OPTIONS[value]
-                    },
-                    {
-                        Header: "Płeć",
-                        accessor: "sex",
-                        Cell: ({value}) => SEX_OPTIONS[value]
-                    },
-                    {
-                        Header: "Wiek",
-                        accessor: "age",
-                        Cell: ({value}) => AGE_OPTIONS[value]
-                    },
-                    {
-                        Header: "Status",
-                        accessor: "animalStatus",
-                        Cell: ({value}) => ANIMAL_STATUS_OPTIONS[value]
-                    },
-                ]
-            }
-        ],
-        []
-    );
-
 
     // data state to store the TV Maze API data. Its initial value is an empty array
     const [data, setData] = useState([]);
@@ -344,14 +276,15 @@ function ShelterAnimalList() {
                             <div className="w-full px-3">
                                 <div className="flex justify-around py-2">
 
-                                <button type="submit" className="flex px-3 py-2 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                                    <p className=" justify-center text-base	 text-center text-brown font-medium	">Filtruj</p>
-                                </button>
-                                <button onClick={handleClear}
-                                        className="px-3 py-2 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                                    <p className="justify-center text-base	 text-center text-brown font-medium	">Czyść
-                                        filtry</p>
-                                </button>
+                                    <button type="submit"
+                                            className="flex px-3 py-2 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                        <p className=" justify-center text-base	 text-center text-brown font-medium	">Filtruj</p>
+                                    </button>
+                                    <button onClick={handleClear}
+                                            className="px-3 py-2 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                        <p className="justify-center text-base	 text-center text-brown font-medium	">Czyść
+                                            filtry</p>
+                                    </button>
                                 </div>
                             </div>
 

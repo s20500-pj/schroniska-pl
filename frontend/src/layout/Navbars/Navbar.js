@@ -9,12 +9,6 @@ const navigation = [
     {name: 'Kontakt', href: '#', current: false}
 ]
 
-/*const userType = localStorage.getItem('userType');
-
-if (userType === 'SHELTER') {
-    navigation.splice(2, 0, {name: 'Dodaj zwierzę', href: '/addAnimal', current: false});
-}*/
-
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
