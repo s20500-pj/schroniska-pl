@@ -156,7 +156,7 @@ export default function AdoptionDetails() {
                                 Zwierzę zaadoptowane, aktualizuje status
                             </button>
                         )}
-                        {isProperShelter && (adoption.adoptionStatus === ADOPTION_STATUS_OPTIONS.VISITED.name) && (
+                        {isProperShelter && (
                             <button
                                 className="bg-orange text-white font-bold py-2 px-4 rounded"
                                 onClick={() => declineAdoption(adoption.id)}
