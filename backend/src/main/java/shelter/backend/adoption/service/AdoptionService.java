@@ -9,33 +9,33 @@ import java.util.Map;
 
 public interface AdoptionService {
     //////REAL
-    AdoptionDto beginRealAdoption(Long animalId);
+    AdoptionDto2 beginRealAdoption(Long animalId);
 
     /*
      * aproove adoption in Shelter panel and send invitation email
      * */
-    AdoptionDto sendInvitationRealAdoption(Long adoptionId);
+    AdoptionDto2 sendInvitationRealAdoption(Long adoptionId);
 
     /*
      * in case when invitation email is not send. Shelter contact with user to invite him and accepts the adoption
      * */
-    AdoptionDto acceptManualInvitedAdoption(Long adoptionId);
+    AdoptionDto2 acceptManualInvitedAdoption(Long adoptionId);
 
     /*
      * when user visits the shelter to continue adoption
      * */
-    AdoptionDto confirmVisit(Long adoptionId);
+    AdoptionDto2 confirmVisit(Long adoptionId);
 
-    AdoptionDto declineRealAdoption(Long adoptionId, boolean declineAll);
+    AdoptionDto2 declineRealAdoption(Long adoptionId, boolean declineAll);
 
-    AdoptionDto finalizeRealAdoption(Long id);
+    AdoptionDto2 finalizeRealAdoption(Long id);
     //////
 
     //////VIRTUAL
     //////
 
     /////BOTH
-    AdoptionDto extendTimeForAdoption(Long adoptionId, Long plusWeeks);
+    AdoptionDto2 extendTimeForAdoption(Long adoptionId, Long plusWeeks);
 
     List<AdoptionDto2> getAll(AdoptionType adoptionType);
     /*

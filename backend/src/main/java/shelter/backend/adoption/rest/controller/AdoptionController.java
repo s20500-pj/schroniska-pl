@@ -8,7 +8,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,43 +29,43 @@ public class AdoptionController {
     ///////REAL
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/real/{animalId}")
-    ResponseEntity<AdoptionDto> beginRealAdoption(@PathVariable @NotNull Long animalId) {
+    ResponseEntity<AdoptionDto2> beginRealAdoption(@PathVariable @NotNull Long animalId) {
         return ResponseEntity.ok(shelterAdoptionService.beginRealAdoption(animalId));
     }
 
     @PreAuthorize("hasRole('SHELTER')")
     @GetMapping("/real/inviteRealAdoption/{adoptionId}")
-    ResponseEntity<AdoptionDto> sendInvitationRealAdoption(@PathVariable @NotNull Long adoptionId) {
+    ResponseEntity<AdoptionDto2> sendInvitationRealAdoption(@PathVariable @NotNull Long adoptionId) {
         return ResponseEntity.ok(shelterAdoptionService.sendInvitationRealAdoption(adoptionId));
     }
 
     @PreAuthorize("hasRole('SHELTER')")
     @GetMapping("/real/acceptManualInvited/{adoptionId}")
-    ResponseEntity<AdoptionDto> acceptManualInvitedAdoption(@PathVariable @NotNull Long adoptionId) {
+    ResponseEntity<AdoptionDto2> acceptManualInvitedAdoption(@PathVariable @NotNull Long adoptionId) {
         return ResponseEntity.ok(shelterAdoptionService.acceptManualInvitedAdoption(adoptionId));
     }
 
     @PreAuthorize("hasRole('SHELTER')")
     @GetMapping("/real/confirmVisit/{adoptionId}")
-    ResponseEntity<AdoptionDto> confirmVisit(@PathVariable @NotNull Long adoptionId) {
+    ResponseEntity<AdoptionDto2> confirmVisit(@PathVariable @NotNull Long adoptionId) {
         return ResponseEntity.ok(shelterAdoptionService.confirmVisit(adoptionId));
     }
 
     @PreAuthorize("hasRole('SHELTER')")
     @GetMapping("/real/extendTimeForAdoption/{adoptionId}/{extendBy}")
-    ResponseEntity<AdoptionDto> extendTimeForAdoption(@PathVariable @NotNull Long adoptionId, @PathVariable @NotNull Long extendBy) {
+    ResponseEntity<AdoptionDto2> extendTimeForAdoption(@PathVariable @NotNull Long adoptionId, @PathVariable @NotNull Long extendBy) {
         return ResponseEntity.ok(shelterAdoptionService.extendTimeForAdoption(adoptionId, extendBy));
     }
 
     @PreAuthorize("hasRole('SHELTER')")
     @GetMapping("/real/complete/{adoptionId}")
-    ResponseEntity<AdoptionDto> complete(@PathVariable @NotNull Long adoptionId) {
+    ResponseEntity<AdoptionDto2> complete(@PathVariable @NotNull Long adoptionId) {
         return ResponseEntity.ok(shelterAdoptionService.finalizeRealAdoption(adoptionId));
     }
 
     @PreAuthorize("hasRole('SHELTER') or hasRole('USER')")
     @GetMapping("/real/decline/{adoptionId}")
-    ResponseEntity<AdoptionDto> declineAdoption(@PathVariable @NotNull Long adoptionId) {
+    ResponseEntity<AdoptionDto2> declineAdoption(@PathVariable @NotNull Long adoptionId) {
         return ResponseEntity.ok(shelterAdoptionService.declineRealAdoption(adoptionId, false));
     }
     ///////

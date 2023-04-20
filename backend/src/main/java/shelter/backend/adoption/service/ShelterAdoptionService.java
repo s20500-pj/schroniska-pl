@@ -46,12 +46,12 @@ public class ShelterAdoptionService implements AdoptionService {
 
     @Override
     @Transactional
-    public AdoptionDto beginRealAdoption(Long animalId) {
+    public AdoptionDto2 beginRealAdoption(Long animalId) {
         log.debug("[beginRealAdoption] :: adoptionId: {}", animalId);
         Animal animal = animalRepository.findAnimalById(animalId);
         if (animal != null) {
             if (notAlreadyAdopted(animal)) {
-                return adoptionMapper.toDto(registerRealAdoption(animal));
+                return adoptionMapper.toDto2(registerRealAdoption(animal));
             } else {
                 log.info("Animal awaits for real adoption. Animal id: {}", animalId);
                 throw new AdoptionException("Zwierzę oczekuję już na adopcję realną");
@@ -61,7 +61,7 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public AdoptionDto sendInvitationRealAdoption(Long adoptionId) {
+    public AdoptionDto2 sendInvitationRealAdoption(Long adoptionId) {
         log.debug("[sendInvitationRealAdoption] :: adoptionIds: {}", adoptionId);
         Adoption adoption = adoptionRepository.findById(adoptionId).orElseThrow(() -> new AdoptionException("Nie znaleziono adopcji o podanym id"));
         sendInvitationEmail(adoption);
@@ -71,7 +71,7 @@ public class ShelterAdoptionService implements AdoptionService {
             String userMail = adoption.getUser().getEmail();
             throw new MessageNotSendException("Problem z wysłaniem maila. Wymagany jest kontakt z użytkownikiem: " + userMail);
         } else {
-            return adoption.toDto();
+            return adoption.toDto2(adoption.getAnimal().toSimpleDto());
         }
     }
 
@@ -91,7 +91,7 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public AdoptionDto acceptManualInvitedAdoption(Long adoptionId) {
+    public AdoptionDto2 acceptManualInvitedAdoption(Long adoptionId) {
         log.debug("[acceptManualInvitedAdoption] :: adoptionId: {}", adoptionId);
         Adoption adoption = adoptionRepository.findById(adoptionId).orElseThrow(() -> new AdoptionException("Nie znaleziono adopcji o podanym id"));
         if (adoption.getAdoptionStatus() == AdoptionStatus.REQUIRES_MANUAL_INVITATION) {
@@ -99,19 +99,19 @@ public class ShelterAdoptionService implements AdoptionService {
             //TODO add preference for valudDate
             adoption.setValidUntil(LocalDate.now().plusWeeks(validUntil));
         }
-        return adoption.toDto();
+        return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }
 
     @Override
     @Transactional
-    public AdoptionDto confirmVisit(Long adoptionId) {
+    public AdoptionDto2 confirmVisit(Long adoptionId) {
         log.debug("[confirmVisit] :: adoptionId: {}", adoptionId);
         Adoption adoption = adoptionRepository.findById(adoptionId)
                 .orElseThrow(() -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
         adoption.setAdoptionStatus(AdoptionStatus.VISITED);
         adoptionRepository.save(adoption);
         updateOtherAdoptionsToPendingStatus(adoption);
-        return adoption.toDto();
+        return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }
 
     private void updateOtherAdoptionsToPendingStatus(Adoption adoption) {
@@ -141,7 +141,7 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public AdoptionDto extendTimeForAdoption(Long adoptionId, Long plusWeeks) {
+    public AdoptionDto2 extendTimeForAdoption(Long adoptionId, Long plusWeeks) {
         log.debug("[extendTimeForAdoption] :: adoptionId: {}, plusWeeks: {}", adoptionId, plusWeeks);
         LocalDate today = LocalDate.now();
         Adoption adoption = adoptionRepository.findById(adoptionId)
@@ -154,11 +154,11 @@ public class ShelterAdoptionService implements AdoptionService {
         adoptionRepository.save(adoption);
         log.info("Adoption with id: {} for username: {} extended by {} week(s)",
                 adoption.getId(), adoption.getUser().getEmail(), plusWeeks);
-        return adoption.toDto();
+        return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }
 
     @Override
-    public AdoptionDto declineRealAdoption(Long adoptionId, boolean declineAll) {
+    public AdoptionDto2 declineRealAdoption(Long adoptionId, boolean declineAll) {
         log.debug("[declineAdoption] :: adoptionId: {}", adoptionId);
         Adoption adoption = adoptionRepository.findById(adoptionId)
                 .orElseThrow(() -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
@@ -181,7 +181,7 @@ public class ShelterAdoptionService implements AdoptionService {
             log.warn("Adoption cancellation email can't be send. Reason: {}", e.getMessage());
             throw new MessageNotSendException("Adopcja (id: " + adoptionId + ") została anulowana, jednak nie można wysłać wiadomości mailowej.");
         }
-        return adoption.toDto();
+        return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }
 
     private boolean isEntitled(User currentUser, Long adoptionId) {
@@ -256,7 +256,7 @@ public class ShelterAdoptionService implements AdoptionService {
 
     @Override
     @Transactional
-    public AdoptionDto finalizeRealAdoption(Long id) {
+    public AdoptionDto2 finalizeRealAdoption(Long id) {
         log.debug("[finalizeAdoption] :: adoptionId: {}", id);
         Adoption adoption = adoptionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
@@ -267,7 +267,7 @@ public class ShelterAdoptionService implements AdoptionService {
         adoptionRepository.save(adoption);
         animal.getAdoptions().stream().filter(adoptionUpdate -> adoptionUpdate.getAdoptionType() == AdoptionType.REAL)
                 .forEach(adoptionUpdate -> declineRealAdoption(adoptionUpdate.getId(), true));
-        return adoption.toDto();
+        return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }
 
     @Override

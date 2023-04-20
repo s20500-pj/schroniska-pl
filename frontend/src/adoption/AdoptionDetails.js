@@ -17,9 +17,10 @@ export default function AdoptionDetails() {
 
     function inviteUserToShelter(adoptionId) {
         axios
-            .post(`http://localhost:8080/adoption/real/inviteRealAdoption/${adoptionId}`)
+            .get(`http://localhost:8080/adoption/real/inviteRealAdoption/${adoptionId}`)
             .then((response) => {
                 alert("Zostało wysłane zaproszenie do użytkownika z prośbą o kontakt/przybycie do schroniska");
+                setAdoption(response.data);
             })
             .catch((error) => {
                 console.error("Error sending adoption request:", error);
@@ -29,9 +30,10 @@ export default function AdoptionDetails() {
 
     function manualInviteUserToShelter(adoptionId) {
         axios
-            .post(`http://localhost:8080/adoption/real/acceptManualInvited/${adoptionId}`)
+            .get(`http://localhost:8080/adoption/real/acceptManualInvited/${adoptionId}`)
             .then((response) => {
                 alert("Użytkownik został zaproszony ręcznie, aktualizuje status adopcji");
+                setAdoption(response.data);
             })
             .catch((error) => {
                 console.error("Error sending adoption request:", error);
@@ -41,9 +43,10 @@ export default function AdoptionDetails() {
 
     function userVisitedShelter(adoptionId) {
         axios
-            .post(`http://localhost:8080/adoption/real/confirmVisit/${adoptionId}`)
+            .get(`http://localhost:8080/adoption/real/confirmVisit/${adoptionId}`)
             .then((response) => {
                 alert("Użytkownik odwiedził schronisko, aktualizuje status adopcji");
+                setAdoption(response.data);
             })
             .catch((error) => {
                 console.error("Error sending adoption request:", error);
@@ -53,9 +56,10 @@ export default function AdoptionDetails() {
 
     function acceptAdoption(adoptionId) {
         axios
-            .post(`http://localhost:8080/adoption/real/complete/${adoptionId}`)
+            .get(`http://localhost:8080/adoption/real/complete/${adoptionId}`)
             .then((response) => {
                 alert("Zwierzę zaadoptowane, aktualizuje status tej adopcji jak i pozostałcyh adopcji realnych zwierzęcia");
+                setAdoption(response.data);
             })
             .catch((error) => {
                 console.error("Error sending adoption request:", error);
@@ -65,9 +69,10 @@ export default function AdoptionDetails() {
 
     function declineAdoption(adoptionId) {
         axios
-            .post(`http://localhost:8080/adoption/real/decline/${adoptionId}`)
+            .get(`http://localhost:8080/adoption/real/decline/${adoptionId}`)
             .then((response) => {
                 alert("Adopcja odrzucona, aktualizuje status tej adopcji jak i pozostałcyh adopcji realnych zwierzęcia");
+                setAdoption(response.data);
             })
             .catch((error) => {
                 console.error("Error sending adoption request:", error);
@@ -124,7 +129,7 @@ export default function AdoptionDetails() {
                         <p>Email: {adoption.user.email}</p>
                         <p>Nr telefonu: {adoption.user.address.phone}</p>
 
-                        {isProperShelter && (adoption.adoptionStatus === ADOPTION_STATUS_OPTIONS.REQUEST_REVIEW.name || adoption.status === ADOPTION_STATUS_OPTIONS.PENDING_SHELTER_INVITED.name || adoption.status === ADOPTION_STATUS_OPTIONS.PENDING.name) && (
+                        {isProperShelter && (adoption.adoptionStatus === 'REQUEST_REVIEW' || adoption.status === 'PENDING_SHELTER_INVITED' || adoption.status === 'PENDING') && (
                             <button
                                 className="bg-orange text-white font-bold py-2 px-4 rounded"
                                 onClick={() => inviteUserToShelter(adoption.id)}
@@ -132,7 +137,7 @@ export default function AdoptionDetails() {
                                 Zaproś użytkownika do schroniska
                             </button>
                         )}
-                        {isProperShelter && (adoption.adoptionStatus === ADOPTION_STATUS_OPTIONS.REQUIRES_MANUAL_INVITATION.name) && (
+                        {isProperShelter && (adoption.adoptionStatus === 'REQUIRES_MANUAL_INVITATION') && (
                             <button
                                 className="bg-orange text-white font-bold py-2 px-4 rounded"
                                 onClick={() => manualInviteUserToShelter(adoption.id)}
@@ -140,7 +145,7 @@ export default function AdoptionDetails() {
                                 Użytkownik zaproszony ręcznie/aktualizacja statusu
                             </button>
                         )}
-                        {isProperShelter && (adoption.adoptionStatus === ADOPTION_STATUS_OPTIONS.SHELTER_INVITED.name) && (
+                        {isProperShelter && (adoption.adoptionStatus === 'SHELTER_INVITED') && (
                             <button
                                 className="bg-orange text-white font-bold py-2 px-4 rounded"
                                 onClick={() => userVisitedShelter(adoption.id)}
@@ -148,7 +153,7 @@ export default function AdoptionDetails() {
                                 Użytkownik odwiedził schronisko, aktualizuje status
                             </button>
                         )}
-                        {isProperShelter && (adoption.adoptionStatus === ADOPTION_STATUS_OPTIONS.VISITED.name) && (
+                        {isProperShelter && (adoption.adoptionStatus === 'VISITED') && (
                             <button
                                 className="bg-orange text-white font-bold py-2 px-4 rounded"
                                 onClick={() => acceptAdoption(adoption.id)}
@@ -156,7 +161,7 @@ export default function AdoptionDetails() {
                                 Zwierzę zaadoptowane, aktualizuje status
                             </button>
                         )}
-                        {isProperShelter && (
+                        {isProperShelter && (adoption.adoptionStatus !== 'DECLINED') && (
                             <button
                                 className="bg-orange text-white font-bold py-2 px-4 rounded"
                                 onClick={() => declineAdoption(adoption.id)}
