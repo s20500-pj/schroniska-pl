@@ -1,37 +1,12 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
-
-const SPECIES_OPTIONS = {
-    CAT: "Kot",
-    DOG: "Pies",
-};
-
-const SEX_OPTIONS = {
-    MALE: "Samiec",
-    FEMALE: "Samica",
-    UNKNOWN: "Nieznany",
-};
-
-const AGE_OPTIONS = {
-    VERY_YOUNG: "Bardzo młody",
-    YOUNG: "młody",
-    ADULT: "dorosły",
-    ELDER: "stary",
-};
-
-const STATUS_OPTIONS = {
-    UNKNOWN: "nieznany",
-    NEEDS_MEDICAL_TREATMENT: "potrzebuje opieki medycznej",
-    READY_FOR_ADOPTION: "gotowy do adopcji",
-    ADOPTED: "zaadoptowany",
-    DEAD: "martwy",
-    DELETED: "usunięty"
-};
+import {AGE_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS, STATUS_OPTIONS} from "../util/Enums";
 
 export default function AnimalDetails() {
     const {id} = useParams();
     const [animal, setAnimal] = useState(null);
+    const [reload, setReload] = useState(false);
 
     function canAdopt(animal) {
         const userType = localStorage.getItem("userType");
@@ -44,11 +19,11 @@ export default function AnimalDetails() {
         const hasValidRealAdoption = animal.adoptions.some(
             (adoption) =>
                 adoption.user.id === parseInt(userId) &&
-                adoption.adoptionType === "REAL"
+                adoption.adoptionType === 'REAL'
+
             /*&& new Date(adoption.validUntil) >= new Date()*/
         );
-
-        return !hasValidRealAdoption;
+        return !hasValidRealAdoption && animal.animalStatus === 'READY_FOR_ADOPTION';
     }
 
     function handleAdoption(animalId) {
@@ -56,6 +31,7 @@ export default function AnimalDetails() {
             .post(`http://localhost:8080/adoption/real/${animalId}`)
             .then((response) => {
                 alert("Prośba o adopcję wysłana do schroniska!");
+                setReload((prevReload) => !prevReload);
             })
             .catch((error) => {
                 console.error("Error sending adoption request:", error);
@@ -69,7 +45,7 @@ export default function AnimalDetails() {
             .get(`http://localhost:8080/animal/${id}`)
             .then((response) => setAnimal(response.data))
             .catch((error) => console.error("Error fetching animal data:", error));
-    }, [id]);
+    }, [id, reload]);
 
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">

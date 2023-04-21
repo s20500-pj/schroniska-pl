@@ -1,6 +1,5 @@
 package shelter.backend.adoption.service;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import shelter.backend.email.EmailService;
 import shelter.backend.rest.model.dtos.AdoptionDto;
 import shelter.backend.rest.model.dtos.AdoptionDto2;
-import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.User;
@@ -33,8 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -50,12 +46,12 @@ public class ShelterAdoptionService implements AdoptionService {
 
     @Override
     @Transactional
-    public AdoptionDto beginRealAdoption(Long animalId) {
+    public AdoptionDto2 beginRealAdoption(Long animalId) {
         log.debug("[beginRealAdoption] :: adoptionId: {}", animalId);
         Animal animal = animalRepository.findAnimalById(animalId);
         if (animal != null) {
             if (notAlreadyAdopted(animal)) {
-                return adoptionMapper.toDto(registerRealAdoption(animal));
+                return adoptionMapper.toDto2(registerRealAdoption(animal));
             } else {
                 log.info("Animal awaits for real adoption. Animal id: {}", animalId);
                 throw new AdoptionException("Zwierzę oczekuję już na adopcję realną");
@@ -65,28 +61,17 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public List<AdoptionDto> sendInvitationRealAdoption(List<Long> adoptionIds) {
-        log.debug("[sendInvitationRealAdoption] :: adoptionIds: {}", adoptionIds);
-        List<AdoptionDto> adoptionDtoList = new ArrayList<>();
-        adoptionIds.forEach(adoptionId -> {
-            Optional<Adoption> adoptionOpt = adoptionRepository.findById(adoptionId);
-            adoptionOpt.ifPresent(adoption -> {
-                sendInvitationEmail(adoption);
-                adoptionRepository.save(adoption);
-                adoptionDtoList.add(adoption.toDto());
-            });
-        });
-        List<AdoptionDto> manualAdoptions = adoptionDtoList.stream()
-                .filter(adoptionDto -> adoptionDto.getAdoptionStatus() == AdoptionStatus.REQUIRES_MANUAL_INVITATION)
-                .toList();
-        if (!manualAdoptions.isEmpty()) {
-            String userMails = manualAdoptions.stream()
-                    .map(AdoptionDto::getUser)
-                    .map(UserDto::getEmail)
-                    .collect(Collectors.joining(", "));
-            throw new MessageNotSendException("Problem z wysłaniem maila. Wymagany jest kontakt z użytkownikiem: " + userMails);
+    public AdoptionDto2 sendInvitationRealAdoption(Long adoptionId) {
+        log.debug("[sendInvitationRealAdoption] :: adoptionIds: {}", adoptionId);
+        Adoption adoption = adoptionRepository.findById(adoptionId).orElseThrow(() -> new AdoptionException("Nie znaleziono adopcji o podanym id"));
+        sendInvitationEmail(adoption);
+        adoptionRepository.save(adoption);
+
+        if (adoption.getAdoptionStatus().equals(AdoptionStatus.REQUIRES_MANUAL_INVITATION)) {
+            String userMail = adoption.getUser().getEmail();
+            throw new MessageNotSendException("Problem z wysłaniem maila. Wymagany jest kontakt z użytkownikiem: " + userMail);
         } else {
-            return adoptionDtoList;
+            return adoption.toDto2(adoption.getAnimal().toSimpleDto());
         }
     }
 
@@ -106,33 +91,27 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public List<AdoptionDto> acceptManualInvitedAdoption(List<Long> adoptionIds) {
-        log.debug("[acceptManualInvitedAdoption] :: adoptionIds: {}", adoptionIds);
-        List<AdoptionDto> adoptionDtoList = new ArrayList<>();
-        adoptionIds.forEach(adoptionId -> {
-            Optional<Adoption> adoptionOpt = adoptionRepository.findById(adoptionId);
-            adoptionOpt.ifPresent(adoption -> {
-                if (adoption.getAdoptionStatus() == AdoptionStatus.REQUIRES_MANUAL_INVITATION) {
-                    adoption.setAdoptionStatus(AdoptionStatus.SHELTER_INVITED);
-                    //TODO add preference for valudDate
-                    adoption.setValidUntil(LocalDate.now().plusWeeks(validUntil));
-                    adoptionDtoList.add(adoption.toDto());
-                }
-            });
-        });
-        return adoptionDtoList;
+    public AdoptionDto2 acceptManualInvitedAdoption(Long adoptionId) {
+        log.debug("[acceptManualInvitedAdoption] :: adoptionId: {}", adoptionId);
+        Adoption adoption = adoptionRepository.findById(adoptionId).orElseThrow(() -> new AdoptionException("Nie znaleziono adopcji o podanym id"));
+        if (adoption.getAdoptionStatus() == AdoptionStatus.REQUIRES_MANUAL_INVITATION) {
+            adoption.setAdoptionStatus(AdoptionStatus.SHELTER_INVITED);
+            //TODO add preference for valudDate
+            adoption.setValidUntil(LocalDate.now().plusWeeks(validUntil));
+        }
+        return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }
 
     @Override
     @Transactional
-    public AdoptionDto confirmVisit(Long adoptionId) {
+    public AdoptionDto2 confirmVisit(Long adoptionId) {
         log.debug("[confirmVisit] :: adoptionId: {}", adoptionId);
         Adoption adoption = adoptionRepository.findById(adoptionId)
                 .orElseThrow(() -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
         adoption.setAdoptionStatus(AdoptionStatus.VISITED);
         adoptionRepository.save(adoption);
         updateOtherAdoptionsToPendingStatus(adoption);
-        return adoption.toDto();
+        return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }
 
     private void updateOtherAdoptionsToPendingStatus(Adoption adoption) {
@@ -162,7 +141,7 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public AdoptionDto extendTimeForAdoption(Long adoptionId, Long plusWeeks) {
+    public AdoptionDto2 extendTimeForAdoption(Long adoptionId, Long plusWeeks) {
         log.debug("[extendTimeForAdoption] :: adoptionId: {}, plusWeeks: {}", adoptionId, plusWeeks);
         LocalDate today = LocalDate.now();
         Adoption adoption = adoptionRepository.findById(adoptionId)
@@ -175,11 +154,11 @@ public class ShelterAdoptionService implements AdoptionService {
         adoptionRepository.save(adoption);
         log.info("Adoption with id: {} for username: {} extended by {} week(s)",
                 adoption.getId(), adoption.getUser().getEmail(), plusWeeks);
-        return adoption.toDto();
+        return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }
 
     @Override
-    public AdoptionDto declineRealAdoption(Long adoptionId, boolean declineAll) {
+    public AdoptionDto2 declineRealAdoption(Long adoptionId, boolean declineAll) {
         log.debug("[declineAdoption] :: adoptionId: {}", adoptionId);
         Adoption adoption = adoptionRepository.findById(adoptionId)
                 .orElseThrow(() -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
@@ -202,7 +181,7 @@ public class ShelterAdoptionService implements AdoptionService {
             log.warn("Adoption cancellation email can't be send. Reason: {}", e.getMessage());
             throw new MessageNotSendException("Adopcja (id: " + adoptionId + ") została anulowana, jednak nie można wysłać wiadomości mailowej.");
         }
-        return adoption.toDto();
+        return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }
 
     private boolean isEntitled(User currentUser, Long adoptionId) {
@@ -234,16 +213,16 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public List<AdoptionDto> getAll() {
+    public List<AdoptionDto2> getAll(AdoptionType adoptionType) {
         List<Adoption> adoptionList;
         User user = getUser();
         log.debug("[getAll] :: userId: {}, userName: {}", user.getId(), user.getEmail());
         if (user.getUserType() == UserType.SHELTER) {
-            adoptionList = adoptionRepository.findAdoptionByAnimal_ShelterId(user.getId());
+            adoptionList = adoptionRepository.findAdoptionByAnimal_ShelterIdAndAdoptionType(user.getId(), adoptionType);
         } else {
             adoptionList = adoptionRepository.findAll();
         }
-        return adoptionMapper.toDtoList(adoptionList);
+        return adoptionMapper.toDto2List(adoptionList);
     }
 
     @Override
@@ -277,7 +256,7 @@ public class ShelterAdoptionService implements AdoptionService {
 
     @Override
     @Transactional
-    public AdoptionDto finalizeRealAdoption(Long id) {
+    public AdoptionDto2 finalizeRealAdoption(Long id) {
         log.debug("[finalizeAdoption] :: adoptionId: {}", id);
         Adoption adoption = adoptionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
@@ -288,15 +267,15 @@ public class ShelterAdoptionService implements AdoptionService {
         adoptionRepository.save(adoption);
         animal.getAdoptions().stream().filter(adoptionUpdate -> adoptionUpdate.getAdoptionType() == AdoptionType.REAL)
                 .forEach(adoptionUpdate -> declineRealAdoption(adoptionUpdate.getId(), true));
-        return adoption.toDto();
+        return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }
 
     @Override
-    public AdoptionDto getAdoptionById(Long id) {
+    public AdoptionDto2 getAdoptionById(Long id) {
         log.debug("[finalizeAdoption] :: adoptionId: {}, userName: {}", id, getUser().getEmail());
         Adoption adoption = adoptionRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
-        return adoption.toDto();
+        return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }
 
     private Adoption registerRealAdoption(Animal animal) {

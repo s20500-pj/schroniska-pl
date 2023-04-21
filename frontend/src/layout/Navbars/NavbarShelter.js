@@ -8,8 +8,8 @@ import axios from "axios";
 const navigation = [
     {name: 'Lista zwierząt w schronisku', href: '/shelterAnimalList', current: false},
     {name: 'Dodaj zwierzę', href: '/addAnimal', current: false},
-    {name: 'Adopcja', href: '#', current: false},
-    {name: 'Adopcja wirtualna', href: '#', current: false},
+    {name: 'Adopcja', href: '/shelterRealAdoptionList', current: false},
+    {name: 'Adopcja wirtualna', href: '/shelterVirtualAdoptionList', current: false},
     {name: 'Wolontariat', href: '#', current: false}
 ]
 

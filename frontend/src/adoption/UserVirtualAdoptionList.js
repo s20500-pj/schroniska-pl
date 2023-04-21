@@ -1,18 +1,7 @@
 import axios from "axios";
 import React, {useState, useEffect} from "react";
 import Table from "../util/Table";
-
-const ADOPTION_STATUS_OPTIONS = {
-    REQUEST_REVIEW: "Zgłoszenie jest rozpatrywane",
-    REQUIRES_MANUAL_INVITATION: "Oczekuje na kontakt ze schroniska",
-    PENDING: "Adopcja w toku",
-    SHELTER_INVITED: "Zaproszenie do schroniska",
-    PENDING_SHELTER_INVITED: "Wizyta w toku",
-    VISITED: "Schronisko odwiedzone",
-    DECLINED: "Odmowa",
-    ADOPTED: "Zwierzę zaadoptowane",
-    VIRTUAL_ADOPTED: "Wirtualna adopcja",
-};
+import {ADOPTION_STATUS_OPTIONS} from "../util/Enums";
 
 const columns = [
     {

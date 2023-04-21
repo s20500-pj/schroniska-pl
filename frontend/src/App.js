@@ -24,6 +24,9 @@ import UserRealAdoptionList from "./adoption/UserRealAdoptionList";
 import RODO from "./users/unlogged/RODO";
 import PersonSettings from "./users/person/PersonSettings";
 import AnimalDetails from "./animal/AnimalDetails";
+import ShelterRealAdoptionList from "./adoption/ShelterRealAdoptionList";
+import ShelterVirtualAdoptionList from "./adoption/ShelterVirtualAdoptionList";
+import AdoptionDetails from "./adoption/AdoptionDetails";
 
 function App() {
     axios.defaults.withCredentials = true
@@ -56,7 +59,10 @@ function App() {
                     {userType === "SHELTER" ? <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/> : <Route exact path="/" element={<Home/>}/>}
                     {userType === "PERSON" ? <Route exact path="/userVirtualAdoptionList" element={<UserVirtualAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
                     {userType === "PERSON" ? <Route exact path="/userRealAdoptionList" element={<UserRealAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
+                    {userType === "SHELTER" ? <Route exact path="/shelterRealAdoptionList" element={<ShelterRealAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
+                    {userType === "SHELTER" ? <Route exact path="/shelterVirtualAdoptionList" element={<ShelterVirtualAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
                     {userType === "PERSON" ? <Route exact path="/personsettings" element={<PersonSettings/>}/> : <Route exact path="/" element={<Home/>}/>}
+                    {userType === "SHELTER" ? <Route exact path="/adoptionDetails/:id" element={<AdoptionDetails/>}/> : <Route exact path="/" element={<Home/>}/>}
 
                 </Routes>
             </Router>
