@@ -61,8 +61,8 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
         User currentUser = getUser();
         log.debug("[beginVirtualAdoption] :: animal: {}, user: {}, ", animalId, currentUser);
         checkIfAmountIsMultiple(amount);
-        int perdiod = calculateAdoptionPeriod(amount);
-        preparePaymentOrderData(amount, currentUser, animal, perdiod);
+        int period = calculateAdoptionPeriod(amount);
+        preparePaymentOrderData(amount, currentUser, animal, period);
         String redirect_uri = paymentService.commencePayment(currentUser, animal);
         if (StringUtils.isNotBlank(redirect_uri)) {
             log.info("redirect URI to begin payment transaction: {}, user: {}, animal: {}", redirect_uri, currentUser, animal);
@@ -81,8 +81,8 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
     }
 
     private void checkIfAmountIsMultiple(Long amount) {
-        if (amount <= 0 || amount % ADOPTION_PRICE_DENOMINATOR != 0) {
-            throw new AdoptionException("Nie poprawna kwota");
+        if (amount < ADOPTION_PRICE_DENOMINATOR) {
+            throw new AdoptionException("Niepoprawna kwota");
         }
     }
 
@@ -98,7 +98,7 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
         orderData.setUnitPrice(String.valueOf(ADOPTION_PRICE_DENOMINATOR));
     }
 
-    private int calculateAdoptionPeriod(Long amount) {
+    private static int calculateAdoptionPeriod(Long amount) {
         return (int) (amount / ADOPTION_PRICE_DENOMINATOR);
     }
 
