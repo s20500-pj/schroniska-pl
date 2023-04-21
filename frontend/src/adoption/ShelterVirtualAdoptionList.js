@@ -2,6 +2,7 @@ import axios from "axios";
 import React, {useState, useEffect, useMemo} from "react";
 import Table from "../util/Table";
 import {Link} from "react-router-dom";
+import {ADOPTION_STATUS_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "../util/Enums";
 
 const columns = [
     {
