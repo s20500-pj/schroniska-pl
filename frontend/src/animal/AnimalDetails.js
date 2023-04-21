@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import {AGE_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS, STATUS_OPTIONS} from "../util/Enums";
 
 export default function AnimalDetails() {
+    axios.defaults.withCredentials = true;
     const {id} = useParams();
     const [animal, setAnimal] = useState(null);
     const [reload, setReload] = useState(false);
@@ -59,7 +60,7 @@ export default function AnimalDetails() {
                             <div className=''>
                                 <h2 className=' text-2xl font-bold text-brown'>Cześć jestem</h2>
                                 <p className=' text-5xl font-bold text-orange'>{animal.name}</p>
-                                <img src={(animal.imagePath)} alt="Zdjęcie"/>
+                                <img src={'/' + animal.imagePath} alt="Logo" />
 
                             </div>
                             <div className='flex 1/3 py-10'>

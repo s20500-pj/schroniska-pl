@@ -93,7 +93,7 @@ public class ShelterAnimalService implements AnimalService {
         return animalMapper.toDtoList(animalRepository.findAll(animalSpecification));
     }
 
-    private Map<String, String> parseSearchParams(String searchParams) {
+    static public Map<String, String> parseSearchParams(String searchParams) {
         Map<String, String> params = new HashMap<>();
 
         JSONObject jsonObject = new JSONObject(searchParams);

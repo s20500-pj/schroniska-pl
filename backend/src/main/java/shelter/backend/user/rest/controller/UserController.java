@@ -8,11 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import shelter.backend.rest.model.dtos.UserDto;
-import shelter.backend.user.service.ShelterUserService;
 import shelter.backend.user.service.UserService;
 
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,14 +19,15 @@ public class UserController {
 
     private final UserService userService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "/{id}")
     ResponseEntity<UserDto> getUserById(@PathVariable @NotNull Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<List<UserDto>> search(@RequestBody @Valid Map<String, String> searchParams) {
+    @PostMapping(value = "/search", consumes = MediaType.TEXT_PLAIN_VALUE)
+    ResponseEntity<List<UserDto>> search(@RequestBody String searchParams) {
         return ResponseEntity.ok(userService.search(searchParams));
     }
 
@@ -37,6 +36,7 @@ public class UserController {
         return ResponseEntity.ok(userService.update(userDto));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/delete")
     ResponseEntity<Void> delete() {
         userService.delete();

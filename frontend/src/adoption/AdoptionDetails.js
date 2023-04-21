@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {
     ADOPTION_STATUS_OPTIONS,
     ADOPTION_TYPE_OPTIONS,
@@ -11,9 +11,12 @@ import {
 } from "../util/Enums";
 
 export default function AdoptionDetails() {
+    axios.defaults.withCredentials = true;
     const {id} = useParams();
     const [adoption, setAdoption] = useState(null);
     const [isProperShelter, setIsProperShelter] = useState(false);
+    const [isProperUser, setIsProperUser] = useState(false);
+    let navigate = useNavigate();
 
     function inviteUserToShelter(adoptionId) {
         axios
@@ -79,9 +82,20 @@ export default function AdoptionDetails() {
                 alert("Wystąpił nieznany błąd");
             });
     }
+    function deleteAdoption(adoptionId) {
+        axios
+            .get(`http://localhost:8080/adoption/delete/${adoptionId}`)
+            .then(() => {
+                alert("Adopcja usunięta z systemu");
+                navigate("/shelterRealAdoptionList");
+            })
+            .catch((error) => {
+                console.error("Error sending adoption request:", error);
+                alert("Wystąpił nieznany błąd");
+            });
+    }
 
     useEffect(() => {
-        axios.defaults.withCredentials = true;
         axios
             .get(`http://localhost:8080/adoption/${id}`)
             .then((response) => {
@@ -95,6 +109,10 @@ export default function AdoptionDetails() {
             setIsProperShelter(
                 localStorage.getItem("userType") === "SHELTER" &&
                 localStorage.getItem("userId") == adoption.animal.shelter.id
+            );
+            setIsProperUser(
+                localStorage.getItem("userType") === "PERSON" &&
+                localStorage.getItem("userId") == adoption.user.id
             );
         }
     }, [adoption]);
@@ -110,7 +128,7 @@ export default function AdoptionDetails() {
 
                     <>
                         <p>Zwierzę:</p>
-                        <img src={adoption.animal.imagePath} alt="Obrazek"/>
+                        <img src={'/' + adoption.animal.imagePath} alt="Logo" />
                         <p>Imię: {adoption.animal.name}</p>
 
                         <p>Gatunek: {SPECIES_OPTIONS[adoption.animal.species]}</p>
@@ -161,12 +179,20 @@ export default function AdoptionDetails() {
                                 Zwierzę zaadoptowane, aktualizuje status
                             </button>
                         )}
-                        {isProperShelter && (adoption.adoptionStatus !== 'DECLINED') && (
+                        {(isProperShelter || isProperUser) && (adoption.adoptionStatus !== 'DECLINED') && (
                             <button
                                 className="bg-orange text-white font-bold py-2 px-4 rounded"
                                 onClick={() => declineAdoption(adoption.id)}
                             >
                                 Adopcja odrzucona, aktualizuje status
+                            </button>
+                        )}
+                        {isProperShelter && (adoption.adoptionStatus === 'DECLINED') && (
+                            <button
+                                className="bg-orange text-white font-bold py-2 px-4 rounded"
+                                onClick={() => deleteAdoption(adoption.id)}
+                            >
+                                Usuń adopcje z systemu
                             </button>
                         )}
                     </>

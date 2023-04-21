@@ -3,6 +3,7 @@ package shelter.backend.rest.model.specification;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
+import shelter.backend.rest.model.entity.Address;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.ApprovalStatus;
 import shelter.backend.rest.model.enums.UserType;
@@ -21,6 +22,7 @@ public class UserSpecification implements Specification<User> {
     private static final String IS_DISABLED = "isDisabled";
     private static final String APPROVAL_STATUS = "approvalStatus";
     private static final String USER_TYPE = "userType";
+    private static final String CITY = "city";
     private static final String SORT_BY = "sortBy";
 
     private final Map<String, String> searchParams;
@@ -28,7 +30,7 @@ public class UserSpecification implements Specification<User> {
     @Override
     public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
-
+        Join<User, Address> addressJoin = root.join("address");
         for (Map.Entry<String, String> entry : searchParams.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
@@ -43,6 +45,7 @@ public class UserSpecification implements Specification<User> {
                 case APPROVAL_STATUS ->
                         predicates.add(criteriaBuilder.equal(root.get(APPROVAL_STATUS), ApprovalStatus.valueOf(value)));
                 case USER_TYPE -> predicates.add(criteriaBuilder.equal(root.get(USER_TYPE), UserType.valueOf(value)));
+                case CITY -> predicates.add(criteriaBuilder.like(addressJoin.get(CITY), "%" + value + "%"));
             }
         }
 

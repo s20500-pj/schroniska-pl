@@ -5,12 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import shelter.backend.adoption.service.AdoptionService;
 import shelter.backend.rest.model.dtos.AdoptionDto;
 import shelter.backend.rest.model.dtos.AdoptionDto2;
@@ -97,6 +92,13 @@ public class AdoptionController {
     @GetMapping("/getAll/{adoptionType}")
     ResponseEntity<List<AdoptionDto2>> getAll(@PathVariable @NotNull AdoptionType adoptionType) {
         return ResponseEntity.ok(shelterAdoptionService.getAll(adoptionType));
+    }
+
+    @PreAuthorize("hasRole('SHELTER')")
+    @GetMapping("/delete/{adoptionId}")
+    ResponseEntity<Void> delete(@PathVariable @NotNull Long adoptionId) {
+        shelterAdoptionService.delete(adoptionId);
+        return ResponseEntity.noContent().build();
     }
 
     //FIXME maaybe decouple virtual controller from real? we'll see...

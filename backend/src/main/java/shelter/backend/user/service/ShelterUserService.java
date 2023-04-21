@@ -2,7 +2,6 @@ package shelter.backend.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import shelter.backend.login.JwtUtils;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.mapper.UserMapper;
@@ -11,7 +10,8 @@ import shelter.backend.storage.repository.UserRepository;
 import shelter.backend.utils.basic.ClientInterceptor;
 
 import java.util.List;
-import java.util.Map;
+
+import static shelter.backend.animals.service.ShelterAnimalService.parseSearchParams;
 
 @RequiredArgsConstructor
 @Service
@@ -20,8 +20,8 @@ public class ShelterUserService implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public List<UserDto> search(Map<String, String> searchParams) {
-        UserSpecification userSpecification = new UserSpecification(searchParams);
+    public List<UserDto> search(String searchParams) {
+        UserSpecification userSpecification = new UserSpecification(parseSearchParams(searchParams));
         return userMapper.toDtoList(userRepository.findAll(userSpecification));
     }
 
