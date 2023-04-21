@@ -49,45 +49,63 @@ export default function AnimalDetails() {
 
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
-            <div className="px-10 font-display bg-white bg-opacity-90">
-                <h2 className="text-center text-2xl text-orange font-bold p-10">
+            <div className=" px-10 font-display bg-white bg-opacity-90">
+                <h2 className="text-center text-2xl text-orange font-bold p-10 h-fit">
                     Szczegóły zwierzaka
                 </h2>
-                {animal ? (
-                    <>
-                        <img src={animal.imagePath} alt=""/>
-                        <p>Imię: {animal.name}</p>
+                <div className='lg:flex justify-around md:block'>
+                    {animal ? (
+                        <>
+                            <div className=''>
+                                <h2 className=' text-2xl font-bold text-brown'>Cześć jestem</h2>
+                                <p className=' text-5xl font-bold text-orange'>{animal.name}</p>
+                                <img src={(animal.imagePath)} alt="Zdjęcie"/>
 
-                        <p>Gatunek: {SPECIES_OPTIONS[animal.species]}</p>
-                        <p>Płeć: {SEX_OPTIONS[animal.sex]}</p>
-                        <p>Wiek: {AGE_OPTIONS[animal.age]}</p>
-                        <p>Data urodzenia: {animal.birthDate}</p>
-                        <p>Status: {STATUS_OPTIONS[animal.animalStatus]}</p>
-                        <p>Dodatkowe informacje: {animal.information}</p>
-                        <p>Schronisko: {animal.shelter.shelterName}</p>
-                        <p>
-                            Adres schroniska: {animal.shelter.address.street}{" "}
-                            {animal.shelter.address.buildingNumber}{" "}
-                            {animal.shelter.address.flatNumber}{" "}
-                            {animal.shelter.address.postalCode}{" "}
-                            {animal.shelter.address.city}
-                        </p>
-                        <p>Numer KRS: {animal.shelter.address.krsNumber}</p>
-                        <p>Telefon do schroniska: {animal.shelter.address.phone}</p>
+                            </div>
+                            <div className='flex 1/3 py-10'>
+                                <div className=''>
+                                    <p className='font-bold pt-2'>Gatunek: </p><p>{SPECIES_OPTIONS[animal.species]}</p>
+                                    <p className='font-bold pt-2'>Płeć: </p><p>{SEX_OPTIONS[animal.sex]}</p>
+                                    <p className='font-bold pt-2'>Wiek: </p><p>{AGE_OPTIONS[animal.age]}</p>
+                                    <p className='font-bold pt-2'>Data urodzenia: </p><p>{animal.birthDate}</p>
+                                    <p className='font-bold pt-2'>Status:</p><p>{STATUS_OPTIONS[animal.animalStatus]}</p>
+                                    <p className='font-bold pt-2'>Dodatkowe informacje:</p><p> {animal.information}</p>
+                                </div>
+                                <div>
+                                    <p className='font-bold pt-2'>Schronisko:</p><p> {animal.shelter.shelterName}</p>
+                                    <p className='font-bold pt-2'>
+                                        Adres schroniska: </p><p>{animal.shelter.address.street}{" "}
+                                    {animal.shelter.address.buildingNumber}{" "}
+                                    {animal.shelter.address.flatNumber}{" "}
+                                    {animal.shelter.address.postalCode}{" "}
+                                    {animal.shelter.address.city}
+                                </p>
+                                    <p className='font-bold pt-2'>Numer KRS: </p><p>{animal.shelter.address.krsNumber}</p>
+                                    <p className='font-bold pt-2'>Telefon do schroniska:</p><p> {animal.shelter.address.phone}</p>
+                                    <div className='flex justify-end py-10'>
+                                        {animal && canAdopt(animal) && (
+                                            <button
+                                                className="bg-orange text-white font-bold py-2 px-4 rounded"
+                                                onClick={() => handleAdoption(animal.id)}
+                                            >
+                                                Adoptuj
+                                            </button>
+                                        )}
+                                    </div>
 
-                        {animal && canAdopt(animal) && (
-                            <button
-                                className="bg-orange text-white font-bold py-2 px-4 rounded"
-                                onClick={() => handleAdoption(animal.id)}
-                            >
-                                Adoptuj
-                            </button>
-                        )}
-                    </>
-                ) : (
-                    <p>Ładowanie danych zwierzaka...</p>
-                )}
+                                </div>
+                            </div>
+
+                        </>
+                    ) : (
+                        <p>Ładowanie danych zwierzaka...</p>
+                    )}
+
+                </div>
+
             </div>
         </div>
     );
 }
+
+
