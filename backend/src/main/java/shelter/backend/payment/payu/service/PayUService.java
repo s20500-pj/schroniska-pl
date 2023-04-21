@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-import shelter.backend.adoption.service.VirtualAdoptionService;
 import shelter.backend.payment.PaymentService;
 import shelter.backend.payment.payu.configuration.PayUConfigurationProperties;
 import shelter.backend.payment.payu.rest.model.Buyer;
@@ -53,11 +51,8 @@ public class PayUService implements PaymentService {
 
     private final OrderDataRequest orderDataRequest;
 
-    @Lazy
-    private final VirtualAdoptionService virtualAdoptionService;
-
     @Value("${server.port}")
-    private final int serverPort;
+    private int serverPort;
 
     @Override
     public String commencePayment(User user, Animal animal) {

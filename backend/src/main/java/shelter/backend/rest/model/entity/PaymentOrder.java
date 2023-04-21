@@ -1,8 +1,6 @@
 package shelter.backend.rest.model.entity;
 
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
@@ -16,8 +14,7 @@ import java.io.Serializable;
 @Getter
 public class PaymentOrder implements Serializable {
 
-    @Id
-    private String orderID;
+    private String id;
 
     @Indexed
     private String extOrderId;
