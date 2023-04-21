@@ -41,28 +41,28 @@ export default function Table({columns, data}) {
             <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                 {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
+                    <tr {...headerGroup.getHeaderGroupProps()} >
                         {headerGroup.headers.map((column) => (
                             <th {...column.getHeaderProps()} className="px-6 py-3 text-s font-bold text-left text-orange uppercase">{column.render("Header")}</th>
                         ))}
                     </tr>
                 ))}
                 </thead>
-                <tbody {...getTableBodyProps()}>
+                <tbody {...getTableBodyProps()} className="p-3">
                 {page.map((row, i) => {
                     prepareRow(row);
                     return (
-                        <tr {...row.getRowProps()}>
+                        <tr {...row.getRowProps()} className="p-3">
                             {row.cells.map((cell, j) => {
                                 if (cell.column.Header === "Zdjęcie") {
                                     return (
-                                        <td {...cell.getCellProps()}>
-                                            <img src={cell.value} alt=""/>
+                                        <td {...cell.getCellProps() }className='p-5'>
+                                            <img src={cell.value} alt="" className="object-cover h-32 w-48"/>
                                         </td>
                                     );
                                 } else {
                                     return (
-                                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                                        <td {...cell.getCellProps()} className="p-3 text-left" >{cell.render("Cell")}</td>
                                     );
                                 }
                             })}
