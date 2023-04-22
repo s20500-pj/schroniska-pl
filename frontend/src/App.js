@@ -39,7 +39,7 @@ function App() {
     const userType = localStorage.getItem("userType");
 
     return (
-        <div className="m-auto font-display h-fit w-fit">
+        <div className="m-auto font-display h-fit">
             <Router>
 
                 {(userType === "ADMIN") ? <NavbarAdmin/> :
