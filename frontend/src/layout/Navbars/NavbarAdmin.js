@@ -47,7 +47,7 @@ export default function NavbarAdmin() {
                                 <Link to="/">
                                     <div className="flex w-48">
                                         <img
-                                            className="blocklg:hidden"
+                                            className="block lg:hidden"
                                             src={logo}
                                             alt="Logo schronisko.pl"
                                         />
@@ -96,8 +96,30 @@ export default function NavbarAdmin() {
                             </div>
                         </div>
                     </div>
-                </>
-            )}
-        </Disclosure>
+            <Disclosure.Panel className="sm:hidden">
+                <div className="space-y-1 px-2 pt-2 pb-3">
+                    {navigation.map((item) => (
+                        <Disclosure.Button
+                            key={item.name}
+                            as="a"
+                            href={item.href}
+                            className={classNames(
+                                item.current ? 'bg-orange text-brown' : 'text-orange hover:bg-orange hover:text-brown',
+                                'block rounded-md px-3 py-2 text-base font-medium'
+                            )}
+                            aria-current={item.current ? 'page' : undefined}
+                        >
+                            {item.name}
+
+                        </Disclosure.Button>
+
+                    ))}
+
+
+                </div>
+            </Disclosure.Panel>
+        </>
+    )}
+</Disclosure>
     )
 }
