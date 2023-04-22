@@ -41,8 +41,10 @@ const columns = [
                 accessor: "animal.id",
                 Cell: ({value}) => (
                     <Link to={`/animalDetails/${value}`}>
-                        Zobacz szczegóły zwierzaka
-                    </Link>
+                        <button type="submit"
+                                className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                            <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Zobacz zwierzę</p>
+                        </button>                     </Link>
                 ),
             },
             {
@@ -50,7 +52,10 @@ const columns = [
                 accessor: "id",
                 Cell: ({value}) => (
                     <Link to={`/adoptionDetails/${value}`}>
-                        Zobacz szczegóły adopcji
+                        <button type="submit"
+                                className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                            <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Zobacz szczegóły adopcji</p>
+                        </button>
                     </Link>
                 ),
             }
