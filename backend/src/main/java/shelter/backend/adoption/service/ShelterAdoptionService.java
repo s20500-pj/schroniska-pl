@@ -265,7 +265,8 @@ public class ShelterAdoptionService implements AdoptionService {
         animal.setAnimalStatus(AnimalStatus.ADOPTED);
         animalRepository.save(animal);
         adoptionRepository.save(adoption);
-        animal.getAdoptions().stream().filter(adoptionUpdate -> adoptionUpdate.getAdoptionType() == AdoptionType.REAL)
+        animal.getAdoptions().stream().filter(adoptionUpdate -> !adoptionUpdate.getId().equals(id))//don't cancel current adoption!
+                .filter(adoptionUpdate -> adoptionUpdate.getAdoptionType() == AdoptionType.REAL)
                 .forEach(adoptionUpdate -> declineRealAdoption(adoptionUpdate.getId(), true));
         return adoption.toDto2(adoption.getAnimal().toSimpleDto());
     }
