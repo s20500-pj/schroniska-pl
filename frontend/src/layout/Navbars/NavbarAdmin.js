@@ -6,7 +6,7 @@ import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 import axios from "axios";
 
 const navigation = [
-    {name: 'Lista użytkowników', href: '#', current: false},
+    {name: 'Lista użytkowników', href: '/userList', current: false},
     {name: 'Lista schronisk', href: '/shelterList', current: false}
 ]
 
@@ -67,7 +67,7 @@ export default function NavbarAdmin() {
                                                 href={item.href}
                                                 className={classNames(
                                                     item.current ? ' text-brown' : 'text-brown hover:text-orange',
-                                                    'rounded-md px-3 py-2 text-sm font-medium active:text-bold'
+                                                    'rounded-md px-3 py-5 text-sm font-medium active:text-bold'
                                                 )}
                                                 aria-current={item.current ? 'page' : undefined}
                                             >

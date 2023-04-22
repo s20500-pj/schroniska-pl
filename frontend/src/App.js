@@ -29,6 +29,7 @@ import ShelterVirtualAdoptionList from "./adoption/ShelterVirtualAdoptionList";
 import AdoptionDetails from "./adoption/AdoptionDetails";
 import ShelterlList from "./shelter/ShelterlList";
 import ShelterList from "./shelter/ShelterlList";
+import UsersList from "./shelter/UsersList";
 
 function App() {
     axios.defaults.withCredentials = true
@@ -58,6 +59,7 @@ function App() {
                     <Route exact path="/animalList" element={<AnimalList/>}/>
                     <Route exact path="/animalDetails/:id" element={<AnimalDetails />} />
                     <Route exact path="/shelterList" element={<ShelterList />} />
+                    <Route exact path="/userList" element={<UsersList />} />
                     {userType === "SHELTER" ? <Route exact path="/addAnimal" element={<AddAnimal/>}/> : <Route exact path="/" element={<Home/>}/>}
                     {userType === "SHELTER" ? <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/> : <Route exact path="/" element={<Home/>}/>}
                     {userType === "PERSON" ? <Route exact path="/userVirtualAdoptionList" element={<UserVirtualAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}

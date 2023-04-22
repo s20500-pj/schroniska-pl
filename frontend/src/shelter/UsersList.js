@@ -5,11 +5,15 @@ import Table from "../util/Table";
 
 const columns = [
     {
-        Header: "Lista schronisk",
+        Header: "Lista użytkowników",
         columns: [
             {
-                Header: "Nazwa schroniska",
-                accessor: "shelterName"
+                Header: "Imie",
+                accessor: "firstName"
+            },
+            {
+                Header: "Nazwisko",
+                accessor: "lastName"
             },
             {
                 Header: "Email",
@@ -24,14 +28,10 @@ const columns = [
                 accessor: "address.phone"
             },
             {
-                Header: "KRS",
-                accessor: "address.krsNumber"
-            },
-            {
                 Header: "Szczegóły",
                 accessor: "id",
                 Cell: ({value}) => (
-                    <Link to={`/shelterDetails/${value}`}>
+                    <Link to={`/userDetails/${value}`}>
                         Zobacz szczegóły/ do implementacji
                     </Link>
                 ),
@@ -40,44 +40,46 @@ const columns = [
     },
 ];
 
-function ShelterList() {
+function UsersList() {
     axios.defaults.withCredentials = true
     const [error, setError] = useState("");
     const [data, setData] = useState([]);
-    const [shelter, setShelter] = useState({
-        shelterName: "",
+    const [user, setUser] = useState({
+        firstName: "",
+        lastName: "",
         email: "",
-        information: "",
-        city: "",
-        street: ""
+        password: "",
+        userType: "PERSON",
+        address: {
+            street: "",
+            city: "",
+            postalCode: "",
+            buildingNumber: "",
+            flatNumber: "",
+            phone: "",
+        },
     });
 
     const onInputChange = (e) => {
-        setShelter({...shelter, [e.target.name]: e.target.value});
+        setUser({...user, [e.target.name]: e.target.value});
     };
 
-    const {
-        shelterName,
-        email,
-        information,
-        city,
-        street
-    } = shelter;
 
-    const enteredShelterFields = {
+
+    const enteredUserFields = {
         ...Object.fromEntries(
-            Object.entries(shelter)
+            Object.entries(user)
                 .filter(([_, value]) => value !== "")
                 .map(([key, value]) => [`"${key}"`, value])
         ),
-        "\"userType\"": "SHELTER"
+        "\"userType\"": "PERSON"
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const result = await axios.post(
-            "http://localhost:8080/shelter/searchShelters",
-            JSON.stringify(enteredShelterFields), {
+            "http://localhost:8080/user/searchUser",
+            JSON.stringify(enteredUserFields), {
                 withCredentials: true,
                 headers: {
                     'Content-Type': 'text/plain'
@@ -91,8 +93,8 @@ function ShelterList() {
         const fetchData = async () => {
             try {
                 const result = await axios.post(
-                    "http://localhost:8080/shelter/searchShelters",
-                    JSON.stringify(enteredShelterFields), {
+                    "http://localhost:8080/user/searchUser",
+                    JSON.stringify(enteredUserFields), {
                         withCredentials: true,
                         headers: {
                             'Content-Type': 'text/plain'
@@ -108,7 +110,7 @@ function ShelterList() {
     }, []);
 
     const handleClear = () => {
-        setShelter({});
+        setUser({});
     };
 
     return (
@@ -119,15 +121,28 @@ function ShelterList() {
                     <form onSubmit={(e) => handleSubmit(e)} className="w-full m-auto">
                         <div className="flex flex-wrap p-5">
                             <div className="w-full px-3">
-                                <label htmlFor="shelterName"
+                                <label htmlFor="firstName"
                                        className="block uppercase tracking-wide text-brown text-md font-bold">
-                                    Nazwa schroniska:
+                                    Imie:
                                 </label>
                                 <input
                                     type="text"
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="shelterName"
-                                    value={shelterName}
+                                    name="firstName"
+                                    value={user.firstName}
+                                    onChange={(e) => onInputChange(e)}
+                                />
+                            </div>
+                            <div className="w-full px-3">
+                                <label htmlFor="lastName"
+                                       className="block uppercase tracking-wide text-brown text-md font-bold">
+                                    Nazwisko:
+                                </label>
+                                <input
+                                    type="text"
+                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    name="lastName"
+                                    value={user.firstName}
                                     onChange={(e) => onInputChange(e)}
                                 />
                             </div>
@@ -140,7 +155,20 @@ function ShelterList() {
                                     type="text"
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     name="email"
-                                    value={email}
+                                    value={user.email}
+                                    onChange={(e) => onInputChange(e)}
+                                />
+                            </div>
+                            <div className="w-full px-3">
+                                <label htmlFor="phone"
+                                       className="block uppercase tracking-wide text-brown text-md font-bold">
+                                    Numer telefonu:
+                                </label>
+                                <input
+                                    type="text"
+                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    name="number"
+                                    value={user.address.phone}
                                     onChange={(e) => onInputChange(e)}
                                 />
                             </div>
@@ -153,7 +181,7 @@ function ShelterList() {
                                     type="text"
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     name="city"
-                                    value={city}
+                                    value={user.address.city}
                                     onChange={(e) => onInputChange(e)}
                                 />
                             </div>
@@ -166,7 +194,7 @@ function ShelterList() {
                                     type="text"
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     name="street"
-                                    value={street}
+                                    value={user.address.street}
                                     onChange={(e) => onInputChange(e)}
                                 />
                             </div>
@@ -188,10 +216,9 @@ function ShelterList() {
                     </form>
                 </div>
             </div>
-
             <Table columns={columns} data={data}/>
         </div>
     );
 }
 
-export default ShelterList;
+export default UsersList;
