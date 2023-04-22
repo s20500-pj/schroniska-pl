@@ -27,11 +27,13 @@ import AnimalDetails from "./animal/AnimalDetails";
 import ShelterRealAdoptionList from "./adoption/ShelterRealAdoptionList";
 import ShelterVirtualAdoptionList from "./adoption/ShelterVirtualAdoptionList";
 import AdoptionDetails from "./adoption/AdoptionDetails";
-import ShelterList from "./lists/ShelterlList";
 import UsersList from "./lists/UsersList";
 import ShelterDetails from "./users/shelter/ShelterDetails";
 import MailConfirmationPage from "./origin/MailConfirmationPage";
 import PayUConfirmationPage from "./origin/PayUConfirmationPage";
+import UpdateAnimal from "./animal/UpdateAnimal";
+import ShelterList from "./lists/ShelterlList";
+
 
 function App() {
     axios.defaults.withCredentials = true
@@ -86,7 +88,7 @@ function App() {
                         <Route exact path="/" element={<Home/>}/>}
                     {userType === "PERSON" ? <Route exact path="/payment" element={<PayUConfirmationPage/>}/> :
                         <Route exact path="/" element={<Home/>}/>}
-
+                    <Route exact path="/updateAnimal/:id" element={<UpdateAnimal/>}/>
                 </Routes>
             </Router>
             <Footer/>

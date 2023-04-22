@@ -3,6 +3,8 @@ import axios from "axios";
 import {useParams} from "react-router-dom";
 import {AGE_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS, ANIMAL_STATUS_OPTIONS} from "../util/Enums";
 import icon from  '../dog-cat-icon.jpeg';
+import {Link, useParams} from "react-router-dom";
+import {AGE_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS, STATUS_OPTIONS} from "../util/Enums";
 
 export default function AnimalDetails() {
     axios.defaults.withCredentials = true;
@@ -99,6 +101,9 @@ export default function AnimalDetails() {
                                                 Adoptuj
                                             </button>
                                         )}
+                                        <Link to={`/updateAnimal/${animal.id}`}>
+                                            <p>update animal</p>
+                                        </Link>
                                     </div>
 
                                 </div>
