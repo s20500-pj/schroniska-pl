@@ -8,11 +8,9 @@ import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import shelter.backend.rest.model.entity.Activity;
-import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.enums.ActivityType;
-import shelter.backend.rest.model.enums.AdoptionStatus;
-import shelter.backend.rest.model.enums.AdoptionType;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +22,8 @@ public class ActivitySpecification implements Specification<Activity> {
     private static final String ACTIVITYTIME = "activityTime";
     private static final String SORT_BY = "sortBy";
 
+    private final LocalTime defaultTimeOfActivity = LocalTime.of(16, 0);
+
 
     private final Map<String, String> searchParams;
 
@@ -34,7 +34,6 @@ public class ActivitySpecification implements Specification<Activity> {
         for (Map.Entry<String, String> entry : searchParams.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-//TODO podowawać wszędzie toLowerCase
             switch (key) {
                 case ACTIVITYTYPE -> predicates.add(criteriaBuilder.equal(root.get(ACTIVITYTYPE), ActivityType.valueOf(value)));
                 case ACTIVITYTIME -> predicates.add(criteriaBuilder.equal(root.get(ACTIVITYTIME), value));

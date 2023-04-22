@@ -2,6 +2,7 @@ package shelter.backend.activity.rest.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shelter.backend.activity.rest.req.ActivityRegisterReq;
 import shelter.backend.activity.service.ActivityService;
-import shelter.backend.rest.model.dtos.ActivityDto;
 import shelter.backend.rest.model.dtos.ActivityDto2;
-import shelter.backend.rest.model.dtos.AdoptionDto;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -53,9 +53,10 @@ public class ActivityController {
     }
 
     @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")
-    @PostMapping("/todayActivity")
-    ResponseEntity<ActivityDto2> todayActivity(@RequestBody @Valid Map<String, String> searchParams) {
-        return ResponseEntity.ok(activityService.search(searchParams));
+    @PostMapping("/getActivityByDate/{date}")
+    ResponseEntity<List<ActivityDto2>> getActivityByDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+        List<ActivityDto2> activities = activityService.getActivityByDate(date);
+        return activities != null ? ResponseEntity.ok(activities) : ResponseEntity.notFound().build();
     }
 
 }

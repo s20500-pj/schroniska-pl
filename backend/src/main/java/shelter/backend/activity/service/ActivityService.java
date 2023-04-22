@@ -3,6 +3,7 @@ package shelter.backend.activity.service;
 import shelter.backend.activity.rest.req.ActivityRegisterReq;
 import shelter.backend.rest.model.dtos.ActivityDto2;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -15,5 +16,5 @@ public interface ActivityService {
 
     List<ActivityDto2> search(Map<String, String> searchParams);
 
-    ActivityDto2 getTodayActivity();
+    List<ActivityDto2> getActivityByDate(LocalDate date);
 }

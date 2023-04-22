@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import shelter.backend.activity.rest.req.ActivityRegisterReq;
-import shelter.backend.rest.model.dtos.ActivityDto;
 import shelter.backend.rest.model.dtos.ActivityDto2;
 import shelter.backend.rest.model.entity.Activity;
 import shelter.backend.rest.model.entity.Animal;
@@ -42,7 +41,7 @@ public class ShelterActivityService implements ActivityService {
 
     private final ActivityMapper activityMapper;
 
-    private final LocalTime defaultTimeOfActivity = LocalTime.of(16, 0);
+    private final LocalTime defaultTimeOfActivity = LocalTime.of(16, 0); //todo add to Preferences
 
     @Override
     @Transactional
@@ -124,10 +123,18 @@ public class ShelterActivityService implements ActivityService {
     }
 
     @Override
-    public ActivityDto2 getTodayActivity() {
+    public List<ActivityDto2> getActivityByDate(LocalDate date) {
         log.debug("invoked [getTodayActivity]");
-        LocalDateTime today = LocalDateTime.of(LocalDate.now(), defaultTimeOfActivity);
-        return activityRepository.findActivityByActivityTimeAndAnimal_ShelterId(today,).;
+        LocalDateTime dateToSearch = LocalDateTime.of(date, defaultTimeOfActivity);
+        User user = getUser();
+        List<Activity> activities;
+        if (user.getUserType() == UserType.SHELTER) {
+            activities = activityRepository.findActivitiesByActivityTimeAndAnimal_ShelterId(dateToSearch, user.getId());
+        }
+        else {
+            activities = activityRepository.findActivitiesByActivityTime(dateToSearch);
+        }
+       return activities != null ? activityMapper.toDto2List(activities) : null;
     }
 
     private boolean isEntitled(User currentUser, Long activityId) {

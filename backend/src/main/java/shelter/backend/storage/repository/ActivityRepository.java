@@ -14,5 +14,8 @@ import java.util.Optional;
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long>, JpaSpecificationExecutor<Activity> {
     List<Activity> findActivitiesByAnimal_ShelterId(Long shelterId);
-    Optional<Activity> findActivityByActivityTimeAndAnimal_ShelterId(LocalDateTime dateTime, Long shelterId);
+
+    List<Activity> findActivitiesByActivityTimeAndAnimal_ShelterId(LocalDateTime dateTime, Long shelterId);
+
+    List<Activity> findActivitiesByActivityTime(LocalDateTime dateTime);
 }
