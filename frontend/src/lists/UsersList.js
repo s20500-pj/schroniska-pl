@@ -20,10 +20,6 @@ const columns = [
                 accessor: "email"
             },
             {
-                Header: "Miasto",
-                accessor: "address.city"
-            },
-            {
                 Header: "Telefon",
                 accessor: "address.phone"
             },
@@ -66,9 +62,6 @@ function UsersList() {
         email,
         street,
         city,
-        postalCode,
-        buildingNumber,
-        flatNumber,
         phone,
 
     }= user;
@@ -176,19 +169,6 @@ function UsersList() {
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     name="number"
                                     value={phone}
-                                    onChange={(e) => onInputChange(e)}
-                                />
-                            </div>
-                            <div className="w-full px-3">
-                                <label htmlFor="city"
-                                       className="block uppercase tracking-wide text-brown text-md font-bold">
-                                    Miasto:
-                                </label>
-                                <input
-                                    type="text"
-                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="city"
-                                    value={city}
                                     onChange={(e) => onInputChange(e)}
                                 />
                             </div>
