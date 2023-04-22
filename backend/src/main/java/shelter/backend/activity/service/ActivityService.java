@@ -14,4 +14,6 @@ public interface ActivityService {
     List<ActivityDto2> getAll();
 
     List<ActivityDto2> search(Map<String, String> searchParams);
+
+    ActivityDto2 getTodayActivity();
 }

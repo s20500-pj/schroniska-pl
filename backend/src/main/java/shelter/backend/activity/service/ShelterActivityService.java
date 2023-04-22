@@ -123,6 +123,13 @@ public class ShelterActivityService implements ActivityService {
             }
     }
 
+    @Override
+    public ActivityDto2 getTodayActivity() {
+        log.debug("invoked [getTodayActivity]");
+        LocalDateTime today = LocalDateTime.of(LocalDate.now(), defaultTimeOfActivity);
+        return activityRepository.findActivityByActivityTimeAndAnimal_ShelterId(today,).;
+    }
+
     private boolean isEntitled(User currentUser, Long activityId) {
         Activity activity = activityRepository.findById(activityId)
                 .orElseThrow(() -> new EntityNotFoundException("Aktynowść o podanym ID nie isnieje"));

@@ -52,5 +52,11 @@ public class ActivityController {
         return ResponseEntity.ok(activityService.search(searchParams));
     }
 
+    @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")
+    @PostMapping("/todayActivity")
+    ResponseEntity<ActivityDto2> todayActivity(@RequestBody @Valid Map<String, String> searchParams) {
+        return ResponseEntity.ok(activityService.search(searchParams));
+    }
+
 }
 
