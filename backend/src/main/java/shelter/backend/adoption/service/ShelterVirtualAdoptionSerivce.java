@@ -3,6 +3,7 @@ package shelter.backend.adoption.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import shelter.backend.email.EmailService;
@@ -21,6 +22,8 @@ import shelter.backend.storage.repository.UserRepository;
 import shelter.backend.utils.constants.ShelterConstants;
 import shelter.backend.utils.exception.AdoptionException;
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.Locale;
 
 @Service
@@ -39,6 +42,9 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
     private static final String ORDER_NAME_PROPERTY = "payment.order.virtual.adoption.name";
 
     private static final String ORDER_DESCRIPTION_PROPERTY = "payment.order.virtual.adoption.description";
+
+    @Value("${payment.payu.validUntil}")
+    private Long pendingAdoptionValidUntil;
 
     public ShelterVirtualAdoptionSerivce(AdoptionRepository adoptionRepository, AnimalRepository animalRepository,
                                          UserRepository userRepository, AdoptionMapper adoptionMapper,
@@ -69,6 +75,7 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
             Adoption adoption = Adoption.builder()
                     .adoptionType(AdoptionType.VIRTUAL)
                     .adoptionStatus(AdoptionStatus.PENDING)
+                    .validUntil(LocalDate.now().plusDays(Duration.ofSeconds(pendingAdoptionValidUntil).toDays()))
                     .animal(animal)
                     .user(currentUser)
                     .build();
@@ -76,7 +83,7 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
             return redirect_uri;
         } else {
             log.error("Problem occurred during processing the payment. redirect_uri: {}", redirect_uri);
-            throw new AdoptionException("Problem z przetowrzeniem płatności");
+            throw new AdoptionException("Problem z przetworzeniem płatności");
         }
     }
 

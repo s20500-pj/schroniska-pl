@@ -23,13 +23,13 @@ public class AdoptionController {
 
     @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")
     @GetMapping("/{adoptionId}")
-    ResponseEntity<AdoptionDto2> getAdoptionById(@PathVariable Long adoptionId) {
+    ResponseEntity<AdoptionDto2> getAdoptionById(@PathVariable @NotNull Long adoptionId) {
         return ResponseEntity.ok(shelterAdoptionService.getAdoptionById(adoptionId));
     }
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/getUserAdoptions/{adoptionType}")
-    ResponseEntity<List<AdoptionDto2>> getUserAdoptions(@PathVariable String adoptionType) {
+    ResponseEntity<List<AdoptionDto2>> getUserAdoptions(@PathVariable @NotNull String adoptionType) {
         return ResponseEntity.ok(shelterAdoptionService.getUserAdoptions(adoptionType));
     }
 

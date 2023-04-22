@@ -51,6 +51,9 @@ public class PayUService implements PaymentService {
 
     private final OrderDataRequest orderDataRequest;
 
+    @Value("${payment.payu.validUntil}")
+    private Long expiresIn;
+
     @Value("${server.port}")
     private int serverPort;
 
@@ -83,7 +86,8 @@ public class PayUService implements PaymentService {
             throw new PaymentException("Płatność zakończona niepowodzeniem");
         }
         PaymentOrder paymentOrder = new PaymentOrder(orderResponse.getOrderId(), orderResponse.getExtOrderId(),
-                user.getEmail(), shelter.getShelterName(), orderDataRequest.getAmount(), Purpose.VIRTUAL_ADOPTION);
+                user.getEmail(), shelter.getShelterName(), orderDataRequest.getAmount(), Purpose.VIRTUAL_ADOPTION,
+                expiresIn.intValue());
         paymentOrderRepository.save(paymentOrder); //TODO test the repo custom method
 
         return orderResponse.getRedirectUri();
