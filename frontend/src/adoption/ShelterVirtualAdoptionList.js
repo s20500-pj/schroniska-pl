@@ -29,7 +29,7 @@ const columns = [
             },
             {
                 Header: "Nazwa schroniska",
-                accessor: "animal.shelter.shelterName"
+                accessor: "animal.lists.shelterName"
             },
             {
                 Header: "Status adopcji",
