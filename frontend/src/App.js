@@ -27,7 +27,6 @@ import AnimalDetails from "./animal/AnimalDetails";
 import ShelterRealAdoptionList from "./adoption/ShelterRealAdoptionList";
 import ShelterVirtualAdoptionList from "./adoption/ShelterVirtualAdoptionList";
 import AdoptionDetails from "./adoption/AdoptionDetails";
-import ShelterlList from "./lists/ShelterlList";
 import ShelterList from "./lists/ShelterlList";
 import UsersList from "./lists/UsersList";
 
