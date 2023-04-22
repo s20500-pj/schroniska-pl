@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import shelter.backend.activity.rest.req.ActivityRegisterReq;
 import shelter.backend.activity.service.ActivityService;
 import shelter.backend.rest.model.dtos.ActivityDto;
+import shelter.backend.rest.model.dtos.ActivityDto2;
 import shelter.backend.rest.model.dtos.AdoptionDto;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class ActivityController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/register")
-    ResponseEntity<ActivityDto> registerActivity(@RequestBody ActivityRegisterReq activityRegisterReq) {
+    ResponseEntity<ActivityDto2> registerActivity(@RequestBody ActivityRegisterReq activityRegisterReq) {
         return ResponseEntity.ok(activityService.registerActivity(activityRegisterReq));
     }
 
@@ -41,13 +42,13 @@ public class ActivityController {
 
     @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")
     @GetMapping("/getAll")
-    ResponseEntity<List<ActivityDto>> getAll() {
+    ResponseEntity<List<ActivityDto2>> getAll() {
         return ResponseEntity.ok(activityService.getAll());
     }
 
     @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")
     @PostMapping("/search")
-    ResponseEntity<List<ActivityDto>> search(@RequestBody @Valid Map<String, String> searchParams) {
+    ResponseEntity<List<ActivityDto2>> search(@RequestBody @Valid Map<String, String> searchParams) {
         return ResponseEntity.ok(activityService.search(searchParams));
     }
 

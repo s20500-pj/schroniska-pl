@@ -1,6 +1,5 @@
 package shelter.backend.adoption.service;
 
-import shelter.backend.rest.model.dtos.AdoptionDto;
 import shelter.backend.rest.model.dtos.AdoptionDto2;
 import shelter.backend.rest.model.enums.AdoptionType;
 
@@ -44,7 +43,7 @@ public interface AdoptionService {
 
     List<AdoptionDto2> getUserAdoptions(String adoptionType);
 
-    List<AdoptionDto> search(Map<String, String> searchParams);
+    List<AdoptionDto2> search(Map<String, String> searchParams);
     /*
      * finish the adoption process succesfully. After the user adopts the animal.
      * */

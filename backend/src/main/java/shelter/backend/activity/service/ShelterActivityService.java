@@ -9,15 +9,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import shelter.backend.activity.rest.req.ActivityRegisterReq;
 import shelter.backend.rest.model.dtos.ActivityDto;
-import shelter.backend.rest.model.dtos.AdoptionDto;
+import shelter.backend.rest.model.dtos.ActivityDto2;
 import shelter.backend.rest.model.entity.Activity;
-import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.ActivityMapper;
 import shelter.backend.rest.model.specification.ActivitySpecification;
-import shelter.backend.rest.model.specification.AdoptionSpecification;
 import shelter.backend.storage.repository.ActivityRepository;
 import shelter.backend.storage.repository.AnimalRepository;
 import shelter.backend.storage.repository.UserRepository;
@@ -43,17 +41,18 @@ public class ShelterActivityService implements ActivityService {
     private final AnimalRepository animalRepository;
 
     private final ActivityMapper activityMapper;
+
     private final LocalTime defaultTimeOfActivity = LocalTime.of(16, 0);
 
     @Override
     @Transactional
-    public ActivityDto registerActivity(ActivityRegisterReq activityRegisterReq) {
+    public ActivityDto2 registerActivity(ActivityRegisterReq activityRegisterReq) {
         log.debug("[registerActivity] :: activity: {}, userName: {}", activityRegisterReq, getUser().getEmail());
         Animal animal = animalRepository.findAnimalById(activityRegisterReq.getAnimalId());
         if (animal != null) {
             //TODO maybe also try to use google maps api to count the distance. up tp 50km for instance. consider adding this to Preference
             if (hasFreeTime(animal, activityRegisterReq.getActivityDate())) {
-                return activityMapper.toDto(persistActivity(animal, activityRegisterReq));
+                return activityMapper.toDto2(persistActivity(animal, activityRegisterReq));
             } else {
                 log.info("Animal awaits for activity already. Animal id: {}. Activity Request: {}", animal.getId(), activityRegisterReq);
                 throw new ActivityException("Podany termin aktywności jest już zajęty");
@@ -96,7 +95,7 @@ public class ShelterActivityService implements ActivityService {
     }
 
     @Override
-    public List<ActivityDto> getAll() {
+    public List<ActivityDto2> getAll() {
         List<Activity> adoptionList;
         User user = getUser();
         log.debug("[getAll] :: userId: {}, userName: {}", user.getId(), user.getEmail());
@@ -105,11 +104,11 @@ public class ShelterActivityService implements ActivityService {
         } else {
             adoptionList = activityRepository.findAll();
         }
-        return activityMapper.toDtoList(adoptionList);
+        return activityMapper.toDto2List(adoptionList);
     }
 
     @Override
-    public List<ActivityDto> search(Map<String, String> searchParams) {
+    public List<ActivityDto2> search(Map<String, String> searchParams) {
             log.debug("[search] :: searchParams: {}", searchParams);
             ActivitySpecification activitySpecification = new ActivitySpecification(searchParams);
             List<Activity> activityList = activityRepository.findAll(activitySpecification);
@@ -118,9 +117,9 @@ public class ShelterActivityService implements ActivityService {
                 List<Activity> activitySpecificForTheShelter = activityList.stream()
                         .filter(activity -> Objects.equals(activity.getAnimal().getShelter().getId(), currentUser.getId()))
                         .toList();
-                return activityMapper.toDtoList(activitySpecificForTheShelter);
+                return activityMapper.toDto2List(activitySpecificForTheShelter);
             } else {
-                return activityMapper.toDtoList(activityList);
+                return activityMapper.toDto2List(activityList);
             }
     }
 

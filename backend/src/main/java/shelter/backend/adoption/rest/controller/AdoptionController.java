@@ -84,7 +84,7 @@ public class AdoptionController {
 
     @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")
     @PostMapping("/search")
-    ResponseEntity<List<AdoptionDto>> search(@RequestBody @Valid Map<String, String> searchParams) {
+    ResponseEntity<List<AdoptionDto2>> search(@RequestBody @Valid Map<String, String> searchParams) {
         return ResponseEntity.ok(shelterAdoptionService.search(searchParams));
     }
 
@@ -100,6 +100,4 @@ public class AdoptionController {
         shelterAdoptionService.delete(adoptionId);
         return ResponseEntity.noContent().build();
     }
-
-    //FIXME maaybe decouple virtual controller from real? we'll see...
 }

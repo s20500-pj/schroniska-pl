@@ -31,12 +31,6 @@ public class AdoptionMapper implements DtoEntityMapper<Adoption, AdoptionDto> {
         return adoption.toDto();
     }
 
-    public List<AdoptionDto> toDtoList(List<Adoption> adoptions) {
-        List<AdoptionDto> adoptionDtos = new ArrayList<>();
-        adoptions.forEach(adoption -> adoptionDtos.add(adoption.toDto()));
-        return adoptionDtos;
-    }
-
     public AdoptionDto2 toDto2(Adoption adoption) {
         AnimalDto animalDto = getAnimalDtoNullifyAdoptionsAndActivities(adoption);
         return adoption.toDto2(animalDto);
