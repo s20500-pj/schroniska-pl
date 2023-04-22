@@ -13,6 +13,8 @@ import shelter.backend.storage.repository.UserRepository;
 import java.util.List;
 import java.util.Map;
 
+import static shelter.backend.animals.service.ShelterAnimalService.parseSearchParams;
+
 @RequiredArgsConstructor
 @Service
 public class DefaultShelterService implements ShelterService{
@@ -30,10 +32,8 @@ public class DefaultShelterService implements ShelterService{
         return userMapper.toDto(shelter);
     }
 
-    public List<UserDto> searchShelters(Map<String, String> searchParams) {
-        searchParams.remove(USER_TYPE);
-        searchParams.put(USER_TYPE, UserType.SHELTER.name());
-        UserSpecification userSpecification = new UserSpecification(searchParams);
+    public List<UserDto> searchShelters(String searchParams) {
+        UserSpecification userSpecification = new UserSpecification(parseSearchParams(searchParams));
         return userMapper.toDtoList(userRepository.findAll(userSpecification));
     }
 

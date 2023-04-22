@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface ShelterService {
     UserDto getShelterById(Long shelterId);
-    List<UserDto> searchShelters(Map<String, String> searchParams);
+    List<UserDto> searchShelters(String searchParams);
     UserDto update(UserDto userDto);
 
 }

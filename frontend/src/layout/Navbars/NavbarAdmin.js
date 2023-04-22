@@ -7,7 +7,7 @@ import axios from "axios";
 
 const navigation = [
     {name: 'Lista użytkowników', href: '#', current: false},
-    {name: 'Lista schronisk', href: '#', current: false},
+    {name: 'Lista schronisk', href: '/shelterList', current: false}
 ]
 
 function classNames(...classes) {

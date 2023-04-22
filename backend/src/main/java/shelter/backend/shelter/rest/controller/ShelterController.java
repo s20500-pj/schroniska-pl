@@ -23,13 +23,14 @@ public class ShelterController {
     private final RegistrationService registrationService;
     private final ShelterService shelterService;
 
+
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UserDto> getShelterById(@PathVariable @NotNull Long id) {
         return ResponseEntity.ok(shelterService.getShelterById(id));
     }
 
-    @PostMapping(value = "/searchShelters", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<List<UserDto>> searchShelters(@RequestBody @Valid Map<String, String> searchParams) {
+    @PostMapping(value = "/searchShelters", consumes = MediaType.TEXT_PLAIN_VALUE)
+    ResponseEntity<List<UserDto>> searchShelters(@RequestBody String searchParams) {
         return ResponseEntity.ok(shelterService.searchShelters(searchParams));
     }
 

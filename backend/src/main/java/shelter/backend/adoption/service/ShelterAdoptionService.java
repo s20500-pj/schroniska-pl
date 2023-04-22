@@ -320,6 +320,11 @@ public class ShelterAdoptionService implements AdoptionService {
         }
         log.debug("adoption scheduler finished");
     }
+
+    @Override
+    public void delete(Long id) {
+        adoptionRepository.deleteById(id);
+    }
 }
 
 //TODO shendlować jakoś case gdy juź jest zadaptowany realnie, co zrobic z Virtual ->(np. wyczyscic, gdy juz potwierdz to w schronisku ->
