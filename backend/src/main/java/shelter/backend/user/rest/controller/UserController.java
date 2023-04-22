@@ -36,10 +36,9 @@ public class UserController {
         return ResponseEntity.ok(userService.update(userDto));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping(value = "/delete")
-    ResponseEntity<Void> delete() {
-        userService.delete();
+    @DeleteMapping(value = "/delete/{id}")
+    ResponseEntity<Void> delete(@PathVariable Long id) {
+        userService.delete(id);
         return ResponseEntity.noContent().build();
     } //TODO dodanie endpointu ustawiającego isDisable na true dla podanego id usera
 }

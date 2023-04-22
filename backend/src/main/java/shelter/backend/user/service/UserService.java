@@ -8,5 +8,5 @@ public interface UserService {
     List<UserDto> search(String searchParams);
     UserDto getUserById(Long userId);
     UserDto update(UserDto userDto);
-    void delete();
+    void delete(Long id);
 }
