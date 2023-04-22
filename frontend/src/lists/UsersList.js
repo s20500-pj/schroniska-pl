@@ -48,23 +48,30 @@ function UsersList() {
         firstName: "",
         lastName: "",
         email: "",
-        password: "",
-        userType: "PERSON",
-        address: {
             street: "",
             city: "",
             postalCode: "",
             buildingNumber: "",
             flatNumber: "",
             phone: "",
-        },
     });
 
     const onInputChange = (e) => {
         setUser({...user, [e.target.name]: e.target.value});
     };
 
+    const {
+        firstName,
+        lastName,
+        email,
+        street,
+        city,
+        postalCode,
+        buildingNumber,
+        flatNumber,
+        phone,
 
+    }= user;
 
     const enteredUserFields = {
         ...Object.fromEntries(
@@ -129,7 +136,7 @@ function UsersList() {
                                     type="text"
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     name="firstName"
-                                    value={user.firstName}
+                                    value={firstName}
                                     onChange={(e) => onInputChange(e)}
                                 />
                             </div>
@@ -142,7 +149,7 @@ function UsersList() {
                                     type="text"
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     name="lastName"
-                                    value={user.firstName}
+                                    value={lastName}
                                     onChange={(e) => onInputChange(e)}
                                 />
                             </div>
@@ -155,7 +162,7 @@ function UsersList() {
                                     type="text"
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     name="email"
-                                    value={user.email}
+                                    value={email}
                                     onChange={(e) => onInputChange(e)}
                                 />
                             </div>
@@ -168,7 +175,7 @@ function UsersList() {
                                     type="text"
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     name="number"
-                                    value={user.address.phone}
+                                    value={phone}
                                     onChange={(e) => onInputChange(e)}
                                 />
                             </div>
@@ -181,7 +188,7 @@ function UsersList() {
                                     type="text"
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     name="city"
-                                    value={user.address.city}
+                                    value={city}
                                     onChange={(e) => onInputChange(e)}
                                 />
                             </div>
@@ -194,7 +201,7 @@ function UsersList() {
                                     type="text"
                                     className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     name="street"
-                                    value={user.address.street}
+                                    value={street}
                                     onChange={(e) => onInputChange(e)}
                                 />
                             </div>
@@ -211,7 +218,6 @@ function UsersList() {
                                     </button>
                                 </div>
                             </div>
-
                         </div>
                     </form>
                 </div>
