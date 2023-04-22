@@ -78,7 +78,7 @@ function UsersList() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const result = await axios.post(
-            "http://localhost:8080/user/searchUser",
+            "http://localhost:8080/user/search",
             JSON.stringify(enteredUserFields), {
                 withCredentials: true,
                 headers: {
@@ -93,7 +93,7 @@ function UsersList() {
         const fetchData = async () => {
             try {
                 const result = await axios.post(
-                    "http://localhost:8080/user/searchUser",
+                    "http://localhost:8080/user/search",
                     JSON.stringify(enteredUserFields), {
                         withCredentials: true,
                         headers: {

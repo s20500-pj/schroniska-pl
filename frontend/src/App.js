@@ -41,11 +41,9 @@ function App() {
     return (
         <div className="m-auto font-display h-fit">
             <Router>
-
                 {(userType === "ADMIN") ? <NavbarAdmin/> :
                     (userType === "SHELTER") ? <NavbarShelter/> :
                         (userType === "PERSON") ? <NavbarPerson/> : <Navbar/>}
-
                 <Routes>
                     <Route exact path="/" element={(userType === "PERSON") ? <PersonPage/> :
                         (userType === "SHELTER") ? <ShelterPage/> : (userType === "ADMIN") ? <AdminPage/> :
