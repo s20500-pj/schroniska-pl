@@ -38,17 +38,17 @@ export default function Table({columns, data}) {
     return (
         <>
             <div className="p-5">
-            <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+            <table {...getTableProps()} className="min-w-full divide-y divide-gray-300 border-2 border-grey-400 rounded-xl">
+                <thead className="mt-1 rounded-md border-gray-500 shadow-sm">
                 {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()} >
                         {headerGroup.headers.map((column) => (
-                            <th {...column.getHeaderProps()} className="px-6 py-3 text-s font-bold text-left text-orange uppercase">{column.render("Header")}</th>
+                            <th {...column.getHeaderProps()} className="px-6 py-3 text-s font-bold text-center text-orange uppercase">{column.render("Header")}</th>
                         ))}
                     </tr>
                 ))}
                 </thead>
-                <tbody {...getTableBodyProps()} className="p-3">
+                <tbody {...getTableBodyProps()} className="bg-white divide-y divide-gray-200">
                 {page.map((row, i) => {
                     prepareRow(row);
                     return (
@@ -62,7 +62,7 @@ export default function Table({columns, data}) {
                                     );
                                 } else {
                                     return (
-                                        <td {...cell.getCellProps()} className="p-3 text-left" >{cell.render("Cell")}</td>
+                                        <td {...cell.getCellProps()} className="p-3 text-center text-brown" >{cell.render("Cell")}</td>
                                     );
                                 }
                             })}
