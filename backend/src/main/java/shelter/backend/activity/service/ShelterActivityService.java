@@ -167,7 +167,6 @@ public class ShelterActivityService implements ActivityService {
         return userRepository.findUserByEmail(username);
     }
 
-    @Async
     @Scheduled(cron = "0 0 22 * * ?")   //check every day at 22:00 PM
     @Transactional
     public void deleteExpiredActivities() {

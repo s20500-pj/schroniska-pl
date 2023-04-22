@@ -235,7 +235,6 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
         return adoption;
     }
 
-    @Async
     @Scheduled(cron = "0 5 0 * * ?")   //check every day at 00:05 AM
     @Transactional
     public void deleteExpiredRealAdoptions() {

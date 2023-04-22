@@ -3,6 +3,7 @@ package shelter.backend.payment.payu.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.StringSubstitutor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +33,7 @@ import shelter.backend.utils.constants.ShelterConstants;
 import shelter.backend.utils.exception.PaymentException;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -106,16 +108,13 @@ public class PayUService implements PaymentService {
     private OrderCreateRequest prepareOrderCreateRequest(PayUClientCredentials payUClientCredentials, Long id) {
 
         final String serverAddress = "http://localhost:" + serverPort;
-        StringBuilder builder = new StringBuilder();
-        if (id != null) {
-            builder.append("/").append(id);
-        }
-        final String pathVariable = builder.toString();
+        final String callBackUrl = StringSubstitutor.replace(payUConfigurationProperties.getCallbackPath(),
+                Map.of("id", id), "{", "}");
 
         return OrderCreateRequest.builder()
                 .extOrderId(UUID.randomUUID().toString())
                 .customerIp(orderDataRequest.getIpAddress())
-                .continueUrl(serverAddress + payUConfigurationProperties.getCallbackPath() + pathVariable)
+                .continueUrl(serverAddress + callBackUrl)
 //                .notifyUrl(serverAddress + payUConfigurationProperties.getNotifyPath())
                 .merchantPosId(payUClientCredentials.getMerchantPosId())
                 .description(orderDataRequest.getDescription())

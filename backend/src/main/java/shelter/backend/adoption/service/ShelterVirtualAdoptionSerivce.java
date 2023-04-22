@@ -94,7 +94,7 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
     }
 
     private void preparePaymentOrderData(Long amount, User user, Animal animal, long period) {
-        orderData.setAmount(amount);
+        orderData.setAmount(amount * 100);
         orderData.setBuyerEmail(user.getEmail());
         orderData.setName(messageSource.getMessage(ORDER_NAME_PROPERTY, null, Locale.getDefault()));
         String[] params = {String.valueOf(animal.getId()), String.valueOf(user.getId()), String.valueOf(amount), String.valueOf(period)};
