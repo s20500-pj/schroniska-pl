@@ -16,6 +16,7 @@ import shelter.backend.rest.model.specification.AnimalSpecification;
 import shelter.backend.storage.repository.AnimalRepository;
 import shelter.backend.storage.repository.UserRepository;
 import shelter.backend.utils.basic.ClientInterceptor;
+import shelter.backend.utils.constants.SpecificationConstants;
 
 import java.io.File;
 import java.io.IOException;
@@ -91,7 +92,7 @@ public class ShelterAnimalService implements AnimalService {
 
     public List<AnimalDto> getShelterAnimals(String searchParams) {
         Map<String, String> parsedSearchParams = parseSearchParams(searchParams);
-        parsedSearchParams.put("shelterId", getLoggedUser().getId().toString());
+        parsedSearchParams.put(SpecificationConstants.SHELTER_ID, getLoggedUser().getId().toString());
         AnimalSpecification animalSpecification = new AnimalSpecification(parsedSearchParams);
         return animalMapper.toDtoList(animalRepository.findAll(animalSpecification));
     }

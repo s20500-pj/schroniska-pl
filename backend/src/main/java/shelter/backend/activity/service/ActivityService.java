@@ -12,11 +12,7 @@ public interface ActivityService {
 
     void deleteActivity(Long id);
 
-    List<ActivityDto2> getAll();
-
-    List<ActivityDto2> getUserActivities(Long id);
-
-    List<ActivityDto2> getActivityByDate(LocalDate date);
+    List<ActivityDto2> getActivities(String searchParams);
 
     ActivityDto2 getActivityById(Long id);
 
