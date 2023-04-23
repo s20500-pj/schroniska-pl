@@ -34,6 +34,8 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
@@ -83,3 +85,4 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+

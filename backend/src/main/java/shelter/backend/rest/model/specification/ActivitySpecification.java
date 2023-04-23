@@ -36,9 +36,7 @@ public class ActivitySpecification implements Specification<Activity> {
         for (Map.Entry<String, String> entry : searchParams.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            Join<Activity, User> userJoin = root.join("user");
-            Join<Activity, Animal> animalJoin = root.join("animal");
-            Join<Animal, User> shelterJoin = animalJoin.join("shelter");
+
             switch (key) {
                 case ACTIVITY_TYPE ->
                         predicates.add(criteriaBuilder.equal(root.get(ACTIVITY_TYPE), ActivityType.valueOf(value)));
@@ -48,10 +46,15 @@ public class ActivitySpecification implements Specification<Activity> {
                         predicates.add(criteriaBuilder.equal(root.get(SpecificationConstants.ACTIVITY_TIME), localDateTimeValue));
                     }
                 }
-                case SpecificationConstants.SHELTER_ID ->
-                        predicates.add(criteriaBuilder.equal(shelterJoin.get(SpecificationConstants.ID), value));
-                case SpecificationConstants.USER_ID ->
-                        predicates.add(criteriaBuilder.equal(userJoin.get(SpecificationConstants.ID), value));
+                case SpecificationConstants.SHELTER_ID -> {
+                    Join<Activity, Animal> animalJoin = root.join("animal");
+                    Join<Animal, User> shelterJoin = animalJoin.join("shelter");
+                    predicates.add(criteriaBuilder.equal(shelterJoin.get(SpecificationConstants.ID), value));
+                }
+                case SpecificationConstants.USER_ID -> {
+                    Join<Activity, User> userJoin = root.join("user");
+                    predicates.add(criteriaBuilder.equal(userJoin.get(SpecificationConstants.ID), value));
+                }
             }
 
             if (searchParams.containsKey(SpecificationConstants.SORT_BY)) {

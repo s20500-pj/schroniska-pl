@@ -21,6 +21,7 @@ import shelter.backend.storage.repository.AdoptionRepository;
 import shelter.backend.storage.repository.AnimalRepository;
 import shelter.backend.storage.repository.UserRepository;
 import shelter.backend.utils.basic.ClientInterceptor;
+import shelter.backend.utils.constants.SpecificationConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,20 +71,14 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    //FIXME is it useful? if yes that refactor this shit. if not remove.
     public List<AdoptionDto2> search(Map<String, String> searchParams) {
-        log.debug("[search] :: searchParams: {}", searchParams);
-        AdoptionSpecification adoptionSpecification = new AdoptionSpecification(searchParams);
-        List<Adoption> adoptionList = adoptionRepository.findAll(adoptionSpecification);
         User currentUser = getUser();
+        log.debug("[search] :: searchParams: {}, userId: {}", searchParams, currentUser.getId());
         if (currentUser.getUserType() == UserType.SHELTER) {
-            List<Adoption> adoptionSpecificForTheShelter = adoptionList.stream()
-                    .filter(adoption -> Objects.equals(adoption.getAnimal().getShelter().getId(), currentUser.getId()))
-                    .toList();
-            return adoptionMapper.toDto2List(adoptionSpecificForTheShelter);
-        } else {
-            return adoptionMapper.toDto2List(adoptionList);
+            searchParams.put(SpecificationConstants.SHELTER_ID, currentUser.getId().toString());
         }
+        AdoptionSpecification adoptionSpecification = new AdoptionSpecification(searchParams);
+        return adoptionMapper.toDto2List(adoptionRepository.findAll(adoptionSpecification));
     }
 
     @Override

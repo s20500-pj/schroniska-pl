@@ -35,7 +35,7 @@ public class AdoptionController {
 
     @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")
     @PostMapping("/search")
-    ResponseEntity<List<AdoptionDto2>> search(@RequestBody @Valid Map<String, String> searchParams) {
+    ResponseEntity<List<AdoptionDto2>> search(@RequestBody Map<String, String> searchParams) {
         return ResponseEntity.ok(shelterAdoptionService.search(searchParams));
     }
 

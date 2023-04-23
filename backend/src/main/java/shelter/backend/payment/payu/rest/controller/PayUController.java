@@ -22,9 +22,9 @@ public class PayUController {
     private final PayUConfigurationProperties payuConfiguration;
 
 
-    @GetMapping(value = "/payu-callback", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<UserDto> donate(@PathVariable @NotNull Long id) {
-        return ResponseEntity.ok(shelterService.getShelterById(id));
-    }
+//    @GetMapping(value = "/payu-callback", produces = MediaType.APPLICATION_JSON_VALUE)
+//    ResponseEntity<UserDto> donate(@PathVariable @NotNull Long id) {
+//        return ResponseEntity.ok(shelterService.getShelterById(id));
+//    }
 
 }

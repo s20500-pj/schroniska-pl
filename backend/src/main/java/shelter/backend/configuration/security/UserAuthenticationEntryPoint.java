@@ -27,3 +27,4 @@ public class UserAuthenticationEntryPoint implements AuthenticationEntryPoint {
         OBJECT_MAPPER.writeValue(response.getOutputStream(), new ErrorDto("Unauthorized path"));
     }
 }
+
