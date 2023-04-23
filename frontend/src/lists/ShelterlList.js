@@ -121,7 +121,7 @@ function ShelterList() {
                             <div className="w-full px-3">
                                 <label htmlFor="shelterName"
                                        className="block uppercase tracking-wide text-brown text-md font-bold">
-                                    Shelter Name:
+                                    Nazwa schroniska:
                                 </label>
                                 <input
                                     type="text"
@@ -134,7 +134,7 @@ function ShelterList() {
                             <div className="w-full px-3">
                                 <label htmlFor="email"
                                        className="block uppercase tracking-wide text-brown text-md font-bold">
-                                    Email:
+                                    E-mail:
                                 </label>
                                 <input
                                     type="text"
@@ -147,7 +147,7 @@ function ShelterList() {
                             <div className="w-full px-3">
                                 <label htmlFor="city"
                                        className="block uppercase tracking-wide text-brown text-md font-bold">
-                                    City:
+                                    Miasto:
                                 </label>
                                 <input
                                     type="text"
@@ -160,7 +160,7 @@ function ShelterList() {
                             <div className="w-full px-3">
                                 <label htmlFor="street"
                                        className="block uppercase tracking-wide text-brown text-md font-bold">
-                                    Street:
+                                    Ulica:
                                 </label>
                                 <input
                                     type="text"

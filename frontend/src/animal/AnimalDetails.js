@@ -51,19 +51,18 @@ export default function AnimalDetails() {
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
             <div className=" px-10 font-display bg-white bg-opacity-90">
-                <h2 className="text-center text-2xl text-orange font-bold p-10 h-fit">
+                <h2 className="text-center text-2xl text-orange font-bold p-5 h-fit">
                     Szczegóły zwierzaka
                 </h2>
-                <div className='lg:flex justify-around md:block'>
+                <div className='lg:flex justify-evenly md:block'>
                     {animal ? (
                         <>
-                            <div className=''>
+                            <div className='px-10 pb-5'>
                                 <h2 className=' text-2xl font-bold text-brown'>Cześć jestem</h2>
-                                <p className=' text-5xl font-bold text-orange'>{animal.name}</p>
-                                <img src={'/' + animal.imagePath} alt="Logo" />
-
+                                <p className=' text-5xl font-bold text-orange pb-5'>{animal.name}</p>
+                                <img src={'/' + animal.imagePath} alt="Zdjęcie zwierzaka" className="shadow-xl border-2 border-orange rounded-xl object-cover h-[350px] w-[500px]" />
                             </div>
-                            <div className='flex 1/3 py-10'>
+                            <div className='flex 1/2 lg:pt-24 pb-5 md:justify-center md:p-4'>
                                 <div className=''>
                                     <p className='font-bold pt-2'>Gatunek: </p><p>{SPECIES_OPTIONS[animal.species]}</p>
                                     <p className='font-bold pt-2'>Płeć: </p><p>{SEX_OPTIONS[animal.sex]}</p>
@@ -75,12 +74,13 @@ export default function AnimalDetails() {
                                 <div>
                                     <p className='font-bold pt-2'>Schronisko:</p><p> {animal.shelter.shelterName}</p>
                                     <p className='font-bold pt-2'>
-                                        Adres schroniska: </p><p>{animal.shelter.address.street}{" "}
+                                        Adres schroniska: </p>
+                                    <p>{animal.shelter.address.street}{" "}
                                     {animal.shelter.address.buildingNumber}{" "}
                                     {animal.shelter.address.flatNumber}{" "}
                                     {animal.shelter.address.postalCode}{" "}
                                     {animal.shelter.address.city}
-                                </p>
+                                    </p>
                                     <p className='font-bold pt-2'>Numer KRS: </p><p>{animal.shelter.address.krsNumber}</p>
                                     <p className='font-bold pt-2'>Telefon do schroniska:</p><p> {animal.shelter.address.phone}</p>
                                     <div className='flex justify-end py-10'>
