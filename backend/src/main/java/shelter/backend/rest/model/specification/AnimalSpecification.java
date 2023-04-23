@@ -79,7 +79,7 @@ public class AnimalSpecification implements Specification<Animal> {
                     if (StringUtils.isNotEmpty(value)) {
                         LocalDateTime localDateTimeValue = LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME);
                         predicates.add(criteriaBuilder.or
-                                (criteriaBuilder.notEqual(activityLeftJoin.get("activityTime"), localDateTimeValue),
+                                (criteriaBuilder.notEqual(activityLeftJoin.get(ACTIVITY_TIME), localDateTimeValue),
                                         criteriaBuilder.isNull(activityLeftJoin)));
                     } else {
                         predicates.add((criteriaBuilder.isNull(activityLeftJoin)));

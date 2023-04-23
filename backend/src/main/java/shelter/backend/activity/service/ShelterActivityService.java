@@ -122,7 +122,7 @@ public class ShelterActivityService implements ActivityService {
 
     @Override
     public List<ActivityDto2> getActivityByDate(LocalDate date) {
-        log.debug("invoked [getActivityByDate]");
+        log.debug("invoked [getActivityByDate] with localDate: {}", date);
         LocalDateTime dateToSearch = LocalDateTime.of(date, defaultTimeOfActivity);
         User user = getUser();
         List<Activity> activities;
@@ -144,10 +144,11 @@ public class ShelterActivityService implements ActivityService {
     }
 
     @Override
-    public List<AnimalDto> getAnimalsWithoutActivityAtDate(LocalDate localDate) {
+    public List<AnimalDto> getAnimalsWithoutActivityAtDate(LocalDate date) {
+        log.debug("invoked [getAnimalsWithoutActivityAtDate] with localDate: {}", date);
         String reqDate = "";
-        if (localDate != null) {
-            reqDate = LocalDateTime.of(localDate, defaultTimeOfActivity).toString();
+        if (date != null) {
+            reqDate = LocalDateTime.of(date, defaultTimeOfActivity).toString();
         }
         User shelter = getUser();
         AnimalSpecification animalSpecification = new AnimalSpecification(Map.of("activityTime", reqDate,
