@@ -7,6 +7,7 @@ import shelter.backend.rest.model.entity.Address;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.ApprovalStatus;
 import shelter.backend.rest.model.enums.UserType;
+import shelter.backend.utils.constants.SpecificationConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,6 @@ public class UserSpecification implements Specification<User> {
     private static final String APPROVAL_STATUS = "approvalStatus";
     private static final String USER_TYPE = "userType";
     private static final String CITY = "city";
-    private static final String SORT_BY = "sortBy";
 
     private final Map<String, String> searchParams;
 
@@ -49,8 +49,8 @@ public class UserSpecification implements Specification<User> {
             }
         }
 
-        if (searchParams.containsKey(SORT_BY)) {
-            String sortByField = searchParams.get(SORT_BY);
+        if (searchParams.containsKey(SpecificationConstants.SORT_BY)) {
+            String sortByField = searchParams.get(SpecificationConstants.SORT_BY);
             Order order = criteriaBuilder.asc(root.get(sortByField));
             query.orderBy(order);
         }

@@ -1,7 +1,13 @@
 package shelter.backend.rest.model.specification;
 
 import io.micrometer.common.util.StringUtils;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Order;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import shelter.backend.rest.model.entity.Activity;
@@ -12,6 +18,7 @@ import shelter.backend.rest.model.enums.Age;
 import shelter.backend.rest.model.enums.AnimalStatus;
 import shelter.backend.rest.model.enums.Sex;
 import shelter.backend.rest.model.enums.Species;
+import shelter.backend.utils.constants.SpecificationConstants;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +29,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AnimalSpecification implements Specification<Animal> {
 
-    private static final String ID = "id";
     private static final String NAME = "name";
     private static final String SPECIES = "species";
     private static final String SEX = "sex";
@@ -35,11 +41,7 @@ public class AnimalSpecification implements Specification<Animal> {
     private static final String NEEDS_ACTIVENESS = "needsActiveness";
     private static final String CATS_FRIENDLY = "catsFriendly";
     private static final String DOGS_FRIENDLY = "dogsFriendly";
-    private static final String SORT_BY = "sortBy";
     private static final String CITY = "city";
-    private static final String SHELTER_ID = "shelterId";
-
-    private static final String ACTIVITY_TIME = "activityTime";
 
     private final Map<String, String> searchParams;
 
@@ -73,13 +75,14 @@ public class AnimalSpecification implements Specification<Animal> {
                         predicates.add(criteriaBuilder.equal(root.get(DOGS_FRIENDLY), Boolean.valueOf(value)));
                 case CITY ->
                         predicates.add(criteriaBuilder.like(criteriaBuilder.lower(addressJoin.get(CITY)), "%" + value.toLowerCase() + "%"));
-                case SHELTER_ID -> predicates.add(criteriaBuilder.equal(userJoin.get(ID), value));
-                case ACTIVITY_TIME -> {
+                case SpecificationConstants.SHELTER_ID ->
+                        predicates.add(criteriaBuilder.equal(userJoin.get(SpecificationConstants.ID), value));
+                case SpecificationConstants.ACTIVITY_TIME -> {
                     Join<Animal, Activity> activityLeftJoin = root.join("activities", JoinType.LEFT);
                     if (StringUtils.isNotEmpty(value)) {
                         LocalDateTime localDateTimeValue = LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME);
                         predicates.add(criteriaBuilder.or
-                                (criteriaBuilder.notEqual(activityLeftJoin.get(ACTIVITY_TIME), localDateTimeValue),
+                                (criteriaBuilder.notEqual(activityLeftJoin.get(SpecificationConstants.ACTIVITY_TIME), localDateTimeValue),
                                         criteriaBuilder.isNull(activityLeftJoin)));
                     } else {
                         predicates.add((criteriaBuilder.isNull(activityLeftJoin)));
@@ -88,8 +91,8 @@ public class AnimalSpecification implements Specification<Animal> {
             }
         }
 
-        if (searchParams.containsKey(SORT_BY)) {
-            String sortByField = searchParams.get(SORT_BY);
+        if (searchParams.containsKey(SpecificationConstants.SORT_BY)) {
+            String sortByField = searchParams.get(SpecificationConstants.SORT_BY);
             Order order = criteriaBuilder.asc(root.get(sortByField));
             query.orderBy(order);
         }
