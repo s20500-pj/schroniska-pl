@@ -8,16 +8,14 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import shelter.backend.activity.rest.req.ActivityRegisterReq;
-import shelter.backend.rest.model.dtos.ActivityDto;
-import shelter.backend.rest.model.dtos.AdoptionDto;
+import shelter.backend.rest.model.dtos.ActivityDto2;
+import shelter.backend.rest.model.dtos.AnimalDto;
 import shelter.backend.rest.model.entity.Activity;
-import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.ActivityMapper;
-import shelter.backend.rest.model.specification.ActivitySpecification;
-import shelter.backend.rest.model.specification.AdoptionSpecification;
+import shelter.backend.rest.model.mapper.AnimalMapper;
 import shelter.backend.storage.repository.ActivityRepository;
 import shelter.backend.storage.repository.AnimalRepository;
 import shelter.backend.storage.repository.UserRepository;
@@ -28,8 +26,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -43,17 +39,20 @@ public class ShelterActivityService implements ActivityService {
     private final AnimalRepository animalRepository;
 
     private final ActivityMapper activityMapper;
-    private final LocalTime defaultTimeOfActivity = LocalTime.of(16, 0);
+
+    private final AnimalMapper animalMapper;
+
+    private final LocalTime defaultTimeOfActivity = LocalTime.of(16, 0); //todo add to Preferences
 
     @Override
     @Transactional
-    public ActivityDto registerActivity(ActivityRegisterReq activityRegisterReq) {
+    public ActivityDto2 registerActivity(ActivityRegisterReq activityRegisterReq) {
         log.debug("[registerActivity] :: activity: {}, userName: {}", activityRegisterReq, getUser().getEmail());
         Animal animal = animalRepository.findAnimalById(activityRegisterReq.getAnimalId());
         if (animal != null) {
             //TODO maybe also try to use google maps api to count the distance. up tp 50km for instance. consider adding this to Preference
             if (hasFreeTime(animal, activityRegisterReq.getActivityDate())) {
-                return activityMapper.toDto(persistActivity(animal, activityRegisterReq));
+                return activityMapper.toDto2(persistActivity(animal, activityRegisterReq));
             } else {
                 log.info("Animal awaits for activity already. Animal id: {}. Activity Request: {}", animal.getId(), activityRegisterReq);
                 throw new ActivityException("Podany termin aktywności jest już zajęty");
@@ -96,7 +95,7 @@ public class ShelterActivityService implements ActivityService {
     }
 
     @Override
-    public List<ActivityDto> getAll() {
+    public List<ActivityDto2> getAll() {
         List<Activity> adoptionList;
         User user = getUser();
         log.debug("[getAll] :: userId: {}, userName: {}", user.getId(), user.getEmail());
@@ -105,23 +104,44 @@ public class ShelterActivityService implements ActivityService {
         } else {
             adoptionList = activityRepository.findAll();
         }
-        return activityMapper.toDtoList(adoptionList);
+        return activityMapper.toDto2List(adoptionList);
     }
 
     @Override
-    public List<ActivityDto> search(Map<String, String> searchParams) {
-            log.debug("[search] :: searchParams: {}", searchParams);
-            ActivitySpecification activitySpecification = new ActivitySpecification(searchParams);
-            List<Activity> activityList = activityRepository.findAll(activitySpecification);
-            User currentUser = getUser();
-            if (currentUser.getUserType() == UserType.SHELTER) {
-                List<Activity> activitySpecificForTheShelter = activityList.stream()
-                        .filter(activity -> Objects.equals(activity.getAnimal().getShelter().getId(), currentUser.getId()))
-                        .toList();
-                return activityMapper.toDtoList(activitySpecificForTheShelter);
-            } else {
-                return activityMapper.toDtoList(activityList);
-            }
+    public List<ActivityDto2> getUserActivities(Long id) {
+        log.debug("[getUserActivities] :: getUserActivities with param: {}", id.toString());
+        User currentUser = getUser();
+        if (currentUser.getUserType() == UserType.PERSON) {
+            return activityMapper.toDto2List(activityRepository.findActivitiesByUserId(currentUser.getId()));
+        } else {
+            return activityMapper.toDto2List(activityRepository.findActivitiesByUserId(id));
+        }
+    }
+
+    @Override
+    public List<ActivityDto2> getActivityByDate(LocalDate date) {
+        log.debug("invoked [getTodayActivity]");
+        LocalDateTime dateToSearch = LocalDateTime.of(date, defaultTimeOfActivity);
+        User user = getUser();
+        List<Activity> activities;
+        if (user.getUserType() == UserType.SHELTER) {
+            activities = activityRepository.findActivitiesByActivityTimeAndAnimal_ShelterId(dateToSearch, user.getId());
+        } else {
+            activities = activityRepository.findActivitiesByActivityTime(dateToSearch);
+        }
+        return activities != null ? activityMapper.toDto2List(activities) : null;
+    }
+
+    @Override
+    public ActivityDto2 getActivityById(Long id) {
+        return activityMapper.toDto2(activityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Aktywność o podanym ID nie isnieje")));
+    }
+
+    @Override
+    public List<AnimalDto> getAnimalsWithoutActivityAtDate(LocalDate localDate) {
+        LocalDateTime reqDate = LocalDateTime.of(localDate, defaultTimeOfActivity);
+        return animalMapper.toDtoList(animalRepository.findAllAnimalsWithoutActivityAtDate(reqDate));
     }
 
     private boolean isEntitled(User currentUser, Long activityId) {

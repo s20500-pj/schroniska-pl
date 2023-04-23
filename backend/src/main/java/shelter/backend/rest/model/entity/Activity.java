@@ -1,21 +1,10 @@
 package shelter.backend.rest.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 import shelter.backend.rest.model.dtos.ActivityDto;
+import shelter.backend.rest.model.dtos.ActivityDto2;
+import shelter.backend.rest.model.dtos.AnimalDto;
 import shelter.backend.rest.model.enums.ActivityType;
 
 import java.time.LocalDateTime;
@@ -61,6 +50,16 @@ public class Activity {
                 .activityTime(activityTime)
                 .user(Objects.nonNull(user) ? user.toSimpleDto() : null)
                 .animalId(animal.getId())
+                .build();
+    }
+
+    public ActivityDto2 toDto2(AnimalDto animalDto) {
+        return ActivityDto2.builder()
+                .id(id)
+                .activityType(activityType)
+                .activityTime(activityTime)
+                .user(Objects.nonNull(user) ? user.toSimpleDto() : null)
+                .animalDto(animalDto)
                 .build();
     }
 

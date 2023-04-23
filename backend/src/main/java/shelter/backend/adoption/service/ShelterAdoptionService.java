@@ -239,7 +239,8 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
-    public List<AdoptionDto> search(Map<String, String> searchParams) {
+    //FIXME is it useful? if yes that refactor this shit. if not remove.
+    public List<AdoptionDto2> search(Map<String, String> searchParams) {
         log.debug("[search] :: searchParams: {}", searchParams);
         AdoptionSpecification adoptionSpecification = new AdoptionSpecification(searchParams);
         List<Adoption> adoptionList = adoptionRepository.findAll(adoptionSpecification);
@@ -248,9 +249,9 @@ public class ShelterAdoptionService implements AdoptionService {
             List<Adoption> adoptionSpecificForTheShelter = adoptionList.stream()
                     .filter(adoption -> Objects.equals(adoption.getAnimal().getShelter().getId(), currentUser.getId()))
                     .toList();
-            return adoptionMapper.toDtoList(adoptionSpecificForTheShelter);
+            return adoptionMapper.toDto2List(adoptionSpecificForTheShelter);
         } else {
-            return adoptionMapper.toDtoList(adoptionList);
+            return adoptionMapper.toDto2List(adoptionList);
         }
     }
 
