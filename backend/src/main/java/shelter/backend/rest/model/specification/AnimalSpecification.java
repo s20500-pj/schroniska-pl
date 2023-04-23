@@ -1,13 +1,20 @@
 package shelter.backend.rest.model.specification;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
+import shelter.backend.rest.model.entity.Activity;
 import shelter.backend.rest.model.entity.Address;
 import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.User;
-import shelter.backend.rest.model.enums.*;
+import shelter.backend.rest.model.enums.Age;
+import shelter.backend.rest.model.enums.AnimalStatus;
+import shelter.backend.rest.model.enums.Sex;
+import shelter.backend.rest.model.enums.Species;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +39,8 @@ public class AnimalSpecification implements Specification<Animal> {
     private static final String CITY = "city";
     private static final String SHELTER_ID = "shelterId";
 
+    private static final String ACTIVITY_TIME = "activityTime";
+
     private final Map<String, String> searchParams;
 
     @Override
@@ -44,7 +53,8 @@ public class AnimalSpecification implements Specification<Animal> {
             String value = entry.getValue();
 
             switch (key) {
-                case NAME -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(NAME)), "%" + value.toLowerCase() + "%"));
+                case NAME ->
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(NAME)), "%" + value.toLowerCase() + "%"));
                 case SPECIES -> predicates.add(criteriaBuilder.equal(root.get(SPECIES), Species.valueOf(value)));
                 case SEX -> predicates.add(criteriaBuilder.equal(root.get(SEX), Sex.valueOf(value)));
                 case AGE -> predicates.add(criteriaBuilder.equal(root.get(AGE), Age.valueOf(value)));
@@ -61,8 +71,20 @@ public class AnimalSpecification implements Specification<Animal> {
                         predicates.add(criteriaBuilder.equal(root.get(CATS_FRIENDLY), Boolean.valueOf(value)));
                 case DOGS_FRIENDLY ->
                         predicates.add(criteriaBuilder.equal(root.get(DOGS_FRIENDLY), Boolean.valueOf(value)));
-                case CITY -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(addressJoin.get(CITY)), "%" + value.toLowerCase() + "%"));
+                case CITY ->
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(addressJoin.get(CITY)), "%" + value.toLowerCase() + "%"));
                 case SHELTER_ID -> predicates.add(criteriaBuilder.equal(userJoin.get(ID), value));
+                case ACTIVITY_TIME -> {
+                    Join<Animal, Activity> activityLeftJoin = root.join("activities", JoinType.LEFT);
+                    if (StringUtils.isNotEmpty(value)) {
+                        LocalDateTime localDateTimeValue = LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME);
+                        predicates.add(criteriaBuilder.or
+                                (criteriaBuilder.notEqual(activityLeftJoin.get("activityTime"), localDateTimeValue),
+                                        criteriaBuilder.isNull(activityLeftJoin)));
+                    } else {
+                        predicates.add((criteriaBuilder.isNull(activityLeftJoin)));
+                    }
+                }
             }
         }
 

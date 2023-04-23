@@ -16,6 +16,7 @@ import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.ActivityMapper;
 import shelter.backend.rest.model.mapper.AnimalMapper;
+import shelter.backend.rest.model.specification.AnimalSpecification;
 import shelter.backend.storage.repository.ActivityRepository;
 import shelter.backend.storage.repository.AnimalRepository;
 import shelter.backend.storage.repository.UserRepository;
@@ -26,6 +27,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -120,12 +122,15 @@ public class ShelterActivityService implements ActivityService {
 
     @Override
     public List<ActivityDto2> getActivityByDate(LocalDate date) {
-        log.debug("invoked [getTodayActivity]");
+        log.debug("invoked [getActivityByDate]");
         LocalDateTime dateToSearch = LocalDateTime.of(date, defaultTimeOfActivity);
         User user = getUser();
         List<Activity> activities;
+        //fixme create Criteria API for this
         if (user.getUserType() == UserType.SHELTER) {
             activities = activityRepository.findActivitiesByActivityTimeAndAnimal_ShelterId(dateToSearch, user.getId());
+        } else if (user.getUserType() == UserType.PERSON) {
+            activities = activityRepository.findActivitiesByActivityTimeAndUserId(dateToSearch, user.getId());
         } else {
             activities = activityRepository.findActivitiesByActivityTime(dateToSearch);
         }
@@ -140,8 +145,18 @@ public class ShelterActivityService implements ActivityService {
 
     @Override
     public List<AnimalDto> getAnimalsWithoutActivityAtDate(LocalDate localDate) {
-        LocalDateTime reqDate = LocalDateTime.of(localDate, defaultTimeOfActivity);
-        return animalMapper.toDtoList(animalRepository.findAllAnimalsWithoutActivityAtDate(reqDate));
+        String reqDate = "";
+        if (localDate != null) {
+            reqDate = LocalDateTime.of(localDate, defaultTimeOfActivity).toString();
+        }
+        User shelter = getUser();
+        AnimalSpecification animalSpecification = new AnimalSpecification(Map.of("activityTime", reqDate,
+                "shelterId", shelter.getId().toString()));
+        return animalMapper.toDtoList(animalRepository.findAll(animalSpecification));
+//        if (localDate == null) {
+//            return animalMapper.toDtoList(animalRepository.findAllAnimalsWithoutActivity(shelter.getId()));
+//        }
+//        return animalMapper.toDtoList(animalRepository.findAllAnimalsWithoutActivityAtDate(reqDate, shelter.getId()));
     }
 
     private boolean isEntitled(User currentUser, Long activityId) {
