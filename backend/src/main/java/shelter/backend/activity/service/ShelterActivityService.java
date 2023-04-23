@@ -103,46 +103,28 @@ public class ShelterActivityService implements ActivityService {
     }
 
     @Override
-    public List<ActivityDto2> getAll() {
-        List<Activity> adoptionList;
-        User user = getUser();
-        log.debug("[getAll] :: userId: {}, userName: {}", user.getId(), user.getEmail());
-        if (user.getUserType() == UserType.SHELTER) {
-            adoptionList = activityRepository.findActivitiesByAnimal_ShelterId(user.getId());
-        } else {
-            adoptionList = activityRepository.findAll();
-        }
-        return activityMapper.toDto2List(adoptionList);
-    }
-
-    @Override
-    public List<ActivityDto2> getUserActivities(Long id) {
-        log.debug("[getUserActivities] :: getUserActivities with param: {}", id.toString());
-        User currentUser = getUser();
-        if (currentUser.getUserType() == UserType.PERSON) {
-            return activityMapper.toDto2List(activityRepository.findActivitiesByUserId(currentUser.getId()));
-        } else {
-            return activityMapper.toDto2List(activityRepository.findActivitiesByUserId(id));
-        }
-    }
-
-    @Override
     public List<ActivityDto2> getActivities(String searchParams) {
         log.debug("invoked [getActivityByDate] with searchParams: {}", searchParams);
         Map<String, String> searchParamsMap = ShelterAnimalService.parseSearchParams(searchParams);
-        if (searchParamsMap.containsKey(ACTIVITY_TIME_FIELD)) {
-            LocalDate requestedDate = LocalDate.parse(searchParamsMap.get(ACTIVITY_TIME_FIELD), DateTimeFormatter.ISO_DATE);
-            LocalDateTime dateToSearch = LocalDateTime.of(requestedDate, defaultTimeOfActivity);
-            searchParamsMap.put(ACTIVITY_TIME_FIELD, dateToSearch.toString());
+        try {
+            if (searchParamsMap.containsKey(ACTIVITY_TIME_FIELD)) {
+                LocalDate requestedDate = LocalDate.parse(searchParamsMap.get(ACTIVITY_TIME_FIELD), DateTimeFormatter.ISO_DATE);
+                LocalDateTime dateToSearch = LocalDateTime.of(requestedDate, defaultTimeOfActivity);
+                searchParamsMap.put(ACTIVITY_TIME_FIELD, dateToSearch.toString());
+            }
+            User user = getUser();
+            if (user.getUserType() == UserType.SHELTER) {
+                searchParamsMap.put(SpecificationConstants.SHELTER_ID, user.getId().toString());
+            } else if (user.getUserType() == UserType.PERSON) {
+                searchParamsMap.put(SpecificationConstants.USER_ID, user.getId().toString());
+            }
+
+            ActivitySpecification activitySpecification = new ActivitySpecification(searchParamsMap);
+            return activityMapper.toDto2List(activityRepository.findAll(activitySpecification));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
         }
-        User user = getUser();
-        if (user.getUserType() == UserType.SHELTER) {
-            searchParamsMap.put(SpecificationConstants.SHELTER_ID, user.getId().toString());
-        } else if (user.getUserType() == UserType.PERSON) {
-            searchParamsMap.put(SpecificationConstants.USER_ID, user.getId().toString());
-        }
-        ActivitySpecification activitySpecification = new ActivitySpecification(searchParamsMap);
-        return activityMapper.toDto2List(activityRepository.findAll(activitySpecification));
         //we should secure the case when e.g user sends params not related to him?
     }
 
@@ -160,9 +142,14 @@ public class ShelterActivityService implements ActivityService {
             reqDate = LocalDateTime.of(date, defaultTimeOfActivity).toString();
         }
         User shelter = getUser();
-        AnimalSpecification animalSpecification = new AnimalSpecification(Map.of(ACTIVITY_TIME_FIELD, reqDate,
-                SpecificationConstants.SHELTER_ID, shelter.getId().toString()));
-        return animalMapper.toDtoList(animalRepository.findAll(animalSpecification));
+        try {
+            AnimalSpecification animalSpecification = new AnimalSpecification(Map.of(ACTIVITY_TIME_FIELD, reqDate,
+                    SpecificationConstants.SHELTER_ID, shelter.getId().toString()));
+            return animalMapper.toDtoList(animalRepository.findAll(animalSpecification));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
 //        if (localDate == null) {
 //            return animalMapper.toDtoList(animalRepository.findAllAnimalsWithoutActivity(shelter.getId()));
 //        }

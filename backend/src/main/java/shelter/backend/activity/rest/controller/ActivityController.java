@@ -3,6 +3,7 @@ package shelter.backend.activity.rest.controller;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,21 +47,9 @@ public class ActivityController {
         return ResponseEntity.ok(activityService.getActivityById(id));
     }
 
-    @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN')")
-    @GetMapping("/getAll")
-    ResponseEntity<List<ActivityDto2>> getAll() {
-        return ResponseEntity.ok(activityService.getAll());
-    }
-
     @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN') or hasRole('USER')")
-    @GetMapping("/getUserActivities")
-    ResponseEntity<List<ActivityDto2>> getUserActivities(@RequestParam(name = "id", required = false) Long id) {
-        return ResponseEntity.ok(activityService.getUserActivities(id));
-    }
-
-    @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN') or hasRole('USER')")
-    @GetMapping("/getActivityByDate/{date}")
-    ResponseEntity<List<ActivityDto2>> getActivityByDate(String searchParams) {
+    @PostMapping(value = "/getActivities", consumes = MediaType.TEXT_PLAIN_VALUE)
+    ResponseEntity<List<ActivityDto2>> getActivities(@RequestBody String searchParams) {
         List<ActivityDto2> activities = activityService.getActivities(searchParams);
         return activities != null ? ResponseEntity.ok(activities) : ResponseEntity.notFound().build();
     }
