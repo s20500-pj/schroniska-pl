@@ -36,16 +36,16 @@ public class UserSpecification implements Specification<User> {
             String value = entry.getValue();
 
             switch (key) {
-                case FIRST_NAME -> predicates.add(criteriaBuilder.like(root.get(FIRST_NAME), "%" + value + "%"));
-                case LAST_NAME -> predicates.add(criteriaBuilder.like(root.get(LAST_NAME), "%" + value + "%"));
-                case EMAIL -> predicates.add(criteriaBuilder.like(root.get(EMAIL), "%" + value + "%"));
-                case SHELTER_NAME -> predicates.add(criteriaBuilder.like(root.get(SHELTER_NAME), "%" + value + "%"));
+                case FIRST_NAME -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(FIRST_NAME)), "%" + value.toLowerCase() + "%"));
+                case LAST_NAME -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(LAST_NAME)), "%" + value.toLowerCase() + "%"));
+                case EMAIL -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EMAIL)), "%" + value.toLowerCase() + "%"));
+                case SHELTER_NAME -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(SHELTER_NAME)), "%" + value.toLowerCase() + "%"));
                 case IS_DISABLED ->
                         predicates.add(criteriaBuilder.equal(root.get(IS_DISABLED), Boolean.valueOf(value)));
                 case APPROVAL_STATUS ->
                         predicates.add(criteriaBuilder.equal(root.get(APPROVAL_STATUS), ApprovalStatus.valueOf(value)));
                 case USER_TYPE -> predicates.add(criteriaBuilder.equal(root.get(USER_TYPE), UserType.valueOf(value)));
-                case CITY -> predicates.add(criteriaBuilder.like(addressJoin.get(CITY), "%" + value + "%"));
+                case CITY -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(addressJoin.get(CITY)), "%" + value.toLowerCase() + "%"));
             }
         }
 

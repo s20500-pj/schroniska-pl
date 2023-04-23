@@ -18,4 +18,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Long>, JpaSp
     List<Activity> findActivitiesByActivityTimeAndAnimal_ShelterId(LocalDateTime dateTime, Long shelterId);
 
     List<Activity> findActivitiesByActivityTime(LocalDateTime dateTime);
+
+    List<Activity> findActivitiesByUserId(Long userId);
+
 }

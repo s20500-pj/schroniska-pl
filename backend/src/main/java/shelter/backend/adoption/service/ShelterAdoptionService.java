@@ -239,6 +239,7 @@ public class ShelterAdoptionService implements AdoptionService {
     }
 
     @Override
+    //FIXME is it useful? if yes that refactor this shit. if not remove.
     public List<AdoptionDto2> search(Map<String, String> searchParams) {
         log.debug("[search] :: searchParams: {}", searchParams);
         AdoptionSpecification adoptionSpecification = new AdoptionSpecification(searchParams);

@@ -42,9 +42,9 @@ public class AnimalSpecification implements Specification<Animal> {
         for (Map.Entry<String, String> entry : searchParams.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-//TODO podowawać wszędzie toLowerCase
+
             switch (key) {
-                case NAME -> predicates.add(criteriaBuilder.like(root.get(NAME), "%" + value + "%"));
+                case NAME -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(NAME)), "%" + value.toLowerCase() + "%"));
                 case SPECIES -> predicates.add(criteriaBuilder.equal(root.get(SPECIES), Species.valueOf(value)));
                 case SEX -> predicates.add(criteriaBuilder.equal(root.get(SEX), Sex.valueOf(value)));
                 case AGE -> predicates.add(criteriaBuilder.equal(root.get(AGE), Age.valueOf(value)));
@@ -61,7 +61,7 @@ public class AnimalSpecification implements Specification<Animal> {
                         predicates.add(criteriaBuilder.equal(root.get(CATS_FRIENDLY), Boolean.valueOf(value)));
                 case DOGS_FRIENDLY ->
                         predicates.add(criteriaBuilder.equal(root.get(DOGS_FRIENDLY), Boolean.valueOf(value)));
-                case CITY -> predicates.add(criteriaBuilder.like(addressJoin.get(CITY), "%" + value + "%"));
+                case CITY -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(addressJoin.get(CITY)), "%" + value.toLowerCase() + "%"));
                 case SHELTER_ID -> predicates.add(criteriaBuilder.equal(userJoin.get(ID), value));
             }
         }
