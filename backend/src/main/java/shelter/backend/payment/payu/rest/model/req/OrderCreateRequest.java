@@ -1,7 +1,9 @@
-package shelter.backend.payment.payu.rest.model;
+package shelter.backend.payment.payu.rest.model.req;
 
 import lombok.Builder;
 import lombok.Data;
+import shelter.backend.payment.payu.rest.model.Buyer;
+import shelter.backend.payment.payu.rest.model.Product;
 
 import java.util.List;
 

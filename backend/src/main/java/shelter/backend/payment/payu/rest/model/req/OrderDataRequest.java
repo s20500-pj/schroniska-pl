@@ -1,4 +1,4 @@
-package shelter.backend.payment.payu.rest.model;
+package shelter.backend.payment.payu.rest.model.req;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;

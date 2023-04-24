@@ -1,4 +1,4 @@
-package shelter.backend.payment.payu.rest.model;
+package shelter.backend.payment.payu.rest.model.res;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;

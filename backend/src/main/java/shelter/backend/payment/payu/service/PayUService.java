@@ -17,11 +17,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import shelter.backend.payment.PaymentService;
 import shelter.backend.payment.payu.configuration.PayUConfigurationProperties;
 import shelter.backend.payment.payu.rest.model.Buyer;
-import shelter.backend.payment.payu.rest.model.OrderCreateRequest;
-import shelter.backend.payment.payu.rest.model.OrderCreateResponse;
-import shelter.backend.payment.payu.rest.model.OrderDataRequest;
-import shelter.backend.payment.payu.rest.model.PayUAuthToken;
 import shelter.backend.payment.payu.rest.model.Product;
+import shelter.backend.payment.payu.rest.model.req.OrderCreateRequest;
+import shelter.backend.payment.payu.rest.model.req.OrderDataRequest;
+import shelter.backend.payment.payu.rest.model.req.OrderRetrieveRequest;
+import shelter.backend.payment.payu.rest.model.res.OrderCreateResponse;
+import shelter.backend.payment.payu.rest.model.res.OrderRetrieveResponse;
+import shelter.backend.payment.payu.rest.model.res.OrderStatus;
+import shelter.backend.payment.payu.rest.model.res.PayUAuthToken;
+import shelter.backend.payment.payu.rest.model.res.Status;
 import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.PayUClientCredentials;
 import shelter.backend.rest.model.entity.PaymentOrder;
@@ -63,11 +67,47 @@ public class PayUService implements PaymentService {
     public String commencePayment(User user, Animal animal) {
         User shelter = animal.getShelter();
         log.info("Commencing ordering payment for the user: {}, amount: {}, shelter: {}", user, shelter, orderDataRequest.getAmount());
-        PayUClientCredentials payUClientCredentials = payUClientCredentialsRepository.findById(shelter.getId())
+        PayUClientCredentials payUClientCredentials = payUClientCredentialsRepository.findByShelter_Id(shelter.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje schronisko dla wybranego id"));
         PayUAuthToken payUAuthToken = getAccessToken(payUClientCredentials);
         return makeOrder(user, shelter, payUClientCredentials, payUAuthToken);
     }
+
+    @Override
+    public OrderStatus checkPaymentStatus(Long extOrderId) {
+        log.debug("Checking payment status for extOrderId: {}", extOrderId);
+        PaymentOrder order = paymentOrderRepository.findByExtOrderId(String.valueOf(extOrderId));
+        if (order == null) {
+            log.error("Cannot load payment order for extOrderId: {}", extOrderId);
+            throw new PaymentException("Problem z płatnością");
+        }
+        log.info("PaymentOrder loaded successfully, {}", order);
+        PayUClientCredentials payUClientCredentials = payUClientCredentialsRepository.findByShelter_Id(Long.parseLong(order.getShelterId()))
+                .orElseThrow(() -> new EntityNotFoundException("Nie istnieje schronisko dla wybranego id"));
+        PayUAuthToken payUAuthToken = getAccessToken(payUClientCredentials);
+        OrderStatus status = retrieveOrderStatus(order.getId(), payUAuthToken);
+        if (status == null) {
+            log.error("Cannot retrieve payment status for payment order: {}", order);
+            throw new PaymentException("Nie można sprawdzić statusu płatności");
+        }
+        log.info("Payment status for payment order {} -> {}", order, status);
+        handlePayment(status, order);
+        return status;
+    }
+
+    private void handlePayment(OrderStatus status, PaymentOrder paymentOrder) {
+        switch (status) {
+            case CANCELED -> {
+                log.info("Payment has been canceled, processing canceled payment flow.");
+                hadleCanceledPayment(paymentOrder); //delete adoption
+            }
+            case COMPLETED -> {
+                log.info("Payment confirmed and completed, processing successful payment flow.");
+                handleCompletedPayment(paymentOrder); //register adoption
+            }
+        }
+    }
+
 
     private PayUAuthToken getAccessToken(PayUClientCredentials payUClientCredentials) {
         UriComponents authorizationRequest = prepareAuthorizationRequest(payUClientCredentials);
@@ -77,22 +117,36 @@ public class PayUService implements PaymentService {
     }
 
     private String makeOrder(User user, User shelter, PayUClientCredentials payUClientCredentials, PayUAuthToken payUAuthToken) {
-        final OrderCreateRequest orderRequest = prepareOrderCreateRequest(payUClientCredentials, user.getId());
+        final OrderCreateRequest orderRequest = prepareOrderCreateRequest(payUClientCredentials);
 
         log.info("Order request = {}", orderRequest);
 
         final OrderCreateResponse orderResponse = sendOrder(orderRequest, payUAuthToken);
 
-        if (!orderResponse.getStatus().getStatusCode().equals(OrderCreateResponse.Status.STATUS_CODE_SUCCESS)) {
+        log.info("Order response = {}", orderResponse);
+
+        if (!orderResponse.getStatus().getStatusCode().equals(Status.STATUS_CODE_SUCCESS)) {
             log.warn("Payment failed during ordering. UserId: {}, ShelterId: {}", user.getId(), shelter.getId());
             throw new PaymentException("Płatność zakończona niepowodzeniem");
         }
         PaymentOrder paymentOrder = new PaymentOrder(orderResponse.getOrderId(), orderResponse.getExtOrderId(),
-                user.getEmail(), shelter.getShelterName(), orderDataRequest.getAmount(), Purpose.VIRTUAL_ADOPTION,
-                expiresIn.intValue());
+                user.getEmail(), shelter.getId().toString(), shelter.getShelterName(), orderDataRequest.getAmount(),
+                Purpose.VIRTUAL_ADOPTION, expiresIn.intValue());
         paymentOrderRepository.save(paymentOrder); //TODO test the repo custom method
 
+        log.debug("Payment order stored. {}", paymentOrder);
         return orderResponse.getRedirectUri();
+    }
+
+    private OrderStatus retrieveOrderStatus(String orderId, PayUAuthToken payUAuthToken) {
+        OrderRetrieveRequest orderRetrieveRequest = new OrderRetrieveRequest();
+        orderRetrieveRequest.setOrderId(orderId);
+        OrderRetrieveResponse orderRetrieveResponse = getOrderStatus(orderRetrieveRequest, payUAuthToken);
+        if (orderRetrieveResponse != null && orderRetrieveResponse.getOrder() != null) {
+            return orderRetrieveResponse.getOrder().getStatus();
+        } else {
+            return null;
+        }
     }
 
     private UriComponents prepareAuthorizationRequest(PayUClientCredentials payUClientCredentials) {
@@ -105,17 +159,18 @@ public class PayUService implements PaymentService {
                 .build();
     }
 
-    private OrderCreateRequest prepareOrderCreateRequest(PayUClientCredentials payUClientCredentials, Long id) {
+    private OrderCreateRequest prepareOrderCreateRequest(PayUClientCredentials payUClientCredentials) {
 
         final String serverAddress = "http://localhost:" + serverPort;
+        final String extOrderId = UUID.randomUUID().toString();
         final String callBackUrl = StringSubstitutor.replace(payUConfigurationProperties.getCallbackPath(),
-                Map.of("id", id), "{", "}");
+                Map.of("extOrderId", extOrderId), "{", "}");
 
         return OrderCreateRequest.builder()
-                .extOrderId(UUID.randomUUID().toString())
+                .extOrderId(extOrderId)
                 .customerIp(orderDataRequest.getIpAddress())
                 .continueUrl(serverAddress + callBackUrl)
-//                .notifyUrl(serverAddress + payUConfigurationProperties.getNotifyPath())
+//                .notifyUrl(serverAddress + payUConfigurationProperties.getNotifyPath())//fixme
                 .merchantPosId(payUClientCredentials.getMerchantPosId())
                 .description(orderDataRequest.getDescription())
                 .currencyCode(orderDataRequest.getCurrency())
@@ -142,6 +197,11 @@ public class PayUService implements PaymentService {
         ResponseEntity<OrderCreateResponse> responseEntity = restTemplate.postForEntity(payUConfigurationProperties.getOrderUrl(), entity, OrderCreateResponse.class);
 
         return responseEntity.getBody();
+    }
+
+    private OrderRetrieveResponse getOrderStatus(OrderRetrieveRequest orderRetrieveRequest, PayUAuthToken token) {
+        log.debug("[getOrderStatus] :: retrieving order for orderId: {}", orderRetrieveRequest.getOrderId());
+        return null; //fixme
     }
 
 }

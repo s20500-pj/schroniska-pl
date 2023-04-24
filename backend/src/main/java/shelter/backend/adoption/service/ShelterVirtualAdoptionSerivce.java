@@ -8,7 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import shelter.backend.email.EmailService;
 import shelter.backend.payment.PaymentService;
-import shelter.backend.payment.payu.rest.model.OrderDataRequest;
+import shelter.backend.payment.payu.rest.model.req.OrderDataRequest;
 import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.User;

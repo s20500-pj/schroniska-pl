@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shelter.backend.payment.payu.configuration.PayUConfigurationProperties;
+import shelter.backend.payment.payu.rest.model.res.OrderStatus;
 import shelter.backend.payment.payu.service.PayUService;
 import shelter.backend.rest.model.dtos.UserDto;
 
@@ -19,12 +20,9 @@ public class PayUController {
 
     private final PayUService payUService;
 
-    private final PayUConfigurationProperties payuConfiguration;
-
-
-//    @GetMapping(value = "/payu-callback", produces = MediaType.APPLICATION_JSON_VALUE)
-//    ResponseEntity<UserDto> donate(@PathVariable @NotNull Long id) {
-//        return ResponseEntity.ok(shelterService.getShelterById(id));
-//    }
+    @GetMapping(value = "/payu-callback/{extOrderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<OrderStatus> handlePaymentCallback(@PathVariable Long extOrderId) {
+        return ResponseEntity.ok(payUService.checkPaymentStatus(extOrderId));
+    }
 
 }

@@ -7,5 +7,5 @@ import shelter.backend.rest.model.entity.PaymentOrder;
 import java.util.List;
 @Repository
 public interface PaymentOrderRepository extends CrudRepository<PaymentOrder, String> {
-    List<PaymentOrder> findByExtOrderId(String extOrderId);
+    PaymentOrder findByExtOrderId(String extOrderId);
 }

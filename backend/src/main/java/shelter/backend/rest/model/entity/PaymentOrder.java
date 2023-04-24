@@ -22,6 +22,8 @@ public class PaymentOrder implements Serializable {
 
     private String userName;
 
+    private String shelterId;
+
     private String shelterName;
 
     private Long amount;

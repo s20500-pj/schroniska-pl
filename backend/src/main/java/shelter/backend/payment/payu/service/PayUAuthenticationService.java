@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
-import shelter.backend.payment.payu.rest.model.PayUAuthToken;
+import shelter.backend.payment.payu.rest.model.res.PayUAuthToken;
 import shelter.backend.utils.constants.ShelterConstants;
 import shelter.backend.utils.exception.PaymentException;
 

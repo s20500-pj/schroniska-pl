@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shelter.backend.adoption.service.VirtualAdoptionService;
-import shelter.backend.payment.payu.rest.model.OrderDataRequest;
+import shelter.backend.payment.payu.rest.model.req.OrderDataRequest;
 
 import java.net.URI;
 
