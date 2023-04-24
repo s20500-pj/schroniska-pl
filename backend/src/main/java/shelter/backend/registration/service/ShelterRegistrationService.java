@@ -45,6 +45,7 @@ public class ShelterRegistrationService implements RegistrationService {
     private String expTime;
 
     public UserDto register(UserDto userDto) {
+        //FIXME add IBAN number to SHELTER registration! needed to register in PayU. add it to User or to PayUClientCredentials
         log.debug("Registration started for username: {}", userDto.getEmail());
         userValidator.throwIfNotValid(userDto);
         User user = persistTheUser(userDto);
@@ -114,8 +115,7 @@ public class ShelterRegistrationService implements RegistrationService {
     }
 
     @Override
-    //FIXME change this. enebale only one shelter at once. change param to request containing clientId, clientSecret, merchantPosId, shelterId -> save this to DB (entity -> PayUClientCredentials). return SheleterDto.
-    //FIXME add IBAN number to registration!
+    //FIXME change this. enebale only one shelter at once. change param to request containing clientId, clientSecret, merchantPosId, shelterId -> save this to DB (entity -> PayUClientCredentials). return UserDto.
     //FIXME add update user
     //FIXME add delete user
     public List<UserDto> enableShelterAccounts(List<Long> shelterIds) {
