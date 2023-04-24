@@ -20,6 +20,5 @@ public class Application {
 
 /*
 TODO:
-   1. ! postman collection
-   2. * hide sensitive data in logs
+   1. * hide sensitive data in logs
 */

@@ -114,10 +114,10 @@ public class ShelterRegistrationService implements RegistrationService {
     }
 
     @Override
-    //TODO change this. enebale only one shelter at once. change param to request containing clientId, clientSecret, merchantPosId, shelterId -> save this to DB (entity -> PayUClientCredentials). return SheleterDto.
-    //TODO add IBAN number to registration!
-    //todo add update user
-    //todo delete user
+    //FIXME change this. enebale only one shelter at once. change param to request containing clientId, clientSecret, merchantPosId, shelterId -> save this to DB (entity -> PayUClientCredentials). return SheleterDto.
+    //FIXME add IBAN number to registration!
+    //FIXME add update user
+    //FIXME add delete user
     public List<UserDto> enableShelterAccounts(List<Long> shelterIds) {
         log.debug("[enableShelterAccounts] :: list of ids: {}", shelterIds);
         List<UserDto> enabledShelters = new ArrayList<>();

@@ -4,16 +4,15 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import shelter.backend.activity.rest.req.ActivityRegisterReq;
-import shelter.backend.animals.service.ShelterAnimalService;
 import shelter.backend.rest.model.dtos.ActivityDto2;
 import shelter.backend.rest.model.dtos.AnimalDto;
 import shelter.backend.rest.model.entity.Activity;
 import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.User;
+import shelter.backend.rest.model.enums.AnimalStatus;
 import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.ActivityMapper;
 import shelter.backend.rest.model.mapper.AnimalMapper;
@@ -59,7 +58,7 @@ public class ShelterActivityService implements ActivityService {
         Animal animal = animalRepository.findAnimalById(activityRegisterReq.getAnimalId());
         if (animal != null) {
             //TODO maybe also try to use google maps api to count the distance. up tp 50km for instance. consider adding this to Preference
-            if (hasFreeTime(animal, activityRegisterReq.getActivityDate())) {
+            if (readyForActivity(animal, activityRegisterReq.getActivityDate())) {
                 return activityMapper.toDto2(persistActivity(animal, activityRegisterReq));
             } else {
                 log.info("Animal awaits for activity already. Animal id: {}. Activity Request: {}", animal.getId(), activityRegisterReq);
@@ -82,6 +81,15 @@ public class ShelterActivityService implements ActivityService {
         return activity;
     }
 
+    private boolean readyForActivity(Animal animal, LocalDate activityDate) {
+        return hasFreeTime(animal, activityDate) && statusOk(animal);
+    }
+
+    private boolean statusOk(Animal animal) {
+        return animal.getAnimalStatus().equals(AnimalStatus.NEEDS_MEDICAL_TREATMENT) ||
+                animal.getAnimalStatus().equals(AnimalStatus.READY_FOR_ADOPTION);
+    }
+
     private boolean hasFreeTime(Animal animal, LocalDate activityDate) {
         return animal.getActivities().stream()
                 .noneMatch(activity -> activity.getActivityTime().toLocalDate().isEqual(activityDate));
@@ -97,29 +105,29 @@ public class ShelterActivityService implements ActivityService {
             // check if is security breach
             log.warn("User called for activity not assigned to the user! User details: {}, Activity details:{}",
                     currentUser, activity);
-            throw new ActivityException("Aktynowść o podanym ID nie isnieje");
+            throw new ActivityException("Aktywność o podanym ID nie isnieje");
         }
         activityRepository.delete(activity);
+        //FIXME notify the volunteer that activity is cancelled, emailService
     }
 
     @Override
-    public List<ActivityDto2> getActivities(String searchParams) {
+    public List<ActivityDto2> getActivities(Map<String, String> searchParams) {
         log.debug("invoked [getActivityByDate] with searchParams: {}", searchParams);
-        Map<String, String> searchParamsMap = ShelterAnimalService.parseSearchParams(searchParams);
         try {
-            if (searchParamsMap.containsKey(ACTIVITY_TIME_FIELD)) {
-                LocalDate requestedDate = LocalDate.parse(searchParamsMap.get(ACTIVITY_TIME_FIELD), DateTimeFormatter.ISO_DATE);
+            if (searchParams.containsKey(ACTIVITY_TIME_FIELD)) {
+                LocalDate requestedDate = LocalDate.parse(searchParams.get(ACTIVITY_TIME_FIELD), DateTimeFormatter.ISO_DATE);
                 LocalDateTime dateToSearch = LocalDateTime.of(requestedDate, defaultTimeOfActivity);
-                searchParamsMap.put(ACTIVITY_TIME_FIELD, dateToSearch.toString());
+                searchParams.put(ACTIVITY_TIME_FIELD, dateToSearch.toString());
             }
             User user = getUser();
             if (user.getUserType() == UserType.SHELTER) {
-                searchParamsMap.put(SpecificationConstants.SHELTER_ID, user.getId().toString());
+                searchParams.put(SpecificationConstants.SHELTER_ID, user.getId().toString());
             } else if (user.getUserType() == UserType.PERSON) {
-                searchParamsMap.put(SpecificationConstants.USER_ID, user.getId().toString());
+                searchParams.put(SpecificationConstants.USER_ID, user.getId().toString());
             }
 
-            ActivitySpecification activitySpecification = new ActivitySpecification(searchParamsMap);
+            ActivitySpecification activitySpecification = new ActivitySpecification(searchParams);
             return activityMapper.toDto2List(activityRepository.findAll(activitySpecification));
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -172,15 +180,14 @@ public class ShelterActivityService implements ActivityService {
     public void deleteExpiredActivities() {
         log.debug("activity scheduler started");
         LocalDateTime now = LocalDateTime.now();
-        List<Activity> adoptionList = activityRepository.findAll();
-        List<Activity> expiredActivites = adoptionList.stream()
+        List<Activity> activityList = activityRepository.findAll();
+        List<Activity> expiredActivites = activityList.stream()
                 .filter(activity -> activity.getActivityTime() != null)
                 .filter(activity -> activity.getActivityTime().isBefore(now))
                 .toList();
         for (Activity activity : expiredActivites) {
-            deleteActivity(activity.getId());
+            activityRepository.deleteById(activity.getId());
         }
-        log.debug("activity scheduler finished");
     }
 }
 

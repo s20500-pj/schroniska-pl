@@ -3,11 +3,11 @@ package shelter.backend.adoption.service;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import shelter.backend.email.EmailService;
 import shelter.backend.rest.model.dtos.AdoptionDto2;
+import shelter.backend.rest.model.entity.Activity;
 import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.User;
@@ -16,6 +16,7 @@ import shelter.backend.rest.model.enums.AdoptionType;
 import shelter.backend.rest.model.enums.AnimalStatus;
 import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.AdoptionMapper;
+import shelter.backend.storage.repository.ActivityRepository;
 import shelter.backend.storage.repository.AdoptionRepository;
 import shelter.backend.storage.repository.AnimalRepository;
 import shelter.backend.storage.repository.UserRepository;
@@ -29,12 +30,15 @@ import java.util.List;
 @Slf4j
 public class ShelterRealAdoptionService extends ShelterAdoptionService implements RealAdoptionService {
 
+    private final ActivityRepository activityRepository;
 
     private static final long VALID_UNTIL = 2L; //TODO add this to Preferences
 
     public ShelterRealAdoptionService(AdoptionRepository adoptionRepository, AnimalRepository animalRepository,
-                                      UserRepository userRepository, AdoptionMapper adoptionMapper, EmailService emailService) {
+                                      UserRepository userRepository, AdoptionMapper adoptionMapper,
+                                      EmailService emailService, ActivityRepository activityRepository) {
         super(adoptionRepository, animalRepository, userRepository, adoptionMapper, emailService);
+        this.activityRepository = activityRepository;
     }
 
     @Override
@@ -214,6 +218,12 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
         adoption.setAdoptionStatus(AdoptionStatus.ADOPTED);
         Animal animal = adoption.getAnimal();
         animal.setAnimalStatus(AnimalStatus.ADOPTED);
+        List<Activity> animalActivities = animal.getActivities();
+        animal.setActivities(null);
+        if (!animalActivities.isEmpty()) {
+            //FIXME notify the volunteer that activity is cancelled, emailService
+            activityRepository.deleteAll(animalActivities);
+        }
         animalRepository.save(animal);
         adoptionRepository.save(adoption);
         animal.getAdoptions().stream().filter(adoptionUpdate -> !adoptionUpdate.getId().equals(id))//don't cancel current adoption!

@@ -64,7 +64,7 @@ public class ShelterEmailService implements EmailService {
 
     @Override
     public void sendAdoptionSuspension(String email, String shelterName, long id) {
-        throw new NotImplementedException(); // TODO
+        throw new NotImplementedException(); // FIXME
     }
 
     private void sendEmail(String email, String subjectPropertyName, String messagePropertyName, String[] params) {

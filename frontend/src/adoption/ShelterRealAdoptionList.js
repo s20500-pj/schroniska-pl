@@ -2,6 +2,7 @@ import axios from "axios";
 import React, {useEffect, useState} from "react";
 import Table from "../util/Table";
 import {Link} from "react-router-dom";
+import ShelterServerConstants from "../util/ShelterServerConstants";
 import {ADOPTION_STATUS_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "../util/Enums";
 
 const columns = [
@@ -71,13 +72,14 @@ function ShelterRealAdoptionList() {
 
     const [data, setData] = useState([]);
     const [adoption, setAdoption] = useState({
-        adoptionStatus: ""
+        adoptionStatus: "",
+        adoptionType: "REAL",
     });
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await axios.get("http://localhost:8080/adoption/getAll/REAL");
+                const result = await axios.get(ShelterServerConstants.ADDRESS_SERVER_LOCAL + "/adoption/getAll/REAL");
                 setData(result.data);
             } catch (error) {
                 console.error(error);
@@ -95,6 +97,7 @@ function ShelterRealAdoptionList() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        console.log(adoptionMap);
         const result = await axios.post(
             "http://localhost:8080/adoption/search",
             JSON.stringify(Object.fromEntries(adoptionMap)), {
@@ -108,7 +111,7 @@ function ShelterRealAdoptionList() {
     };
 
     const handleClear = () => {
-        setAdoption({adoptionStatus: ""});
+        setAdoption({...adoption, adoptionStatus: ""});
     };
 
     return (
