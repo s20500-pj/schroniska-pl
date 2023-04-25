@@ -1,54 +1,66 @@
 import axios from "axios";
-import React, {useState, useEffect} from "react";
-import {Link} from "react-router-dom";
+import React, {useState, useEffect, useMemo} from "react";
+import {Link, useParams} from "react-router-dom";
 import Table from "../util/Table";
 
-const columns = [
-    {
-        Header: "Lista użytkowników",
-        columns: [
-            {
-                Header: "Imie",
-                accessor: "firstName"
-            },
-            {
-                Header: "Nazwisko",
-                accessor: "lastName"
-            },
-            {
-                Header: "Email",
-                accessor: "email"
-            },
-            {
-                Header: "Telefon",
-                accessor: "address.phone"
-            },
-            {
-                Header: "Akcja",
-                accessor: "id",
-                Cell: ({value}) => (
-                    <Link to={`/personSettings/${value}`}>
-                        <button type="submit"
-                                className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                            <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Usuń użytkownika / szczzegoły</p>
-                        </button>
-                    </Link>
-                ),
-            }
-        ],
-    },
-];
-
 function UsersList() {
+    const columns = useMemo (
+        () =>[
+            {
+                Header: "Lista użytkowników",
+                columns: [
+                    {
+                        Header: "Id",
+                        accessor: "id"
+                    },
+                    {
+                        Header: "Imie",
+                        accessor: "firstName"
+                    },
+                    {
+                        Header: "Nazwisko",
+                        accessor: "lastName"
+                    },
+                    {
+                        Header: "Email",
+                        accessor: "email"
+                    },
+                    {
+                        Header: "Telefon",
+                        accessor: "address.phone"
+                    },
+                    {
+                        Header: "Akcja",
+                        Cell: ({value}) => {
+                            return (
+                                <button
+                                    type="button"
+                                    onClick={handleDelete}
+                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown"
+                                >
+                                    <p className="py-15 justify-center text-base text-center text-brown font-medium">
+                                        Usuń użytkownika
+                                    </p>
+                                </button>
+                            );
+                        }
+                    }
+                ],
+            }
+        ]
+    );
+
     axios.defaults.withCredentials = true
     const [error, setError] = useState("");
     const [data, setData] = useState([]);
     const [user, setUser] = useState({
+        id:"",
         firstName: "",
         lastName: "",
         email: "",
         phone: "",
     });
+
 
     const onInputChange = (e) => {
         setUser({...user, [e.target.name]: e.target.value});
@@ -59,7 +71,6 @@ function UsersList() {
         lastName,
         email,
         phone,
-
     }= user;
 
     const enteredUserFields = {
@@ -107,6 +118,12 @@ function UsersList() {
 
     const handleClear = () => {
         setUser({});
+    };
+    const handleDelete = async (id) => {
+        console.log(user.id);
+        await axios.delete(`http://localhost:8080/user/delete/${id}`);
+        const del = data.filter((user) => id !== user.id);
+        setData(del);
     };
 
     return (
