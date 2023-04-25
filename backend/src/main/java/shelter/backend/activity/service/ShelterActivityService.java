@@ -24,6 +24,7 @@ import shelter.backend.storage.repository.UserRepository;
 import shelter.backend.utils.basic.ClientInterceptor;
 import shelter.backend.utils.constants.SpecificationConstants;
 import shelter.backend.utils.exception.ActivityException;
+import shelter.backend.utils.exception.AdoptionException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -58,11 +59,13 @@ public class ShelterActivityService implements ActivityService {
         Animal animal = animalRepository.findAnimalById(activityRegisterReq.getAnimalId());
         if (animal != null) {
             //TODO maybe also try to use google maps api to count the distance. up tp 50km for instance. consider adding this to Preference
-            if (readyForActivity(animal, activityRegisterReq.getActivityDate())) {
+            try {
+                readyForActivity(animal, activityRegisterReq.getActivityDate());
+
                 return activityMapper.toDto2(persistActivity(animal, activityRegisterReq));
-            } else {
-                log.info("Animal awaits for activity already. Animal id: {}. Activity Request: {}", animal.getId(), activityRegisterReq);
-                throw new ActivityException("Podany termin aktywności jest już zajęty");
+            } catch (ActivityException e) {
+                log.info("Can't register animal for activity. Animal: {}, Request: {}", animal, activityRegisterReq);
+                throw e;
             }
 
         } else throw new EntityNotFoundException("Zwierzę nie istnieje dla wybranego id");
@@ -86,13 +89,21 @@ public class ShelterActivityService implements ActivityService {
     }
 
     private boolean statusOk(Animal animal) {
-        return animal.getAnimalStatus().equals(AnimalStatus.NEEDS_MEDICAL_TREATMENT) ||
-                animal.getAnimalStatus().equals(AnimalStatus.READY_FOR_ADOPTION);
+        if (animal.getAnimalStatus().equals(AnimalStatus.NEEDS_MEDICAL_TREATMENT) ||
+                animal.getAnimalStatus().equals(AnimalStatus.READY_FOR_ADOPTION)) {
+            log.info("Animal can't be registered for activity. Animal: {}. Status of Animal: {}", animal, animal.getAnimalStatus());
+            throw new ActivityException("Nie można zarezerwować terminu z powodu statusu zwierzaka: " + animal.getAnimalStatus());
+        }
+        return true;
     }
 
     private boolean hasFreeTime(Animal animal, LocalDate activityDate) {
-        return animal.getActivities().stream()
-                .noneMatch(activity -> activity.getActivityTime().toLocalDate().isEqual(activityDate));
+        if (animal.getActivities().stream()
+                .noneMatch(activity -> activity.getActivityTime().toLocalDate().isEqual(activityDate))) {
+            log.info("Animal awaits for activity already. Animal: {}", animal);
+            throw new ActivityException("Termin jest już zajęty");
+        }
+        return true;
     }
 
     @Override
