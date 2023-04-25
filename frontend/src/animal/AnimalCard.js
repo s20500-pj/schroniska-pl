@@ -3,9 +3,14 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import {Link} from "react-router-dom";
 import {AGE_OPTIONS, SEX_OPTIONS} from "../util/Enums";
-
+import icon from "/src/"
 export default function AnimalCard({data, rename}) {
     axios.defaults.withCredentials = true;
+    const placeholderImage = icon;
+    const onImageError = (e) => {
+        e.target.src = placeholderImage
+    }
+
     const [pageNumber, setPageNumber] = useState(0);
     const animalsPerPage = 12;
     const pagesVisited = pageNumber * animalsPerPage;
