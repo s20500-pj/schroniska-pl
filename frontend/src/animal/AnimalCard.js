@@ -3,9 +3,14 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import {Link} from "react-router-dom";
 import {AGE_OPTIONS, SEX_OPTIONS} from "../util/Enums";
-
+import icon from  '../dog-cat-icon.jpeg';
 export default function AnimalCard({data, rename}) {
     axios.defaults.withCredentials = true;
+    const placeholderImage = icon;
+    const onImageError = (e) => {
+        e.target.src = placeholderImage
+    }
+
     const [pageNumber, setPageNumber] = useState(0);
     const animalsPerPage = 12;
     const pagesVisited = pageNumber * animalsPerPage;
@@ -17,7 +22,9 @@ export default function AnimalCard({data, rename}) {
                     <div className="bg-white rounded-3xl shadow-xl overflow-hidden hover:scale-105 ">
                         <div className="w-[200px] ">
                             <Link to={`/animalDetails/${data.id}`}>
-                                <img src={data.imagePath} alt="Zdjecie zwierzęcia"
+                                <img src={data.imagePath ? data.imagePath : placeholderImage}
+                                     onError={onImageError}
+                                     alt="Zdjecie zwierzęcia"
                                      className="object-cover h-48 w-64"/>
                             </Link>
                             <div className="bg-orange p-4 w-30 sm:p-6 ">

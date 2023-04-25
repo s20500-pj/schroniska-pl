@@ -1,10 +1,14 @@
 import React from "react";
 import {useTable, usePagination} from "react-table";
 import axios from "axios";
+import icon from  '../dog-cat-icon.jpeg';
 
 export default function Table({columns, data}) {
     axios.defaults.withCredentials = true;
-
+    const placeholderImage = icon;
+    const onImageError = (e) => {
+        e.target.src = placeholderImage
+    }
     const {
         getTableProps,
         getTableBodyProps,
@@ -57,7 +61,9 @@ export default function Table({columns, data}) {
                                 if (cell.column.Header === "Zdjęcie") {
                                     return (
                                         <td {...cell.getCellProps() }className='p-5'>
-                                            <img src={cell.value} alt="" className=" shadow-xl border-2 border-orange rounded-xl object-cover h-32 w-48"/>
+                                            <img src={cell.value ? cell.value : placeholderImage}
+                                                 onError={onImageError}
+                                                 className=" shadow-xl border-2 border-orange rounded-xl object-cover h-32 w-48"/>
                                         </td>
                                     );
                                 } else {
