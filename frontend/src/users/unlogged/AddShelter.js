@@ -12,6 +12,7 @@ export default function AddShelter() {
         shelterName: "",
         password: "",
         userType: "SHELTER",
+        iban: "",
         address: {
             street: "",
             city: "",
@@ -51,6 +52,7 @@ export default function AddShelter() {
         email,
         password,
         shelterName,
+        iban,
         street,
         city,
         postalCode,
@@ -58,13 +60,13 @@ export default function AddShelter() {
         flatNumber,
         phone,
         krsNumber
-    } = shelter
+    } = dupa
 
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
             <div className="px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Zarejestruj schronisko</h2>
-                {showPopup && <SuccessPopup message="Rejestracja pomyślna. Dziękujemy za rejestrację." />}
+                {showPopup && <SuccessPopup message="Rejestracja pomyślna. Dziękujemy za rejestrację."/>}
                 <form onSubmit={(e) => onSubmit(e)} className="w-full max-w-lg m-auto py-10">
                     <div className="flex flex-wrap">
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">
@@ -108,6 +110,21 @@ export default function AddShelter() {
                                 placeholder="Wpisz hasło."
                                 name="password"
                                 value={password}
+                                onChange={(e) => onInputChange(e)}
+                                required
+                            />
+                        </div>
+                        <div className="w-full md:w-1/2 px-3">
+                            <label htmlFor="IBAN"
+                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                Hasło:
+                            </label>
+                            <input
+                                type={"text"}
+                                className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                placeholder="Wpisz numer konta."
+                                name="iban"
+                                value={iban}
                                 onChange={(e) => onInputChange(e)}
                                 required
                             />

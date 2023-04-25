@@ -26,6 +26,7 @@ public class UserDto {
     private ApprovalStatus approvalStatus;
     private UserType userType;
     private String information;
+    private Long iban;
     @Valid
     private AddressDto address;
 }
