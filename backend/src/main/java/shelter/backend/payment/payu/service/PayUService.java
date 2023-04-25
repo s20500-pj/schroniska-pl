@@ -7,26 +7,29 @@ import org.apache.commons.text.StringSubstitutor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-import shelter.backend.payment.PaymentService;
+import shelter.backend.adoption.service.VirtualAdoptionService;
+import shelter.backend.configuration.ContextDelegateAware;
 import shelter.backend.payment.payu.configuration.PayUConfigurationProperties;
 import shelter.backend.payment.payu.rest.model.Buyer;
 import shelter.backend.payment.payu.rest.model.Product;
 import shelter.backend.payment.payu.rest.model.req.OrderCreateRequest;
 import shelter.backend.payment.payu.rest.model.req.OrderDataRequest;
 import shelter.backend.payment.payu.rest.model.req.OrderRetrieveRequest;
+import shelter.backend.payment.payu.rest.model.res.Order;
 import shelter.backend.payment.payu.rest.model.res.OrderCreateResponse;
 import shelter.backend.payment.payu.rest.model.res.OrderRetrieveResponse;
 import shelter.backend.payment.payu.rest.model.res.OrderStatus;
 import shelter.backend.payment.payu.rest.model.res.PayUAuthToken;
 import shelter.backend.payment.payu.rest.model.res.Status;
-import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.PayUClientCredentials;
 import shelter.backend.rest.model.entity.PaymentOrder;
 import shelter.backend.rest.model.entity.User;
@@ -36,9 +39,14 @@ import shelter.backend.storage.repository.PaymentOrderRepository;
 import shelter.backend.utils.constants.ShelterConstants;
 import shelter.backend.utils.exception.PaymentException;
 
+import java.net.URI;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +65,8 @@ public class PayUService implements PaymentService {
 
     private final OrderDataRequest orderDataRequest;
 
+    private final ContextDelegateAware contextDelegateAware;
+
     @Value("${payment.payu.validUntil}")
     private Long expiresIn;
 
@@ -64,8 +74,7 @@ public class PayUService implements PaymentService {
     private int serverPort;
 
     @Override
-    public String commencePayment(User user, Animal animal) {
-        User shelter = animal.getShelter();
+    public String commencePayment(User user, User shelter) {
         log.info("Commencing ordering payment for the user: {}, amount: {}, shelter: {}", user, shelter, orderDataRequest.getAmount());
         PayUClientCredentials payUClientCredentials = payUClientCredentialsRepository.findByShelter_Id(shelter.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje schronisko dla wybranego id"));
@@ -74,7 +83,7 @@ public class PayUService implements PaymentService {
     }
 
     @Override
-    public OrderStatus checkPaymentStatus(Long extOrderId) {
+    public OrderStatus checkPaymentStatus(String extOrderId, Optional<String> error) {
         log.debug("Checking payment status for extOrderId: {}", extOrderId);
         PaymentOrder order = paymentOrderRepository.findByExtOrderId(String.valueOf(extOrderId));
         if (order == null) {
@@ -82,6 +91,14 @@ public class PayUService implements PaymentService {
             throw new PaymentException("Problem z płatnością");
         }
         log.info("PaymentOrder loaded successfully, {}", order);
+        if (error.isEmpty()) {
+            order.getShelterName();
+            //fixme send confirmation email. "platnosc odnotowana. po potwierdzeniu platnosci otrzymasz maila z potwierdzeniem"
+        }
+        return callForPaymentStatus(order);
+    }
+
+    private OrderStatus callForPaymentStatus(PaymentOrder order) {
         PayUClientCredentials payUClientCredentials = payUClientCredentialsRepository.findByShelter_Id(Long.parseLong(order.getShelterId()))
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje schronisko dla wybranego id"));
         PayUAuthToken payUAuthToken = getAccessToken(payUClientCredentials);
@@ -91,21 +108,56 @@ public class PayUService implements PaymentService {
             throw new PaymentException("Nie można sprawdzić statusu płatności");
         }
         log.info("Payment status for payment order {} -> {}", order, status);
+
         handlePayment(status, order);
         return status;
+    }
+
+    @Override
+    public Boolean updatePaymentOrderWithEntityServiceId(Long id) {
+        log.debug("Updating payment order with entity service ID: {}. OrderDataRequest: {}", id, orderDataRequest);
+        PaymentOrder paymentOrder = paymentOrderRepository.findByExtOrderId(orderDataRequest.getExtOrderId());
+        paymentOrder.setEntityServiceId(String.valueOf(id));
+        paymentOrderRepository.save(paymentOrder);
+        return true;
     }
 
     private void handlePayment(OrderStatus status, PaymentOrder paymentOrder) {
         switch (status) {
             case CANCELED -> {
                 log.info("Payment has been canceled, processing canceled payment flow.");
-                hadleCanceledPayment(paymentOrder); //delete adoption
+                handleCanceledPayment(paymentOrder);
+                //FIXME email service platnosc anulowana
             }
             case COMPLETED -> {
                 log.info("Payment confirmed and completed, processing successful payment flow.");
-                handleCompletedPayment(paymentOrder); //register adoption
+                handleCompletedPayment(paymentOrder); //register adoption, delete payment order
+            }
+            case PENDING -> { //fixme/todo remove this, use notification system provided by payu. just for presentation purpose
+                Executor executor = CompletableFuture.delayedExecutor(10000L, TimeUnit.MILLISECONDS); //after 10 secs create new thread(async) and check the status
+                executor.execute(() -> callForPaymentStatus(paymentOrder));
             }
         }
+    }
+
+    private void handleCompletedPayment(PaymentOrder paymentOrder) {
+        switch (paymentOrder.getPurpose()) {
+            case VIRTUAL_ADOPTION -> {
+                VirtualAdoptionService virtualAdoptionService = contextDelegateAware.getService("shelterVirtualAdoptionSerivce", VirtualAdoptionService.class);
+                virtualAdoptionService.finalizeVirtualAdoption(Long.parseLong(paymentOrder.getEntityServiceId()), paymentOrder.getAmount());
+            }
+        }
+        paymentOrderRepository.deleteById(paymentOrder.getId());
+    }
+
+    private void handleCanceledPayment(PaymentOrder paymentOrder) {
+        switch (paymentOrder.getPurpose()) {
+            case VIRTUAL_ADOPTION -> {
+                VirtualAdoptionService virtualAdoptionService = contextDelegateAware.getService("shelterVirtualAdoptionSerivce", VirtualAdoptionService.class);
+                virtualAdoptionService.delete(Long.parseLong(paymentOrder.getEntityServiceId()));
+            }
+        }
+        paymentOrderRepository.deleteById(paymentOrder.getId());
     }
 
 
@@ -131,8 +183,9 @@ public class PayUService implements PaymentService {
         }
         PaymentOrder paymentOrder = new PaymentOrder(orderResponse.getOrderId(), orderResponse.getExtOrderId(),
                 user.getEmail(), shelter.getId().toString(), shelter.getShelterName(), orderDataRequest.getAmount(),
-                Purpose.VIRTUAL_ADOPTION, expiresIn.intValue());
-        paymentOrderRepository.save(paymentOrder); //TODO test the repo custom method
+                Purpose.VIRTUAL_ADOPTION, null, expiresIn.intValue());
+        paymentOrderRepository.save(paymentOrder);
+        orderDataRequest.setExtOrderId(orderResponse.getExtOrderId());
 
         log.debug("Payment order stored. {}", paymentOrder);
         return orderResponse.getRedirectUri();
@@ -142,8 +195,9 @@ public class PayUService implements PaymentService {
         OrderRetrieveRequest orderRetrieveRequest = new OrderRetrieveRequest();
         orderRetrieveRequest.setOrderId(orderId);
         OrderRetrieveResponse orderRetrieveResponse = getOrderStatus(orderRetrieveRequest, payUAuthToken);
-        if (orderRetrieveResponse != null && orderRetrieveResponse.getOrder() != null) {
-            return orderRetrieveResponse.getOrder().getStatus();
+        if (orderRetrieveResponse != null && orderRetrieveResponse.getOrders() != null && !orderRetrieveResponse.getOrders().isEmpty()) {
+            return orderRetrieveResponse.getOrders().stream().filter(order -> order.getOrderId().equals(orderId))
+                    .map(Order::getStatus).findFirst().orElse(null);
         } else {
             return null;
         }
@@ -170,7 +224,7 @@ public class PayUService implements PaymentService {
                 .extOrderId(extOrderId)
                 .customerIp(orderDataRequest.getIpAddress())
                 .continueUrl(serverAddress + callBackUrl)
-//                .notifyUrl(serverAddress + payUConfigurationProperties.getNotifyPath())//fixme
+//                .notifyUrl(serverAddress + payUConfigurationProperties.getOrderNotificationUrl())//fixme/todo
                 .merchantPosId(payUClientCredentials.getMerchantPosId())
                 .description(orderDataRequest.getDescription())
                 .currencyCode(orderDataRequest.getCurrency())
@@ -188,21 +242,40 @@ public class PayUService implements PaymentService {
     }
 
     private OrderCreateResponse sendOrder(OrderCreateRequest orderRequest, PayUAuthToken payUAuthToken) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
-        headers.add(HttpHeaders.AUTHORIZATION, payUAuthToken.getTokenType() + " " + payUAuthToken.getAccessToken());
-
+        HttpHeaders headers = getHttpHeaders(payUAuthToken);
         HttpEntity<OrderCreateRequest> entity = new HttpEntity<>(orderRequest, headers);
-
         ResponseEntity<OrderCreateResponse> responseEntity = restTemplate.postForEntity(payUConfigurationProperties.getOrderUrl(), entity, OrderCreateResponse.class);
-
         return responseEntity.getBody();
     }
 
-    private OrderRetrieveResponse getOrderStatus(OrderRetrieveRequest orderRetrieveRequest, PayUAuthToken token) {
+    private OrderRetrieveResponse getOrderStatus(OrderRetrieveRequest orderRetrieveRequest, PayUAuthToken payUAuthToken) {
         log.debug("[getOrderStatus] :: retrieving order for orderId: {}", orderRetrieveRequest.getOrderId());
-        return null; //fixme
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(payUConfigurationProperties.getOrderCheckStatusUrl());
+        URI endpointUrl = builder.buildAndExpand(orderRetrieveRequest.getOrderId()).toUri();
+        HttpHeaders headers = getHttpHeaders(payUAuthToken);
+        HttpEntity<OrderRetrieveRequest> entity = new HttpEntity<>(headers);
+        ResponseEntity<OrderRetrieveResponse> responseEntity = restTemplate.exchange(
+                endpointUrl, HttpMethod.GET, entity, OrderRetrieveResponse.class);
+        log.info("[getOrderStatus] :: RESPONSE: {}", responseEntity);
+        return responseEntity.getBody();
     }
 
+    private HttpHeaders getHttpHeaders(PayUAuthToken payUAuthToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+        headers.add(HttpHeaders.AUTHORIZATION, payUAuthToken.getTokenType() + " " + payUAuthToken.getAccessToken());
+        return headers;
+    }
+
+    @Scheduled(fixedDelay = 7200000)   //check every 2 hours //fixme/todo use notification system provided by payu
+    public void callForPaymentStatus() {
+        log.debug("payu scheduler started");
+        Iterable<PaymentOrder> paymentOrders = paymentOrderRepository.findAll();
+        for (PaymentOrder paymentOrder : paymentOrders) {
+            callForPaymentStatus(paymentOrder);
+        }
+        log.debug("payu scheduler finished");
+    }
 }
 

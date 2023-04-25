@@ -13,25 +13,9 @@ public class PayUConfigurationProperties {
     private String authorizationUri;
     private String merchantPosId;
     private String orderUrl;
+    private String orderCheckStatusUrl;
+    private String orderNotificationUrl;
     private String grantType;
     private String callbackPath;
-    private String notifyPath;
-
-
-    //    @Bean("payuApiRestTemplate")
-//    public RestTemplate payuRestTemplate() {
-//        final RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
-//        restTemplate.setInterceptors(Collections.singletonList((httpRequest, bytes, clientHttpRequestExecution) -> {
-//            final PayUAuthToken payUAuthToken = payUAuthenticationService.authenticate();
-//            final HttpHeaders headers = httpRequest.getHeaders();
-//            headers.add("Authorization", payUAuthToken.getTokenType() + " " + payUAuthToken.getAccessToken());
-//            if (!headers.containsKey("Content-Type")) {
-//                headers.add("Content-Type", "application/json");
-//            }
-//            return clientHttpRequestExecution.execute(httpRequest, bytes);
-//        }));
-//
-//        return restTemplate;
-//    }
 
 }

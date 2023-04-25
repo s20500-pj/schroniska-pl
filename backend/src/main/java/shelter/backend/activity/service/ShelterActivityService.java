@@ -24,7 +24,6 @@ import shelter.backend.storage.repository.UserRepository;
 import shelter.backend.utils.basic.ClientInterceptor;
 import shelter.backend.utils.constants.SpecificationConstants;
 import shelter.backend.utils.exception.ActivityException;
-import shelter.backend.utils.exception.AdoptionException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

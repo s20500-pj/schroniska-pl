@@ -19,4 +19,5 @@ public class OrderDataRequest {
     private String currency;
     private Long amount;
     private String buyerEmail;
+    private String extOrderId;
 }

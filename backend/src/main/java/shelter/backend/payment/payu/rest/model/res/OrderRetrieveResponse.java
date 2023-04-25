@@ -8,7 +8,7 @@ import java.util.Properties;
 @Data
 public class OrderRetrieveResponse {
 
-    private Order order;
+    private List<Order> orders;
     private Status status;
     private List<Properties> properties;
 }

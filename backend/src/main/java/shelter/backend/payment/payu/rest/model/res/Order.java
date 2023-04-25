@@ -15,12 +15,9 @@ public class Order {
     private String notifyUrl;
     private String customerIp;
     private String merchantPosId;
-    private String validityTime;
     private String description;
-    private String additionalDescription;
     private String currencyCode;
     private Long totalAmount;
     private OrderStatus status;
-    private Buyer buyer;
-    private List<Product> products;
+//    private List<Product> products;
 }

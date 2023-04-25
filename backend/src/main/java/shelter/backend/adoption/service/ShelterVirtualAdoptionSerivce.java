@@ -5,9 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import shelter.backend.email.EmailService;
-import shelter.backend.payment.PaymentService;
+import shelter.backend.payment.payu.service.PaymentService;
 import shelter.backend.payment.payu.rest.model.req.OrderDataRequest;
 import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.entity.Animal;
@@ -24,6 +25,7 @@ import shelter.backend.utils.exception.AdoptionException;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -69,9 +71,10 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
         checkIfAmountIsMultiple(amount);
         int period = calculateAdoptionPeriod(amount);
         preparePaymentOrderData(amount, currentUser, animal, period);
-        String redirect_uri = paymentService.commencePayment(currentUser, animal);
+        String redirect_uri = paymentService.commencePayment(currentUser, animal.getShelter());
         if (StringUtils.isNotBlank(redirect_uri)) {
-            log.info("redirect URI to begin payment transaction: {}, user: {}, animal: {}", redirect_uri, currentUser, animal);
+            log.info("redirect URI to begin payment transaction: {}, user: {}, animalId: {}, animalName: {}",
+                    redirect_uri, currentUser.getEmail(), animal.getId(), animal.getName());
             Adoption adoption = Adoption.builder()
                     .adoptionType(AdoptionType.VIRTUAL)
                     .adoptionStatus(AdoptionStatus.PENDING)
@@ -80,11 +83,26 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
                     .user(currentUser)
                     .build();
             adoptionRepository.save(adoption);
+            paymentService.updatePaymentOrderWithEntityServiceId(adoption.getId());
             return redirect_uri;
         } else {
             log.error("Problem occurred during processing the payment. redirect_uri: {}", redirect_uri);
             throw new AdoptionException("Problem z przetworzeniem płatności");
         }
+    }
+
+    @Override
+    public void finalizeVirtualAdoption(Long id, Long amount) {
+        log.debug("[finalizeVirtualAdoption] :: for virtual adoption id: {}", id);
+        Adoption adoption = adoptionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nie istnieje wirtualna adopcja dla wybranego id"));
+        log.info("[finalizeVirtualAdoption] :: finalize virtual adoption: {}", adoption);
+        int months = calculateAdoptionPeriod(amount);
+        adoption.setAdoptionStatus(AdoptionStatus.VIRTUAL_ADOPTED);
+        LocalDate adoptionTime = LocalDate.now().plusMonths(months);
+        adoption.setValidUntil(adoptionTime);
+        //FIXME send confirmation email. dziekujemy za wplate. Zaadoptowales wirtualnie zwierzaczka w schronisku {}. Okres adopcji to validUntil....
+        log.info("Animal adopted virtually. Adoption: {}", adoption);
     }
 
     private void checkIfAmountIsMultiple(Long amount) {
@@ -109,4 +127,20 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
         return (int) (amount / ADOPTION_PRICE_DENOMINATOR);
     }
 
+
+    @Scheduled(cron = "0 15 1 * * ?")   //check every day at 01:15 AM
+    public void deleteExpiredRealAdoptions() {
+        log.debug("virtual adoption scheduler started");
+        LocalDate today = LocalDate.now();
+        List<Adoption> adoptionList = adoptionRepository.findAdoptionByAdoptionType(AdoptionType.VIRTUAL);
+        List<Adoption> expiredAdoptions = adoptionList.stream()
+                .filter(adoption -> adoption.getValidUntil() != null)
+                .filter(adoption -> adoption.getValidUntil().isBefore(today))
+                .toList();
+        for (Adoption adoption : expiredAdoptions) {
+            delete(adoption.getId());
+            //fixme send email. if adoption was PENDING -> adopcja anulowana, if was VIRTUAL_ADOPTED -> uplynal okres adopcji
+        }
+        log.debug("virtual adoption scheduler finished");
+    }
 }

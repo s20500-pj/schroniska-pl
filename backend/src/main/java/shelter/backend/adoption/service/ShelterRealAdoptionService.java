@@ -248,7 +248,7 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
     @Scheduled(cron = "0 5 0 * * ?")   //check every day at 00:05 AM
     @Transactional
     public void deleteExpiredRealAdoptions() {
-        log.debug("adoption scheduler started");
+        log.debug("real adoption scheduler started");
         LocalDate today = LocalDate.now();
         List<Adoption> adoptionList = adoptionRepository.findAdoptionByAdoptionType(AdoptionType.REAL);
         List<Adoption> expiredAdoptions = adoptionList.stream()
@@ -258,7 +258,7 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
         for (Adoption adoption : expiredAdoptions) {
             declineRealAdoption(adoption.getId(), true);
         }
-        log.debug("adoption scheduler finished");
+        log.debug("real adoption scheduler finished");
     }
 }
 

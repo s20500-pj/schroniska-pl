@@ -2,6 +2,7 @@ package shelter.backend.rest.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
@@ -29,6 +30,9 @@ public class PaymentOrder implements Serializable {
     private Long amount;
 
     private Purpose purpose;
+
+    @Setter
+    private String entityServiceId;
 
     @TimeToLive
     private int expiresIn;
