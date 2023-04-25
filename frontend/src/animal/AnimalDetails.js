@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import {AGE_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS, STATUS_OPTIONS} from "../util/Enums";
+import icon from  '../dog-cat-icon.jpeg';
 
 export default function AnimalDetails() {
     axios.defaults.withCredentials = true;
@@ -9,6 +10,10 @@ export default function AnimalDetails() {
     const [animal, setAnimal] = useState(null);
     const [reload, setReload] = useState(false);
 
+    const placeholderImage = icon;
+    const onImageError = (e) => {
+        e.target.src = placeholderImage
+    }
     function canAdopt(animal) {
         const userType = localStorage.getItem("userType");
         const userId = localStorage.getItem("userId");
@@ -60,7 +65,9 @@ export default function AnimalDetails() {
                             <div className='px-10 pb-5'>
                                 <h2 className=' text-2xl font-bold text-brown'>Cześć jestem</h2>
                                 <p className=' text-5xl font-bold text-orange pb-5'>{animal.name}</p>
-                                <img src={'/' + animal.imagePath} alt="Zdjęcie zwierzaka" className="shadow-xl border-2 border-orange rounded-xl object-cover h-[350px] w-[500px]" />
+                                <img src={'/' + animal.imagePath ? '/' + animal.imagePath : placeholderImage}
+                                     onError={onImageError}
+                                     alt="Zdjęcie zwierzaka" className="shadow-xl border-2 border-orange rounded-xl object-cover h-[350px] w-[500px]" />
                             </div>
                             <div className='flex 1/2 lg:pt-24 pb-5 md:justify-center md:p-4'>
                                 <div className=''>
