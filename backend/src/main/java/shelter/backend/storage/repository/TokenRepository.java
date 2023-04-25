@@ -6,5 +6,4 @@ import shelter.backend.rest.model.entity.Token;
 
 @Repository
 public interface TokenRepository extends CrudRepository<Token, String> {
-    Token findByUsername(String email);
 }

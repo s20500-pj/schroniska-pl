@@ -13,4 +13,5 @@ public interface AdoptionRepository extends JpaRepository<Adoption, Long>, JpaSp
     List<Adoption> findAdoptionByUserId(Long userId);
     List<Adoption> findAdoptionByAnimal_ShelterIdAndAdoptionType(Long shelterID, AdoptionType adoptionType);
     List<Adoption> findAdoptionByUserIdAndAdoptionType(Long userId, AdoptionType adoptionType);
+    List<Adoption> findAdoptionByAdoptionType(AdoptionType adoptionType);
 }

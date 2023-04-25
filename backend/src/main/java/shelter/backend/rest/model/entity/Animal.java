@@ -53,10 +53,10 @@ public class Animal {
     @JoinColumn(name = "user_id", nullable = false)
     private User shelter;
 
-    @OneToMany(mappedBy = "animal")
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
     private List<Adoption> adoptions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "animal")
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
     private List<Activity> activities = new ArrayList<>();
 
     public Animal toEntity(AnimalDto dto) {

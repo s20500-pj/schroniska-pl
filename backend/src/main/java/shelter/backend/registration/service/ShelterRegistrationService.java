@@ -45,6 +45,7 @@ public class ShelterRegistrationService implements RegistrationService {
     private String expTime;
 
     public UserDto register(UserDto userDto) {
+        //FIXME add IBAN number to SHELTER registration! needed to register in PayU. add it to User or to PayUClientCredentials
         log.debug("Registration started for username: {}", userDto.getEmail());
         userValidator.throwIfNotValid(userDto);
         User user = persistTheUser(userDto);
@@ -114,8 +115,11 @@ public class ShelterRegistrationService implements RegistrationService {
     }
 
     @Override
+    //FIXME change this. enebale only one shelter at once. change param to request containing clientId, clientSecret, merchantPosId, shelterId -> save this to DB (entity -> PayUClientCredentials). return UserDto.
+    //FIXME add update user
+    //FIXME add delete user
     public List<UserDto> enableShelterAccounts(List<Long> shelterIds) {
-        log.debug("[enableShleterAccounts] :: list of ids: {}", shelterIds);
+        log.debug("[enableShelterAccounts] :: list of ids: {}", shelterIds);
         List<UserDto> enabledShelters = new ArrayList<>();
         shelterIds.forEach(id -> {
             Optional<User> userOptional = userRepository.findById(id);
@@ -158,7 +162,6 @@ public class ShelterRegistrationService implements RegistrationService {
         return userRepository.save(newUser);
     }
 
-    @Async
     @Scheduled(fixedDelay = 1800000)   //check every 30min
     @Transactional
     public void deleteUnusedTokensUnconfirmedUsers() {

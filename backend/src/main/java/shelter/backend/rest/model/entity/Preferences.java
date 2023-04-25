@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Preferences")
+@Table(name = "preferences")
 @Getter
 public class Preferences {
 

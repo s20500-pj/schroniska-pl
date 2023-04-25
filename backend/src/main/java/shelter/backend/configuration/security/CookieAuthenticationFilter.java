@@ -14,18 +14,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import shelter.backend.utils.constants.ShelterConstants;
 
 @Component
 public class CookieAuthenticationFilter extends OncePerRequestFilter {
 
-    public static final String COOKIE_NAME = "authorization";
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest httpServletRequest,
                                     @NonNull HttpServletResponse httpServletResponse,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         Optional<Cookie> cookieAuth = Stream.of(Optional.ofNullable(httpServletRequest.getCookies()).orElse(new Cookie[0]))
-                .filter(cookie -> COOKIE_NAME.equals(cookie.getName()))
+                .filter(cookie -> ShelterConstants.AUTHORIZATION_COOKIE_NAME.equals(cookie.getName()))
                 .findFirst();
         cookieAuth.ifPresent(cookie -> SecurityContextHolder.getContext().setAuthentication(
                 new PreAuthenticatedAuthenticationToken(cookie.getValue(), null)));

@@ -16,6 +16,7 @@ import shelter.backend.configuration.security.CookieAuthenticationFilter;
 import shelter.backend.login.rest.dtos.AuthenticationResponseDto;
 import shelter.backend.login.service.AuthenticationService;
 import shelter.backend.rest.model.dtos.AuthenticationRequestDto;
+import shelter.backend.utils.constants.ShelterConstants;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -32,7 +33,7 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponseDto> signIn(@RequestBody AuthenticationRequestDto request,
                                                             HttpServletResponse servletResponse) {
         AuthenticationResponseDto responseDto = authService.authenticate(request);
-        Cookie authCookie = new Cookie(CookieAuthenticationFilter.COOKIE_NAME, responseDto.getAuthToken());
+        Cookie authCookie = new Cookie(ShelterConstants.AUTHORIZATION_COOKIE_NAME, responseDto.getAuthToken());
         authCookie.setHttpOnly(true);
         authCookie.setSecure(true);
         authCookie.setMaxAge((int) Duration.of(1, ChronoUnit.DAYS).toSeconds());

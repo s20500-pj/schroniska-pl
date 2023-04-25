@@ -21,6 +21,7 @@ import shelter.backend.rest.model.dtos.AnimalDto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -48,8 +49,8 @@ public class ActivityController {
     }
 
     @PreAuthorize("hasRole('SHELTER') or hasRole('ADMIN') or hasRole('USER')")
-    @PostMapping(value = "/getActivities", consumes = MediaType.TEXT_PLAIN_VALUE)
-    ResponseEntity<List<ActivityDto2>> getActivities(@RequestBody String searchParams) {
+    @PostMapping(value = "/getActivities")
+    ResponseEntity<List<ActivityDto2>> getActivities(@RequestBody Map<String, String> searchParams) {
         List<ActivityDto2> activities = activityService.getActivities(searchParams);
         return activities != null ? ResponseEntity.ok(activities) : ResponseEntity.notFound().build();
     }

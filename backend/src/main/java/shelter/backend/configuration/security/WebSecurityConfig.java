@@ -1,6 +1,7 @@
 package shelter.backend.configuration.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shelter.backend.login.rest.filter.JwtAthFilter;
 import shelter.backend.login.service.UserDetailsService;
+import shelter.backend.utils.constants.ShelterConstants;
 
 @Configuration
 @RequiredArgsConstructor
@@ -30,30 +32,27 @@ public class WebSecurityConfig {
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
     private final UserDetailsService userDetailsService;
 
+    @Value("${shelter.web.security.allowedPaths}")
+    private String[] allowedPaths;
+
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**"))//TODO delete it on PROD, used for H2 console to work properly
                 .permitAll()
-                .requestMatchers("/auth/authenticate",
-                        "/registration/**",
-                        "/shelter-doc/**",
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/auth/logout",
-                        "/animal/search",
-                        "/animal/{id}",
-                        "/shelter/searchShelters")
+                .requestMatchers(allowedPaths)
                 .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().logout().deleteCookies(CookieAuthenticationFilter.COOKIE_NAME)
+                .and().logout().deleteCookies(ShelterConstants.AUTHORIZATION_COOKIE_NAME)
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
@@ -82,3 +81,4 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+

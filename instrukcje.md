@@ -48,7 +48,7 @@ Jeśli nasz merge request nie przejdzie code review to musimy się na niego prze
    * DO UZUPEŁNIENIA 
 6. Aplikacja posiada dokumentacje API stworzoną przy pomocy Swaggera. Aby się do niej dostać należy odpalić apkę i uderzeżyć w endpoint /shelter-doc (lub /swagger-ui)
 
-
+7. karty płatnicze: https://developers.payu.com/pl/overview.html#:~:text=OAuth%20(client_secret)%3A%C2%A0%C2%A0%C2%A0%C2%A0%202ee86a66e5d97e3fadc400c9f19b065d-,3.2.2%20Testowe%20karty,-W%20celu%20przetestowania
 
 
 

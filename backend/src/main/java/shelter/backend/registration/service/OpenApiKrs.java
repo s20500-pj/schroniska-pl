@@ -54,7 +54,7 @@ public class OpenApiKrs implements ApprovalProvider {
     }
 
     private boolean checkShelterDetails(Address address, OpenApiKrsResponse response) {
-        //TODO check only name of the company with contains. skip adress.
+        //FIXME check only name of the company with contains. skip adress.
         String cityRegistered = CharsNormalizer.convertToEngChars(address.getCity().trim());
         String cityResponse = CharsNormalizer.convertToEngChars(response.getOdpis().getDane().getDzial1().getSiedzibaIAdres().getAdres().getMiejscowosc().trim());
         String postalRegistered = address.getPostalCode().replace("-", "").trim();
