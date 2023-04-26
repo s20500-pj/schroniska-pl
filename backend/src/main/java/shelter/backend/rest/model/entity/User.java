@@ -55,6 +55,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType userType;
     private String information;
+    @Setter
     private String iban;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
@@ -77,7 +78,6 @@ public class User {
         this.approvalStatus = dto.getApprovalStatus();
         this.userType = dto.getUserType();
         this.information = dto.getInformation();
-        this.iban = dto.getIban();
         return this;
     }
 

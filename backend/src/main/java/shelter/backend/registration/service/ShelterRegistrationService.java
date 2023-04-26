@@ -117,6 +117,7 @@ public class ShelterRegistrationService implements RegistrationService {
     //FIXME change this. enebale only one shelter at once. change param to request containing clientId, clientSecret, merchantPosId, shelterId -> save this to DB (entity -> PayUClientCredentials). return UserDto.
     //FIXME add update user
     //FIXME add delete user
+    //FIXME delete iban number after enabling
     public List<UserDto> enableShelterAccounts(List<Long> shelterIds) {
         log.debug("[enableShelterAccounts] :: list of ids: {}", shelterIds);
         List<UserDto> enabledShelters = new ArrayList<>();
@@ -149,6 +150,7 @@ public class ShelterRegistrationService implements RegistrationService {
     private User persistTheUser(UserDto userDto) {
         User newUser = userMapper.toEntity(userDto);
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        newUser.setIban(encrypt(userDto.getIban()));
         newUser.setDisabled(true);
         ERole roleName;
         if (isShelter(newUser)) {

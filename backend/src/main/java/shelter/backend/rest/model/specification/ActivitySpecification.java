@@ -41,7 +41,7 @@ public class ActivitySpecification implements Specification<Activity> {
                 case ACTIVITY_TYPE ->
                         predicates.add(criteriaBuilder.equal(root.get(ACTIVITY_TYPE), ActivityType.valueOf(value)));
                 case SpecificationConstants.ACTIVITY_TIME -> {
-                    if (StringUtils.isNotEmpty(value)) {
+                    if (StringUtils.isNotBlank(value)) {
                         LocalDateTime localDateTimeValue = LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME);
                         predicates.add(criteriaBuilder.equal(root.get(SpecificationConstants.ACTIVITY_TIME), localDateTimeValue));
                     }

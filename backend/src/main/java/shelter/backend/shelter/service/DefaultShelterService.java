@@ -1,5 +1,6 @@
 package shelter.backend.shelter.service;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,16 +11,13 @@ import shelter.backend.rest.model.mapper.UserMapper;
 import shelter.backend.rest.model.specification.UserSpecification;
 import shelter.backend.storage.repository.UserRepository;
 import shelter.backend.utils.basic.ClientInterceptor;
-import shelter.backend.utils.constants.SpecificationConstants;
 
 import java.util.List;
 import java.util.Map;
 
-import static shelter.backend.animals.service.ShelterAnimalService.parseSearchParams;
-
 @RequiredArgsConstructor
 @Service
-public class DefaultShelterService implements ShelterService{
+public class DefaultShelterService implements ShelterService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
@@ -33,17 +31,37 @@ public class DefaultShelterService implements ShelterService{
         }
         return userMapper.toDto(shelter);
     }
+
     //fixme fix this weird searchParams everywhere in project
     public List<UserDto> searchShelters(Map<String, String> searchParams) {
-        //fixme update this for admin
         User currentUser = getUser();
-        if (currentUser != null && currentUser.getUserType() != UserType.ADMIN){
+        if (currentUser == null || currentUser.getUserType() != UserType.ADMIN) {
             searchParams.put("isDisabled", "false");
             searchParams.remove("approvalStatus");
         }
         searchParams.put("userType", "SHELTER");
         UserSpecification userSpecification = new UserSpecification(searchParams);
-        return userMapper.toDtoList(userRepository.findAll(userSpecification));
+        List<UserDto> userDtoList = userMapper.toDtoList(userRepository.findAll(userSpecification));
+        if (currentUser != null && currentUser.getUserType() == UserType.ADMIN) {
+            exposeIban(userDtoList);
+        } else {
+            removeIban(userDtoList);
+        }
+        return userDtoList;
+    }
+
+    private void exposeIban(List<UserDto> userDtoList) {
+        userDtoList.stream().filter(userDto -> StringUtils.isNotBlank(userDto.getIban()))
+                .forEach((userDto) -> {
+                    String iban = decrypt(userDto.getIban());
+                    userDto.setIban(iban);
+                });
+    }
+
+    private void removeIban(List<UserDto> userDtoList) {
+        userDtoList.forEach((userDto) -> {
+            userDto.setIban("");
+        });
     }
 
     public UserDto update(UserDto userDto) {
