@@ -28,8 +28,9 @@ public class ShelterUserService implements UserService {
         return userMapper.toDtoList(userRepository.findAll(userSpecification));
     }
 
-    public UserDto getUserById(Long userId) {
-        return userMapper.toDto(userRepository.findUserById(userId));
+    public UserDto getUserInfo() {
+        User user = getLoggedUser();
+        return userMapper.toDto(userRepository.findUserById(user.getId()));
     }
 
     public UserDto update(UserDto userDto) {
@@ -47,4 +48,10 @@ public class ShelterUserService implements UserService {
             }
         }
     }
+
+    private User getLoggedUser() {
+        String currentUsername = ClientInterceptor.getCurrentUsername();
+        return userRepository.findUserByEmail(currentUsername);
+    }
+
 }

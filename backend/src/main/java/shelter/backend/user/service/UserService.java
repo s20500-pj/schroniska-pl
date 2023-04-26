@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserService {
     List<UserDto> search(String searchParams);
-    UserDto getUserById(Long userId);
+    UserDto getUserInfo();
     UserDto update(UserDto userDto);
     void delete(Long id);
 }

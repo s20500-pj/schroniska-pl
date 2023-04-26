@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import shelter.backend.registration.service.RegistrationService;
+import shelter.backend.rest.model.dtos.PayUClientCredentialsDto;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.shelter.service.DefaultShelterService;
 import shelter.backend.shelter.service.ShelterService;
@@ -36,8 +37,8 @@ public class ShelterController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/enable", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<List<UserDto>> enableShelters(@RequestBody @Valid List<Long> shelterIds) {
-        return ResponseEntity.ok(registrationService.enableShelterAccounts(shelterIds));
+    ResponseEntity<UserDto> enableShelters(@RequestBody PayUClientCredentialsDto payUClientCredentialsDto) {
+        return ResponseEntity.ok(registrationService.enableShelterAccounts(payUClientCredentialsDto));
     }
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
