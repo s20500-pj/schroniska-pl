@@ -5,6 +5,11 @@ import {Link} from "react-router-dom";
 import {AGE_OPTIONS, SEX_OPTIONS} from "../util/Enums";
 import icon from  '../dog-cat-icon.jpeg';
 export default function AnimalCard({data, rename}) {
+
+    const placeholderImage = icon;
+    const onImageError = (e) => {
+        e.target.src = placeholderImage
+    }
     axios.defaults.withCredentials = true;
     const placeholderImage = icon;
     const onImageError = (e) => {
