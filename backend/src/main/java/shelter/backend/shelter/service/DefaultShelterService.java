@@ -60,7 +60,7 @@ public class DefaultShelterService implements ShelterService {
 
     private void removeIban(List<UserDto> userDtoList) {
         userDtoList.forEach((userDto) -> {
-            userDto.setIban("");
+            userDto.setIban(null);
         });
     }
 
