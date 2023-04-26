@@ -13,6 +13,7 @@ import shelter.backend.utils.exception.AdoptionException;
 import shelter.backend.utils.exception.MessageNotSendException;
 import shelter.backend.utils.exception.RequiredFieldException;
 import shelter.backend.utils.exception.UsernameAlreadyExist;
+import shelter.backend.utils.exception.ValidFieldException;
 
 import java.util.List;
 
@@ -34,6 +35,13 @@ public class ShelterGlobalExceptionHandler {
             errorMessage = methodArgumentNotValidException.getMessage();
         }
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ValidFieldException.class)
+    public ResponseEntity<String> onValidFieldException(
+            ValidFieldException e) {
+        log.info("Validation error. Exception: ", e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UsernameAlreadyExist.class)

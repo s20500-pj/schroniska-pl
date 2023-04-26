@@ -55,7 +55,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType userType;
     private String information;
-    private Long iban;
+    private String iban;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;

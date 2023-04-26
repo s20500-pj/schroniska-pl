@@ -44,6 +44,7 @@ export default function AddShelter() {
             await axios.post("http://localhost:8080/registration/register", shelter);
             setShowPopup(true);
         } catch (error) {
+            console.log(error)
             setError(error.response?.data?.message || "Something went wrong");
         }
     };
@@ -60,7 +61,7 @@ export default function AddShelter() {
         flatNumber,
         phone,
         krsNumber
-    } = dupa
+    } = shelter
 
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
@@ -117,7 +118,7 @@ export default function AddShelter() {
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="IBAN"
                                    className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                Hasło:
+                                Numer konta bankowego (IBAN):
                             </label>
                             <input
                                 type={"text"}
@@ -262,3 +263,4 @@ export default function AddShelter() {
         </div>
     )
 }
+
