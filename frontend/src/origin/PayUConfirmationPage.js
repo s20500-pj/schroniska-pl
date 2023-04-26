@@ -10,9 +10,9 @@ export default function PayUConfirmationPage() {
             </div>
             <div className="mt-4">
                 <div className="text-center">
-                    <h3 className="text-lg leading-6 font-medium text-gray-900">Dziękujemy za wpłatę. Oczekujemy na
-                        zatwierdzenie płatności przez wybrane schronisko. <p>Możesz w tym czasie dalej korzystać z
-                            naszej strony</p></h3>
+                    <h3 className="text-lg leading-6 font-medium text-gray-900">Dziękujemy za dokonanie wpłaty.
+                        Teraz oczekujemy na zatwierdzenie płatności przez wybrane schronisko. <p>
+                            Po potwierdzeniu płatności, otrzymasz e-mail z potwierdzeniem.</p></h3>
                 </div>
             </div>
         </div>

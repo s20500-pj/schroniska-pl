@@ -125,7 +125,7 @@ public class ShelterRegistrationService implements RegistrationService {
     @Transactional
     @Override
     public UserDto enableShelterAccounts(PayUClientCredentialsDto request) {
-        log.debug("[enableShelterAccounts] :: ShelterId to enable {}", request.getShelterId());
+        log.debug("[enableShelterAccounts] :: ShelterId  {}", request.getShelterId());
         User user = userRepository.findById(request.getShelterId())
                 .orElseThrow(() -> new EntityNotFoundException("Schronisko o podanym ID nie istnieje"));
         if (user.isDisabled()) {
