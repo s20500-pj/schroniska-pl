@@ -19,10 +19,10 @@ public class UserController {
 
     private final UserService userService;
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping(value = "/{id}")
-    ResponseEntity<UserDto> getUserById(@PathVariable @NotNull Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping
+    ResponseEntity<UserDto> getUserById() {
+        return ResponseEntity.ok(userService.getUserById());
     }
 
     @PreAuthorize("hasRole('ADMIN')")
