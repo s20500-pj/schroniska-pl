@@ -1,5 +1,8 @@
 import React from "react";
+import {useParams} from "react-router-dom";
 
+
+//todo this is simple workaround. need to integrate react with spring.
 export default function MailConfirmationPage() {
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
