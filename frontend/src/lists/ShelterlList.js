@@ -73,7 +73,7 @@ function ShelterList() {
         approvalStatus
     } = shelter;
 
-    const sheltersMap = new Map(Object.entries(adoption)
+    const sheltersMap = new Map(Object.entries(shelter)
         .filter(([key, value]) => value !== ""));
 
     const handleSubmit = async (event) => {

@@ -22,8 +22,6 @@ public class DefaultShelterService implements ShelterService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
 
-    public static final String USER_TYPE = "userType";
-
     public UserDto getShelterById(Long shelterId) {
         User shelter = userRepository.findUserById(shelterId);
         if (shelter == null || !shelter.getUserType().equals(UserType.SHELTER)) {
