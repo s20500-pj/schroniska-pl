@@ -1,52 +1,68 @@
 import axios from "axios";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {Link} from "react-router-dom";
 import Table from "../util/Table";
 import ShelterServerConstants from "../util/ShelterServerConstants";
-import {ADOPTION_STATUS_OPTIONS, SHELTER_APPROVAL_STATUS_OPTIONS} from "../util/Enums";
+import {SHELTER_APPROVAL_STATUS_OPTIONS} from "../util/Enums";
 
-const columns = [
-    {
-        Header: "Lista schronisk",
-        columns: [
-            {
-                Header: "Nazwa schroniska",
-                accessor: "shelterName"
-            },
-            {
-                Header: "Email",
-                accessor: "email"
-            },
-            {
-                Header: "Miasto",
-                accessor: "address.city"
-            },
-            {
-                Header: "Telefon",
-                accessor: "address.phone"
-            },
-            {
-                Header: "KRS",
-                accessor: "address.krsNumber"
-            },
-            {
-                Header: "Szczegóły",
-                accessor: "id",
-                Cell: ({value}) => (
-                    <Link to={`/shelterDetails/${value}`}>
-                        <button type="submit"
-                                className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                            <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Dane schroniska
-                                </p>
-                        </button>
-                    </Link>
-                ),
-            }
-        ],
-    },
-];
 
 function ShelterList() {
+
+    const columns = useMemo(
+        () =>
+            [
+                {
+                    Header: "Lista schronisk",
+                    columns: [
+                        {
+                            Header: "Nazwa schroniska",
+                            accessor: "shelterName"
+                        },
+                        {
+                            Header: "Email",
+                            accessor: "email"
+                        },
+                        {
+                            Header: "Miasto",
+                            accessor: "address.city"
+                        },
+                        {
+                            Header: "Telefon",
+                            accessor: "address.phone"
+                        },
+                        {
+                            Header: "KRS",
+                            accessor: "address.krsNumber"
+                        },
+                        {
+                            Header: "Szczegóły",
+                            accessor: "id",
+                            Cell: ({value}) => (
+                                <div>
+                                    <Link to={`/shelterDetails/${value}`}>
+                                        <button type="submit"
+                                                className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                            <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Dane
+                                                schroniska
+                                            </p>
+                                        </button>
+                                    </Link>
+                                    <button type="submit"
+                                            onClick={() => deleteShelter(value)}
+                                            className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                        <p className="py-15 justify-center text-base text-center text-brown font-medium	">Usuń
+                                            schronisko
+                                        </p>
+                                    </button>
+                                </div>
+                            )
+                        }
+
+                    ]
+                }
+            ],
+    );
+
     axios.defaults.withCredentials = true
     const [error, setError] = useState("");
     const [data, setData] = useState([]);
@@ -119,6 +135,19 @@ function ShelterList() {
         setShelter({});
     };
 
+    const deleteShelter = async (id) => {
+        axios.defaults.withCredentials = true;
+        axios.delete(`http://localhost:8080/shelter/delete/${id}`)
+            .then((response) => {
+                console.log("usun", id);
+                console.log(response.data);
+                setShelter(response.data);
+            })
+            .catch((error) => {
+                console.error("Error delete user data:", error);
+                setError(error);
+            });
+    }
     return (
         <div className="md:flex p-5 h-fit sm:block sm:h-fit">
             <div className="bg-background-pattern bg-opacity-20 max-w-none md:w-1/4 sm:w-fit sm:h-fit">
@@ -224,4 +253,3 @@ function ShelterList() {
 }
 
 export default ShelterList;
-
