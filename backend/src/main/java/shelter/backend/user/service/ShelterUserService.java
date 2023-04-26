@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import shelter.backend.rest.model.dtos.UserDto;
-import shelter.backend.rest.model.entity.PayUClientCredentials;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.UserMapper;
@@ -49,14 +48,15 @@ public class ShelterUserService implements UserService {
         User currentUser = userRepository.findUserByEmail(username);
         User userToDelete = userRepository.findUserById(id);
         if (userToDelete != null) {
-            if (currentUser.getUserType() == UserType.ADMIN || (currentUser.equals(userToDelete))) { // if not admin check if user can perform delete(only delete himself)
+            if (currentUser.getUserType() == UserType.ADMIN || (currentUser.equals(userToDelete))) // if not admin check if user can perform delete(only delete himself)
+            {
                 if (userToDelete.getUserType() == UserType.SHELTER) {
                     //rm associated payuDetails
                     payUClientCredentialsRepository.findByShelter_Id(userToDelete.getId())
                             .ifPresent(payUClientCredentialsRepository::delete);
+                    userRepository.delete(userToDelete);
+                    log.debug("Username deleted, {}, {}", userToDelete.getEmail(), userToDelete.getUserType());
                 }
-                userRepository.delete(userToDelete);
-                log.debug("Username deleted, {}, {}", userToDelete.getEmail(), userToDelete.getUserType());
             }
         } else {
             throw new EntityNotFoundException("Nie znaleziono użytkownika o podanym id");
