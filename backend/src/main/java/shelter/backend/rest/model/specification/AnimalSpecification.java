@@ -79,7 +79,7 @@ public class AnimalSpecification implements Specification<Animal> {
                         predicates.add(criteriaBuilder.equal(userJoin.get(SpecificationConstants.ID), value));
                 case SpecificationConstants.ACTIVITY_TIME -> {
                     Join<Animal, Activity> activityLeftJoin = root.join("activities", JoinType.LEFT);
-                    if (StringUtils.isNotEmpty(value)) {
+                    if (StringUtils.isNotBlank(value)) {
                         LocalDateTime localDateTimeValue = LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME);
                         predicates.add(criteriaBuilder.or
                                 (criteriaBuilder.notEqual(activityLeftJoin.get(SpecificationConstants.ACTIVITY_TIME), localDateTimeValue),

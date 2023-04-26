@@ -89,7 +89,7 @@ public class ShelterAnimalService implements AnimalService {
         AnimalSpecification animalSpecification = new AnimalSpecification(parseSearchParams(searchParams));
         return animalMapper.toDtoList(animalRepository.findAll(animalSpecification));
     }
-
+    //fixme fix this weire searchParams everywhere in project.restore the map
     public List<AnimalDto> getShelterAnimals(String searchParams) {
         Map<String, String> parsedSearchParams = parseSearchParams(searchParams);
         parsedSearchParams.put(SpecificationConstants.SHELTER_ID, getLoggedUser().getId().toString());

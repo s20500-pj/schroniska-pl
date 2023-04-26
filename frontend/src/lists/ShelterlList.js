@@ -1,7 +1,9 @@
 import axios from "axios";
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import Table from "../util/Table";
+import ShelterServerConstants from "../util/ShelterServerConstants";
+import {ADOPTION_STATUS_OPTIONS, SHELTER_APPROVAL_STATUS_OPTIONS} from "../util/Enums";
 
 const columns = [
     {
@@ -53,8 +55,11 @@ function ShelterList() {
         email: "",
         information: "",
         city: "",
-        street: ""
+        street: "",
+        approvalStatus: ""
     });
+
+    const userType = localStorage.getItem("userType");
 
     const onInputChange = (e) => {
         setShelter({...shelter, [e.target.name]: e.target.value});
@@ -65,49 +70,48 @@ function ShelterList() {
         email,
         information,
         city,
-        street
+        street,
+        approvalStatus
     } = shelter;
 
-    const enteredShelterFields = {
-        ...Object.fromEntries(
-            Object.entries(shelter)
-                .filter(([_, value]) => value !== "")
-                .map(([key, value]) => [`"${key}"`, value])
-        ),
-        "\"userType\"": "SHELTER"
-    };
+    const sheltersMap = new Map(Object.entries(shelter)
+        .filter(([key, value]) => value !== ""));
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const result = await axios.post(
-            "http://localhost:8080/shelter/searchShelters",
-            JSON.stringify(enteredShelterFields), {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'text/plain'
+        try {
+            event.preventDefault();
+            const result = await axios.post(
+                ShelterServerConstants.ADDRESS_SERVER_LOCAL + "/shelter/searchShelters",
+                JSON.stringify(Object.fromEntries(sheltersMap)), {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
+                    }
                 }
-            }
-        );
-        setData(result.data);
+            );
+            setData(result.data);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await axios.post(
-                    "http://localhost:8080/shelter/searchShelters",
-                    JSON.stringify(enteredShelterFields), {
-                        withCredentials: true,
+                const result = await axios.post(ShelterServerConstants.ADDRESS_SERVER_LOCAL + "/shelter/searchShelters",
+                    JSON.stringify(Object.fromEntries(sheltersMap)),
+                    {
                         headers: {
-                            'Content-Type': 'text/plain'
+                            'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
                         }
-                    }
-                );
+                    });
                 setData(result.data);
             } catch (error) {
                 console.error(error);
             }
         };
+        console.log(userType);
         fetchData();
     }, []);
 
@@ -174,6 +178,27 @@ function ShelterList() {
                                     onChange={(e) => onInputChange(e)}
                                 />
                             </div>
+                            {userType === "ADMIN" && (
+                                <div className="w-full px-3">
+                                    <label htmlFor="approvalStatus"
+                                           className="block uppercase tracking-wide text-brown text-md font-bold">
+                                        Status zarejestrowania schroniska:
+                                    </label>
+                                    <select
+                                        className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                        name="approvalStatus"
+                                        value={approvalStatus}
+                                        onChange={(e) => onInputChange(e)}
+                                    >
+                                        <option value="">---</option>
+                                        {Object.entries(SHELTER_APPROVAL_STATUS_OPTIONS).map(([key, value]) => (
+                                            <option key={key} value={key}>
+                                                {value}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
                             <div className="w-full px-3">
                                 <div className="flex justify-around py-2">
                                     <button type="submit"
@@ -199,3 +224,4 @@ function ShelterList() {
 }
 
 export default ShelterList;
+

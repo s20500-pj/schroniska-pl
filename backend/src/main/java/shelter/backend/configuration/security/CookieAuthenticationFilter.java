@@ -1,9 +1,5 @@
 package shelter.backend.configuration.security;
 
-import java.io.IOException;
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -12,11 +8,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import shelter.backend.utils.constants.ShelterConstants;
 
-@Component
+import java.io.IOException;
+import java.util.Optional;
+import java.util.stream.Stream;
+
+//@Component //FIXME why we need this? JWT do the same thing. check, test, remove boiler code
 public class CookieAuthenticationFilter extends OncePerRequestFilter {
 
 

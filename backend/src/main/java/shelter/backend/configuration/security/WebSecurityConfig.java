@@ -1,6 +1,8 @@
 package shelter.backend.configuration.security;
 
 import lombok.RequiredArgsConstructor;
+import org.jasypt.encryption.StringEncryptor;
+import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,12 +30,15 @@ import shelter.backend.utils.constants.ShelterConstants;
 public class WebSecurityConfig {
 
     private final JwtAthFilter jwtAuthFilter;
-    private final CookieAuthenticationFilter cookieAuthenticationFilter;
+    //    private final CookieAuthenticationFilter cookieAuthenticationFilter;
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
     private final UserDetailsService userDetailsService;
 
     @Value("${shelter.web.security.allowedPaths}")
     private String[] allowedPaths;
+
+    @Value("${shelter.security.encryption.secret}")
+    private String secretEncryptor;
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -58,7 +63,7 @@ public class WebSecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
                 .and()
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(cookieAuthenticationFilter, JwtAthFilter.class)
+//                .addFilterBefore(cookieAuthenticationFilter, JwtAthFilter.class)
                 .headers().frameOptions().disable();//TODO delete it on PROD, used for H2 console to work properly
         return http.build();
     }
@@ -74,6 +79,15 @@ public class WebSecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public StringEncryptor shelterEncryptor() {
+        PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+        encryptor.setAlgorithm("PBEWithMD5AndDES");
+        encryptor.setPassword(secretEncryptor);
+        encryptor.setPoolSize(1);
+        return encryptor;
     }
 
     @Bean

@@ -1,7 +1,9 @@
 package shelter.backend.shelter.service;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.jasypt.encryption.StringEncryptor;
 import org.springframework.stereotype.Service;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.User;
@@ -9,20 +11,18 @@ import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.UserMapper;
 import shelter.backend.rest.model.specification.UserSpecification;
 import shelter.backend.storage.repository.UserRepository;
+import shelter.backend.utils.basic.ClientInterceptor;
 
 import java.util.List;
 import java.util.Map;
 
-import static shelter.backend.animals.service.ShelterAnimalService.parseSearchParams;
-
 @RequiredArgsConstructor
 @Service
-public class DefaultShelterService implements ShelterService{
+public class DefaultShelterService implements ShelterService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
-
-    public static final String USER_TYPE = "userType";
+    private final StringEncryptor shelterEncryptor;
 
     public UserDto getShelterById(Long shelterId) {
         User shelter = userRepository.findUserById(shelterId);
@@ -32,12 +32,45 @@ public class DefaultShelterService implements ShelterService{
         return userMapper.toDto(shelter);
     }
 
-    public List<UserDto> searchShelters(String searchParams) {
-        UserSpecification userSpecification = new UserSpecification(parseSearchParams(searchParams));
-        return userMapper.toDtoList(userRepository.findAll(userSpecification));
+    //fixme fix this weird searchParams everywhere in project
+    public List<UserDto> searchShelters(Map<String, String> searchParams) {
+        User currentUser = getUser();
+        if (currentUser == null || currentUser.getUserType() != UserType.ADMIN) {
+            searchParams.put("isDisabled", "false");
+            searchParams.remove("approvalStatus");
+        }
+        searchParams.put("userType", "SHELTER");
+        UserSpecification userSpecification = new UserSpecification(searchParams);
+        List<UserDto> userDtoList = userMapper.toDtoList(userRepository.findAll(userSpecification));
+        if (currentUser != null && currentUser.getUserType() == UserType.ADMIN) {
+            exposeIban(userDtoList);
+        } else {
+            removeIban(userDtoList);
+        }
+        return userDtoList;
+    }
+
+    private void exposeIban(List<UserDto> userDtoList) {
+        userDtoList.stream().filter(userDto -> StringUtils.isNotBlank(userDto.getIban()))
+                .forEach((userDto) -> {
+                    String iban = shelterEncryptor.decrypt(userDto.getIban());
+                    userDto.setIban(iban);
+                });
+    }
+
+    private void removeIban(List<UserDto> userDtoList) {
+        userDtoList.forEach((userDto) -> {
+            userDto.setIban(null);
+        });
     }
 
     public UserDto update(UserDto userDto) {
         return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
     }
+
+    private User getUser() {
+        String username = ClientInterceptor.getCurrentUsername();
+        return userRepository.findUserByEmail(username);
+    }
+
 }

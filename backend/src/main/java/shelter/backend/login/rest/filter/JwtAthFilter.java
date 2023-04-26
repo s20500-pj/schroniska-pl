@@ -15,18 +15,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import shelter.backend.configuration.security.CookieAuthenticationFilter;
 import shelter.backend.login.JwtUtils;
 import shelter.backend.login.service.UserDetailsService;
 import shelter.backend.utils.constants.ShelterConstants;
 import shelter.backend.utils.exception.AdoptionException;
-import shelter.backend.utils.exception.AuthenticationException;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
-
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
 @RequiredArgsConstructor

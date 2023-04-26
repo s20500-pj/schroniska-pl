@@ -1,12 +1,34 @@
 package shelter.backend.rest.model.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.enums.ApprovalStatus;
 import shelter.backend.rest.model.enums.UserType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,6 +55,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType userType;
     private String information;
+    @Setter
+    private String iban;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
@@ -42,7 +66,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "shelter")
+    @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL)
     private List<Animal> animals = new ArrayList<>();
 
     public User toEntity(UserDto dto) {
@@ -68,6 +92,7 @@ public class User {
                 .approvalStatus(approvalStatus)
                 .userType(userType)
                 .information(information)
+                .iban(iban)
                 .address(Objects.nonNull(address) ? address.dto() : null)
                 .build();
     }

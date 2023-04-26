@@ -3,6 +3,7 @@ package shelter.backend.registration.service;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.validator.routines.IBANValidator;
 import org.springframework.stereotype.Component;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.User;
@@ -55,6 +56,10 @@ public class UserValidator implements Validator<UserDto> {
                     throw new RequiredFieldException((FieldNameConstants.SHELTER_NAME));
                 } else if (userDto.getAddress() == null || StringUtils.isBlank(userDto.getAddress().getKrsNumber())) {
                     throw new RequiredFieldException((FieldNameConstants.KRS_NUMBER));
+                } else if (userDto.getIban() == null) {
+                    throw new RequiredFieldException((FieldNameConstants.IBAN));
+                } else if (!IBANValidator.DEFAULT_IBAN_VALIDATOR.isValid(String.valueOf(userDto.getIban()))) {
+                    throw new ValidFieldException((FieldNameConstants.IBAN));
                 } else if (!KRS_PATTERN.matcher(userDto.getAddress().getKrsNumber()).matches()) {
                     throw new ValidFieldException((FieldNameConstants.KRS_NUMBER));
                 }
