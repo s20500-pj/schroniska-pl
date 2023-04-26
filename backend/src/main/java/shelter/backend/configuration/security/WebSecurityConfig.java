@@ -28,7 +28,7 @@ import shelter.backend.utils.constants.ShelterConstants;
 public class WebSecurityConfig {
 
     private final JwtAthFilter jwtAuthFilter;
-//    private final CookieAuthenticationFilter cookieAuthenticationFilter;
+    //    private final CookieAuthenticationFilter cookieAuthenticationFilter;
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
     private final UserDetailsService userDetailsService;
 

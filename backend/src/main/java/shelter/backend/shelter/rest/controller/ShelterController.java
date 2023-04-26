@@ -29,8 +29,8 @@ public class ShelterController {
         return ResponseEntity.ok(shelterService.getShelterById(id));
     }
 
-    @PostMapping(value = "/searchShelters", consumes = MediaType.TEXT_PLAIN_VALUE)
-    ResponseEntity<List<UserDto>> searchShelters(@RequestBody String searchParams) {
+    @PostMapping(value = "/searchShelters", consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<List<UserDto>> searchShelters(@RequestBody Map<String, String> searchParams) {
         return ResponseEntity.ok(shelterService.searchShelters(searchParams));
     }
 

@@ -17,13 +17,21 @@ import java.util.Map;
 public class UserSpecification implements Specification<User> {
 
     private static final String FIRST_NAME = "firstName";
+
     private static final String LAST_NAME = "lastName";
+
     private static final String EMAIL = "email";
+
     private static final String SHELTER_NAME = "shelterName";
+
     private static final String IS_DISABLED = "isDisabled";
+
     private static final String APPROVAL_STATUS = "approvalStatus";
+
     private static final String USER_TYPE = "userType";
+
     private static final String CITY = "city";
+
 
     private final Map<String, String> searchParams;
 

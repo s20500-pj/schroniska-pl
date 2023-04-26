@@ -9,6 +9,8 @@ import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.UserMapper;
 import shelter.backend.rest.model.specification.UserSpecification;
 import shelter.backend.storage.repository.UserRepository;
+import shelter.backend.utils.basic.ClientInterceptor;
+import shelter.backend.utils.constants.SpecificationConstants;
 
 import java.util.List;
 import java.util.Map;
@@ -31,13 +33,26 @@ public class DefaultShelterService implements ShelterService{
         }
         return userMapper.toDto(shelter);
     }
-
-    public List<UserDto> searchShelters(String searchParams) {
-        UserSpecification userSpecification = new UserSpecification(parseSearchParams(searchParams));
+    //fixme fix this weird searchParams everywhere in project
+    public List<UserDto> searchShelters(Map<String, String> searchParams) {
+        //fixme update this for admin
+        User currentUser = getUser();
+        if (currentUser != null && currentUser.getUserType() != UserType.ADMIN){
+            searchParams.put("isDisabled", "false");
+            searchParams.remove("approvalStatus");
+        }
+        searchParams.put("userType", "SHELTER");
+        UserSpecification userSpecification = new UserSpecification(searchParams);
         return userMapper.toDtoList(userRepository.findAll(userSpecification));
     }
 
     public UserDto update(UserDto userDto) {
         return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
     }
+
+    private User getUser() {
+        String username = ClientInterceptor.getCurrentUsername();
+        return userRepository.findUserByEmail(username);
+    }
+
 }

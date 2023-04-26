@@ -45,7 +45,6 @@ public class ShelterRegistrationService implements RegistrationService {
     private String expTime;
 
     public UserDto register(UserDto userDto) {
-        //FIXME add IBAN number to SHELTER registration! needed to register in PayU. add it to User or to PayUClientCredentials
         log.debug("Registration started for username: {}", userDto.getEmail());
         userValidator.throwIfNotValid(userDto);
         User user = persistTheUser(userDto);
