@@ -3,6 +3,7 @@ package shelter.backend.shelter.service;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.jasypt.encryption.StringEncryptor;
 import org.springframework.stereotype.Service;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.User;
@@ -21,6 +22,7 @@ public class DefaultShelterService implements ShelterService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final StringEncryptor shelterEncryptor;
 
     public UserDto getShelterById(Long shelterId) {
         User shelter = userRepository.findUserById(shelterId);
@@ -51,7 +53,7 @@ public class DefaultShelterService implements ShelterService {
     private void exposeIban(List<UserDto> userDtoList) {
         userDtoList.stream().filter(userDto -> StringUtils.isNotBlank(userDto.getIban()))
                 .forEach((userDto) -> {
-                    String iban = decrypt(userDto.getIban());
+                    String iban = shelterEncryptor.decrypt(userDto.getIban());
                     userDto.setIban(iban);
                 });
     }

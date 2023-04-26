@@ -1,6 +1,8 @@
 package shelter.backend.configuration.security;
 
 import lombok.RequiredArgsConstructor;
+import org.jasypt.encryption.StringEncryptor;
+import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +36,9 @@ public class WebSecurityConfig {
 
     @Value("${shelter.web.security.allowedPaths}")
     private String[] allowedPaths;
+
+    @Value("${shelter.security.encryption.secret}")
+    private String secretEncryptor;
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -74,6 +79,15 @@ public class WebSecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public StringEncryptor shelterEncryptor() {
+        PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+        encryptor.setAlgorithm("PBEWithMD5AndDES");
+        encryptor.setPassword(secretEncryptor);
+        encryptor.setPoolSize(1);
+        return encryptor;
     }
 
     @Bean

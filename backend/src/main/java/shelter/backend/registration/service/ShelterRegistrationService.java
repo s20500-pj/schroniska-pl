@@ -3,6 +3,7 @@ package shelter.backend.registration.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -41,6 +42,7 @@ public class ShelterRegistrationService implements RegistrationService {
     private final ApprovalProvider approvalProvider;
     private final UserValidator userValidator;
     private final UserMapper userMapper;
+    private final StringEncryptor shelterEncryptor;
     @Value("${shelter.redis.token.expiration.minutes}")
     private String expTime;
 
@@ -117,7 +119,6 @@ public class ShelterRegistrationService implements RegistrationService {
     //FIXME change this. enebale only one shelter at once. change param to request containing clientId, clientSecret, merchantPosId, shelterId -> save this to DB (entity -> PayUClientCredentials). return UserDto.
     //FIXME add update user
     //FIXME add delete user
-    //FIXME delete iban number after enabling
     public List<UserDto> enableShelterAccounts(List<Long> shelterIds) {
         log.debug("[enableShelterAccounts] :: list of ids: {}", shelterIds);
         List<UserDto> enabledShelters = new ArrayList<>();
@@ -128,6 +129,7 @@ public class ShelterRegistrationService implements RegistrationService {
                 if (user.isDisabled()) {
                     user.setDisabled(false);
                     user.setApprovalStatus(ApprovalStatus.COMPLETED);
+                    user.setIban(null);
                     userRepository.save(user);
                     enabledShelters.add(userMapper.toDto(user));
                     log.info("Shelter: {}, for username: {} accepted by admin", user.getShelterName(), user.getEmail());
@@ -151,7 +153,7 @@ public class ShelterRegistrationService implements RegistrationService {
     private User persistTheUser(UserDto userDto) {
         User newUser = userMapper.toEntity(userDto);
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        newUser.setIban(encrypt(userDto.getIban()));
+        newUser.setIban(shelterEncryptor.encrypt(userDto.getIban()));
         newUser.setDisabled(true);
         ERole roleName;
         if (isShelter(newUser)) {
