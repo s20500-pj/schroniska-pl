@@ -127,6 +127,7 @@ public class ShelterRegistrationService implements RegistrationService {
                 User user = userOptional.get();
                 if (user.isDisabled()) {
                     user.setDisabled(false);
+                    user.setApprovalStatus(ApprovalStatus.COMPLETED);
                     userRepository.save(user);
                     enabledShelters.add(userMapper.toDto(user));
                     log.info("Shelter: {}, for username: {} accepted by admin", user.getShelterName(), user.getEmail());

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
-import {AGE_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS, STATUS_OPTIONS} from "../util/Enums";
+import {AGE_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS, ANIMAL_STATUS_OPTIONS} from "../util/Enums";
 import icon from  '../dog-cat-icon.jpeg';
 
 export default function AnimalDetails() {
@@ -75,7 +75,7 @@ export default function AnimalDetails() {
                                     <p className='font-bold pt-2'>Płeć: </p><p>{SEX_OPTIONS[animal.sex]}</p>
                                     <p className='font-bold pt-2'>Wiek: </p><p>{AGE_OPTIONS[animal.age]}</p>
                                     <p className='font-bold pt-2'>Data urodzenia: </p><p>{animal.birthDate}</p>
-                                    <p className='font-bold pt-2'>Status:</p><p>{STATUS_OPTIONS[animal.animalStatus]}</p>
+                                    <p className='font-bold pt-2'>Status:</p><p>{ANIMAL_STATUS_OPTIONS[animal.animalStatus]}</p>
                                     <p className='font-bold pt-2'>Dodatkowe informacje:</p><p> {animal.information}</p>
                                 </div>
                                 <div>

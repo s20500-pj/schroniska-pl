@@ -32,6 +32,7 @@ UPDATE users SET approval_status = 'CONFIRMED' WHERE id = 3; /*shelter2@shelter*
 
 UPDATE users SET user_type = 'SHELTER' WHERE shelter_name IS NOT NULL;
 UPDATE users SET user_type = 'PERSON' WHERE first_name IS NOT NULL;
+UPDATE users SET user_type = 'ADMIN' WHERE id = 1;
 
 INSERT INTO payu_client_credentials(client_id, client_secret, merchant_pos_id, shelter_id) VALUES ('463117', '913d4d4fc69fdadceb45f3469fc89341', '463117', 2);
 INSERT INTO payu_client_credentials(client_id, client_secret, merchant_pos_id, shelter_id) VALUES ('464332', '90f4f19621b3ca839378add644486b0f', '464332', 3);

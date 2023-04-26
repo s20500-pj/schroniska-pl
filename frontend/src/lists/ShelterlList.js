@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import Table from "../util/Table";
 import ShelterServerConstants from "../util/ShelterServerConstants";
+import {ADOPTION_STATUS_OPTIONS, SHELTER_APPROVAL_STATUS_OPTIONS} from "../util/Enums";
 
 const columns = [
     {
@@ -110,6 +111,7 @@ function ShelterList() {
                 console.error(error);
             }
         };
+        console.log(userType);
         fetchData();
     }, []);
 
@@ -182,13 +184,19 @@ function ShelterList() {
                                            className="block uppercase tracking-wide text-brown text-md font-bold">
                                         Status zarejestrowania schroniska:
                                     </label>
-                                    <input
-                                        type="text"
+                                    <select
                                         className="block w-full bg-gray-200 text-brown border border-orange rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                         name="approvalStatus"
                                         value={approvalStatus}
                                         onChange={(e) => onInputChange(e)}
-                                    />
+                                    >
+                                        <option value="">---</option>
+                                        {Object.entries(SHELTER_APPROVAL_STATUS_OPTIONS).map(([key, value]) => (
+                                            <option key={key} value={key}>
+                                                {value}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                             )}
                             <div className="w-full px-3">
