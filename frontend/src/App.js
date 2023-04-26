@@ -29,6 +29,7 @@ import ShelterVirtualAdoptionList from "./adoption/ShelterVirtualAdoptionList";
 import AdoptionDetails from "./adoption/AdoptionDetails";
 import ShelterList from "./lists/ShelterlList";
 import UsersList from "./lists/UsersList";
+import ShelterDetails from "./users/shelter/ShelterDetails";
 
 function App() {
     axios.defaults.withCredentials = true
@@ -54,17 +55,30 @@ function App() {
                     <Route exact path="/loggedinuser" element={<LoggedInUser/>}/>
                     <Route exact path="/login" element={<Login loggingInfo={loggingInfo}/>}/>
                     <Route exact path="/animalList" element={<AnimalList/>}/>
-                    <Route exact path="/animalDetails/:id" element={<AnimalDetails />} />
-                    <Route exact path="/shelterList" element={<ShelterList />} />
-                    <Route exact path="/userList" element={<UsersList />} />
-                    {userType === "SHELTER" ? <Route exact path="/addAnimal" element={<AddAnimal/>}/> : <Route exact path="/" element={<Home/>}/>}
-                    {userType === "SHELTER" ? <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/> : <Route exact path="/" element={<Home/>}/>}
-                    {userType === "PERSON" ? <Route exact path="/userVirtualAdoptionList" element={<UserVirtualAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
-                    {userType === "PERSON" ? <Route exact path="/userRealAdoptionList" element={<UserRealAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
-                    {userType === "SHELTER" ? <Route exact path="/shelterRealAdoptionList" element={<ShelterRealAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
-                    {userType === "SHELTER" ? <Route exact path="/shelterVirtualAdoptionList" element={<ShelterVirtualAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
-                    {userType === "PERSON" ? <Route exact path="/personsettings" element={<PersonSettings/>}/> : <Route exact path="/" element={<Home/>}/>}
-                    {userType === "SHELTER" ? <Route exact path="/adoptionDetails/:id" element={<AdoptionDetails/>}/> : <Route exact path="/" element={<Home/>}/>}
+                    <Route exact path="/animalDetails/:id" element={<AnimalDetails/>}/>
+                    <Route exact path="/shelterList" element={<ShelterList/>}/>
+                    <Route exact path="/shelterDetails/:id" element={<ShelterDetails/>}/>
+                    <Route exact path="/userList" element={<UsersList/>}/>
+                    {userType === "SHELTER" ? <Route exact path="/addAnimal" element={<AddAnimal/>}/> :
+                        <Route exact path="/" element={<Home/>}/>}
+                    {userType === "SHELTER" ? <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/> :
+                        <Route exact path="/" element={<Home/>}/>}
+                    {userType === "PERSON" ?
+                        <Route exact path="/userVirtualAdoptionList" element={<UserVirtualAdoptionList/>}/> :
+                        <Route exact path="/" element={<Home/>}/>}
+                    {userType === "PERSON" ?
+                        <Route exact path="/userRealAdoptionList" element={<UserRealAdoptionList/>}/> :
+                        <Route exact path="/" element={<Home/>}/>}
+                    {userType === "SHELTER" ?
+                        <Route exact path="/shelterRealAdoptionList" element={<ShelterRealAdoptionList/>}/> :
+                        <Route exact path="/" element={<Home/>}/>}
+                    {userType === "SHELTER" ?
+                        <Route exact path="/shelterVirtualAdoptionList" element={<ShelterVirtualAdoptionList/>}/> :
+                        <Route exact path="/" element={<Home/>}/>}
+                    {userType === "PERSON" ? <Route exact path="/personsettings" element={<PersonSettings/>}/> :
+                        <Route exact path="/" element={<Home/>}/>}
+                    {userType === "SHELTER" ? <Route exact path="/adoptionDetails/:id" element={<AdoptionDetails/>}/> :
+                        <Route exact path="/" element={<Home/>}/>}
 
                 </Routes>
             </Router>
