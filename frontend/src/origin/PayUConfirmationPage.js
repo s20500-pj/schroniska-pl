@@ -1,13 +1,19 @@
 //todo this is simple workaround. need to integrate react with spring.
 import React from "react";
+import {CheckCircleIcon} from "@heroicons/react/20/solid";
 
 export default function PayUConfirmationPage() {
     return (
-        <div className="bg-background-pattern bg-opacity-20 max-w-none">
-            <div className=" px-10 font-display bg-white bg-opacity-90">
-                <h2 className="text-center text-2xl text-orange font-bold p-5 h-fit ">
-                    Gratulacje! Twój mail został potwierdzony. Możesz się zalogować.
-                </h2>
+        <div className="min-h-screen bg-gray-50 flex flex-col justify-center ">
+            <div className="flex items-center justify-center mx-auto h-12 w-12 rounded-full bg-green-100">
+                <CheckCircleIcon className="h-6 w-6 text-green-600"/>
+            </div>
+            <div className="mt-4">
+                <div className="text-center">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900">Dziękujemy za wpłatę. Oczekujemy na
+                        zatwierdzenie płatności przez wybrane schronisko. <p>Możesz w tym czasie dalej korzystać z
+                            naszej strony</p></h3>
+                </div>
             </div>
         </div>
     );

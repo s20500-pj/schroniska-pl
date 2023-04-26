@@ -82,7 +82,7 @@ function App() {
                     {userType === "SHELTER" ? <Route exact path="/adoptionDetails/:id" element={<AdoptionDetails/>}/> :
                         <Route exact path="/" element={<Home/>}/>}
                     {userType == null ?
-                        <Route exact path="/confirmation/:id" element={<MailConfirmationPage/>}/> :
+                        <Route exact path="/confirmation" element={<MailConfirmationPage/>}/> :
                         <Route exact path="/" element={<Home/>}/>}
                     {userType === "PERSON" ? <Route exact path="/payment" element={<PayUConfirmationPage/>}/> :
                         <Route exact path="/" element={<Home/>}/>}
