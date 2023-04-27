@@ -54,9 +54,9 @@ public class ShelterUserService implements UserService {
                     //rm associated payuDetails
                     payUClientCredentialsRepository.findByShelter_Id(userToDelete.getId())
                             .ifPresent(payUClientCredentialsRepository::delete);
-                    userRepository.delete(userToDelete);
                     log.debug("Username deleted, {}, {}", userToDelete.getEmail(), userToDelete.getUserType());
                 }
+                userRepository.delete(userToDelete);
             }
         } else {
             throw new EntityNotFoundException("Nie znaleziono użytkownika o podanym id");
