@@ -112,22 +112,22 @@ function ShelterList() {
         }
     };
 
+    const fetchData = async () => {
+        try {
+            const result = await axios.post(ShelterServerConstants.ADDRESS_SERVER_LOCAL + "/shelter/searchShelters",
+                JSON.stringify(Object.fromEntries(sheltersMap)),
+                {
+                    headers: {
+                        'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
+                    }
+                });
+            setData(result.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await axios.post(ShelterServerConstants.ADDRESS_SERVER_LOCAL + "/shelter/searchShelters",
-                    JSON.stringify(Object.fromEntries(sheltersMap)),
-                    {
-                        headers: {
-                            'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
-                        }
-                    });
-                setData(result.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        console.log(userType);
         fetchData();
     }, []);
 
@@ -137,11 +137,12 @@ function ShelterList() {
 
     const deleteShelter = async (id) => {
         axios.defaults.withCredentials = true;
-        axios.delete(`http://localhost:8080/shelter/delete/${id}`)
+        axios.delete(`http://localhost:8080/user/delete/${id}`)
             .then((response) => {
-                console.log("usun", id);
-                console.log(response.data);
-                setShelter(response.data);
+                if (response.status === 204){
+                    alert("Usunieto uzytkownika");
+                    fetchData();
+                }
             })
             .catch((error) => {
                 console.error("Error delete user data:", error);
