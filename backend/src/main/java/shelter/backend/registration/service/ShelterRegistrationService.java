@@ -135,10 +135,15 @@ public class ShelterRegistrationService implements RegistrationService {
             user.setIban(null);
             user.setApprovalStatus(ApprovalStatus.COMPLETED);
             userRepository.save(user);
-            log.info("Shelter: {}, for username: {} accepted by admin", user.getShelterName(), user.getEmail());
+            try {
+                shelterEmailService.sendShelterApprovalConfirmation(user.getEmail(), user.getShelterName());
+            } catch (MessageNotSendException e) {
+                log.error("Nie można wysłać maila. schronisko zatwierdzone.");
+            }
         } else {
             log.debug("Shelter for username {} already enabled", user.getEmail());
         }
+        log.info("Shelter: {}, for username: {} accepted by admin", user.getShelterName(), user.getEmail());
         return userMapper.toDto(user);
     }
 

@@ -21,8 +21,6 @@ public class ShelterEmailService implements EmailService {
 
     private final MessageSource messageSource;
 
-    private final String CONFIRMATION_PROPERTIES = "mail.confirmation";
-
     private final String ADOPTION_PROPERTIES = "shelter.mail.adoption";
 
 
@@ -36,6 +34,7 @@ public class ShelterEmailService implements EmailService {
 
     @Override
     public void sendConfirmationEmail(String email, String token, String expirationTime, UserType userType) {
+        final String CONFIRMATION_PROPERTIES = "mail.confirmation";
         final String messageProperty = switch (userType) {
             case PERSON -> "user." + CONFIRMATION_PROPERTIES;
             case SHELTER -> "shelter." + CONFIRMATION_PROPERTIES;
@@ -64,7 +63,18 @@ public class ShelterEmailService implements EmailService {
 
     @Override
     public void sendAdoptionSuspension(String email, String shelterName, long id) {
-        throw new NotImplementedException(); // FIXME
+        final String messageProperty = ADOPTION_PROPERTIES + ".suspension";
+        final String subjectProperty = ADOPTION_PROPERTIES + "suspension.subject";
+        String[] params = {shelterName, String.valueOf(id)};
+        sendEmail(email, subjectProperty, messageProperty, params);
+    }
+
+    @Override
+    public void sendShelterApprovalConfirmation(String email, String shelterName) {
+        final String messageProperty = "shelter.mail.shelter.registration.confirmation";
+        final String subjectProperty = messageProperty + ".subject";
+        String[] params = {shelterName};
+        sendEmail(email, subjectProperty, messageProperty, params);
     }
 
     private void sendEmail(String email, String subjectPropertyName, String messagePropertyName, String[] params) {

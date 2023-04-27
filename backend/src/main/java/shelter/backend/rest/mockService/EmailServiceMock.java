@@ -47,6 +47,17 @@ public class EmailServiceMock implements EmailService {
 
     @Override
     public void sendAdoptionSuspension(String email, String shelterName, long id) {
-        log.info("immplement sendAdoptionSuspension "); //FIXME
+        final String messageProperty = ADOPTION_PROPERTIES + ".suspension";
+        String[] params = {shelterName, String.valueOf(id)};
+        final String text = messageSource.getMessage(messageProperty, params, Locale.getDefault());
+        log.info(text);
+    }
+
+    @Override
+    public void sendShelterApprovalConfirmation(String email, String shelterName) {
+        final String messageProperty = "shelter.mail.shelter.registration.confirmation";
+        String[] params = {shelterName};
+        final String text = messageSource.getMessage(messageProperty, params, Locale.getDefault());
+        log.info(text);
     }
 }

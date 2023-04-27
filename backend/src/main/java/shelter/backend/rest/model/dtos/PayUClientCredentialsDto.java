@@ -20,8 +20,6 @@ import shelter.backend.rest.model.entity.User;
 @Data
 public class PayUClientCredentialsDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String clientId;

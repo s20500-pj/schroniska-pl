@@ -29,7 +29,15 @@ public class DefaultShelterService implements ShelterService {
         if (shelter == null || !shelter.getUserType().equals(UserType.SHELTER)) {
             throw new EntityNotFoundException("Schronisko o podanym id nie istnieje");
         }
-        return userMapper.toDto(shelter);
+        User currentUser = getUser();
+        UserDto shelterDto = userMapper.toDto(shelter);
+        if (currentUser != null && currentUser.getUserType() == UserType.ADMIN) {
+            String iban = shelterEncryptor.decrypt(shelterDto.getIban());
+            shelterDto.setIban(iban);
+        } else {
+            shelterDto.setIban(null);
+        }
+        return shelterDto;
     }
 
     //fixme fix this weird searchParams everywhere in project
