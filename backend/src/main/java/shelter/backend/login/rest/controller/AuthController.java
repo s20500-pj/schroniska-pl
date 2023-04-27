@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import shelter.backend.configuration.security.CookieAuthenticationFilter;
 import shelter.backend.login.rest.dtos.AuthenticationResponseDto;
 import shelter.backend.login.service.AuthenticationService;
 import shelter.backend.rest.model.dtos.AuthenticationRequestDto;
@@ -48,14 +47,7 @@ public class AuthController {
     @GetMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
         SecurityContextHolder.clearContext();
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null)
-            for (Cookie cookie : cookies) {
-                cookie.setValue("");
-                cookie.setPath("/");
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
-            }
+        authService.clearCookies(request, response);
         return ResponseEntity.noContent().build();
     }
 }

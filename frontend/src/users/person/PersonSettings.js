@@ -42,10 +42,10 @@ function PersonSettings() {
     }, [id]);
 
 
-    const deleteUser = async (id) => {
+    const deleteUser = async (e) => {
         axios.defaults.withCredentials = true;
-        console.log(id);
-        await axios.delete(`http://localhost:8080/user/delete/${id}`);
+        console.log(user.id);
+        await axios.delete(`http://localhost:8080/user/delete/${user.id}`);
 
     }
 
