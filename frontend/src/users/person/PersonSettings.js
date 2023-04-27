@@ -3,12 +3,13 @@ import axios from "axios";
 import ShelterAnimalList from "../../animal/ShelterAnimalList";
 import {useParams} from "react-router-dom";
 import {Link, useNavigate} from "react-router-dom";
+import ShelterServerConstants from "../../util/ShelterServerConstants";
 /* eslint-disable */
 
 function PersonSettings() {
     axios.defaults.withCredentials = true;
     const {id} = useParams();
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState({});
     const [error, setError] = useState(null);
     const [post, setPost] = useState({
         id:id,
@@ -32,12 +33,13 @@ function PersonSettings() {
             .then((response) => {
                 console.log(response.data);
                 setUser(response.data);
+                setPost(response.data);
             })
             .catch((error) => {
                 console.error("Error fetching user data:", error);
                 setError(error);
             });
-    }, [id]);;
+    }, [id]);
 
 
     const deleteUser = async (id) => {
@@ -50,7 +52,12 @@ function PersonSettings() {
     function handleSubmit(e) {
         e.preventDefault();
         axios
-            .put(`http://localhost:8080/user/update`, {post})
+            .put(`http://localhost:8080/user/update`, JSON.stringify(post),
+                {
+                    headers: {
+                        'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
+                    }
+                })
             .then((response) => {
                 console.log(post);
                 console.log(response.data);
@@ -62,6 +69,7 @@ function PersonSettings() {
             });
     }
     const handleInput = (event) => {
+        console.log(event);
         setPost({...post, [event.target.name]: event.target.value});
     };
     return (
@@ -83,10 +91,10 @@ function PersonSettings() {
                                     <input
                                         type={"text"}
                                         className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                        placeholder="Podaj imię."
+                                        placeholder="dupa"
                                         name="firstName"
-                                        //value={post.firstName}
-                                        onClick={handleInput}
+                                        defaultValue={user.firstName}
+                                        onChange={handleInput}
                                     />
                                 </div>
                                 <div className="w-full md:w-1/2 px-3">
@@ -101,7 +109,8 @@ function PersonSettings() {
                                         placeholder="Podaj nazwisko."
                                         name="lastName"
                                         // value={post.lastName}
-                                        onChange={handleInput}
+                                        defaultValue={user.lastName}
+                                        onChange={(e) => handleInput(e)}
 
                                     />
                                 </div>
