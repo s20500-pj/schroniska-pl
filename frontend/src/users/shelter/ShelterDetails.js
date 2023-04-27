@@ -55,6 +55,9 @@ export default function ShelterDetails() {
                 if (!response.data.disabled) {
                     alert("Schronisko zatwierdzone. Email z potwierdzeniem został wysłany do schorniska");
                     setShelter(response.data)
+                }else {
+                    alert("Problem z zatwierdzeniem schroniska");
+                    console.log(response);
                 }
             })
             .catch(error => {
