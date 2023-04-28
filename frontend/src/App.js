@@ -33,6 +33,7 @@ import ShelterDetails from "./users/shelter/ShelterDetails";
 import MailConfirmationPage from "./origin/MailConfirmationPage";
 import PayUConfirmationPage from "./origin/PayUConfirmationPage";
 import UserActivityList from "./activity/UserActivityList";
+import ShelterActivityList from "./activity/ShelterActivityList";
 
 function App() {
     axios.defaults.withCredentials = true
@@ -80,6 +81,9 @@ function App() {
                         <Route exact path="/" element={<Home/>}/>}
                     {userType === "PERSON" ?
                         <Route exact path="/userActivityList" element={<UserActivityList/>}/> :
+                        <Route exact path="/" element={<Home/>}/>}
+                    {userType === "SHELTER" ?
+                        <Route exact path="/shelterActivityList" element={<ShelterActivityList/>}/> :
                         <Route exact path="/" element={<Home/>}/>}
                     {userType === "PERSON" ? <Route exact path="/personsettings" element={<PersonSettings/>}/> :
                         <Route exact path="/" element={<Home/>}/>}
