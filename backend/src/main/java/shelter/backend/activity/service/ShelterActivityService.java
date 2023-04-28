@@ -84,7 +84,7 @@ public class ShelterActivityService implements ActivityService {
     }
 
     private boolean readyForActivity(Animal animal, LocalDate activityDate) {
-        return hasFreeTime(animal, activityDate) && statusOk(animal);
+        return statusOk(animal) && hasFreeTime(animal, activityDate);
     }
 
     private boolean statusOk(Animal animal) {
@@ -100,7 +100,7 @@ public class ShelterActivityService implements ActivityService {
         if (animal.getActivities().stream()
                 .noneMatch(activity -> activity.getActivityTime().toLocalDate().isEqual(activityDate))) {
             log.info("Animal awaits for activity already. Animal: {}", animal);
-            throw new ActivityException("Termin jest już zajęty");
+            throw new ActivityException("Termin jest już zajęty. Proszę wybrać inny");
         }
         return true;
     }

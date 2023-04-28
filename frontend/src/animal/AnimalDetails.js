@@ -1,24 +1,28 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
-import {AGE_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS, ANIMAL_STATUS_OPTIONS} from "../util/Enums";
-import icon from  '../dog-cat-icon.jpeg';
+import {AGE_OPTIONS, ANIMAL_STATUS_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "../util/Enums";
+import icon from '../dog-cat-icon.jpeg';
 
 export default function AnimalDetails() {
     axios.defaults.withCredentials = true;
     const {id} = useParams();
     const [animal, setAnimal] = useState(null);
     const [reload, setReload] = useState(false);
+    const [activityFormVisible, setActivityFormVisible] = useState(false);
+    const [activityFormDate, setActivityFormDate] = useState(null);
+    const [activityResponseMessage, setActivityResponseMessage] = useState(null);
 
     const placeholderImage = icon;
     const onImageError = (e) => {
         e.target.src = placeholderImage
     }
+
     function canAdopt(animal) {
         const userType = localStorage.getItem("userType");
         const userId = localStorage.getItem("userId");
 
-        if (userType !== "PERSON") {
+        if (!isPerson(userType)) {
             return false;
         }
 
@@ -32,6 +36,25 @@ export default function AnimalDetails() {
         return !hasValidRealAdoption && animal.animalStatus === 'READY_FOR_ADOPTION';
     }
 
+    const entitledForActivity = (animal) => {
+
+        const userType = localStorage.getItem("userType");
+        const userId = localStorage.getItem("userId");
+
+        if (!isPerson(userType)) {
+            return false;
+        }
+
+        return animal.animalStatus !== 'UNKNOWN' &&
+            animal.animalStatus !== 'ADOPTED' &&
+            animal.animalStatus !== 'DEAD';
+
+    }
+
+    const isPerson = (userType) => {
+        return userType === "PERSON";
+    }
+
     function handleAdoption(animalId) {
         axios
             .post(`http://localhost:8080/adoption/real/${animalId}`)
@@ -43,6 +66,14 @@ export default function AnimalDetails() {
                 console.error("Error sending adoption request:", error);
                 alert("Error sending adoption request. Please try again.");
             });
+    }
+
+    // const handleActivity = (animalId) => {
+    //
+    // }
+
+    const showActivityForm = () => {
+        setActivityFormVisible(true);
     }
 
     useEffect(() => {
@@ -67,7 +98,8 @@ export default function AnimalDetails() {
                                 <p className=' text-5xl font-bold text-orange pb-5'>{animal.name}</p>
                                 <img src={'/' + animal.imagePath ? '/' + animal.imagePath : placeholderImage}
                                      onError={onImageError}
-                                     alt="Zdjęcie zwierzaka" className="shadow-xl border-2 border-orange rounded-xl object-cover h-[350px] w-[500px]" />
+                                     alt="Zdjęcie zwierzaka"
+                                     className="shadow-xl border-2 border-orange rounded-xl object-cover h-[350px] w-[500px]"/>
                             </div>
                             <div className='flex 1/2 lg:pt-24 pb-5 md:justify-center md:p-4'>
                                 <div className=''>
@@ -75,7 +107,8 @@ export default function AnimalDetails() {
                                     <p className='font-bold pt-2'>Płeć: </p><p>{SEX_OPTIONS[animal.sex]}</p>
                                     <p className='font-bold pt-2'>Wiek: </p><p>{AGE_OPTIONS[animal.age]}</p>
                                     <p className='font-bold pt-2'>Data urodzenia: </p><p>{animal.birthDate}</p>
-                                    <p className='font-bold pt-2'>Status:</p><p>{ANIMAL_STATUS_OPTIONS[animal.animalStatus]}</p>
+                                    <p className='font-bold pt-2'>Status:</p>
+                                    <p>{ANIMAL_STATUS_OPTIONS[animal.animalStatus]}</p>
                                     <p className='font-bold pt-2'>Dodatkowe informacje:</p><p> {animal.information}</p>
                                 </div>
                                 <div>
@@ -83,13 +116,15 @@ export default function AnimalDetails() {
                                     <p className='font-bold pt-2'>
                                         Adres schroniska: </p>
                                     <p>{animal.shelter.address.street}{" "}
-                                    {animal.shelter.address.buildingNumber}{" "}
-                                    {animal.shelter.address.flatNumber}{" "}
-                                    {animal.shelter.address.postalCode}{" "}
-                                    {animal.shelter.address.city}
+                                        {animal.shelter.address.buildingNumber}{" "}
+                                        {animal.shelter.address.flatNumber}{" "}
+                                        {animal.shelter.address.postalCode}{" "}
+                                        {animal.shelter.address.city}
                                     </p>
-                                    <p className='font-bold pt-2'>Numer KRS: </p><p>{animal.shelter.address.krsNumber}</p>
-                                    <p className='font-bold pt-2'>Telefon do schroniska:</p><p> {animal.shelter.address.phone}</p>
+                                    <p className='font-bold pt-2'>Numer KRS: </p>
+                                    <p>{animal.shelter.address.krsNumber}</p>
+                                    <p className='font-bold pt-2'>Telefon do schroniska:</p>
+                                    <p> {animal.shelter.address.phone}</p>
                                     <div className='flex justify-end py-10'>
                                         {animal && canAdopt(animal) && (
                                             <button
@@ -99,6 +134,29 @@ export default function AnimalDetails() {
                                                 Adoptuj
                                             </button>
                                         )}
+                                        {animal && entitledForActivity(animal) && (
+                                            <button
+                                                className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded"
+                                                onClick={showActivityForm}
+                                            >
+                                                Wolontariat
+                                            </button>
+                                        )}
+                                        {activityFormVisible && (
+                                            // <form onSubmit={handleActivity}>
+                                            <form>
+                                                <p>Wolontariat polega na dobrowolnym zajmowaniu się zwierzakiem w
+                                                    wybranym dniu.
+                                                    Jest stała godzina przeznaczona na wolontariat -> 16:00. Zarezerwuj
+                                                    dzień ze swoim pupilem</p>
+                                                <label>
+                                                    Wybierz dzień:
+                                                    <input type="date" onChange={(e) => setActivityFormDate(e.target.value)}/>
+                                                </label>
+                                                <button type="submit">Zarezerwuj termin</button>
+                                            </form>
+                                        )}
+                                        {activityResponseMessage && <div>{activityResponseMessage}</div>}
                                     </div>
 
                                 </div>

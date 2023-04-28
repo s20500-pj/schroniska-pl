@@ -65,13 +65,13 @@ public class ShelterGlobalExceptionHandler {
     @ExceptionHandler(AdoptionException.class)
     public ResponseEntity<String> onAdoptionException(AdoptionException e) {
         log.info("Exception occurred during adoption process. Exception: ", e);
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ActivityException.class)
     public ResponseEntity<String> onActivityException(ActivityException e) {
         log.info("Exception occurred during activity process. Exception: ", e);
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
