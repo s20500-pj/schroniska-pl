@@ -9,7 +9,7 @@ const navigation = [
     {name: 'Lista zwierząt', href: '/animalList', current: false},
     {name: 'Adopcja', href: '/userRealAdoptionList', current: false},
     {name: 'Adopcja wirtualna', href: '/userVirtualAdoptionList', current: false},
-    {name: 'Wolontariat', href: '#', current: false},
+    {name: 'Wolontariat', href: '/userActivityList', current: false},
     {name: 'Moje dane', href: '/personsettings', current: false},
     {name: 'Lista schronisk', href: '/shelterList', current: false}
 

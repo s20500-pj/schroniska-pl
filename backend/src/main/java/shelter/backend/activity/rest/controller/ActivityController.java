@@ -39,7 +39,7 @@ public class ActivityController {
 
     @PreAuthorize("hasRole('SHELTER') or hasRole('USER')")
     @DeleteMapping("/delete/{activityId}")
-    ResponseEntity<Void> registerActivity(@PathVariable Long activityId) {
+    ResponseEntity<Void> deleteActivity(@PathVariable Long activityId) {
         activityService.deleteActivity(activityId);
         return ResponseEntity.noContent().build();
     }
