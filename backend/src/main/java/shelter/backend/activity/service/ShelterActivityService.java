@@ -80,16 +80,30 @@ public class ShelterActivityService implements ActivityService {
         activity.addAnimal(animal);
         activityRepository.save(activity);
         animalRepository.save(animal);
+        log.info("Activity saved. AnimalId:{}, AnimalName:{}, Date:{}", animal.getId(), animal.getName(), activityRegister.getActivityDate());
         return activity;
     }
 
     private boolean readyForActivity(Animal animal, LocalDate activityDate) {
-        return statusOk(animal) && hasFreeTime(animal, activityDate);
+        return dateTimeIsValid(animal, activityDate) && statusOk(animal) && hasFreeTime(animal, activityDate);
+    }
+
+    private boolean dateTimeIsValid(Animal animal, LocalDate activityDate) {
+        LocalTime timeNow = LocalTime.now();
+        LocalDateTime todayAtDefaultTime = LocalDateTime.of(LocalDate.now(), defaultTimeOfActivity);
+        LocalDateTime registerDate = LocalDateTime.of(activityDate, timeNow);
+        if (!registerDate.isAfter(todayAtDefaultTime)) {
+            log.info("Animal can't be registered for activity. Animal: {}. Time is before today: {}", animal.getId(), registerDate);
+            throw new ActivityException("Wybrany termin jest niepoprawny");
+        }
+        return true;
     }
 
     private boolean statusOk(Animal animal) {
-        if (animal.getAnimalStatus().equals(AnimalStatus.NEEDS_MEDICAL_TREATMENT) ||
-                animal.getAnimalStatus().equals(AnimalStatus.READY_FOR_ADOPTION)) {
+        if (animal.getAnimalStatus().equals(AnimalStatus.UNKNOWN) ||
+                animal.getAnimalStatus().equals(AnimalStatus.ADOPTED) ||
+                animal.getAnimalStatus().equals(AnimalStatus.DEAD) ||
+                animal.getAnimalStatus().equals(AnimalStatus.DELETED)) {
             log.info("Animal can't be registered for activity. Animal: {}. Status of Animal: {}", animal, animal.getAnimalStatus());
             throw new ActivityException("Nie można zarezerwować terminu z powodu statusu zwierzaka: " + animal.getAnimalStatus());
         }
@@ -98,7 +112,7 @@ public class ShelterActivityService implements ActivityService {
 
     private boolean hasFreeTime(Animal animal, LocalDate activityDate) {
         if (animal.getActivities().stream()
-                .noneMatch(activity -> activity.getActivityTime().toLocalDate().isEqual(activityDate))) {
+                .anyMatch(activity -> activity.getActivityTime().toLocalDate().isEqual(activityDate))) {
             log.info("Animal awaits for activity already. Animal: {}", animal);
             throw new ActivityException("Termin jest już zajęty. Proszę wybrać inny");
         }

@@ -3,6 +3,8 @@ import axios from "axios";
 import {useParams} from "react-router-dom";
 import {AGE_OPTIONS, ANIMAL_STATUS_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "../util/Enums";
 import icon from '../dog-cat-icon.jpeg';
+import ShelterServerConstants from "../util/ShelterServerConstants";
+import Messages from "../util/Messages";
 
 export default function AnimalDetails() {
     axios.defaults.withCredentials = true;
@@ -10,7 +12,7 @@ export default function AnimalDetails() {
     const [animal, setAnimal] = useState(null);
     const [reload, setReload] = useState(false);
     const [activityFormVisible, setActivityFormVisible] = useState(false);
-    const [activityFormDate, setActivityFormDate] = useState(null);
+    const [activityDate, setActivityDate] = useState(null);
     const [activityResponseMessage, setActivityResponseMessage] = useState(null);
 
     const placeholderImage = icon;
@@ -39,15 +41,24 @@ export default function AnimalDetails() {
     const entitledForActivity = (animal) => {
 
         const userType = localStorage.getItem("userType");
-        const userId = localStorage.getItem("userId");
 
         if (!isPerson(userType)) {
             return false;
         }
 
+        const today = new Date();
+        const todayNotFree = animal.activities.some(
+            activity => {
+                const localDateTimeString = activity.activityTime;
+                const activityDate = new Date(localDateTimeString);
+                return today.getTime() === activityDate.getTime()
+            }
+        )
+
         return animal.animalStatus !== 'UNKNOWN' &&
             animal.animalStatus !== 'ADOPTED' &&
-            animal.animalStatus !== 'DEAD';
+            animal.animalStatus !== 'DEAD' &&
+            !todayNotFree;
 
     }
 
@@ -56,6 +67,7 @@ export default function AnimalDetails() {
     }
 
     function handleAdoption(animalId) {
+        setActivityResponseMessage(false);
         axios
             .post(`http://localhost:8080/adoption/real/${animalId}`)
             .then((response) => {
@@ -68,11 +80,34 @@ export default function AnimalDetails() {
             });
     }
 
-    // const handleActivity = (animalId) => {
-    //
-    // }
+    const handleActivity = (e) => {
+        e.preventDefault();
+        if (activityDate === null){
+            alert("Proszę wybrać datę");
+            return;
+        }
+        const activityRegisterReq = {
+            animalId: animal.id,
+            activityDate: activityDate,
+            activityType: "WALKING"
+        }
+        axios.post(ShelterServerConstants.ADDRESS_SERVER_LOCAL + '/activity/register', JSON.stringify(activityRegisterReq),
+            {
+                headers: {
+                    "Content-Type": ShelterServerConstants.HEADER_APPLICATION_JSON
+                }
+            })
+            .then((response) => {
+                setActivityFormVisible(false);
+                setActivityResponseMessage(Messages.ACTIVITY_SUCCESS_REGISTRATION + activityDate + ShelterServerConstants.ACTIVITY_TIME);
+            })
+            .catch((error) => {
+                alert(error.response.data);
+            });
+    }
 
     const showActivityForm = () => {
+        setActivityResponseMessage(false);
         setActivityFormVisible(true);
     }
 
@@ -83,6 +118,14 @@ export default function AnimalDetails() {
             .then((response) => setAnimal(response.data))
             .catch((error) => console.error("Error fetching animal data:", error));
     }, [id, reload]);
+
+    const now = new Date();
+    if (now.getHours() >= 14) {
+        now.setDate(now.getDate() + 1);
+    }
+    const minDate = now.toISOString().split('T')[0];
+    const today = new Date();
+    const maxDate = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate() + 1).toISOString().split('T')[0];
 
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
@@ -143,15 +186,12 @@ export default function AnimalDetails() {
                                             </button>
                                         )}
                                         {activityFormVisible && (
-                                            // <form onSubmit={handleActivity}>
-                                            <form>
-                                                <p>Wolontariat polega na dobrowolnym zajmowaniu się zwierzakiem w
-                                                    wybranym dniu.
-                                                    Jest stała godzina przeznaczona na wolontariat -> 16:00. Zarezerwuj
-                                                    dzień ze swoim pupilem</p>
+                                            <form onSubmit={handleActivity}>
+                                                <p>{Messages.ACTIVITY_INFORMATION}</p>
                                                 <label>
                                                     Wybierz dzień:
-                                                    <input type="date" onChange={(e) => setActivityFormDate(e.target.value)}/>
+                                                    <input type="date" min={minDate} max={maxDate}
+                                                           onChange={(e) => setActivityDate(e.target.value)}/>
                                                 </label>
                                                 <button type="submit">Zarezerwuj termin</button>
                                             </form>
