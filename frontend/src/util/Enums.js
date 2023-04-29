@@ -50,3 +50,8 @@ export const SHELTER_APPROVAL_STATUS_OPTIONS = {
     COMPLETED: "zatwierdzony"
 };
 
+export const ACTIVITY_TYPE_OPTIONS = {
+    WALKING: "Spacerowanie"
+};
+
+

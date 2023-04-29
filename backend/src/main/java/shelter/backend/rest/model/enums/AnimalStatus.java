@@ -6,5 +6,6 @@ public enum AnimalStatus {
     READY_FOR_ADOPTION,
     ADOPTED,
     DEAD,
-    DELETED
+    DELETED,
+    VIRTUAL_ADOPTED
 }

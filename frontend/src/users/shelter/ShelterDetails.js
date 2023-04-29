@@ -104,7 +104,7 @@ export default function ShelterDetails() {
                                     </div>
                                 </div>
                             </div>
-                            {shelter.disabled && shelter.approvalStatus !== SHELTER_APPROVAL_STATUS_OPTIONS.COMPLETED && userType === "ADMIN" ? (
+                            {shelter.disabled && shelter.approvalStatus !== SHELTER_APPROVAL_STATUS_OPTIONS.COMPLETED && userType === "ADMIN" && (
                                 !showForm ? (
                                     <button className="bg-orange text-white font-bold py-3 mt-3 px-4 rounded"
                                             onClick={handleAproveShelter}>Zatwierdź schronisko</button>
@@ -153,7 +153,7 @@ export default function ShelterDetails() {
                                             </button>
                                         </div>
                                     </form>
-                                )) : null}
+                                ))}
                         </>
                     ) : (
                         <p>Ładowanie danych schroniska...</p>

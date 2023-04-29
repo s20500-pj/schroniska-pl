@@ -10,7 +10,7 @@ const navigation = [
     {name: 'Dodaj zwierzę', href: '/addAnimal', current: false},
     {name: 'Adopcja', href: '/shelterRealAdoptionList', current: false},
     {name: 'Adopcja wirtualna', href: '/shelterVirtualAdoptionList', current: false},
-    {name: 'Wolontariat', href: '#', current: false},
+    {name: 'Wolontariat', href: '/shelterActivityList', current: false},
     {name: 'Lista schronisk', href: '/shelterList', current: false}
 ]
 

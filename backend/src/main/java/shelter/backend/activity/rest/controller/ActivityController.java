@@ -1,5 +1,6 @@
 package shelter.backend.activity.rest.controller;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,7 +39,7 @@ public class ActivityController {
 
     @PreAuthorize("hasRole('SHELTER') or hasRole('USER')")
     @DeleteMapping("/delete/{activityId}")
-    ResponseEntity<Void> registerActivity(@PathVariable Long activityId) {
+    ResponseEntity<Void> deleteActivity(@PathVariable Long activityId) {
         activityService.deleteActivity(activityId);
         return ResponseEntity.noContent().build();
     }
