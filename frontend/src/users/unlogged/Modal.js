@@ -6,7 +6,7 @@ function Modal({setOpenModal}, navigate) {
     return (<>
             <div
                 className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50
-                outline-none focus:outline-none">
+                outline-none focus:outline-none font-display">
                 <div className="relative w-auto my-6 mx-auto max-w-3xl">
                     <div
                         className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
@@ -26,8 +26,7 @@ function Modal({setOpenModal}, navigate) {
                         </div>
                         <div className="relative p-6 flex-auto">
                             <p className="my-4 text-orange text-lg leading-relaxed">
-                                Rejestracja udana, dziękujemy.
-                            </p>
+                                Rejestracja pomyślna. Dziękujemy za rejestrację. </p>
                         </div>
                         <div
                             className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
