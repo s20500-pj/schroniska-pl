@@ -88,7 +88,7 @@ function ShelterRealAdoptionList() {
                         headers: {
                             'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
                         }
-                    } );
+                    });
                 setData(result.data);
             } catch (error) {
                 console.error(error);
@@ -103,16 +103,20 @@ function ShelterRealAdoptionList() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const result = await axios.post(
-            "http://localhost:8080/adoption/getAdoptions",
-            JSON.stringify(Object.fromEntries(adoptionMap)), {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
+        try {
+            const result = await axios.post(
+                ShelterServerConstants.ADDRESS_SERVER_LOCAL + "/adoption/getAdoptions",
+                JSON.stringify(Object.fromEntries(adoptionMap)), {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
+                    }
                 }
-            }
-        );
-        setData(result.data);
+            );
+            setData(result.data);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleClear = () => {

@@ -9,4 +9,5 @@ public class FieldNameConstants {
     public static final String PASSWORD = "Hasło";
     public static final String USER_TYPE = "Typ użytkownika";
     public static final String KRS_NUMBER = "Numer KRS";
+    public static final String IBAN = "Numer konta IBAN";
 }

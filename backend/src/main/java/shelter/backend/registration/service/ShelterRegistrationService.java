@@ -1,22 +1,28 @@
 package shelter.backend.registration.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import shelter.backend.email.EmailService;
+import shelter.backend.rest.model.dtos.PayUClientCredentialsDto;
 import shelter.backend.rest.model.dtos.UserDto;
+import shelter.backend.rest.model.entity.PayUClientCredentials;
 import shelter.backend.rest.model.entity.Role;
 import shelter.backend.rest.model.entity.Token;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.ApprovalStatus;
 import shelter.backend.rest.model.enums.ERole;
 import shelter.backend.rest.model.enums.UserType;
+import shelter.backend.rest.model.mapper.PayUClientCredentialsMapper;
 import shelter.backend.rest.model.mapper.UserMapper;
+import shelter.backend.storage.repository.PayUClientCredentialsRepository;
 import shelter.backend.storage.repository.RoleRepository;
 import shelter.backend.storage.repository.UserRepository;
 import shelter.backend.utils.exception.MessageNotSendException;
@@ -36,16 +42,18 @@ public class ShelterRegistrationService implements RegistrationService {
     private final EmailService shelterEmailService;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PayUClientCredentialsRepository payUClientCredentialsRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final ApprovalProvider approvalProvider;
     private final UserValidator userValidator;
     private final UserMapper userMapper;
+    private final PayUClientCredentialsMapper payUClientCredentialsMapper;
+    private final StringEncryptor shelterEncryptor;
     @Value("${shelter.redis.token.expiration.minutes}")
     private String expTime;
 
     public UserDto register(UserDto userDto) {
-        //FIXME add IBAN number to SHELTER registration! needed to register in PayU. add it to User or to PayUClientCredentials
         log.debug("Registration started for username: {}", userDto.getEmail());
         userValidator.throwIfNotValid(userDto);
         User user = persistTheUser(userDto);
@@ -114,27 +122,24 @@ public class ShelterRegistrationService implements RegistrationService {
         }
     }
 
+    @Transactional
     @Override
-    //FIXME change this. enebale only one shelter at once. change param to request containing clientId, clientSecret, merchantPosId, shelterId -> save this to DB (entity -> PayUClientCredentials). return UserDto.
-    //FIXME add update user
-    //FIXME add delete user
-    public List<UserDto> enableShelterAccounts(List<Long> shelterIds) {
-        log.debug("[enableShelterAccounts] :: list of ids: {}", shelterIds);
-        List<UserDto> enabledShelters = new ArrayList<>();
-        shelterIds.forEach(id -> {
-            Optional<User> userOptional = userRepository.findById(id);
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                if (user.isDisabled()) {
-                    user.setDisabled(false);
-                    userRepository.save(user);
-                    enabledShelters.add(userMapper.toDto(user));
-                    log.info("Shelter: {}, for username: {} accepted by admin", user.getShelterName(), user.getEmail());
-                }
-                log.debug("Shelter for username {} already enabled", user.getEmail());
-            }
-        });
-        return enabledShelters;
+    public UserDto enableShelterAccounts(PayUClientCredentialsDto request) {
+        log.debug("[enableShelterAccounts] :: ShelterId  {}", request.getShelterId());
+        User user = userRepository.findById(request.getShelterId())
+                .orElseThrow(() -> new EntityNotFoundException("Schronisko o podanym ID nie istnieje"));
+        if (user.isDisabled()) {
+            PayUClientCredentials payUClientCredentials = payUClientCredentialsMapper.toEntity(request);
+            payUClientCredentialsRepository.save(payUClientCredentials);
+            user.setDisabled(false);
+            user.setIban(null);
+            user.setApprovalStatus(ApprovalStatus.COMPLETED);
+            userRepository.save(user);
+            log.info("Shelter: {}, for username: {} accepted by admin", user.getShelterName(), user.getEmail());
+        } else {
+            log.debug("Shelter for username {} already enabled", user.getEmail());
+        }
+        return userMapper.toDto(user);
     }
 
     private void removeExpTokenAndAssocUser(Token token, String username) {
@@ -150,6 +155,7 @@ public class ShelterRegistrationService implements RegistrationService {
     private User persistTheUser(UserDto userDto) {
         User newUser = userMapper.toEntity(userDto);
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        newUser.setIban(shelterEncryptor.encrypt(userDto.getIban()));
         newUser.setDisabled(true);
         ERole roleName;
         if (isShelter(newUser)) {

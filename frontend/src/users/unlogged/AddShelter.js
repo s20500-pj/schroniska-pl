@@ -12,6 +12,7 @@ export default function AddShelter() {
         shelterName: "",
         password: "",
         userType: "SHELTER",
+        iban: "",
         address: {
             street: "",
             city: "",
@@ -43,6 +44,7 @@ export default function AddShelter() {
             await axios.post("http://localhost:8080/registration/register", shelter);
             setShowPopup(true);
         } catch (error) {
+            console.log(error)
             setError(error.response?.data?.message || "Something went wrong");
         }
     };
@@ -51,6 +53,7 @@ export default function AddShelter() {
         email,
         password,
         shelterName,
+        iban,
         street,
         city,
         postalCode,
@@ -64,7 +67,7 @@ export default function AddShelter() {
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
             <div className="px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Zarejestruj schronisko</h2>
-                {showPopup && <SuccessPopup message="Rejestracja pomyślna. Dziękujemy za rejestrację." />}
+                {showPopup && <SuccessPopup message="Rejestracja pomyślna. Dziękujemy za rejestrację."/>}
                 <form onSubmit={(e) => onSubmit(e)} className="w-full max-w-lg m-auto py-10">
                     <div className="flex flex-wrap">
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">
@@ -108,6 +111,21 @@ export default function AddShelter() {
                                 placeholder="Wpisz hasło."
                                 name="password"
                                 value={password}
+                                onChange={(e) => onInputChange(e)}
+                                required
+                            />
+                        </div>
+                        <div className="w-full md:w-1/2 px-3">
+                            <label htmlFor="IBAN"
+                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                Numer konta bankowego (IBAN):
+                            </label>
+                            <input
+                                type={"text"}
+                                className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                placeholder="Wpisz numer konta."
+                                name="iban"
+                                value={iban}
                                 onChange={(e) => onInputChange(e)}
                                 required
                             />
@@ -218,7 +236,7 @@ export default function AddShelter() {
                             />
                         </div>
                         <div className="py-3 px-4">
-                            <input id="default-radio-1" type="radio" value="" name="default-radio"
+                            <input id="default-radio-1" type="radio" value="" name="default-radio" required
                                    className="w-4 h-4 text-orange bg-orange border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                             <label htmlFor="default-radio-1"
                                    className="ml-2 text-sm font-medium text-orange ">
@@ -245,3 +263,4 @@ export default function AddShelter() {
         </div>
     )
 }
+

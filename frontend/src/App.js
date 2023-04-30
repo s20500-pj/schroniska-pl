@@ -30,6 +30,8 @@ import AdoptionDetails from "./adoption/AdoptionDetails";
 import ShelterList from "./lists/ShelterlList";
 import UsersList from "./lists/UsersList";
 import ShelterDetails from "./users/shelter/ShelterDetails";
+import MailConfirmationPage from "./origin/MailConfirmationPage";
+import PayUConfirmationPage from "./origin/PayUConfirmationPage";
 
 
 function App() {
@@ -59,6 +61,11 @@ function App() {
                     <Route exact path="/animalDetails/:id" element={<AnimalDetails />} />
                     <Route exact path="/shelterList" element={<ShelterList />} />
                     <Route exact path="/userList" element={<UsersList />} />
+                    {userType == null ?
+                        <Route exact path="/confirmation" element={<MailConfirmationPage/>}/> :
+                        <Route exact path="/" element={<Home/>}/>}
+                    {userType === "PERSON" ? <Route exact path="/payment" element={<PayUConfirmationPage/>}/> :
+                        <Route exact path="/" element={<Home/>}/>}
 
                     {userType === "SHELTER" ? <Route exact path="/addAnimal" element={<AddAnimal/>}/> : <Route exact path="/" element={<Home/>}/>}
                     {userType === "SHELTER" ? <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/> : <Route exact path="/" element={<Home/>}/>}

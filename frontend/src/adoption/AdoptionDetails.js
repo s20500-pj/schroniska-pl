@@ -7,7 +7,7 @@ import {
     AGE_OPTIONS,
     SEX_OPTIONS,
     SPECIES_OPTIONS,
-    STATUS_OPTIONS
+    ANIMAL_STATUS_OPTIONS
 } from "../util/Enums";
 
 export default function AdoptionDetails() {
@@ -137,7 +137,7 @@ export default function AdoptionDetails() {
                             <p className='font-bold pt-2'>Płeć: </p><p>{SEX_OPTIONS[adoption.animal.sex]}</p>
                             <p className='font-bold pt-2'>Wiek:</p><p> {AGE_OPTIONS[adoption.animal.age]}</p>
                             <p className='font-bold pt-2'>Data urodzenia: </p><p>{adoption.animal.birthDate}</p>
-                            <p className='font-bold pt-2'>Status:</p><p> {STATUS_OPTIONS[adoption.animal.animalStatus]}</p>
+                            <p className='font-bold pt-2'>Status:</p><p> {ANIMAL_STATUS_OPTIONS[adoption.animal.animalStatus]}</p>
                             <p className='font-bold pt-2'>Dodatkowe informacje:</p><p> {adoption.animal.information}</p>
                         </div>
                         <div className='ml-10'>

@@ -31,6 +31,7 @@ public class UserController {
     @GetMapping
     ResponseEntity<UserDto> getUserById() {
         return ResponseEntity.ok(userService.getUserById());
+
     }
 
     @PreAuthorize("hasRole('ADMIN')")

@@ -1,5 +1,6 @@
 package shelter.backend.registration.service;
 
+import shelter.backend.rest.model.dtos.PayUClientCredentialsDto;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.User;
 
@@ -12,5 +13,5 @@ public interface RegistrationService {
 
     void checkApprovalStatus(User User);
 
-    List<UserDto> enableShelterAccounts(List<Long> shelterIds);
+    UserDto enableShelterAccounts(PayUClientCredentialsDto PayUClientCredentialsDto);
 }

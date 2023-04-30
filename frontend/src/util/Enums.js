@@ -16,14 +16,6 @@ export const AGE_OPTIONS = {
     ELDER: "stary"
 };
 
-export const ANIMAL_STATUS_OPTIONS = {
-    UNKNOWN: "nieznany",
-    NEEDS_MEDICAL_TREATMENT: "potrzebuje opieki medycznej",
-    READY_FOR_ADOPTION: "gotowy do adopcji",
-    ADOPTED: "zaadoptowany",
-    DEAD: "martwy"
-};
-
 export const ADOPTION_STATUS_OPTIONS = {
     REQUEST_REVIEW: "Zgłoszenie jest rozpatrywane",
     REQUIRES_MANUAL_INVITATION: "Oczekuje na kontakt ze schroniska",
@@ -41,7 +33,7 @@ export const ADOPTION_TYPE_OPTIONS = {
     REAL: "Prawdziwa",
 };
 
-export const STATUS_OPTIONS = {
+export const ANIMAL_STATUS_OPTIONS = {
     UNKNOWN: "nieznany",
     NEEDS_MEDICAL_TREATMENT: "potrzebuje opieki medycznej",
     READY_FOR_ADOPTION: "gotowy do adopcji",
@@ -49,3 +41,12 @@ export const STATUS_OPTIONS = {
     DEAD: "martwy",
     DELETED: "usunięty"
 };
+
+export const SHELTER_APPROVAL_STATUS_OPTIONS = {
+    EMAIL_NOT_CONFIRMED: "email niepotwierdzony",
+    PENDING: "KRS - weryfikacja", //waiting for KRS check
+    REJECTED: "KRS - odrzucony", //KRS rejected
+    CONFIRMED: "KRS - potwierdzony",//KRS confirmed
+    COMPLETED: "zatwierdzony"
+};
+

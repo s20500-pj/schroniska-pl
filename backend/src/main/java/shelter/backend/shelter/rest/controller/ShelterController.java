@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shelter.backend.registration.service.RegistrationService;
+import shelter.backend.rest.model.dtos.PayUClientCredentialsDto;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.shelter.service.ShelterService;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -33,15 +35,15 @@ public class ShelterController {
         return ResponseEntity.ok(shelterService.getShelterById(id));
     }
 
-    @PostMapping(value = "/searchShelters", consumes = MediaType.TEXT_PLAIN_VALUE)
-    ResponseEntity<List<UserDto>> searchShelters(@RequestBody String searchParams) {
+    @PostMapping(value = "/searchShelters", consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<List<UserDto>> searchShelters(@RequestBody Map<String, String> searchParams) {
         return ResponseEntity.ok(shelterService.searchShelters(searchParams));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/enable", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<List<UserDto>> enableShelters(@RequestBody @Valid List<Long> shelterIds) {
-        return ResponseEntity.ok(registrationService.enableShelterAccounts(shelterIds));
+    ResponseEntity<UserDto> enableShelters(@RequestBody PayUClientCredentialsDto payUClientCredentialsDto) {
+        return ResponseEntity.ok(registrationService.enableShelterAccounts(payUClientCredentialsDto));
     }
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
