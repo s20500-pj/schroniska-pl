@@ -2,8 +2,10 @@ import React, {useState} from "react";
 import axios from "axios";
 import SuccessPopup from "./SuccessPopup";
 import {Link, useNavigate} from "react-router-dom";
+import Modal from "./Modal";
 export default function AddUser() {
     const [error, setError] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
     let navigate = useNavigate();
     const [user, setUser] = useState({
         firstName: "",
@@ -21,7 +23,6 @@ export default function AddUser() {
         },
     });
 
-    const [showPopup, setShowPopup] = useState(false);
 
     const onInputChange = (e) => {
         setUser({...user, [e.target.name]: e.target.value});
@@ -43,7 +44,7 @@ export default function AddUser() {
         try {
             e.preventDefault();
             await axios.post("http://localhost:8080/registration/register", user);
-            setShowPopup(true);
+            setModalOpen(true);
         } catch (error) {
             setError(error.response?.data?.message || "Something went wrong");
         }
@@ -55,7 +56,7 @@ export default function AddUser() {
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
             <div className="px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Załóż konto</h2>
-                {showPopup && <SuccessPopup message="Rejestracja pomyślna. Dziękujemy za rejestrację." />}
+                {modalOpen && <Modal setOpenModal={setModalOpen} />}
                 <form onSubmit={(e) => onSubmit(e)} className="w-full max-w-lg m-auto py-10">
                     <div className="flex flex-wrap">
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">
@@ -220,7 +221,11 @@ export default function AddUser() {
                             className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                         <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Zarejestruj</p>
                     </button>
-                    <button onClick={handleCancelClick} type="submit"
+                    <button onClick={handleCancelClick}
+                            onClick={() => {
+                                setModalOpen(true);
+                            }}
+                            type="submit"
                             className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                         <a
                             href="/"
@@ -228,6 +233,7 @@ export default function AddUser() {
                         >
                             Anuluj </a>
                     </button>
+
                 </form>
             </div>
         </div>

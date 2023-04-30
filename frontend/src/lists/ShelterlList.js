@@ -45,7 +45,7 @@ const columns = [
 ];
 
 function ShelterList() {
-    axios.defaults.withCredentials = true
+    axios.defaults.withCredentials = true;
     const [error, setError] = useState("");
     const [data, setData] = useState([]);
     const [shelter, setShelter] = useState({

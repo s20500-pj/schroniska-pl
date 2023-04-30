@@ -31,9 +31,6 @@ import ShelterList from "./lists/ShelterlList";
 import UsersList from "./lists/UsersList";
 import ShelterDetails from "./users/shelter/ShelterDetails";
 
-function Update() {
-    return null;
-}
 
 function App() {
     axios.defaults.withCredentials = true
@@ -71,7 +68,6 @@ function App() {
                     {userType === "SHELTER" ? <Route exact path="/shelterVirtualAdoptionList" element={<ShelterVirtualAdoptionList/>}/> : <Route exact path="/" element={<Home/>}/>}
                     {userType === "PERSON" ? <Route exact path="/personsettings" element={<PersonSettings/>}/> : <Route exact path="/" element={<Home/>}/>}
                     {userType === "SHELTER" ? <Route exact path="/adoptionDetails/:id" element={<AdoptionDetails/>}/> : <Route exact path="/" element={<Home/>}/>}
-                    {userType === "PERSON" ? <Route exact path="/update" element={<Update/>}/> : <Route exact path="/" element={<Home/>}/>}
                 </Routes>
             </Router>
             <Footer/>

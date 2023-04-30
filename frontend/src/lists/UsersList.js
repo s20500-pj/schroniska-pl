@@ -2,6 +2,7 @@ import axios from "axios";
 import React, {useState, useEffect, useMemo} from "react";
 import {Link, useParams} from "react-router-dom";
 import Table from "../util/Table";
+import Modal from "../users/unlogged/Modal";
 
 function UsersList() {
     const columns = useMemo (
@@ -33,9 +34,13 @@ function UsersList() {
                         Header: "Akcja",
                         Cell: ({value}) => {
                             return (
+
                                 <button
                                     type="button"
                                     onClick={handleDelete}
+                                    onClick={() => {
+                                        setModalOpen(true);
+                                    }}
                                     className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown"
                                 >
                                     <p className="py-15 justify-center text-base text-center text-brown font-medium">
@@ -51,6 +56,7 @@ function UsersList() {
     );
 
     axios.defaults.withCredentials = true
+    const [modalOpen, setModalOpen] = useState(false);
     const [error, setError] = useState("");
     const [data, setData] = useState([]);
     const [user, setUser] = useState({
@@ -123,6 +129,7 @@ function UsersList() {
         console.log(user.id);
         await axios.delete(`http://localhost:8080/user/delete/${id}`);
         const del = data.filter((user) => id !== user.id);
+        setModalOpen(true);
         setData(del);
     };
 
@@ -202,6 +209,7 @@ function UsersList() {
                     </form>
                 </div>
             </div>
+            {modalOpen && <Modal setOpenModal={setModalOpen} />}
             <Table columns={columns} data={data}/>
         </div>
     );
