@@ -5,48 +5,58 @@ import Table from "../util/Table";
 import ShelterServerConstants from "../util/ShelterServerConstants";
 import {ADOPTION_STATUS_OPTIONS, SHELTER_APPROVAL_STATUS_OPTIONS} from "../util/Enums";
 
-const columns = [
-    {
-        Header: "Lista schronisk",
-        columns: [
-            {
-                Header: "Nazwa schroniska",
-                accessor: "shelterName"
-            },
-            {
-                Header: "Email",
-                accessor: "email"
-            },
-            {
-                Header: "Miasto",
-                accessor: "address.city"
-            },
-            {
-                Header: "Telefon",
-                accessor: "address.phone"
-            },
-            {
-                Header: "KRS",
-                accessor: "address.krsNumber"
-            },
-            {
-                Header: "Szczegóły",
-                accessor: "id",
-                Cell: ({value}) => (
-                    <Link to={`/shelterDetails/${value}`}>
-                        <button type="submit"
-                                className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                            <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Dane schroniska
-                                </p>
-                        </button>
-                    </Link>
-                ),
-            }
-        ],
-    },
-];
-
 function ShelterList() {
+    const columns = [
+        {
+            Header: "Lista schronisk",
+            columns: [
+                {
+                    Header: "Nazwa schroniska",
+                    accessor: "shelterName"
+                },
+                {
+                    Header: "Email",
+                    accessor: "email"
+                },
+                {
+                    Header: "Miasto",
+                    accessor: "address.city"
+                },
+                {
+                    Header: "Telefon",
+                    accessor: "address.phone"
+                },
+                {
+                    Header: "KRS",
+                    accessor: "address.krsNumber"
+                },
+                {
+                    Header: "Szczegóły",
+                    accessor: "id",
+                    Cell: ({value}) => (
+                        <>
+                        <Link to={`/shelterDetails/${value}`}>
+                            <button type="submit"
+                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Dane schroniska
+                                </p>
+                            </button>
+                        </Link>
+                        <div>
+                            {userType === "ADMIN" ? (
+                                <button type="submit"
+                                        onClick={() => deleteShelter(value)}                                        className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                    <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Usuń schronisko
+                                    </p>
+                                </button>
+                            ) : ( <> </>) }
+                        </div>
+                        </>
+                    ),
+                }
+            ],
+        },
+    ];
     axios.defaults.withCredentials = true
     const [error, setError] = useState("");
     const [data, setData] = useState([]);
@@ -59,7 +69,6 @@ function ShelterList() {
         approvalStatus: ""
     });
 
-    const userType = localStorage.getItem("userType");
 
     const onInputChange = (e) => {
         setShelter({...shelter, [e.target.name]: e.target.value});
@@ -95,28 +104,46 @@ function ShelterList() {
             console.error(error);
         }
     };
-
+    const fetchData = async () => {
+        try {
+            const result = await axios.post(ShelterServerConstants.ADDRESS_SERVER_LOCAL + "/shelter/searchShelters",
+                JSON.stringify(Object.fromEntries(sheltersMap)),
+                {
+                    headers: {
+                        'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
+                    }
+                });
+            setData(result.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await axios.post(ShelterServerConstants.ADDRESS_SERVER_LOCAL + "/shelter/searchShelters",
-                    JSON.stringify(Object.fromEntries(sheltersMap)),
-                    {
-                        headers: {
-                            'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
-                        }
-                    });
-                setData(result.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
         console.log(userType);
         fetchData();
     }, []);
 
     const handleClear = () => {
         setShelter({});
+    };
+
+    const userType = localStorage.getItem("userType");
+
+
+    const deleteShelter = async (id) => {
+        try {
+            const result =
+                await axios.delete(`http://localhost:8080/user/delete/${id}`,
+                JSON.stringify(Object.fromEntries(sheltersMap)),
+                {
+                    headers: {
+                        'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
+                    }
+                });
+            fetchData();
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
