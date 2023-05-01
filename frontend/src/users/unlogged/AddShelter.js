@@ -2,10 +2,11 @@ import React, {useState} from "react";
 import axios from "axios";
 import SuccessPopup from "./SuccessPopup";
 import {Link, useNavigate} from "react-router-dom";
+import Modal from "./Modal";
 
 export default function AddShelter() {
     const [error, setError] = useState("");
-    const [showPopup, setShowPopup] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
     let navigate = useNavigate();
     const [shelter, setShelter] = useState({
         email: "",
@@ -42,7 +43,7 @@ export default function AddShelter() {
         try {
             e.preventDefault();
             await axios.post("http://localhost:8080/registration/register", shelter);
-            setShowPopup(true);
+            setModalOpen(true);
         } catch (error) {
             console.log(error)
             setError(error.response?.data?.message || "Something went wrong");
@@ -67,7 +68,7 @@ export default function AddShelter() {
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
             <div className="px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Zarejestruj schronisko</h2>
-                {showPopup && <SuccessPopup message="Rejestracja pomyślna. Dziękujemy za rejestrację."/>}
+                {modalOpen && <Modal setOpenModal={setModalOpen}/>}
                 <form onSubmit={(e) => onSubmit(e)} className="w-full max-w-lg m-auto py-10">
                     <div className="flex flex-wrap">
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">
