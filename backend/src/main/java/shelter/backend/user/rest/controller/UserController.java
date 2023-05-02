@@ -1,5 +1,7 @@
 package shelter.backend.user.rest.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -36,8 +38,8 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    ResponseEntity<Void> delete(@PathVariable Long id) {
-        userService.delete(id);
+    ResponseEntity<Void> delete(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {
+        userService.delete(id, request, response);
         return ResponseEntity.noContent().build();
     } //TODO dodanie endpointu ustawiającego isDisable na true dla podanego id usera
 }

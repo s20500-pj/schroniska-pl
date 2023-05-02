@@ -43,7 +43,7 @@ function PersonSettings() {
         await axios.delete(`http://localhost:8080/user/delete/${user.id}`);
         localStorage.clear();
         navigate('/');
-        //await window.location.reload();
+        await window.location.reload();
         setLoading(false);
     }
 
