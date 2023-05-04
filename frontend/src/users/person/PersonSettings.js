@@ -15,13 +15,19 @@ function PersonSettings() {
     const [user, setUser] = useState([]);
     const [error, setError] = useState(null);
     const [post, setPost] = useState({
-        id: id, firstName: "",
+        firstName: "",
         lastName: "",
         email: "",
         password: "",
         userType: "PERSON",
-        city:"",street: "", postalCode: "", buildingNumber: "", flatNumber: "", phone: "",
-
+        address: {
+            street: "",
+            city: "",
+            postalCode: "",
+            buildingNumber: "",
+            flatNumber: "",
+            phone: "",
+        },
     });
     useEffect(() => {
         axios.get(`http://localhost:8080/user`)
@@ -73,7 +79,6 @@ function PersonSettings() {
             <h2 className="text-center text-2xl text-orange font-bold p-10 h-fit">
                 Twoje dane</h2>
             <div className='py-5 lg:flex justify-around md:block'>
-
                 <div className="text-md">
                     <h2 className=" text-s text-orange font-bold h-fit pb-5">
                         Aktualne dane.</h2>
