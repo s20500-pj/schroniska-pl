@@ -1,10 +1,13 @@
 package shelter.backend.user.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import shelter.backend.login.service.AuthenticationService;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.PayUClientCredentials;
 import shelter.backend.rest.model.entity.User;
@@ -27,6 +30,7 @@ public class ShelterUserService implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PayUClientCredentialsRepository payUClientCredentialsRepository;
+    private final AuthenticationService authenticationService;
 
     public List<UserDto> search(String searchParams) {
         UserSpecification userSpecification = new UserSpecification(parseSearchParams(searchParams));
@@ -43,24 +47,31 @@ public class ShelterUserService implements UserService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long id, HttpServletRequest request, HttpServletResponse response) {
         log.debug("Delete user by id: {}", id);
         String username = ClientInterceptor.getCurrentUsername();
         User currentUser = userRepository.findUserByEmail(username);
         User userToDelete = userRepository.findUserById(id);
         if (userToDelete != null) {
-            if (currentUser.getUserType() == UserType.ADMIN || (currentUser.equals(userToDelete))) { // if not admin check if user can perform delete(only delete himself)
+            if (currentUser.getUserType() == UserType.ADMIN || isLoggedUserSameAsToDelete(currentUser, userToDelete)) // if not admin check if user can perform delete(only delete himself)
+                { // if not admin check if user can perform delete(only delete himself)
                 if (userToDelete.getUserType() == UserType.SHELTER) {
                     //rm associated payuDetails
                     payUClientCredentialsRepository.findByShelter_Id(userToDelete.getId())
                             .ifPresent(payUClientCredentialsRepository::delete);
                 }
                 userRepository.delete(userToDelete);
-                log.debug("Username deleted, {}, {}", userToDelete.getEmail(), userToDelete.getUserType());
-            }
+                    if (isLoggedUserSameAsToDelete(currentUser, userToDelete)) {
+                        authenticationService.clearCookies(request, response);
+                    }            }
         } else {
             throw new EntityNotFoundException("Nie znaleziono użytkownika o podanym id");
         }
+    }
+
+
+    private static boolean isLoggedUserSameAsToDelete(User currentUser, User userToDelete) {
+        return currentUser.equals(userToDelete);
     }
 
     private User getLoggedUser() {

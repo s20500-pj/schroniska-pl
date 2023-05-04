@@ -1,5 +1,8 @@
 package shelter.backend.login.service;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,6 +43,17 @@ public class ShelterAuthenticationService implements AuthenticationService {
             log.error("Unable to authenticate the user: {}, exception message: {}", request.getEmail(), e.getMessage());
             throw new AuthenticationException("Nie można uwierzytelnić użytkownika", e);
         }
+    }
+
+    public void clearCookies(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null)
+            for (Cookie cookie : cookies) {
+                cookie.setValue("");
+                cookie.setPath("/");
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+            }
     }
 
     private AuthenticationResponseDto buildAuthenticationResponseDto(Long userId, String authToken, String firstName,

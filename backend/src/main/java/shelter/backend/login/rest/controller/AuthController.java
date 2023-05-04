@@ -48,14 +48,7 @@ public class AuthController {
     @GetMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
         SecurityContextHolder.clearContext();
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null)
-            for (Cookie cookie : cookies) {
-                cookie.setValue("");
-                cookie.setPath("/");
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
-            }
+        authService.clearCookies(request, response);
         return ResponseEntity.noContent().build();
     }
 }
