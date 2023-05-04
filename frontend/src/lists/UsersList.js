@@ -2,41 +2,49 @@ import axios from "axios";
 import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import Table from "../util/Table";
+import ShelterServerConstants from "../util/ShelterServerConstants";
+import Modal from "../users/unlogged/Modal";
 
-const columns = [
-    {
-        Header: "Lista użytkowników",
-        columns: [
-            {
-                Header: "Imie",
-                accessor: "firstName"
-            },
-            {
-                Header: "Nazwisko",
-                accessor: "lastName"
-            },
-            {
-                Header: "Email",
-                accessor: "email"
-            },
-            {
-                Header: "Telefon",
-                accessor: "address.phone"
-            },
-            {
-                Header: "Szczegóły",
-                accessor: "id",
-                Cell: ({value}) => (
-                    <Link to={`/userDetails/${value}`}>
-                        Zobacz szczegóły/ do implementacji
-                    </Link>
-                ),
-            }
-        ],
-    },
-];
 
 function UsersList() {
+    const columns = [
+        {
+            Header: "Lista użytkowników",
+            columns: [
+                {
+                    Header: "Imie",
+                    accessor: "firstName"
+                },
+                {
+                    Header: "Nazwisko",
+                    accessor: "lastName"
+                },
+                {
+                    Header: "Email",
+                    accessor: "email"
+                },
+                {
+                    Header: "Telefon",
+                    accessor: "address.phone"
+                },
+                {
+                    Header: "Szczegóły",
+                    accessor: "id",
+                    Cell: ({value}) => (
+                        <>
+                            <button type="submit"
+                                    onClick={() => deleteUser(value)}
+                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Usuń
+                                    użytkownika
+                                </p>
+                            </button>
+                        </>
+                    ),
+                }
+            ],
+        },
+    ];
     axios.defaults.withCredentials = true
     const [error, setError] = useState("");
     const [data, setData] = useState([]);
@@ -56,8 +64,7 @@ function UsersList() {
         lastName,
         email,
         phone,
-
-    }= user;
+    } = user;
 
     const enteredUserFields = {
         ...Object.fromEntries(
@@ -81,30 +88,40 @@ function UsersList() {
         );
         setData(result.data);
     };
+    const fetchData = async () => {
+        try {
+            const result = await axios.post(
+                "http://localhost:8080/user/search",
+                JSON.stringify(enteredUserFields), {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'text/plain'
+                    }
+                }
+            );
+            setData(result.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await axios.post(
-                    "http://localhost:8080/user/search",
-                    JSON.stringify(enteredUserFields), {
-                        withCredentials: true,
-                        headers: {
-                            'Content-Type': 'text/plain'
-                        }
-                    }
-                );
-                setData(result.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
         fetchData();
     }, []);
 
     const handleClear = () => {
         setUser({});
     };
+
+    const deleteUser = async (id) => {
+        try {
+            await axios.delete(`http://localhost:8080/user/delete/${id}`);
+            fetchData();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
 
     return (
         <div className="md:flex p-5 h-fit sm:block sm:h-fit">
