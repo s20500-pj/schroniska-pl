@@ -145,11 +145,15 @@ export default function ShelterDetails() {
                                         </div>
                                         <div className="flex justify-between">
                                             <button type="button" onClick={(e) => handleBack(e)}
-                                                    className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded-md">Anuluj
+                                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown ">
+                                                <p className="py-15 justify-center text-base text-center text-brown font-medium	">
+                                                    Anuluj </p>
                                             </button>
                                             <button type="submit"
-                                                    className="bg-green hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-md">
-                                                Zakończ rejestrację schroniska
+                                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown ">
+                                                <p className="py-15 justify-center text-base text-center text-brown font-medium	">
+                                                    Zakończ rejestrację schroniska
+                                                </p>
                                             </button>
                                         </div>
                                     </form>
