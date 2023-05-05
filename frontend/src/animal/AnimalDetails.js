@@ -5,6 +5,7 @@ import {AGE_OPTIONS, ANIMAL_STATUS_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "
 import icon from '../dog-cat-icon.jpeg';
 import ShelterServerConstants from "../util/ShelterServerConstants";
 import Messages from "../util/Messages";
+import VirtualAdoptionBtn from "../adoption/VirtualAdoptionBtn";
 
 export default function AnimalDetails() {
     axios.defaults.withCredentials = true;
@@ -248,10 +249,21 @@ export default function AnimalDetails() {
                                             </div>
                                         )}
                                         <div>
-
                                         </div>
+                                        {activityFormVisible && (
+                                            <form onSubmit={handleActivity}>
+                                                <p>{Messages.ACTIVITY_INFORMATION}</p>
+                                                <label>
+                                                    Wybierz dzień:
+                                                    <input type="date" min={minDate} max={maxDate}
+                                                           onChange={(e) => setActivityDate(e.target.value)}/>
+                                                </label>
+                                                <button type="submit">Zarezerwuj termin</button>
+                                            </form>
+                                        )}
+                                        {activityResponseMessage && <div>{activityResponseMessage}</div>}
+                                        <VirtualAdoptionBtn isPerson={isPerson} setAnimal={setAnimal} animal={animal}/>
                                     </div>
-
                                 </div>
                                 {activityFormVisible && (
                                     <div className="">
@@ -278,7 +290,6 @@ export default function AnimalDetails() {
                                         Wolontariat
                                     </h2><p className="w-48 p-4">{activityResponseMessage}</p></div>}
                             </div>
-
                         </>
                     ) : (
                         <p>Ładowanie danych zwierzaka...</p>
