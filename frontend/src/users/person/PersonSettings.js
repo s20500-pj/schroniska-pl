@@ -164,16 +164,6 @@ function PersonSettings() {
                         <div className="">
                             <input
                                 type={"text"}
-                                className="appearance-none block w-full bg-gray-200 text-brown border border-orange  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                placeholder="Podaj email."
-                                name="email"
-                                defaultValue={user.email}
-                                onChange={handleInput}
-                            />
-                        </div>
-                        <div className="">
-                            <input
-                                type={"text"}
                                 className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                 name="city"
                                 defaultValue={user.address && user.address.city}
