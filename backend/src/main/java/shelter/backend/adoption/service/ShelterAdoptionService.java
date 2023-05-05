@@ -70,7 +70,6 @@ public class ShelterAdoptionService implements AdoptionService {
         return animal.getAdoptions().stream().noneMatch(adoption -> adoption.getAdoptionStatus() == AdoptionStatus.ADOPTED ||
                 adoption.getAdoptionStatus() == AdoptionStatus.VISITED) ||
                 animal.getAnimalStatus() == AnimalStatus.DEAD ||
-                animal.getAnimalStatus() == AnimalStatus.DELETED ||
                 animal.getAnimalStatus() == AnimalStatus.UNKNOWN;
     }
 

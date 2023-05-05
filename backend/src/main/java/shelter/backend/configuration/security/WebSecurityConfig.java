@@ -30,7 +30,6 @@ import shelter.backend.utils.constants.ShelterConstants;
 public class WebSecurityConfig {
 
     private final JwtAthFilter jwtAuthFilter;
-//        private final CookieAuthenticationFilter cookieAuthenticationFilter;
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
     private final UserDetailsService userDetailsService;
 
@@ -63,7 +62,6 @@ public class WebSecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
                 .and()
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .addFilterBefore(cookieAuthenticationFilter, JwtAthFilter.class)
                 .headers().frameOptions().disable();//TODO delete it on PROD, used for H2 console to work properly
         return http.build();
     }
