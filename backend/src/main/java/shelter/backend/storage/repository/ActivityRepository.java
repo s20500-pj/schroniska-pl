@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import shelter.backend.rest.model.entity.Activity;
 import shelter.backend.rest.model.entity.Adoption;
+import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.ActivityType;
 
 import java.time.LocalDateTime;
@@ -21,4 +22,5 @@ public interface ActivityRepository extends JpaRepository<Activity, Long>, JpaSp
 
     List<Activity> findActivitiesByUserId(Long userId);
 
+    List<Activity> findByUser(User user);
 }

@@ -15,6 +15,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import shelter.backend.rest.model.dtos.AdoptionDto;
 import shelter.backend.rest.model.dtos.AdoptionDto2;
 import shelter.backend.rest.model.dtos.AnimalDto;

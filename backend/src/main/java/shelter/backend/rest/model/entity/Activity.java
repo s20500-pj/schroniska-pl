@@ -2,6 +2,8 @@ package shelter.backend.rest.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import shelter.backend.rest.model.dtos.ActivityDto;
 import shelter.backend.rest.model.dtos.ActivityDto2;
 import shelter.backend.rest.model.dtos.AnimalDto;

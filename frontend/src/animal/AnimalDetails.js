@@ -12,7 +12,7 @@ export default function AnimalDetails() {
     const {id} = useParams();
     const [animal, setAnimal] = useState(null);
     const [animalEdit, setAnimalEdit] = useState({
-        id:id,
+        id: id,
         name: "",
         information: "",
         species: "",
@@ -166,7 +166,6 @@ export default function AnimalDetails() {
     }
 
 
-
     const handleInput = (e) => {
         setAnimalEdit({...animalEdit, [e.target.name]: e.target.value});
         const {name, value} = e.target;
@@ -180,8 +179,8 @@ export default function AnimalDetails() {
     };
     const deleteAnimal = async (id) => {
         try {
-            const result =
-                await axios.delete(`http://localhost:8080/animal/delete/${animal.id}`)
+            await axios.delete(`http://localhost:8080/animal/delete/${animal.id}`)
+            navigate('/shelterAnimalList')
         } catch (error) {
             console.error(error);
         }
@@ -230,25 +229,27 @@ export default function AnimalDetails() {
                                     <div className='block justify-end py-10'>
                                         {animal && canAdopt(animal) && (
                                             <div>
-                                            <button
-                                                className="bg-orange text-white font-bold py-2 px-4 rounded m-5"
-                                                onClick={() => handleAdoption(animal.id)}
-                                            >
-                                                Adoptuj
-                                            </button></div>
+                                                <button
+                                                    className="bg-orange text-white font-bold py-2 px-4 rounded m-5"
+                                                    onClick={() => handleAdoption(animal.id)}
+                                                >
+                                                    Adoptuj
+                                                </button>
+                                            </div>
                                         )}
                                         {animal && entitledForActivity(animal) && (
                                             <div>
-                                            <button
-                                                className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
-                                                onClick={showActivityForm}
-                                            >
-                                                Wolontariat
-                                            </button></div>
+                                                <button
+                                                    className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
+                                                    onClick={showActivityForm}
+                                                >
+                                                    Wolontariat
+                                                </button>
+                                            </div>
                                         )}
                                         <div>
 
-                                    </div>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -272,9 +273,10 @@ export default function AnimalDetails() {
                                             </button>
                                         </form>
                                     </div>)}
-                                {activityResponseMessage && <div><h2 className="text-left text-xl text-orange font-bold h-fit">
-                                    Wolontariat
-                                </h2><p className="w-48 p-4">{activityResponseMessage}</p></div>}
+                                {activityResponseMessage &&
+                                    <div><h2 className="text-left text-xl text-orange font-bold h-fit">
+                                        Wolontariat
+                                    </h2><p className="w-48 p-4">{activityResponseMessage}</p></div>}
                             </div>
 
                         </>

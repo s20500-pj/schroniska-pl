@@ -102,8 +102,7 @@ public class ShelterActivityService implements ActivityService {
     private boolean statusOk(Animal animal) {
         if (animal.getAnimalStatus().equals(AnimalStatus.UNKNOWN) ||
                 animal.getAnimalStatus().equals(AnimalStatus.ADOPTED) ||
-                animal.getAnimalStatus().equals(AnimalStatus.DEAD) ||
-                animal.getAnimalStatus().equals(AnimalStatus.DELETED)) {
+                animal.getAnimalStatus().equals(AnimalStatus.DEAD)) {
             log.info("Animal can't be registered for activity. Animal: {}. Status of Animal: {}", animal, animal.getAnimalStatus());
             throw new ActivityException("Nie można zarezerwować terminu z powodu statusu zwierzaka: " + animal.getAnimalStatus());
         }

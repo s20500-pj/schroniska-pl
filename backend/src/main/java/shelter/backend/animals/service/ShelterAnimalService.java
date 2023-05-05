@@ -77,12 +77,10 @@ public class ShelterAnimalService implements AnimalService {
         return animalMapper.toDto(animalRepository.save(animalMapper.toEntity(animalDto)));
     }
 
-    public void deleteAnimal(Long animalId, HttpServletRequest request, HttpServletResponse response
-    ) {
+    public void deleteAnimal(Long animalId, HttpServletRequest request, HttpServletResponse response) {
         Animal animal = animalRepository.findAnimalById(animalId);
         if (animal != null) {
-            animal.setAnimalStatus(AnimalStatus.DELETED);
-            animalRepository.save(animal);
+            animalRepository.delete(animal);
         } else {
             throw new EntityNotFoundException("Zwierzę o podanym id nie istenieje");
         }

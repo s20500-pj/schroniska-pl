@@ -9,11 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import shelter.backend.login.service.AuthenticationService;
 import shelter.backend.rest.model.dtos.UserDto;
-import shelter.backend.rest.model.entity.PayUClientCredentials;
+import shelter.backend.rest.model.entity.Activity;
+import shelter.backend.rest.model.entity.Adoption;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.UserMapper;
 import shelter.backend.rest.model.specification.UserSpecification;
+import shelter.backend.storage.repository.ActivityRepository;
+import shelter.backend.storage.repository.AdoptionRepository;
 import shelter.backend.storage.repository.PayUClientCredentialsRepository;
 import shelter.backend.storage.repository.UserRepository;
 import shelter.backend.utils.basic.ClientInterceptor;
@@ -31,6 +34,8 @@ public class ShelterUserService implements UserService {
     private final UserMapper userMapper;
     private final PayUClientCredentialsRepository payUClientCredentialsRepository;
     private final AuthenticationService authenticationService;
+    private final AdoptionRepository adoptionRepository;
+    private final ActivityRepository activityRepository;
 
     public List<UserDto> search(String searchParams) {
         UserSpecification userSpecification = new UserSpecification(parseSearchParams(searchParams));
@@ -52,23 +57,40 @@ public class ShelterUserService implements UserService {
         String username = ClientInterceptor.getCurrentUsername();
         User currentUser = userRepository.findUserByEmail(username);
         User userToDelete = userRepository.findUserById(id);
-        if (userToDelete != null) {
-            if (currentUser.getUserType() == UserType.ADMIN || isLoggedUserSameAsToDelete(currentUser, userToDelete)) // if not admin check if user can perform delete(only delete himself)
-                { // if not admin check if user can perform delete(only delete himself)
-                if (userToDelete.getUserType() == UserType.SHELTER) {
-                    //rm associated payuDetails
-                    payUClientCredentialsRepository.findByShelter_Id(userToDelete.getId())
-                            .ifPresent(payUClientCredentialsRepository::delete);
-                }
-                userRepository.delete(userToDelete);
-                    if (isLoggedUserSameAsToDelete(currentUser, userToDelete)) {
-                        authenticationService.clearCookies(request, response);
-                    }            }
-        } else {
+
+        if (userToDelete == null) {
             throw new EntityNotFoundException("Nie znaleziono użytkownika o podanym id");
+        }
+
+        if (isAllowedToDelete(currentUser, userToDelete)) {
+            if (userToDelete.getUserType() == UserType.SHELTER) {
+                deleteAssociatedPayUClientCredentials(userToDelete);
+            }
+
+            deleteUserActivitiesAndAdoptions(userToDelete);
+            userRepository.delete(userToDelete);
+
+            if (isLoggedUserSameAsToDelete(currentUser, userToDelete)) {
+                authenticationService.clearCookies(request, response);
+            }
         }
     }
 
+    private boolean isAllowedToDelete(User currentUser, User userToDelete) {
+        return currentUser.getUserType() == UserType.ADMIN || isLoggedUserSameAsToDelete(currentUser, userToDelete);
+    }
+
+    private void deleteAssociatedPayUClientCredentials(User userToDelete) {
+        payUClientCredentialsRepository.findByShelter_Id(userToDelete.getId())
+                .ifPresent(payUClientCredentialsRepository::delete);
+    }
+
+    private void deleteUserActivitiesAndAdoptions(User user) {
+        List<Activity> activities = activityRepository.findByUser(user);
+        activityRepository.deleteAll(activities);
+        List<Adoption> adoptions = adoptionRepository.findByUser(user);
+        adoptionRepository.deleteAll(adoptions);
+    }
 
     private static boolean isLoggedUserSameAsToDelete(User currentUser, User userToDelete) {
         return currentUser.equals(userToDelete);
@@ -78,5 +100,4 @@ public class ShelterUserService implements UserService {
         String currentUsername = ClientInterceptor.getCurrentUsername();
         return userRepository.findUserByEmail(currentUsername);
     }
-
 }

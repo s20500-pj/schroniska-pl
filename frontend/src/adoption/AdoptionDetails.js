@@ -191,7 +191,7 @@ export default function AdoptionDetails() {
                             Zwierzę zaadoptowane, aktualizuje status
                         </button>
                     )}
-                    {(isProperShelter || isProperUser) && (adoption.adoptionStatus !== 'DECLINED') && (
+                    {(isProperShelter || isProperUser) && (adoption.adoptionStatus !== 'DECLINED' && adoption.adoptionStatus !== 'ADOPTED') && (
                         <button
                             className="bg-orange text-white font-bold py-2 px-4 m-4 rounded"
                             onClick={() => declineAdoption(adoption.id)}
@@ -199,7 +199,7 @@ export default function AdoptionDetails() {
                             Adopcja odrzucona, aktualizuje status
                         </button>
                     )}
-                    {isProperShelter && (adoption.adoptionStatus === 'DECLINED') && (
+                    {isProperShelter && (adoption.adoptionStatus === 'DECLINED' || adoption.adoptionStatus === 'ADOPTED') && (
                         <button
                             className="bg-orange text-white font-bold py-2 px-4 m-4 rounded"
                             onClick={() => deleteAdoption(adoption.id)}
