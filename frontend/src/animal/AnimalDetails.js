@@ -12,6 +12,7 @@ export default function AnimalDetails() {
     const {id} = useParams();
     const [animal, setAnimal] = useState(null);
     const [animalEdit, setAnimalEdit] = useState({
+        id:id,
         name: "",
         information: "",
         species: "",
@@ -164,11 +165,19 @@ export default function AnimalDetails() {
             });
     }
 
-    const handleInput = (event) => {
-        console.log(event);
-        setAnimalEdit({...animalEdit, [event.target.name]: event.target.value});
-    };
 
+
+    const handleInput = (e) => {
+        setAnimalEdit({...animalEdit, [e.target.name]: e.target.value});
+        const {name, value} = e.target;
+        setAnimalEdit((prevState) => ({
+            ...prevState,
+            address: {
+                ...prevState.address,
+                [name]: value,
+            },
+        }));
+    };
     const deleteAnimal = async (id) => {
         try {
             const result =
@@ -247,7 +256,7 @@ export default function AnimalDetails() {
                                     <div className="">
                                         <form onSubmit={handleActivity}>
                                             <div className="px-50 ">
-                                                <h2 className="text-center text-xl text-orange font-bold h-fit">
+                                                <h2 className="text-left text-xl text-orange font-bold h-fit">
                                                     Wolontariat
                                                 </h2>
                                                 <p className="w-48">{Messages.ACTIVITY_INFORMATION}</p>
@@ -263,7 +272,9 @@ export default function AnimalDetails() {
                                             </button>
                                         </form>
                                     </div>)}
-                                {activityResponseMessage && <div>{activityResponseMessage}</div>}
+                                {activityResponseMessage && <div><h2 className="text-left text-xl text-orange font-bold h-fit">
+                                    Wolontariat
+                                </h2><p className="w-48 p-4">{activityResponseMessage}</p></div>}
                             </div>
 
                         </>
@@ -325,7 +336,6 @@ export default function AnimalDetails() {
                                         name="sex"
                                         defaultValue={SEX_OPTIONS[animal.sex]}
                                         onChange={handleInput}
-                                        required
                                     >
                                         <option value="">Wybierz płeć</option>
                                         <option value="MALE">samiec</option>
@@ -343,7 +353,6 @@ export default function AnimalDetails() {
                                         name="age"
                                         defaultValue={AGE_OPTIONS[animal.age]}
                                         onChange={handleInput}
-                                        required
                                     >
                                         <option value="">Wybierz wiek</option>
                                         <option value="VERY_YOUNG">bardzo młody</option>
@@ -362,7 +371,6 @@ export default function AnimalDetails() {
                                         name="animalStatus"
                                         defaultValue={ANIMAL_STATUS_OPTIONS[animal.animalStatus]}
                                         onChange={handleInput}
-                                        required
                                     >
                                         <option value="">Wybierz status</option>
                                         <option value="UNKNOWN">nieznany</option>
@@ -382,7 +390,7 @@ export default function AnimalDetails() {
                                         name="birthDate"
                                         defaultValue={animal.birthDate}
                                         onChange={handleInput}
-                                        required
+
                                     />
                                 </div>
                                 <div className="">
@@ -395,7 +403,6 @@ export default function AnimalDetails() {
                                         name="sterilized"
                                         defaultValue={animal.sterilized}
                                         onChange={handleInput}
-                                        required
                                     >
                                         <option value="">Wysterylizowany?</option>
                                         <option value={false}>Nie</option>
@@ -412,7 +419,6 @@ export default function AnimalDetails() {
                                         name="vaccinated"
                                         defaultValue={animal.vaccinated}
                                         onChange={handleInput}
-                                        required
                                     >
                                         <option value="">Szczepiony?</option>
                                         <option value={false}>Nie</option>
@@ -429,7 +435,7 @@ export default function AnimalDetails() {
                                         name="kidsFriendly"
                                         defaultValue={animal.kidsFriendly}
                                         onChange={handleInput}
-                                        required
+
                                     >
                                         <option value="">Wybierz z listy</option>
                                         <option value={false}>Nie</option>
@@ -446,7 +452,6 @@ export default function AnimalDetails() {
                                         name="couchPotato"
                                         defaultValue={animal.couchPotato}
                                         onChange={handleInput}
-                                        required
                                     >
                                         <option value="">Wybierz z listy</option>
                                         <option value={false}>Nie</option>
@@ -463,7 +468,6 @@ export default function AnimalDetails() {
                                         name="needsActiveness"
                                         defaultValue={animal.needsActiveness}
                                         onChange={handleInput}
-                                        required
                                     >
                                         <option value="">Wybierz z listy</option>
                                         <option value={false}>Nie</option>
@@ -480,7 +484,6 @@ export default function AnimalDetails() {
                                         name="catsFriendly"
                                         defaultValue={animal.catsFriendly}
                                         onChange={handleInput}
-                                        required
                                     >
                                         <option value="">Wybierz z listy</option>
                                         <option value={false}>Nie</option>
@@ -497,7 +500,6 @@ export default function AnimalDetails() {
                                         name="dogsFriendly"
                                         defaultValue={animal.dogsFriendly}
                                         onChange={handleInput}
-                                        required
                                     >
                                         <option value="">Wybierz z listy</option>
                                         <option value={false}>Nie</option>

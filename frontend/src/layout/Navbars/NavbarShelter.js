@@ -11,7 +11,7 @@ const navigation = [
     {name: 'Adopcja', href: '/shelterRealAdoptionList', current: false},
     {name: 'Adopcja wirtualna', href: '/shelterVirtualAdoptionList', current: false},
     {name: 'Wolontariat', href: '/shelterActivityList', current: false},
-    {name: 'Dane schroniska', href: '/shelterdetails', current: false}
+    {name: 'Dane schroniska', href: `/shelterdetails/${localStorage.getItem("userId")}`, current: false}
 ]
 
 function classNames(...classes) {

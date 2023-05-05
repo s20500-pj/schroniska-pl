@@ -70,49 +70,64 @@ function PersonSettings() {
             });
     }
 
-    const handleInput = (event) => {
-        console.log(event);
-        setPost({...post, [event.target.name]: event.target.value});
+
+    const handleInput = (e) => {
+        setPost({...post, [e.target.name]: e.target.value});
+        const {name, value} = e.target;
+        setPost((prevState) => ({
+            ...prevState,
+            address: {
+                ...prevState.address,
+                [name]: value,
+            },
+        }));
     };
     return (<div className="bg-background-pattern bg-opacity-20 max-w-none">
         <div className="px-10 font-display bg-white bg-opacity-90">
             <h2 className="text-center text-2xl text-orange font-bold p-10 h-fit">
                 Twoje dane</h2>
             <div className='py-5 lg:flex justify-around md:block'>
-                <div className="text-md">
-                    <h2 className=" text-s text-orange font-bold h-fit pb-5">
-                        Aktualne dane.</h2>
+                <div className="">
+                    <h2 className=" text-md text-orange font-bold h-fit pb-5">
+                        Aktualne dane</h2>
                     <label htmlFor="Firstname"
-                           className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                        Imię: {user.firstName}
+                           className=" tracking-wide text-brown text-s mb-2">
+                        Imię: <p className="font-bold text-xl">{user.firstName}</p>
                     </label>
                     <label htmlFor="Lastname"
-                           className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                        Nazwisko: {user.lastName}
+                           className=" tracking-wide text-brown text-s mb-2">
+                        Nazwisko:<p className="font-bold text-xl"> {user.lastName}</p>
+                    </label>
+                    <label htmlFor="Email"
+                           className=" tracking-wide text-brown text-s mb-2">
+                        E-mail: <p className="font-bold text-xl">{user.email}</p>
                     </label>
                     <label htmlFor="City"
-                           className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                        Miasto: {user.city}
+                           className=" tracking-wide text-brown text-s mb-2">
+                        Miasto: <p className="font-bold text-xl">{user.address && user.address.city}</p>
                     </label>
                     <label htmlFor="Postal code"
-                           className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                        Kod pocztowy:
+                           className="tracking-wide text-brown text-s mb-2"
+                           pattern="\d{2}-\d{3}">
+                        Kod pocztowy:<p className="font-bold text-xl"
+                                        pattern="\d{2}-\d{3}"
+                    > {user.address && user.address.postalCode }</p>
                     </label>
                     <label htmlFor="Street"
-                           className=" block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                        Ulica:{user.street}
+                           className=" tracking-wide text-brown text-s mb-2">
+                        Ulica: <p className="font-bold text-xl">{user.address && user.address.street}</p>
                     </label>
                     <label htmlFor="Building number"
-                           className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                        Numer budynku:{user.buildingNumber}
+                           className=" tracking-wide text-brown text-s mb-2">
+                        Numer budynku: <p className="font-bold text-xl">{user.address && user.address.buildingNumber}</p>
                     </label>
                     <label htmlFor="Flat number"
-                           className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                        Numer mieszkania:{user.flatNumber}
+                           className=" tracking-wide text-brown text-s mb-2">
+                        Numer mieszkania:<p className="font-bold text-xl"> {user.address && user.address.flatNumber}</p>
                     </label>
                     <label htmlFor="Phone"
-                           className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                        Telefon kontaktowy:{user.phone}
+                           className=" tracking-wide text-brown text-s mb-2">
+                        Telefon kontaktowy:<p className="font-bold text-xl">{user.address && user.address.phone} </p>
                     </label>
                     <button
                         type="button"
@@ -124,7 +139,7 @@ function PersonSettings() {
                         </p></button>
                 </div>
                 {user ? (<div className="block px-30">
-                    <h2 className=" text-s text-orange font-bold h-fit pb-5">
+                    <h2 className=" text-md text-orange font-bold h-fit pb-5">
                         Tutaj możesz zaktualizować swoje dane.</h2>
                     <form onSubmit={handleSubmit}>
                         <div className="">
@@ -149,9 +164,19 @@ function PersonSettings() {
                         <div className="">
                             <input
                                 type={"text"}
+                                className="appearance-none block w-full bg-gray-200 text-brown border border-orange  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                placeholder="Podaj email."
+                                name="email"
+                                defaultValue={user.email}
+                                onChange={handleInput}
+                            />
+                        </div>
+                        <div className="">
+                            <input
+                                type={"text"}
                                 className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                name="street"
-                                defaultValue={user.street}
+                                name="city"
+                                defaultValue={user.address && user.address.city}
                                 onChange={handleInput}
                             />
                         </div>
@@ -160,8 +185,8 @@ function PersonSettings() {
                                 type={"text"}
                                 className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                 placeholder="Podaj miasto."
-                                name="city"
-                                defaultValue={user.city}
+                                name="street"
+                                defaultValue={user.address && user.address.street}
                                 onChange={handleInput}
                             />
                         </div>
@@ -172,7 +197,7 @@ function PersonSettings() {
                                 placeholder="Podaj kod pocztowy."
                                 name="postalCode"
                                 pattern="\d{2}-\d{3}"
-                                defaultValue={user.postalCode}
+                                defaultValue={user.address && user.address.postalCode}
                                 onChange={handleInput}
                             />
                         </div>
@@ -182,7 +207,7 @@ function PersonSettings() {
                                 className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                 placeholder="Podaj numer budynku."
                                 name="buildingNumber"
-                                defaultValue={user.buildingNumber}
+                                defaultValue={user.address && user.address.buildingNumber}
                                 onChange={handleInput}
                             />
                         </div>
@@ -192,7 +217,7 @@ function PersonSettings() {
                                 className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                 placeholder="Podaj numer mieszkania."
                                 name="flat_number"
-                                defaultValue={user.flatNumber}
+                                defaultValue={user.address && user.address.flatNumber}
                                 onChange={handleInput}
                             />
                         </div>
@@ -202,7 +227,7 @@ function PersonSettings() {
                                 className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                 placeholder="Podaj numer telefonu kontaktowego."
                                 name="phone"
-                                defaultValue={user.phone}
+                                defaultValue={user.address && user.address.phone}
                                 onChange={handleInput}
                             />
                         </div>
