@@ -165,16 +165,6 @@ export default function ShelterDetails() {
                                                                     onChange={handleInput}
                                                                 />
                                                             </div>
-                                                            <div className="">
-                                                                <input
-                                                                    type={"text"}
-                                                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                                                    placeholder="Podaj opis"
-                                                                    name="lastName"
-                                                                    //defaultValue={shelter.lastName}
-                                                                    onChange={handleInput}
-                                                                />
-                                                            </div>
                                                             <div className="m-auto text-center">
                                                                 <button type="submit"
                                                                         className=" px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
