@@ -262,8 +262,8 @@ export default function AnimalDetails() {
                                             </form>
                                         )}
                                         {activityResponseMessage && <div>{activityResponseMessage}</div>}
-                                        <VirtualAdoptionBtn isPerson={isPerson} setAnimal={setAnimal} animal={animal}/>
                                     </div>
+                                    <VirtualAdoptionBtn isPerson={isPerson} setAnimal={setAnimal} animal={animal}/>
                                 </div>
                                 {activityFormVisible && (
                                     <div className="">
