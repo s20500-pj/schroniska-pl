@@ -42,9 +42,13 @@ public class AdoptionSpecification implements Specification<Adoption> {
                 case ADOPTION_TYPE -> predicates.add(criteriaBuilder.equal(root.get(ADOPTION_TYPE), AdoptionType.valueOf(value)));
                 case ADOPTION_STATUS -> predicates.add(criteriaBuilder.equal(root.get(ADOPTION_STATUS), AdoptionStatus.valueOf(value)));
                 case SpecificationConstants.SHELTER_ID -> {
-                    Join<Activity, Animal> animalJoin = root.join("animal");
+                    Join<Adoption, Animal> animalJoin = root.join("animal");
                     Join<Animal, User> shelterJoin = animalJoin.join("shelter");
                     predicates.add(criteriaBuilder.equal(shelterJoin.get(SpecificationConstants.ID), value));
+                }
+                case SpecificationConstants.USER_ID -> {
+                    Join<Adoption, User> userJoin = root.join("user");
+                    predicates.add(criteriaBuilder.equal(userJoin.get(SpecificationConstants.ID), value));
                 }
             }
         }
