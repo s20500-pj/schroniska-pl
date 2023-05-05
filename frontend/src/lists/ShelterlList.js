@@ -35,22 +35,25 @@ function ShelterList() {
                     accessor: "id",
                     Cell: ({value}) => (
                         <>
-                        <Link to={`/shelterDetails/${value}`}>
-                            <button type="submit"
-                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                                <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Dane schroniska
-                                </p>
-                            </button>
-                        </Link>
-                        <div>
-                            {userType === "ADMIN" ? (
+                            <Link to={`/shelterDetails/${value}`}>
                                 <button type="submit"
-                                        onClick={() => deleteShelter(value)}                                        className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                                    <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Usuń schronisko
+                                        className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                    <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Dane
+                                        schroniska
                                     </p>
                                 </button>
-                            ) : ( <> </>) }
-                        </div>
+                            </Link>
+                            <div>
+                                {userType === "ADMIN" ? (
+                                    <button type="submit"
+                                            onClick={() => deleteShelter(value)}
+                                            className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                        <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Usuń
+                                            schronisko
+                                        </p>
+                                    </button>
+                                ) : (<> </>)}
+                            </div>
                         </>
                     ),
                 }
@@ -134,17 +137,18 @@ function ShelterList() {
         try {
             const result =
                 await axios.delete(`http://localhost:8080/user/delete/${id}`,
-                JSON.stringify(Object.fromEntries(sheltersMap)),
-                {
-                    headers: {
-                        'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
-                    }
-                });
+                    JSON.stringify(Object.fromEntries(sheltersMap)),
+                    {
+                        headers: {
+                            'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
+                        }
+                    });
             fetchData();
         } catch (error) {
             console.error(error);
         }
     };
+
 
     return (
         <div className="md:flex p-5 h-fit sm:block sm:h-fit">

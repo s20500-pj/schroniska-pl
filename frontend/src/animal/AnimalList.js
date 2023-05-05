@@ -3,8 +3,7 @@ import React, {useState, useEffect} from "react";
 import AnimalCard from "./AnimalCard";
 
 function AnimalList() {
-    axios.defaults.withCredentials = true
-
+    axios.defaults.withCredentials = true;
     const [error, setError] = useState("");
     const [animal, setAnimal] = useState({
         name: "",

@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import ShelterServerConstants from "../../util/ShelterServerConstants";
 import {SHELTER_APPROVAL_STATUS_OPTIONS} from "../../util/Enums";
 
 export default function ShelterDetails() {
     axios.defaults.withCredentials = true;
     const {id} = useParams();
-    const [shelter, setShelter] = useState(null);
+    const [shelter, setShelter] = useState();
     const [error, setError] = useState(null);
     const [showForm, setShowForm] = useState(false);
     const [clientId, setClientId] = useState('');
@@ -15,7 +15,6 @@ export default function ShelterDetails() {
     const [merchantPosId, setMerchantPosId] = useState('');
 
     const userType = localStorage.getItem("userType");
-
 
     useEffect(() => {
         axios.get(ShelterServerConstants.ADDRESS_SERVER_LOCAL + `/shelter/${id}`)
@@ -28,9 +27,6 @@ export default function ShelterDetails() {
             });
     }, [id]);
 
-    if (error) {
-        return <div>Error fetching user data: {error.message}</div>;
-    }
 
     const handleAproveShelter = () => {
         setShowForm(true);
@@ -69,6 +65,49 @@ export default function ShelterDetails() {
             });
     };
 
+
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
+    const deleteShelter = async (id) => {
+        axios.defaults.withCredentials = true;
+        console.log(shelter.id);
+        await axios.delete(`http://localhost:8080/user/delete/${shelter.id}`);
+        localStorage.clear();
+        navigate('/');
+        await window.location.reload();
+        setLoading(false);
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        axios
+            .put(`http://localhost:8080/shelter/update`, JSON.stringify(shelter), {
+                headers: {
+                    'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
+                }
+            })
+            .then((response) => {
+                setShelter(response.data);
+            })
+            .catch((error) => {
+                console.error("Error update user data:", error);
+                setError(error);
+            });
+    }
+
+
+    const handleInput = (e) => {
+        setShelter({...shelter, [e.target.name]: e.target.value});
+        const {name, value} = e.target;
+        setShelter((prevState) => ({
+            ...prevState,
+            address: {
+                ...prevState.address,
+                [name]: value,
+            },
+        }));
+    };
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
             <div className=" px-10 font-display bg-white bg-opacity-90">
@@ -83,7 +122,7 @@ export default function ShelterDetails() {
                                     <p className=' text-center text-3xl font-bold text-brown pb-5'>Schronisko:</p>
                                     <p className=' text-center text-5xl font-bold text-orange pb-5'>{shelter.shelterName}</p>
                                     {userType === "ADMIN" && !shelter.disabled ? (
-                                        <p className="text-center font-bold text-purple-700">ZATWIERDZONE</p>) : null}
+                                        <p className="text-center font-bold text-orange-700">ZATWIERDZONE</p>) : null}
                                     <div className="  flex justify-center">
                                         <div className="text-left px-8">
                                             <p className='font-bold pt-2 text-left'>Adres schroniska: </p>
@@ -100,6 +139,53 @@ export default function ShelterDetails() {
                                             <p className='font-bold pt-2 text-left'>Kontakt do schroniska: </p>
                                             <p className=' pt-2'>Telefon: {shelter.address.phone}</p>
                                             <p className=' pt-2'>E-mail: {shelter.email}</p>
+                                            {userType === "SHELTER" ? (
+                                                <Link to={`/shelteranimalList`}>
+                                                <button type="submit"
+                                                        className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                                    <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Pokaż
+                                                        zwierzęta
+                                                    </p>
+                                                </button>
+                                            </Link> ):(null)}
+                                        </div>
+                                        <div>
+                                            {userType === "SHELTER" ? (
+                                                <div className="flex">
+                                                    <div>
+                                                        <h2 className=" text-md text-orange font-bold h-fit pb-5">
+                                                            Tutaj możesz zaktualizować swoje dane.</h2>
+                                                        <form onSubmit={handleSubmit}>
+                                                            <div className="">
+                                                                <input
+                                                                    type={"text"}
+                                                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                                                    name="phone"
+                                                                    defaultValue={shelter.address && shelter.address.phone}
+                                                                    onChange={handleInput}
+                                                                />
+                                                            </div>
+                                                            <div className="m-auto text-center">
+                                                                <button type="submit"
+                                                                        className=" px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                                                    <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Aktualizuj
+                                                                        dane</p>
+                                                                </button>
+                                                            </div>
+                                                            <button
+                                                                type="button"
+                                                                onClick={deleteShelter}
+                                                                className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown"
+                                                            >
+                                                                <p className="py-15 justify-center text-base text-center text-brown font-medium">
+                                                                    Usuń shronisko
+                                                                </p>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            ) : (<></>)
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -145,11 +231,15 @@ export default function ShelterDetails() {
                                         </div>
                                         <div className="flex justify-between">
                                             <button type="button" onClick={(e) => handleBack(e)}
-                                                    className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded-md">Anuluj
+                                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown ">
+                                                <p className="py-15 justify-center text-base text-center text-brown font-medium	">
+                                                    Anuluj </p>
                                             </button>
                                             <button type="submit"
-                                                    className="bg-green hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-md">
-                                                Zakończ rejestrację schroniska
+                                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown ">
+                                                <p className="py-15 justify-center text-base text-center text-brown font-medium	">
+                                                    Zakończ rejestrację schroniska
+                                                </p>
                                             </button>
                                         </div>
                                     </form>

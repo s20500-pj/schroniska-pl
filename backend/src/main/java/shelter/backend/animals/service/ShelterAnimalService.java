@@ -1,6 +1,8 @@
 package shelter.backend.animals.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -75,7 +77,8 @@ public class ShelterAnimalService implements AnimalService {
         return animalMapper.toDto(animalRepository.save(animalMapper.toEntity(animalDto)));
     }
 
-    public void deleteAnimal(Long animalId) {
+    public void deleteAnimal(Long animalId, HttpServletRequest request, HttpServletResponse response
+    ) {
         Animal animal = animalRepository.findAnimalById(animalId);
         if (animal != null) {
             animal.setAnimalStatus(AnimalStatus.DELETED);

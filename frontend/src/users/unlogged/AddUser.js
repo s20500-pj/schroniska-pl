@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import axios from "axios";
-import SuccessPopup from "./SuccessPopup";
 import {Link, useNavigate} from "react-router-dom";
 import Modal from "./Modal";
 export default function AddUser() {

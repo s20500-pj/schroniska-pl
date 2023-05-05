@@ -174,6 +174,8 @@ function ShelterAnimalList() {
                                     <option value="UNKNOWN">nieznany</option>
                                     <option value="NEEDS_MEDICAL_TREATMENT">potrzebuje opieki medycznej</option>
                                     <option value="READY_FOR_ADOPTION">gotowy do adopcji</option>
+                                    <option value="DELETED">usunięty</option>
+
                                 </select>
                             </div>
                             <div className="w-full px-3">
@@ -275,7 +277,6 @@ function ShelterAnimalList() {
                             </div>
                             <div className="w-full px-3">
                                 <div className="flex justify-around py-2">
-
                                     <button type="submit"
                                             className="flex px-3 py-2 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                                         <p className=" justify-center text-base	 text-center text-brown font-medium	">Filtruj</p>
