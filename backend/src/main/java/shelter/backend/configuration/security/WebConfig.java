@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
         configuration.setAllowedMethods(asList(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(),
                 HttpMethod.DELETE.name(), HttpMethod.OPTIONS.name()));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(List.of(CorsConfiguration.ALL));
+        configuration.addAllowedHeader("*");
         configuration.addExposedHeader("Access-Control-Allow-Origin");
         configuration.addExposedHeader("Access-Control-Allow-Headers");
         configuration.addExposedHeader("Access-Control-Allow-Methods");

@@ -1,8 +1,5 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import axios from "axios";
-import {useParams} from "react-router-dom";
-import {AGE_OPTIONS, ANIMAL_STATUS_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "../util/Enums";
-import icon from '../dog-cat-icon.jpeg';
 import ShelterServerConstants from "../util/ShelterServerConstants";
 import Messages from "../util/Messages";
 
@@ -43,25 +40,23 @@ export default function VirtualAdoptionBtn({setAnimal, isPerson, animal}) {
             setErrorMessage("Kwota musi być wynosić conamniej 30 PLN");
         } else {
             setErrorMessage("");
-        }
-        axios
-            .post(ShelterServerConstants.ADDRESS_SERVER_LOCAL + `/adoption/virtual/${animal.id}/${amount}`,
-                {
-                    headers: {
-                        'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
+
+            axios
+                .post(ShelterServerConstants.ADDRESS_SERVER_LOCAL + `/adoption/virtual/${animal.id}/${amount}`,
+                    {
+                        headers: {
+                            'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
+                        }
                     }
+                )
+                .then(response => {
+                    alert("Za chwilę zostaniesz przeniesiony na stronę PayU")
+                    window.location.replace(response.data);
                 })
-            .then(response => {
-                if (response.status === 302) {
-                    window.location.replace(response.headers.location);
-                } else {
-                    alert("Problem z adopcją wirtualną");
-                    console.log(response);
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
+                .catch(error => {
+                    console.error(error);
+                });
+        }
     };
 
     const handleBack = (e) => {

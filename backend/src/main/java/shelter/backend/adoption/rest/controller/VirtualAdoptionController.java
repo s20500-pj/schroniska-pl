@@ -1,6 +1,7 @@
 package shelter.backend.adoption.rest.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,12 +27,10 @@ public class VirtualAdoptionController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/virtual/{animalId}/{amount}")
-    ResponseEntity<Void> beginVirtualAdoption(@PathVariable @NotNull Long animalId, @PathVariable @NotNull Long amount, HttpServletRequest request) {
+    ResponseEntity<String> beginVirtualAdoption(@PathVariable @NotNull Long animalId, @PathVariable @NotNull Long amount, HttpServletRequest request, HttpServletResponse response) {
         requestData.setIpAddress(request.getRemoteAddr());
         String redirect_uri = virtualAdoptionService.beginVirtualAdoption(animalId, amount);
-        URI location = URI.create(redirect_uri);
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .location(location)
-                .build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(redirect_uri);
     }
 }
