@@ -3,7 +3,7 @@ import axios from "axios";
 import ShelterServerConstants from "../util/ShelterServerConstants";
 import Messages from "../util/Messages";
 
-export default function VirtualAdoptionBtn({setAnimal, isPerson, animal}) {
+export default function VirtualAdoptionBtn({isPerson, animal}) {
 
     const [showForm, setShowForm] = useState(false);
     const [amount, setAmount] = useState('');
@@ -26,7 +26,7 @@ export default function VirtualAdoptionBtn({setAnimal, isPerson, animal}) {
         );
     }
 
-    if (!isPerson(userType) && !canBeAdopted(animal)) {
+    if (!isPerson(userType) || !canBeAdopted(animal)) {
         return null;
     }
 

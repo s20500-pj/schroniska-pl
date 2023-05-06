@@ -25,8 +25,12 @@ export const ADOPTION_STATUS_OPTIONS = {
     VISITED: "Schronisko odwiedzone",
     DECLINED: "Odmowa",
     ADOPTED: "Zwierzę zaadoptowane",
-    VIRTUAL_ADOPTED: "Wirtualna adopcja",
 };
+
+export const ADOPTION_VIRTUAL_STATUS_OPTIONS = {
+    VIRTUAL_ADOPTED: "Zwierzę wirtualnie zaadoptowane",
+    VIRTUAL_PENDING: "Oczekuje na wirtualną adopcję"
+}
 
 export const ADOPTION_TYPE_OPTIONS = {
     VIRTUAL: "Wirtualna",
