@@ -20,3 +20,11 @@ export function formatDateWithTime(rawDate) {
     const date = new Date(year, month - 1, day, hour, minute);
     return date.toLocaleString('pl-PL', {dateStyle: 'short', timeStyle: 'short'});
 }
+
+export function arrayToDate(dateArray) {
+    if (!dateArray || dateArray.length !== 3) return '';
+
+    const [year, month, day] = dateArray;
+    const date = new Date(year, month - 1, day);
+    return date.toISOString().split('T')[0];
+}

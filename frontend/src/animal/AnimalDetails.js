@@ -6,7 +6,7 @@ import icon from '../dog-cat-icon.jpeg';
 import ShelterServerConstants from "../util/ShelterServerConstants";
 import Messages from "../util/Messages";
 import VirtualAdoptionBtn from "../adoption/VirtualAdoptionBtn";
-import {formatDate} from "../util/DateUtils";
+import {arrayToDate, formatDate} from "../util/DateUtils";
 
 export default function AnimalDetails() {
     axios.defaults.withCredentials = true;
@@ -337,11 +337,28 @@ export default function AnimalDetails() {
                             </div>
                             <form onSubmit={handleSubmit}>
                                 <div className="w-50">
+                                    <label htmlFor="species"
+                                           className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                        Imię:
+                                    </label>
                                     <input
                                         type={"text"}
                                         className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                         name="firstName"
                                         defaultValue={animal.name}
+                                        onChange={handleInput}
+                                    />
+                                </div>
+                                <div className="w-50">
+                                    <label htmlFor="species"
+                                           className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                        Informacje/opis:
+                                    </label>
+                                    <input
+                                        type={"text"}
+                                        className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                        name="information"
+                                        defaultValue={animal.information}
                                         onChange={handleInput}
                                     />
                                 </div>
@@ -354,7 +371,7 @@ export default function AnimalDetails() {
                                         className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                         name="species"
                                         onChange={handleInput}
-                                        defaultValue={SPECIES_OPTIONS[animal.species]}
+                                        value={animal.species}
                                     >
                                         <option value="">Wybierz gatunek</option>
                                         <option value="DOG">Pies</option>
@@ -369,7 +386,7 @@ export default function AnimalDetails() {
                                     <select
                                         className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                         name="sex"
-                                        defaultValue={SEX_OPTIONS[animal.sex]}
+                                        value={animal.sex}
                                         onChange={handleInput}
                                     >
                                         <option value="">Wybierz płeć</option>
@@ -386,7 +403,7 @@ export default function AnimalDetails() {
                                     <select
                                         className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                         name="age"
-                                        defaultValue={AGE_OPTIONS[animal.age]}
+                                        value={animal.age}
                                         onChange={handleInput}
                                     >
                                         <option value="">Wybierz wiek</option>
@@ -404,7 +421,7 @@ export default function AnimalDetails() {
                                     <select
                                         className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                         name="animalStatus"
-                                        defaultValue={ANIMAL_STATUS_OPTIONS[animal.animalStatus]}
+                                        value={animal.animalStatus}
                                         onChange={handleInput}
                                     >
                                         <option value="">Wybierz status</option>
@@ -423,9 +440,8 @@ export default function AnimalDetails() {
                                         className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                         placeholder="Data urodzenia"
                                         name="birthDate"
-                                        defaultValue={animal.birthDate}
+                                        defaultValue={arrayToDate(animal.birthDate)}
                                         onChange={handleInput}
-
                                     />
                                 </div>
                                 <div className="">
