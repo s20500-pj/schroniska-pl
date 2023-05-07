@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import shelter.backend.rest.model.dtos.AnimalDto;
 import shelter.backend.rest.model.entity.Animal;
 import shelter.backend.rest.model.entity.User;
-import shelter.backend.rest.model.enums.AnimalStatus;
 import shelter.backend.rest.model.mapper.AnimalMapper;
 import shelter.backend.rest.model.specification.AnimalSpecification;
 import shelter.backend.storage.repository.AnimalRepository;
@@ -22,9 +21,6 @@ import shelter.backend.utils.constants.SpecificationConstants;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;

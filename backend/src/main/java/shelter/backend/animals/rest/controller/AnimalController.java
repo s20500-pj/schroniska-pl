@@ -26,6 +26,7 @@ public class AnimalController {
         return ResponseEntity.ok(animalService.getAnimalById(id));
     }
 
+    @PreAuthorize("hasRole('SHELTER')")
     @PostMapping(value = "/add")
     public ResponseEntity<AnimalDto> addAnimalToShelter(@RequestPart("animal") AnimalDto animalDto,
                                                         @RequestParam(name = "image", required = false) MultipartFile image) {
@@ -35,6 +36,7 @@ public class AnimalController {
         return ResponseEntity.ok(animalService.addAnimalToShelter(animalDto));
     }
 
+    @PreAuthorize("hasRole('SHELTER')")
     @PutMapping("/update")
     ResponseEntity<AnimalDto> updateAnimal(@RequestPart("animal") AnimalDto animalDto,
                                            @RequestParam(name = "image", required = false) MultipartFile image) {
@@ -44,6 +46,7 @@ public class AnimalController {
         return ResponseEntity.ok(animalService.updateAnimal(animalDto));
     }
 
+    @PreAuthorize("hasRole('SHELTER')")
     @DeleteMapping("/delete/{animalId}")
     ResponseEntity<Void> deleteAnimal(@PathVariable @NotNull Long animalId, HttpServletRequest request, HttpServletResponse response) {
         animalService.deleteAnimal(animalId, request, response);
@@ -55,6 +58,7 @@ public class AnimalController {
         return ResponseEntity.ok(animalService.search(searchParams));
     }
 
+    @PreAuthorize("hasRole('SHELTER')")
     @PostMapping(value = "/getShelterAnimals", consumes = MediaType.TEXT_PLAIN_VALUE)
     ResponseEntity<List<AnimalDto>> getShelterAnimals(@RequestBody String searchParams) {
         return ResponseEntity.ok(animalService.getShelterAnimals(searchParams));
