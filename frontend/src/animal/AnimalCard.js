@@ -7,6 +7,7 @@ import icon from  '../dog-cat-icon.jpeg';
 export default function AnimalCard({data, rename}) {
     axios.defaults.withCredentials = true;
     const placeholderImage = icon;
+    const userType = localStorage.getItem("userType");
     const onImageError = (e) => {
         e.target.src = placeholderImage
     }
@@ -19,7 +20,7 @@ export default function AnimalCard({data, rename}) {
         .map(data => {
             return (
                 <div className="p-5 flex " key={data.id}>
-                    <div className="bg-white rounded-3xl shadow-xl overflow-hidden hover:scale-105 ">
+                    <div className="bg-orange rounded-3xl shadow-xl overflow-hidden hover:scale-105 ">
                         <div className="w-[200px] ">
                             <Link to={`/animalDetails/${data.id}`}>
                                 <img src={data.imagePath ? data.imagePath : placeholderImage}
@@ -46,7 +47,8 @@ export default function AnimalCard({data, rename}) {
 
     return (
         <div className="md:h-fit sm:h-fit ">
-            <h3 className="font-display text-center text-brown font-bold text-2xl">Zwierzęta w schroniskach</h3>
+            {(userType === "SHELTER" ) ? <h3 className="font-display text-center text-brown font-bold text-2xl">Zwierzęta w schronisku</h3>
+                : <h3 className="font-display text-center text-brown font-bold text-2xl">Zwierzęta w schroniskach</h3> }
             <div className="flex flex-wrap h-fit justify-start">
                 {displayAnimals}
             </div>

@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import SuccessPopup from "../users/unlogged/SuccessPopup";
+import PopupSuccessAdd from "./PopupSuccessAdd";
 
 export default function AddAnimal() {
     axios.defaults.withCredentials = true
-    const [showPopup, setShowPopup] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
     const [error, setError] = useState("");
     let navigate = useNavigate();
     const [animal, setAnimal] = useState({
@@ -59,7 +59,9 @@ export default function AddAnimal() {
                     },
                 }
             );
-            setShowPopup(true);
+            setModalOpen(true);
+           //{!modalOpen ? navigate('/shelterAnimalList') :  navigate('/addAnimal') }
+
         } catch (error) {
             setError(error.response?.data?.message || "Something went wrong");
         }
@@ -86,7 +88,7 @@ export default function AddAnimal() {
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
             <div className="px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Dodaj zwięrzę do schroniska</h2>
-                {showPopup && <SuccessPopup message="Rejestracja pomyślna. Dziękujemy za rejestrację."/>}
+                {modalOpen && <PopupSuccessAdd setOpenModal={setModalOpen}/>}
                 <form onSubmit={(e) => onSubmit(e)} className="w-full max-w-lg m-auto pb-5">
                     <div className="flex flex-wrap">
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">
