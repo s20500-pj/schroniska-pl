@@ -9,6 +9,7 @@ import {
     SPECIES_OPTIONS,
     ANIMAL_STATUS_OPTIONS
 } from "../util/Enums";
+import icon from "../dog-cat-icon.jpeg";
 
 export default function AdoptionDetails() {
     axios.defaults.withCredentials = true;
@@ -17,7 +18,10 @@ export default function AdoptionDetails() {
     const [isProperShelter, setIsProperShelter] = useState(false);
     const [isProperUser, setIsProperUser] = useState(false);
     let navigate = useNavigate();
-
+    const placeholderImage = icon;
+    const onImageError = (e) => {
+        e.target.src = placeholderImage
+    }
     function inviteUserToShelter(adoptionId) {
         axios
             .get(`http://localhost:8080/adoption/real/inviteRealAdoption/${adoptionId}`)
@@ -127,7 +131,10 @@ export default function AdoptionDetails() {
                 {adoption ? (
                     <>
                         <div className='px-10 py-5'>
-                            <img src={'/' + adoption.animal.imagePath} alt="Logo" className="shadow-xl border-2 border-orange rounded-xl object-cover h-[350px] w-[500px]"/>
+                            <img src={'/' + adoption.animal.imagePath ? '/' + adoption.imagePath : placeholderImage}
+                                 onError={onImageError}
+                                 alt="Zdjęcie zwierzaka"
+                                 className="shadow-xl border-2 border-orange rounded-xl object-cover h-[350px] w-[500px]"/>
                         </div>
                         <div className="flex justify-center py-5">
                         <div>
