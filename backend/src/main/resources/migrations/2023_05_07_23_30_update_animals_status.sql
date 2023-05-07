@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset s20500:2023_05_07_update_animals_status.sql
+--changeset s20500:2023_05_07_23_30_update_animals_status.sql
 
 UPDATE animals
 SET animal_status = (CASE
