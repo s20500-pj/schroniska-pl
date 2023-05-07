@@ -4,7 +4,7 @@ import Table from "../util/Table";
 import {Link} from "react-router-dom";
 import ShelterServerConstants from "../util/ShelterServerConstants";
 import {ADOPTION_STATUS_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "../util/Enums";
-import {formatDateWithTime} from "../util/DateUtils";
+import {formatDate} from "../util/DateUtils";
 
 const columns = [
     {
@@ -41,7 +41,7 @@ const columns = [
             {
                 Header: "Ważna do:",
                 accessor: "validUntil",
-                Cell: ({value}) => formatDateWithTime(value)
+                Cell: ({value}) => formatDate(value)
             },
             {
                 Header: "Szczegóły",
