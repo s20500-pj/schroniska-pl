@@ -131,7 +131,7 @@ export default function ShelterDetails() {
                                                 budynku: {shelter.address.buildingNumber}{" "} </p>
                                             <p className=' pt-2'>Numer
                                                 mieszkania: {shelter.address.flatNumber}{" "} </p>
-                                            <p className=' pt-2'>Kod pocztowy: {shelter.address.postalCode}{" "} </p>
+                                            <p className="pt-2">Kod pocztowy: {shelter.address.postalCode.slice(0, 2)}-{shelter.address.postalCode.slice(2)}{" "}</p>
                                             <p className=' pt-2'>Miejscowość: {shelter.address.city}</p>
                                             <p className=' pt-2'>Numer KRS: {shelter.address.krsNumber}</p>
                                         </div>

@@ -77,8 +77,9 @@ public class DefaultShelterService implements ShelterService {
     }
 
     private User getUser() {
-        String username = ClientInterceptor.getCurrentUsername();
-        return userRepository.findUserByEmail(username);
+        if (ClientInterceptor.isAnyUserLoggedIn()) {
+            return userRepository.findUserByEmail(ClientInterceptor.getCurrentUsername());
+        }
+        return null;
     }
-
 }

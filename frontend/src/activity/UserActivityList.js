@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import Table from "../util/Table";
 import ShelterServerConstants from "../util/ShelterServerConstants";
 import {ACTIVITY_TYPE_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "../util/Enums";
-
+import {formatDateWithTime} from "../util/DateUtils";
 
 function UserActivityList() {
     axios.defaults.withCredentials = true;
@@ -49,7 +49,7 @@ function UserActivityList() {
                 {
                     Header: "Termin",
                     accessor: "activityTime",
-                    Cell: ({value}) => formatDate(value)
+                    Cell: ({value}) => formatDateWithTime(value)
                 },
                 {
                     Header: "",
@@ -77,12 +77,6 @@ function UserActivityList() {
                 })
                 .catch(error => console.error(error));
         }
-    }
-
-    const formatDate = (localDateTime) => {
-        const [year, month, day, hour, minute] = localDateTime;
-        const date = new Date(year, month - 1, day, hour, minute);
-        return date.toLocaleString('pl-PL', {dateStyle: 'short', timeStyle: 'short'});
     }
 
     const fetchData = async () => {

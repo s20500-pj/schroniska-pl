@@ -74,7 +74,15 @@ public class ShelterAnimalService implements AnimalService {
     }
 
     public AnimalDto updateAnimal(AnimalDto animalDto) {
-        return animalMapper.toDto(animalRepository.save(animalMapper.toEntity(animalDto)));
+        Animal existingAnimal = animalRepository.findById(animalDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Animal not found"));
+
+        if (animalDto.getImage() != null) {
+            existingAnimal.setImagePath(handleImageUpload(animalDto.getImage()));
+        }
+
+        Animal updatedAnimal = animalMapper.updateEntity(existingAnimal, animalDto);
+        return animalMapper.toDto(animalRepository.save(updatedAnimal));
     }
 
     public void deleteAnimal(Long animalId, HttpServletRequest request, HttpServletResponse response) {
@@ -90,6 +98,7 @@ public class ShelterAnimalService implements AnimalService {
         AnimalSpecification animalSpecification = new AnimalSpecification(parseSearchParams(searchParams));
         return animalMapper.toDtoList(animalRepository.findAll(animalSpecification));
     }
+
     //fixme fix this weire searchParams everywhere in project.restore the map
     public List<AnimalDto> getShelterAnimals(String searchParams) {
         Map<String, String> parsedSearchParams = parseSearchParams(searchParams);

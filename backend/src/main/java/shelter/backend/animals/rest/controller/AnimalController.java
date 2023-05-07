@@ -27,9 +27,8 @@ public class AnimalController {
     }
 
     @PostMapping(value = "/add")
-    public ResponseEntity<AnimalDto> addAnimalToShelter(
-            @RequestPart("animal") AnimalDto animalDto,
-            @RequestParam(name = "image", required = false) MultipartFile image) {
+    public ResponseEntity<AnimalDto> addAnimalToShelter(@RequestPart("animal") AnimalDto animalDto,
+                                                        @RequestParam(name = "image", required = false) MultipartFile image) {
         if (image != null) {
             animalDto.setImage(image);
         }
@@ -37,9 +36,14 @@ public class AnimalController {
     }
 
     @PutMapping("/update")
-    ResponseEntity<AnimalDto> updateAnimal(@RequestBody AnimalDto animalDto) {
+    ResponseEntity<AnimalDto> updateAnimal(@RequestPart("animal") AnimalDto animalDto,
+                                           @RequestParam(name = "image", required = false) MultipartFile image) {
+        if (image != null) {
+            animalDto.setImage(image);
+        }
         return ResponseEntity.ok(animalService.updateAnimal(animalDto));
     }
+
     @DeleteMapping("/delete/{animalId}")
     ResponseEntity<Void> deleteAnimal(@PathVariable @NotNull Long animalId, HttpServletRequest request, HttpServletResponse response) {
         animalService.deleteAnimal(animalId, request, response);

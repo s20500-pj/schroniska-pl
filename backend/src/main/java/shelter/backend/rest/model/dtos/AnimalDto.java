@@ -32,13 +32,13 @@ public class AnimalDto {
     private List<AdoptionDto> adoptions;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<ActivityDto> activities;
-    private boolean sterilized;
-    private boolean vaccinated;
-    private boolean kidsFriendly;
-    private boolean couchPotato; //kanapowiec
-    private boolean needsActiveness;
-    private boolean catsFriendly;
-    private boolean dogsFriendly;
+    private Boolean sterilized;
+    private Boolean vaccinated;
+    private Boolean kidsFriendly;
+    private Boolean couchPotato; //kanapowiec
+    private Boolean needsActiveness;
+    private Boolean catsFriendly;
+    private Boolean dogsFriendly;
     private MultipartFile image;
     private String imagePath;
 }

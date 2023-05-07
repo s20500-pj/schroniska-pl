@@ -4,6 +4,7 @@ import Table from "../util/Table";
 import {Link} from "react-router-dom";
 import ShelterServerConstants from "../util/ShelterServerConstants";
 import {ACTIVITY_TYPE_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "../util/Enums";
+import {formatDateWithTime} from "../util/DateUtils";
 
 
 function ShelterActivityList() {
@@ -110,7 +111,7 @@ function ShelterActivityList() {
                 {
                     Header: "Termin",
                     accessor: "activityTime",
-                    Cell: ({value}) => formatDate(value)
+                    Cell: ({value}) => formatDateWithTime(value)
                 },
                 {
                     Header: "Szczegóły zwierzaka",
@@ -170,15 +171,6 @@ function ShelterActivityList() {
         }
     }
 
-    const formatDate = (localDateTime) => {
-        if (localDateTime !== null && localDateTime !== undefined) {
-            const [year, month, day, hour, minute] = localDateTime;
-            const date = new Date(year, month - 1, day, hour, minute);
-            return date.toLocaleString('pl-PL', {dateStyle: 'short', timeStyle: 'short'});
-        }
-    }
-
-
     return (
         <div className="md:flex p-5 h-fit sm:block sm:h-fit">
             <div className="bg-background-pattern bg-opacity-20 max-w-none md:w-1/4 sm:w-fit sm:h-fit">
@@ -198,9 +190,11 @@ function ShelterActivityList() {
                                 <label className="block uppercase tracking-wide text-brown text-md font-bold">
                                     Pokaż listę zwierząt bez aktywności w danym dniu:
                                 </label>
-                                <input className="toggle-checkbox absolute block w-6 h-6 rounded-full border-4 cursor-pointer" type="checkbox"
-                                       name="listOfAnimalsWihtoutActivity"
-                                       onChange={(e) => setListOfAnimalsWithoutActivity(e.target.checked)}/>
+                                <input
+                                    className="toggle-checkbox absolute block w-6 h-6 rounded-full border-4 cursor-pointer"
+                                    type="checkbox"
+                                    name="listOfAnimalsWihtoutActivity"
+                                    onChange={(e) => setListOfAnimalsWithoutActivity(e.target.checked)}/>
                             </div>
                             <div className="w-full">
                                 <div className="flex justify-around py-2">

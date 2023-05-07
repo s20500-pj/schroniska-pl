@@ -39,14 +39,14 @@ public class Animal {
     private Age age;
     private LocalDate birthDate;
     private AnimalStatus animalStatus;
-    private boolean sterilized;
-    private boolean vaccinated;
-    private boolean kidsFriendly;
-    private boolean couchPotato; //kanapowiec
-    private boolean needsActiveness;
-    private boolean catsFriendly;
-    private boolean dogsFriendly;
-    private boolean availableForWalk;
+    private Boolean sterilized;
+    private Boolean vaccinated;
+    private Boolean kidsFriendly;
+    private Boolean couchPotato; //kanapowiec
+    private Boolean needsActiveness;
+    private Boolean catsFriendly;
+    private Boolean dogsFriendly;
+    private Boolean availableForWalk;
     private String imagePath;
 
     @ManyToOne
@@ -68,13 +68,13 @@ public class Animal {
         this.age = dto.getAge();
         this.birthDate = dto.getBirthDate();
         this.animalStatus = dto.getAnimalStatus();
-        this.sterilized = dto.isSterilized();
-        this.vaccinated = dto.isVaccinated();
-        this.kidsFriendly = dto.isKidsFriendly();
-        this.couchPotato = dto.isCouchPotato();
-        this.needsActiveness = dto.isNeedsActiveness();
-        this.catsFriendly = dto.isCatsFriendly();
-        this.dogsFriendly = dto.isDogsFriendly();
+        this.sterilized = dto.getSterilized();
+        this.vaccinated = dto.getVaccinated();
+        this.kidsFriendly = dto.getKidsFriendly();
+        this.couchPotato = dto.getCouchPotato();
+        this.needsActiveness = dto.getNeedsActiveness();
+        this.catsFriendly = dto.getCatsFriendly();
+        this.dogsFriendly = dto.getDogsFriendly();
         this.imagePath = dto.getImagePath();
         return this;
     }
