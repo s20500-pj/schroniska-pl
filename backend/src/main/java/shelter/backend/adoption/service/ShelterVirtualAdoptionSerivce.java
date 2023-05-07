@@ -77,7 +77,7 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
                     redirect_uri, currentUser.getEmail(), animal.getId(), animal.getName());
             Adoption adoption = Adoption.builder()
                     .adoptionType(AdoptionType.VIRTUAL)
-                    .adoptionStatus(AdoptionStatus.PENDING)
+                    .adoptionStatus(AdoptionStatus.VIRTUAL_PENDING)
                     .validUntil(LocalDate.now().plusDays(Duration.ofSeconds(pendingAdoptionValidUntil).toDays()))
                     .animal(animal)
                     .user(currentUser)
@@ -96,12 +96,13 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
         log.debug("[finalizeVirtualAdoption] :: for virtual adoption id: {}", id);
         Adoption adoption = adoptionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje wirtualna adopcja dla wybranego id"));
-        log.info("[finalizeVirtualAdoption] :: finalize virtual adoption: {}", adoption);
-        int months = calculateAdoptionPeriod(amount);
+        log.info("[finalizeVirtualAdoption] :: finalize virtual adoptionID: {}, username: {}, animalId: {}", adoption.getId(), adoption.getUser().getEmail(), adoption.getAnimal().getId());
+        int months = calculateAdoptionPeriod(amount/100);
         adoption.setAdoptionStatus(AdoptionStatus.VIRTUAL_ADOPTED);
         LocalDate adoptionTime = LocalDate.now().plusMonths(months);
         adoption.setValidUntil(adoptionTime);
-        //FIXME send confirmation email. dziekujemy za wplate. Zaadoptowales wirtualnie zwierzaczka w schronisku {}. Okres adopcji to validUntil....
+        adoptionRepository.save(adoption);
+        emailService.sendVirtualAdoptionConfirmationAdopted(adoption.getUser().getEmail(), adoption.getAnimal().getShelter().getShelterName(), adoption.getAnimal().getName(), adoptionTime.toString());
         log.info("Animal adopted virtually. Adoption: {}", adoption);
     }
 

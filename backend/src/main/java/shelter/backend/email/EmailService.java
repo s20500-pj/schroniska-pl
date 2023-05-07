@@ -7,5 +7,6 @@ public interface EmailService{
     void sendAdoptionInvitation(String email, String shelterName, String adoptionValidDate, long id);
     void sendAdoptionCancellation(String email, long id);
     void sendAdoptionSuspension(String email, String shelterName, long id);
+    void sendVirtualAdoptionConfirmationAdopted(String email, String shelterName, String animalName, String adoptionPeriod);
     void sendShelterApprovalConfirmation(String email, String shelterName);
 }

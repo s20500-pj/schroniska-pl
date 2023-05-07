@@ -22,7 +22,7 @@ public class EmailServiceMock implements EmailService {
         final String messageProperty = switch (userType) {
             case PERSON -> "user." + CONFIRMATION_PROPERTIES;
             case SHELTER -> "shelter." + CONFIRMATION_PROPERTIES;
-            case ADMIN -> "admin." + CONFIRMATION_PROPERTIES;
+            case ADMIN -> null;
         };
         String[] params = {"/confirmation", token, expirationTime};
         final String text = messageSource.getMessage(messageProperty, params, Locale.getDefault());
@@ -49,6 +49,14 @@ public class EmailServiceMock implements EmailService {
     public void sendAdoptionSuspension(String email, String shelterName, long id) {
         final String messageProperty = ADOPTION_PROPERTIES + ".suspension";
         String[] params = {shelterName, String.valueOf(id)};
+        final String text = messageSource.getMessage(messageProperty, params, Locale.getDefault());
+        log.info(text);
+    }
+
+    @Override
+    public void sendVirtualAdoptionConfirmationAdopted(String email, String shelterName, String animalName, String adoptionPeriod) {
+        final String messageProperty = ADOPTION_PROPERTIES + ".virtual.adopted";
+        String[] params = {animalName, shelterName, adoptionPeriod};
         final String text = messageSource.getMessage(messageProperty, params, Locale.getDefault());
         log.info(text);
     }

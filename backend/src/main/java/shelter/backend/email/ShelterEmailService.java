@@ -38,7 +38,7 @@ public class ShelterEmailService implements EmailService {
         final String messageProperty = switch (userType) {
             case PERSON -> "user." + CONFIRMATION_PROPERTIES;
             case SHELTER -> "shelter." + CONFIRMATION_PROPERTIES;
-            case ADMIN -> "admin." + CONFIRMATION_PROPERTIES; //TODO do zmiany
+            default -> throw new IllegalStateException("Unexpected value: " + userType);
         };
         final String subjectProperty = "confirmation.mail.subject";
         String[] params = {"/confirmation", token, expirationTime};
@@ -66,6 +66,14 @@ public class ShelterEmailService implements EmailService {
         final String messageProperty = ADOPTION_PROPERTIES + ".suspension";
         final String subjectProperty = ADOPTION_PROPERTIES + "suspension.subject";
         String[] params = {shelterName, String.valueOf(id)};
+        sendEmail(email, subjectProperty, messageProperty, params);
+    }
+
+    @Override
+    public void sendVirtualAdoptionConfirmationAdopted(String email, String shelterName, String animalName, String adoptionPeriod) {
+        final String messageProperty = ADOPTION_PROPERTIES + ".virtual.adopted";
+        final String subjectProperty = ADOPTION_PROPERTIES + ".virtual.adopted.subject";
+        String[] params = {animalName, shelterName, adoptionPeriod};
         sendEmail(email, subjectProperty, messageProperty, params);
     }
 
