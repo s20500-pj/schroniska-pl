@@ -5,6 +5,6 @@ import shelter.backend.rest.model.entity.User;
 
 public interface ApprovalProvider {
 
-    boolean validateShelterDetails(Address address);
+    boolean validateShelterDetails(String krs, String companyName);
 
 }

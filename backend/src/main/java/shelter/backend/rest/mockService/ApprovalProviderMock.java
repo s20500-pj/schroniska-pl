@@ -6,7 +6,7 @@ import shelter.backend.rest.model.entity.Address;
 
 public class ApprovalProviderMock implements ApprovalProvider {
     @Override
-    public boolean validateShelterDetails(Address address) {
+    public boolean validateShelterDetails(String krs, String companyName) {
         return true;
     }
 }

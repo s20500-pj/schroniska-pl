@@ -21,8 +21,7 @@ public class OpenApiKrs implements ApprovalProvider {
     }
 
     @Override
-    public boolean validateShelterDetails(Address address) {
-        String krs = address.getKrsNumber();
+    public boolean validateShelterDetails(String krs, String companyName) {
         if (krs == null) {
             return false;
         }
@@ -41,7 +40,7 @@ public class OpenApiKrs implements ApprovalProvider {
             return false;
         }
 
-        return checkShelterDetails(address, response);
+        return checkShelterDetails(companyName, response);
     }
 
     private OpenApiKrsResponse tryForRejestrS(String krs) {
@@ -53,27 +52,12 @@ public class OpenApiKrs implements ApprovalProvider {
         }
     }
 
-    private boolean checkShelterDetails(Address address, OpenApiKrsResponse response) {
-        //FIXME check only name of the company with contains. skip adress.
-        String cityRegistered = CharsNormalizer.convertToEngChars(address.getCity().trim());
-        String cityResponse = CharsNormalizer.convertToEngChars(response.getOdpis().getDane().getDzial1().getSiedzibaIAdres().getAdres().getMiejscowosc().trim());
-        String postalRegistered = address.getPostalCode().replace("-", "").trim();
-        String postalResponse = response.getOdpis().getDane().getDzial1().getSiedzibaIAdres().getAdres().getKodPocztowy().replace("-", "").trim();
-        String streetRegistered = CharsNormalizer.convertToEngChars(address.getStreet().trim());
-        String streetResponse = CharsNormalizer.convertToEngChars(response.getOdpis().getDane().getDzial1().getSiedzibaIAdres().getAdres().getUlica().trim());
-        String buildingRegistered = address.getBuildingNumber().trim();
-        String buildingResponse = response.getOdpis().getDane().getDzial1().getSiedzibaIAdres().getAdres().getNrDomu().trim();
-        if (StringUtils.equalsIgnoreCase(cityRegistered, cityResponse) &&
-                StringUtils.equals(postalRegistered, postalResponse) &&
-                StringUtils.equalsIgnoreCase(streetRegistered, streetResponse) &&
-                StringUtils.equalsIgnoreCase(buildingRegistered, buildingResponse))
-        {
+    private boolean checkShelterDetails(String companyName, OpenApiKrsResponse response) {
+        String companyNameResponse = CharsNormalizer.convertToEngChars(response.getOdpis().getDane().getDzial1().getDanePodmiotu().getNazwa().trim());
+        if (StringUtils.containsIgnoreCase(companyNameResponse, companyName)) {
             return true;
         }
-        log.info("Shelter details are not valid. AddressRegistered: {},{},{},{} ResponseAddress: {},{},{},{}",
-                cityRegistered, postalRegistered, streetRegistered, buildingRegistered,
-                cityResponse, postalResponse, streetResponse, buildingResponse);
+        log.info("Shelter details are not valid. CompanyName registered: {}, ResponseFromKrs: {}", companyName, companyNameResponse);
         return false;
-
     }
 }

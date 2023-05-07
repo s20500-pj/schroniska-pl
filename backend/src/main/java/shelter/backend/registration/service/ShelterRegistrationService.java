@@ -111,7 +111,7 @@ public class ShelterRegistrationService implements RegistrationService {
     @Override
     public void checkApprovalStatus(User user) {
         try {
-            boolean isApproved = approvalProvider.validateShelterDetails(user.getAddress());
+            boolean isApproved = approvalProvider.validateShelterDetails(user.getAddress().getKrsNumber(), user.getShelterName());
             if (isApproved) {
                 user.setApprovalStatus(ApprovalStatus.CONFIRMED);
             } else {
