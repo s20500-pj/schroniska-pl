@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static shelter.backend.rest.model.specification.AnimalSpecification.ADOPTED;
+
 @Log4j2
 @RequiredArgsConstructor
 @Service
@@ -91,7 +93,9 @@ public class ShelterAnimalService implements AnimalService {
     }
 
     public List<AnimalDto> search(String searchParams) {
-        AnimalSpecification animalSpecification = new AnimalSpecification(parseSearchParams(searchParams));
+        Map<String, String> params = parseSearchParams(searchParams);
+        params.put(ADOPTED, Boolean.FALSE.toString());
+        AnimalSpecification animalSpecification = new AnimalSpecification(params);
         return animalMapper.toDtoList(animalRepository.findAll(animalSpecification));
     }
 

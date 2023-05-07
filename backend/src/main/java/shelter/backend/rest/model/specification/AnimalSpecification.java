@@ -42,6 +42,7 @@ public class AnimalSpecification implements Specification<Animal> {
     private static final String CATS_FRIENDLY = "catsFriendly";
     private static final String DOGS_FRIENDLY = "dogsFriendly";
     private static final String CITY = "city";
+    public static final String ADOPTED = "adopted";
 
     private final Map<String, String> searchParams;
 
@@ -60,7 +61,8 @@ public class AnimalSpecification implements Specification<Animal> {
                 case SPECIES -> predicates.add(criteriaBuilder.equal(root.get(SPECIES), Species.valueOf(value)));
                 case SEX -> predicates.add(criteriaBuilder.equal(root.get(SEX), Sex.valueOf(value)));
                 case AGE -> predicates.add(criteriaBuilder.equal(root.get(AGE), Age.valueOf(value)));
-                case ANIMAL_STATUS -> predicates.add(criteriaBuilder.equal(root.get(AGE), AnimalStatus.valueOf(value)));
+                case ANIMAL_STATUS ->
+                        predicates.add(criteriaBuilder.equal(root.get(ANIMAL_STATUS), AnimalStatus.valueOf(value)));
                 case STERILIZED -> predicates.add(criteriaBuilder.equal(root.get(STERILIZED), Boolean.valueOf(value)));
                 case VACCINATED -> predicates.add(criteriaBuilder.equal(root.get(VACCINATED), Boolean.valueOf(value)));
                 case KIDS_FRIENDLY ->
@@ -86,6 +88,11 @@ public class AnimalSpecification implements Specification<Animal> {
                                         criteriaBuilder.isNull(activityLeftJoin)));
                     } else {
                         predicates.add((criteriaBuilder.isNull(activityLeftJoin)));
+                    }
+                }
+                case ADOPTED -> {
+                    if (value.equals("false")) {
+                        predicates.add(criteriaBuilder.notEqual(root.get(ANIMAL_STATUS), AnimalStatus.ADOPTED));
                     }
                 }
             }

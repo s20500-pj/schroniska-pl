@@ -38,6 +38,7 @@ public class Animal {
     @Enumerated(EnumType.STRING)
     private Age age;
     private LocalDate birthDate;
+    @Enumerated(EnumType.STRING)
     private AnimalStatus animalStatus;
     private Boolean sterilized;
     private Boolean vaccinated;

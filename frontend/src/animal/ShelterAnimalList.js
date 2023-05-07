@@ -4,7 +4,7 @@ import AnimalCard from "./AnimalCard";
 
 function ShelterAnimalList() {
     axios.defaults.withCredentials = true;
-
+    const [isAdopted, setIsAdopted] = useState(false);
     const [error, setError] = useState("");
     const [animal, setAnimal] = useState({
         name: "",
@@ -21,7 +21,8 @@ function ShelterAnimalList() {
         needsActiveness: "",
         catsFriendly: "",
         dogsFriendly: "",
-        imagePath: ""
+        imagePath: "",
+        adopted: 'false'
     });
 
     const onInputChange = (e) => {
@@ -41,7 +42,8 @@ function ShelterAnimalList() {
         couchPotato,
         needsActiveness,
         catsFriendly,
-        dogsFriendly
+        dogsFriendly,
+        adopted
     } = animal;
 
     // data state to store the TV Maze API data. Its initial value is an empty array
@@ -83,7 +85,24 @@ function ShelterAnimalList() {
     }, []);
 
     const handleClear = () => {
-        setAnimal({});
+        setAnimal({
+            name: "",
+            information: "",
+            species: "",
+            sex: "",
+            age: "",
+            birthDate: "",
+            animalStatus: "",
+            sterilized: "",
+            vaccinated: "",
+            kidsFriendly: "",
+            couchPotato: "",
+            needsActiveness: "",
+            catsFriendly: "",
+            dogsFriendly: "",
+            imagePath: "",
+            adopted: 'false'
+        });
     };
 
     return (
@@ -274,6 +293,25 @@ function ShelterAnimalList() {
                                     <option value={false}>Nie</option>
                                     <option value={true}>Tak</option>
                                 </select>
+                            </div>
+                            <div className="w-full px-3 mb-9">
+                                <label className="block uppercase tracking-wide text-brown text-md font-bold">
+                                    Pokaż listę zwierząt zaadoptowanych:
+                                </label>
+                                <input
+                                    className="toggle-checkbox absolute block w-6 h-6 rounded-full border-4 cursor-pointer"
+                                    type="checkbox"
+                                    name="adopted"
+                                    checked={isAdopted}
+                                    onChange={(e) => {
+                                        const checkedAsString = e.target.checked ? 'true' : 'false';
+                                        setIsAdopted(e.target.checked);
+                                        onInputChange({
+                                            ...e,
+                                            target: {...e.target, value: checkedAsString, name: 'adopted'}
+                                        });
+                                    }}
+                                />
                             </div>
                             <div className="w-full px-3">
                                 <div className="flex justify-around py-2">
