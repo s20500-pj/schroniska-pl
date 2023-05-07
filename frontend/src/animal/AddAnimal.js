@@ -60,8 +60,6 @@ export default function AddAnimal() {
                 }
             );
             setModalOpen(true);
-           //{!modalOpen ? navigate('/shelterAnimalList') :  navigate('/addAnimal') }
-
         } catch (error) {
             setError(error.response?.data?.message || "Something went wrong");
         }

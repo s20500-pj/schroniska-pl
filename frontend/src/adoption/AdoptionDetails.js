@@ -10,6 +10,7 @@ import {
     ANIMAL_STATUS_OPTIONS
 } from "../util/Enums";
 import icon from "../dog-cat-icon.jpeg";
+import {formatDate} from "../util/DateUtils";
 
 export default function AdoptionDetails() {
     axios.defaults.withCredentials = true;
@@ -143,7 +144,7 @@ export default function AdoptionDetails() {
                             <p className='font-bold pt-2'>Gatunek:</p><p> {SPECIES_OPTIONS[adoption.animal.species]}</p>
                             <p className='font-bold pt-2'>Płeć: </p><p>{SEX_OPTIONS[adoption.animal.sex]}</p>
                             <p className='font-bold pt-2'>Wiek:</p><p> {AGE_OPTIONS[adoption.animal.age]}</p>
-                            <p className='font-bold pt-2'>Data urodzenia: </p><p>{adoption.animal.birthDate}</p>
+                            <p className='font-bold pt-2'>Data urodzenia: </p><p>{formatDate(adoption.animal.birthDate)}</p>
                             <p className='font-bold pt-2'>Status:</p><p> {ANIMAL_STATUS_OPTIONS[adoption.animal.animalStatus]}</p>
                             <p className='font-bold pt-2'>Dodatkowe informacje:</p><p> {adoption.animal.information}</p>
                         </div>
@@ -151,7 +152,7 @@ export default function AdoptionDetails() {
                             <p className='text-xl font-bold text-brown'>Adopcja</p>
                             <p className='font-bold pt-2'>Rodzaj adopcji: </p><p> {ADOPTION_TYPE_OPTIONS[adoption.adoptionType]}</p>
                             <p className='font-bold pt-2'>Status adopcji: </p><p> {ADOPTION_STATUS_OPTIONS[adoption.adoptionStatus]}</p>
-                            <p className='font-bold pt-2'>Ważna do: </p><p> {adoption.validUntil}</p>
+                            <p className='font-bold pt-2'>Ważna do: </p><p> {formatDate(adoption.validUntil)}</p>
                             <p className='text-xl font-bold text-brown pt-3'>Użytkownik powiązany z adopcją </p>
                             <p className='font-bold pt-2'>Imię: </p><p> {adoption.user.firstName}</p>
                             <p className='font-bold pt-2'>Nazwisko: </p><p> {adoption.user.lastName}</p>

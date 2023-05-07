@@ -6,6 +6,7 @@ import icon from '../dog-cat-icon.jpeg';
 import ShelterServerConstants from "../util/ShelterServerConstants";
 import Messages from "../util/Messages";
 import VirtualAdoptionBtn from "../adoption/VirtualAdoptionBtn";
+import {arrayToDate, formatDate} from "../util/DateUtils";
 
 export default function AnimalDetails() {
     axios.defaults.withCredentials = true;
@@ -41,6 +42,13 @@ export default function AnimalDetails() {
     const onImageError = (e) => {
         e.target.src = placeholderImage
     }
+
+    const [photo, setPhoto] = useState(null);
+
+    const handlePhotoChange = (event) => {
+        const selectedFile = event.target.files[0];
+        setPhoto(selectedFile);
+    };
 
     function canAdopt(animal) {
         const userType = localStorage.getItem("userType");
@@ -121,7 +129,7 @@ export default function AnimalDetails() {
             })
             .then((response) => {
                 setActivityFormVisible(false);
-                setActivityResponseMessage(Messages.ACTIVITY_SUCCESS_REGISTRATION + activityDate + ShelterServerConstants.ACTIVITY_TIME);
+                setActivityResponseMessage(Messages.ACTIVITY_SUCCESS_REGISTRATION + formatDate(activityDate) + ' ' + ShelterServerConstants.ACTIVITY_TIME);
             })
             .catch((error) => {
                 alert(error.response.data);
@@ -151,33 +159,46 @@ export default function AnimalDetails() {
 
     function handleSubmit(e) {
         e.preventDefault();
+        const formData = new FormData();
+        const updatedAnimal = filterEmptyAndUnchanged(animalEdit, animal);
+        const json = JSON.stringify(updatedAnimal);
+        const blob = new Blob([json], {
+            type: 'application/json'
+        });
+        formData.append('animal', blob);
+        formData.append("image", photo);
+
         axios
-            .put(`http://localhost:8080/animal/update`, JSON.stringify(animalEdit), {
-                withCredentials: true,
-                headers: {
-                    'Content-type': "application/json"
+            .put(
+                "http://localhost:8080/animal/update",
+                formData,
+                {
+                    headers: {
+                        "Content-type": "multipart/form-data",
+                    },
                 }
-            })
+            )
             .then((response) => {
                 setAnimal(response.data);
-            })
-            .catch((error) => {
-                console.error("Error update user data:", error);
             });
     }
 
-
     const handleInput = (e) => {
-        setAnimalEdit({...animalEdit, [e.target.name]: e.target.value});
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setAnimalEdit((prevState) => ({
             ...prevState,
-            address: {
-                ...prevState.address,
-                [name]: value,
-            },
+            [name]: value,
         }));
     };
+
+    function filterEmptyAndUnchanged(animalEdit, originalAnimal) {
+        return Object.entries(animalEdit).reduce((filtered, [key, value]) => {
+            if (value !== "" && value !== originalAnimal[key]) {
+                filtered[key] = value;
+            }
+            return filtered;
+        }, {});
+    }
     const deleteAnimal = async (id) => {
         try {
             await axios.delete(`http://localhost:8080/animal/delete/${animal.id}`)
@@ -208,7 +229,8 @@ export default function AnimalDetails() {
                                     <p className='font-bold pt-2'>Gatunek: </p><p>{SPECIES_OPTIONS[animal.species]}</p>
                                     <p className='font-bold pt-2'>Płeć: </p><p>{SEX_OPTIONS[animal.sex]}</p>
                                     <p className='font-bold pt-2'>Wiek: </p><p>{AGE_OPTIONS[animal.age]}</p>
-                                    <p className='font-bold pt-2'>Data urodzenia: </p><p>{animal.birthDate}</p>
+                                    <p className='font-bold pt-2'>Data urodzenia: </p>
+                                    <p>{formatDate(animal.birthDate)}</p>
                                     <p className='font-bold pt-2'>Status:</p>
                                     <p>{ANIMAL_STATUS_OPTIONS[animal.animalStatus]}</p>
                                     <p className='font-bold pt-2'>Dodatkowe informacje:</p><p> {animal.information}</p>
@@ -220,7 +242,7 @@ export default function AnimalDetails() {
                                     <p>{animal.shelter.address.street}{" "}
                                         {animal.shelter.address.buildingNumber}{" "}
                                         {animal.shelter.address.flatNumber}{" "}
-                                        {animal.shelter.address.postalCode}{" "}
+                                        {animal.shelter.address.postalCode.slice(0, 2)}-{animal.shelter.address.postalCode.slice(2)}{" "}
                                         {animal.shelter.address.city}
                                     </p>
                                     <p className='font-bold pt-2'>Numer KRS: </p>
@@ -315,11 +337,28 @@ export default function AnimalDetails() {
                             </div>
                             <form onSubmit={handleSubmit}>
                                 <div className="w-50">
+                                    <label htmlFor="species"
+                                           className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                        Imię:
+                                    </label>
                                     <input
                                         type={"text"}
                                         className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                        name="firstName"
+                                        name="name"
                                         defaultValue={animal.name}
+                                        onChange={handleInput}
+                                    />
+                                </div>
+                                <div className="w-50">
+                                    <label htmlFor="species"
+                                           className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                        Informacje/opis:
+                                    </label>
+                                    <input
+                                        type={"text"}
+                                        className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                        name="information"
+                                        defaultValue={animal.information}
                                         onChange={handleInput}
                                     />
                                 </div>
@@ -332,7 +371,7 @@ export default function AnimalDetails() {
                                         className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                         name="species"
                                         onChange={handleInput}
-                                        defaultValue={SPECIES_OPTIONS[animal.species]}
+                                        value={animal.species}
                                     >
                                         <option value="">Wybierz gatunek</option>
                                         <option value="DOG">Pies</option>
@@ -347,7 +386,7 @@ export default function AnimalDetails() {
                                     <select
                                         className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                         name="sex"
-                                        defaultValue={SEX_OPTIONS[animal.sex]}
+                                        value={animal.sex}
                                         onChange={handleInput}
                                     >
                                         <option value="">Wybierz płeć</option>
@@ -364,7 +403,7 @@ export default function AnimalDetails() {
                                     <select
                                         className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                         name="age"
-                                        defaultValue={AGE_OPTIONS[animal.age]}
+                                        value={animal.age}
                                         onChange={handleInput}
                                     >
                                         <option value="">Wybierz wiek</option>
@@ -382,7 +421,7 @@ export default function AnimalDetails() {
                                     <select
                                         className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                         name="animalStatus"
-                                        defaultValue={ANIMAL_STATUS_OPTIONS[animal.animalStatus]}
+                                        value={animal.animalStatus}
                                         onChange={handleInput}
                                     >
                                         <option value="">Wybierz status</option>
@@ -401,9 +440,8 @@ export default function AnimalDetails() {
                                         className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                         placeholder="Data urodzenia"
                                         name="birthDate"
-                                        defaultValue={animal.birthDate}
+                                        defaultValue={arrayToDate(animal.birthDate)}
                                         onChange={handleInput}
-
                                     />
                                 </div>
                                 <div className="">
@@ -518,6 +556,16 @@ export default function AnimalDetails() {
                                         <option value={false}>Nie</option>
                                         <option value={true}>Tak</option>
                                     </select>
+                                </div>
+                                <div className="w-full md:w-1/2 px-3">
+                                    <label htmlFor="photo"
+                                           className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                        Zdjęcie:
+                                    </label>
+                                    <input type="file" name="photo" onChange={handlePhotoChange}/>
+                                    {photo && (
+                                        <p>Wybrano plik: {photo.name}</p>
+                                    )}
                                 </div>
                                 <div className="m-auto text-center">
                                     <button type="submit"

@@ -3,15 +3,8 @@ import React, {useEffect, useState} from "react";
 import Table from "../util/Table";
 import {Link} from "react-router-dom";
 import ShelterServerConstants from "../util/ShelterServerConstants";
-import {ADOPTION_STATUS_OPTIONS, ADOPTION_VIRTUAL_STATUS_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "../util/Enums";
-
-const formatDate = (localDate) => {
-    if (localDate !== null && localDate !== undefined) {
-        const [year, month, day] = localDate;
-        const date = new Date(year, month - 1, day);
-        return date.toLocaleString('pl-PL', {dateStyle: 'short'});
-    }
-}
+import {ADOPTION_VIRTUAL_STATUS_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "../util/Enums";
+import {formatDate} from "../util/DateUtils";
 
 const columns = [
     {
