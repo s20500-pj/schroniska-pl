@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, {useState, useEffect} from "react";
 import AnimalCard from "./AnimalCard";
+import ShelterServerConstants from "../util/ShelterServerConstants";
 
 function ShelterAnimalList() {
     axios.defaults.withCredentials = true;
@@ -49,20 +50,17 @@ function ShelterAnimalList() {
     // data state to store the TV Maze API data. Its initial value is an empty array
     const [data, setData] = useState([]);
 
-    const enteredAnimalFields = Object.fromEntries(
-        Object.entries(animal)
-            .filter(([_, value]) => value !== "")
-            .map(([key, value]) => [`"${key}"`, value])
-    );
+    const animalMap = new Map(Object.entries(animal)
+        .filter(([key, value]) => value !== ""));
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const result = await axios.post(
             "http://localhost:8080/animal/getShelterAnimals",
-            JSON.stringify(enteredAnimalFields), {
+            JSON.stringify(Object.fromEntries(animalMap)), {
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'text/plain'
+                    'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON
                 }
             }
         );
@@ -73,10 +71,10 @@ function ShelterAnimalList() {
         (async () => {
             const result = await axios.post(
                 "http://localhost:8080/animal/getShelterAnimals",
-                JSON.stringify(enteredAnimalFields), {
+                JSON.stringify(Object.fromEntries(animalMap)), {
                     withCredentials: true,
                     headers: {
-                        'Content-Type': 'text/plain'
+                        'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON
                     }
                 }
             );

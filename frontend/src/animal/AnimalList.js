@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, {useState, useEffect} from "react";
 import AnimalCard from "./AnimalCard";
+import ShelterServerConstants from "../util/ShelterServerConstants";
 
 function AnimalList() {
     axios.defaults.withCredentials = true;
@@ -43,23 +44,19 @@ function AnimalList() {
         dogsFriendly
     } = animal;
 
-    // data state to store the TV Maze API data. Its initial value is an empty array
     const [data, setData] = useState([]);
 
-    const enteredAnimalFields = Object.fromEntries(
-        Object.entries(animal)
-            .filter(([_, value]) => value !== "")
-            .map(([key, value]) => [`"${key}"`, value])
-    );
+    const animalMap = new Map(Object.entries(animal)
+        .filter(([key, value]) => value !== ""));
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const result = await axios.post(
             "http://localhost:8080/animal/search",
-            JSON.stringify(enteredAnimalFields), {
+            JSON.stringify(Object.fromEntries(animalMap)), {
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'text/plain'
+                    'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON
                 }
             }
         );
@@ -70,10 +67,10 @@ function AnimalList() {
         (async () => {
             const result = await axios.post(
                 "http://localhost:8080/animal/search",
-                JSON.stringify(enteredAnimalFields), {
+                JSON.stringify(Object.fromEntries(animalMap)), {
                     withCredentials: true,
                     headers: {
-                        'Content-Type': 'text/plain'
+                        'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON
                     }
                 }
             );
@@ -92,6 +89,19 @@ function AnimalList() {
                     <h2 className="text-center text-2xl text-orange font-bold p-5">Filtry</h2>
                     <form onSubmit={(e) => handleSubmit(e)} className="w-full m-auto">
                         <div className="flex flex-wrap p-5">
+                            <div className=" w-full px-3 ">
+                                <label htmlFor="city"
+                                       className="block uppercase tracking-wide text-brown text-md font-bold">
+                                    Miasto:
+                                </label>
+                                <input
+                                    type={"text"}
+                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    placeholder="Miasto"
+                                    name="city"
+                                    onChange={(e) => onInputChange(e)}
+                                />
+                            </div>
                             <div className=" w-full px-3 ">
                                 <label htmlFor="species"
                                        className="block uppercase tracking-wide text-brown text-md font-bold">

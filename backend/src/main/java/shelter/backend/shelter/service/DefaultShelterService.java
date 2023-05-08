@@ -40,7 +40,6 @@ public class DefaultShelterService implements ShelterService {
         return shelterDto;
     }
 
-    //fixme fix this weird searchParams everywhere in project
     public List<UserDto> searchShelters(Map<String, String> searchParams) {
         User currentUser = getUser();
         if (currentUser == null || currentUser.getUserType() != UserType.ADMIN) {

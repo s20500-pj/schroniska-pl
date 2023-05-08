@@ -66,23 +66,17 @@ function UsersList() {
         phone,
     } = user;
 
-    const enteredUserFields = {
-        ...Object.fromEntries(
-            Object.entries(user)
-                .filter(([_, value]) => value !== "")
-                .map(([key, value]) => [`"${key}"`, value])
-        ),
-        "\"userType\"": "PERSON"
-    };
+    const userMap = new Map(Object.entries(user)
+        .filter(([key, value]) => value !== ""));
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const result = await axios.post(
             "http://localhost:8080/user/search",
-            JSON.stringify(enteredUserFields), {
+            JSON.stringify(Object.fromEntries(userMap)), {
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'text/plain'
+                    'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON
                 }
             }
         );
@@ -92,10 +86,10 @@ function UsersList() {
         try {
             const result = await axios.post(
                 "http://localhost:8080/user/search",
-                JSON.stringify(enteredUserFields), {
+                JSON.stringify(Object.fromEntries(userMap)), {
                     withCredentials: true,
                     headers: {
-                        'Content-Type': 'text/plain'
+                        'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON
                     }
                 }
             );
