@@ -213,10 +213,10 @@ export default function AnimalDetails() {
             <div className=" px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-5 h-fit">
                     Szczegóły zwierzaka
-                </h2>
+                </h2>   {animal ? (
+                <>
                 <div className='lg:flex justify-evenly md:block'>
-                    {animal ? (
-                        <>
+
                             <div className='px-10 pb-5'>
                                 <h2 className=' text-2xl font-bold text-brown'>Cześć jestem</h2>
                                 <p className=' text-5xl font-bold text-orange pb-5'>{animal.name}</p>
@@ -253,13 +253,9 @@ export default function AnimalDetails() {
                                 </div>
                             </div>
 
-                        </>
-                    ) : (
-                        <p>Ładowanie danych zwierzaka...</p>
-                    )}
 
-                </div>
-                <div className='flex justify-center py-10'>
+
+                </div>     <div className='flex justify-center py-10'>
                     {animal && canAdopt(animal) && (
                         <div>
                             <button
@@ -295,7 +291,11 @@ export default function AnimalDetails() {
                     )}
                     {activityResponseMessage && <div>{activityResponseMessage}</div>}
                     <VirtualAdoptionBtn isPerson={isPerson} animal={animal}/>
-                </div>
+                </div> </>
+            ) : (
+            <p>Ładowanie danych zwierzaka...</p>
+            )}
+
                 <div>
                     {activityFormVisible && (
                         <div className="">

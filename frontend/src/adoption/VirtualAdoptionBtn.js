@@ -84,11 +84,11 @@ export default function VirtualAdoptionBtn({isPerson, animal}) {
                                 Wirtualna adopcja </h2>
                             <p className="mb-4">{Messages.VIRTUAL_ADOPTION_INFORMATION_BTN}</p>
                             <div
-                                className="flex items-start justify-between p-5 border-solid border-orange-200 rounded-t">
-                                <label className="block text-brownfont-semibold ">Kwota [PLN]:</label>
+                                className=" items-start justify-between p-5 border-solid border-orange-200 rounded-t">
+                                <label className="block text-brown font-semibold ">Kwota [PLN]:</label>
                                 <input type="number" value={amount}
                                        onChange={(e) => setAmount(e.target.value)} required
-                                       className="w-full border border-gray-300 p-2 rounded-md"/>
+                                       className="w-full border-2 border-gray p-2 rounded-md focus:outline-orange"/>
                                 {errorMessage && (
                                     <div className="text-red-500 font-semibold">{errorMessage}</div>
                                 )}
