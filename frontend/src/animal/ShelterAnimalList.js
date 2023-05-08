@@ -172,7 +172,7 @@ function ShelterAnimalList() {
                                     <option value="VERY_YOUNG">bardzo młody</option>
                                     <option value="YOUNG">młody</option>
                                     <option value="ADULT">dorosły</option>
-                                    <option value="ELDER">podeszły wiek</option>
+                                    <option value="ELDER">senior</option>
                                 </select>
                             </div>
                             <div className="w-full px-3">

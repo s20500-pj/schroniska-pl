@@ -13,7 +13,7 @@ export const AGE_OPTIONS = {
     VERY_YOUNG: "bardzo młody",
     YOUNG: "młody",
     ADULT: "dorosły",
-    ELDER: "podeszły wiek"
+    ELDER: "senior"
 };
 
 export const ADOPTION_STATUS_OPTIONS = {
