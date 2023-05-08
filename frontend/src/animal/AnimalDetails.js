@@ -7,6 +7,8 @@ import ShelterServerConstants from "../util/ShelterServerConstants";
 import Messages from "../util/Messages";
 import VirtualAdoptionBtn from "../adoption/VirtualAdoptionBtn";
 import {arrayToDate, formatDate} from "../util/DateUtils";
+import PopupSuccessAdd from "./PopupSuccessAdd";
+import PopupSuccessActivity from "../activity/PopupSuccessActitity";
 
 export default function AnimalDetails() {
     axios.defaults.withCredentials = true;
@@ -34,6 +36,7 @@ export default function AnimalDetails() {
     const [activityFormVisible, setActivityFormVisible] = useState(false);
     const [activityDate, setActivityDate] = useState(null);
     const [activityResponseMessage, setActivityResponseMessage] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const placeholderImage = icon;
 
@@ -129,7 +132,8 @@ export default function AnimalDetails() {
             })
             .then((response) => {
                 setActivityFormVisible(false);
-                setActivityResponseMessage(Messages.ACTIVITY_SUCCESS_REGISTRATION + formatDate(activityDate) + ' ' + ShelterServerConstants.ACTIVITY_TIME);
+                setModalOpen(true);
+                // setActivityResponseMessage(Messages.ACTIVITY_SUCCESS_REGISTRATION + formatDate(activityDate) + ' ' + ShelterServerConstants.ACTIVITY_TIME);
             })
             .catch((error) => {
                 alert(error.response.data);
@@ -184,7 +188,7 @@ export default function AnimalDetails() {
     }
 
     const handleInput = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setAnimalEdit((prevState) => ({
             ...prevState,
             [name]: value,
@@ -199,6 +203,7 @@ export default function AnimalDetails() {
             return filtered;
         }, {});
     }
+
     const deleteAnimal = async (id) => {
         try {
             await axios.delete(`http://localhost:8080/animal/delete/${animal.id}`)
@@ -207,117 +212,124 @@ export default function AnimalDetails() {
             console.error(error);
         }
     };
+    const userId = localStorage.getItem("userId");
+
+    const alreadyVirtuallyAdopted = (animal) => {
+        return animal.adoptions.some(
+            (adoption) =>
+                adoption.user.id === parseInt(userId) &&
+                adoption.adoptionType === 'VIRTUAL'
+        );
+    }
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
             <div className=" px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-5 h-fit">
                     Szczegóły zwierzaka
-                </h2>
-                <div className='lg:flex justify-evenly md:block'>
-                    {animal ? (
-                        <>
-                            <div className='px-10 pb-5'>
-                                <h2 className=' text-2xl font-bold text-brown'>Cześć jestem</h2>
-                                <p className=' text-5xl font-bold text-orange pb-5'>{animal.name}</p>
-                                <img src={'/' + animal.imagePath ? '/' + animal.imagePath : placeholderImage}
-                                     onError={onImageError}
-                                     alt="Zdjęcie zwierzaka"
-                                     className="shadow-xl border-2 border-orange rounded-xl object-cover h-[350px] w-[500px]"/>
-                            </div>
-                            <div className='flex 1/2 lg:pt-24 pb-5 md:justify-center md:p-4'>
-                                <div className=''>
-                                    <p className='font-bold pt-2'>Gatunek: </p><p>{SPECIES_OPTIONS[animal.species]}</p>
-                                    <p className='font-bold pt-2'>Płeć: </p><p>{SEX_OPTIONS[animal.sex]}</p>
-                                    <p className='font-bold pt-2'>Wiek: </p><p>{AGE_OPTIONS[animal.age]}</p>
-                                    <p className='font-bold pt-2'>Data urodzenia: </p>
-                                    <p>{formatDate(animal.birthDate)}</p>
-                                    <p className='font-bold pt-2'>Status:</p>
-                                    <p>{ANIMAL_STATUS_OPTIONS[animal.animalStatus]}</p>
-                                    <p className='font-bold pt-2'>Dodatkowe informacje:</p><p> {animal.information}</p>
-                                </div>
-                                <div>
-                                    <p className='font-bold pt-2'>Schronisko:</p><p> {animal.shelter.shelterName}</p>
-                                    <p className='font-bold pt-2'>
-                                        Adres schroniska: </p>
-                                    <p>{animal.shelter.address.street}{" "}
-                                        {animal.shelter.address.buildingNumber}{" "}
-                                        {animal.shelter.address.flatNumber}{" "}
-                                        {animal.shelter.address.postalCode.slice(0, 2)}-{animal.shelter.address.postalCode.slice(2)}{" "}
-                                        {animal.shelter.address.city}
-                                    </p>
-                                    <p className='font-bold pt-2'>Numer KRS: </p>
-                                    <p>{animal.shelter.address.krsNumber}</p>
-                                    <p className='font-bold pt-2'>Telefon do schroniska:</p>
-                                    <p> {animal.shelter.address.phone}</p>
-                                    <div className='block justify-end py-10'>
-                                        {animal && canAdopt(animal) && (
-                                            <div>
-                                                <button
-                                                    className="bg-orange text-white font-bold py-2 px-4 rounded m-5"
-                                                    onClick={() => handleAdoption(animal.id)}
-                                                >
-                                                    Adoptuj
-                                                </button>
-                                            </div>
-                                        )}
-                                        {animal && entitledForActivity(animal) && (
-                                            <div>
-                                                <button
-                                                    className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
-                                                    onClick={showActivityForm}
-                                                >
-                                                    Wolontariat
-                                                </button>
-                                            </div>
-                                        )}
-                                        <div>
-                                        </div>
-                                        {activityFormVisible && (
-                                            <form onSubmit={handleActivity}>
-                                                <p>{Messages.ACTIVITY_INFORMATION}</p>
-                                                <label>
-                                                    Wybierz dzień:
-                                                    <input type="date" min={minDate} max={maxDate}
-                                                           onChange={(e) => setActivityDate(e.target.value)}/>
-                                                </label>
-                                                <button type="submit">Zarezerwuj termin</button>
-                                            </form>
-                                        )}
-                                        {activityResponseMessage && <div>{activityResponseMessage}</div>}
-                                    </div>
-                                    <VirtualAdoptionBtn isPerson={isPerson} animal={animal}/>
-                                </div>
-                                {activityFormVisible && (
-                                    <div className="">
-                                        <form onSubmit={handleActivity}>
-                                            <div className="px-50 ">
-                                                <h2 className="text-left text-xl text-orange font-bold h-fit">
-                                                    Wolontariat
-                                                </h2>
-                                                <p className="w-48">{Messages.ACTIVITY_INFORMATION}</p>
-                                            </div>
-                                            <label>
-                                                <p className='font-bold pt-2'>Wybierz dzień: </p>
-                                                <input type="date" min={minDate} max={maxDate}
-                                                       onChange={(e) => setActivityDate(e.target.value)}/>
-                                            </label>
-                                            <button
-                                                className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
-                                                type="submit">Zarezerwuj termin
-                                            </button>
-                                        </form>
-                                    </div>)}
-                                {activityResponseMessage &&
-                                    <div><h2 className="text-left text-xl text-orange font-bold h-fit">
-                                        Wolontariat
-                                    </h2><p className="w-48 p-4">{activityResponseMessage}</p></div>}
-                            </div>
-                        </>
-                    ) : (
-                        <p>Ładowanie danych zwierzaka...</p>
-                    )}
+                </h2>   {animal ? (
+                <>
+                    <div className='lg:flex justify-evenly md:block'>
 
-                </div>
+                        <div className='px-10 pb-5'>
+                            <h2 className=' text-2xl font-bold text-brown'>Cześć jestem</h2>
+                            <p className=' text-5xl font-bold text-orange pb-5'>{animal.name}</p>
+                            <img src={'/' + animal.imagePath ? '/' + animal.imagePath : placeholderImage}
+                                 onError={onImageError}
+                                 alt="Zdjęcie zwierzaka"
+                                 className="shadow-xl border-2 border-orange rounded-xl object-cover h-[350px] w-[500px]"/>
+                        </div>
+                        <div className='flex 1/2 lg:pt-24 pb-5 md:justify-center md:p-4'>
+                            <div className=''>
+                                <p className='font-bold pt-2'>Gatunek: </p><p>{SPECIES_OPTIONS[animal.species]}</p>
+                                <p className='font-bold pt-2'>Płeć: </p><p>{SEX_OPTIONS[animal.sex]}</p>
+                                <p className='font-bold pt-2'>Wiek: </p><p>{AGE_OPTIONS[animal.age]}</p>
+                                <p className='font-bold pt-2'>Data urodzenia: </p>
+                                <p>{formatDate(animal.birthDate)}</p>
+                                <p className='font-bold pt-2'>Status:</p>
+                                <p>{ANIMAL_STATUS_OPTIONS[animal.animalStatus]}</p>
+                                <p className='font-bold pt-2'>Dodatkowe informacje:</p><p> {animal.information}</p>
+                            </div>
+                            <div>
+                                <p className='font-bold pt-2'>Schronisko:</p><p> {animal.shelter.shelterName}</p>
+                                <p className='font-bold pt-2'>
+                                    Adres schroniska: </p>
+                                <p>{animal.shelter.address.street}{" "}
+                                    {animal.shelter.address.buildingNumber}{" "}
+                                    {animal.shelter.address.flatNumber}{" "}
+                                    {animal.shelter.address.postalCode.slice(0, 2)}-{animal.shelter.address.postalCode.slice(2)}{" "}
+                                    {animal.shelter.address.city}
+                                </p>
+                                <p className='font-bold pt-2'>Numer KRS: </p>
+                                <p>{animal.shelter.address.krsNumber}</p>
+                                <p className='font-bold pt-2'>Telefon do schroniska:</p>
+                                <p> {animal.shelter.address.phone}</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div className='flex justify-center py-10'>
+                        {animal && canAdopt(animal) && (
+                            <div>
+                                <button
+                                    className="bg-orange text-white font-bold py-2 px-4 rounded m-5"
+                                    onClick={() => handleAdoption(animal.id)}
+                                >
+                                    Adoptuj
+                                </button>
+                            </div>
+                        )}
+                        {animal && entitledForActivity(animal) && (
+                            <div>
+                                <button
+                                    className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
+                                    onClick={showActivityForm}
+                                >
+                                    Wolontariat
+                                </button>
+                            </div>
+                        )}
+                        {activityFormVisible && (
+                            <form onSubmit={handleActivity}
+                                  className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50">
+                                <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                    <div
+                                        className="p-4 border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                        <h2 className="text-center text-xl text-orange font-bold h-fit">
+                                            Wolontariat
+                                        </h2>
+                                    <p className="">{Messages.ACTIVITY_INFORMATION}</p>
+                                    <label className="flex justify-center p-6 focus:outline-orange">
+                                        <p className="font-bold text-orange">Wybierz dzień: </p>
+                                        <input type="date" min={minDate} max={maxDate}
+                                               onChange={(e) => setActivityDate(e.target.value)}
+                                        className="mx-2"/>
+                                    </label>
+                                    <button
+                                        className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
+                                        type="submit" >
+                                        <p>Zarezerwuj termin</p>
+                                    </button>
+                                    </div>
+                                </div>
+                            </form>
+                        )}
+                        <div>
+                            {modalOpen && <PopupSuccessActivity setOpenModal={setModalOpen}/>}
+                            {activityResponseMessage && <div>{activityResponseMessage}</div>}
+                            {alreadyVirtuallyAdopted(animal) ? (
+                                    <div>
+                                        <p className=" pt-6 text-orange font-bold">Adoptowałeś już to zwierzę wirtualnie</p>
+                                    </div>) :
+                                (<VirtualAdoptionBtn isPerson={isPerson} animal={animal}/>)}
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <p>Ładowanie danych zwierzaka...</p>
+            )}
+
+
                 {animal && userType === "SHELTER" ? (
                     <div className="text-center">
                         <div>
