@@ -4,17 +4,27 @@ import {CheckCircleIcon} from "@heroicons/react/20/solid";
 
 export default function PayUConfirmationPage() {
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col justify-center ">
-            <div className="flex items-center justify-center mx-auto h-12 w-12 rounded-full bg-green-100">
-                <CheckCircleIcon className="h-6 w-6 text-green-600"/>
+        <div className="bg-background-pattern bg-opacity-20 max-w-none ">
+            <div className="px-10 font-display bg-white bg-opacity-90 text-center">
+            <div className="mx-auto pt-32 h-48 w-24 rounded-full">
+                <CheckCircleIcon className="text-orange"/>
             </div>
-            <div className="mt-4">
-                <div className="text-center">
-                    <h3 className="text-lg leading-6 font-medium text-gray-900">Dziękujemy za dokonanie wpłaty.
-                        Teraz oczekujemy na zatwierdzenie płatności przez wybrane schronisko. <p>
-                            Po potwierdzeniu płatności, otrzymasz e-mail z potwierdzeniem.</p></h3>
+            <div className="m-4">
+                <div className="m-auto text-center p-5 h-48">
+                    <h2 className="text-center text-2xl text-orange font-bold p-5">Dziękujemy za dokonanie wpłaty.</h2>
+                    <p>   Teraz oczekujemy na zatwierdzenie płatności przez wybrane schronisko.
+                          Po potwierdzeniu płatności, otrzymasz e-mail z potwierdzeniem.</p>
                 </div>
+                <button type="submit"
+                        className="px-10 py-2 m-10 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                    <a
+                        href="/userVirtualAdoptionList"
+                        className=' justify-center text-base text-center text-brown font-medium	'
+                    >
+                        Powrót </a>
+                </button>
             </div>
+        </div>
         </div>
     );
 }
