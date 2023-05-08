@@ -18,13 +18,7 @@ export default function VirtualAdoptionBtn({isPerson, animal}) {
             animal.animalStatus !== 'DEAD';
     }
 
-    const alreadyVirtuallyAdopted = (animal) => {
-        return animal.adoptions.some(
-            (adoption) =>
-                adoption.user.id === parseInt(userId) &&
-                adoption.adoptionType === 'VIRTUAL'
-        );
-    }
+
 
     if (!isPerson(userType) || !canBeAdopted(animal)) {
         return null;
@@ -66,7 +60,6 @@ export default function VirtualAdoptionBtn({isPerson, animal}) {
 
     return (
         <>
-            {alreadyVirtuallyAdopted(animal) && (<p>Adoptowałeś już to zwierzę wirtualnie</p>)}
             {!showForm ? (
                 <button
                     className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
