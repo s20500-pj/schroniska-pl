@@ -154,7 +154,7 @@ export default function ShelterDetails() {
                                                 <div className="flex">
                                                     <div>
                                                         <h2 className=" text-md text-orange font-bold h-fit pb-5">
-                                                            Tutaj możesz zaktualizować swoje dane.</h2>
+                                                            Tutaj możesz zaktualizować numer telefonu.</h2>
                                                         <form onSubmit={handleSubmit}>
                                                             <div className="">
                                                                 <input
