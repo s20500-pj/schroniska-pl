@@ -66,8 +66,8 @@ export default function NavbarAdmin() {
                                                 key={item.name}
                                                 href={item.href}
                                                 className={classNames(
-                                                    item.current ? ' text-brown' : 'text-brown hover:text-orange',
-                                                    'rounded-md px-3 py-5 text-sm font-medium active:text-bold'
+                                                    item.current ? ' text-brown text-center ' : 'text-brown hover:text-orange hover:underline-offset-1',
+                                                    'm-2 text-sm'
                                                 )}
                                                 aria-current={item.current ? 'page' : undefined}
                                             >

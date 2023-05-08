@@ -333,10 +333,6 @@ export default function AnimalDetails() {
                 {animal && userType === "SHELTER" ? (
                     <div className="text-center">
                         <div>
-                            <h2 className=" text-xl text-orange font-bold h-fit pb-5">
-                                Poniżej możesz zaktualizować dane.</h2>
-                        </div>
-                        <div className="flex justify-evenly px-10">
                             <div className="">
                                 <button
                                     type="button"
@@ -347,8 +343,14 @@ export default function AnimalDetails() {
                                         Usuń zwierzę
                                     </p></button>
                             </div>
-                            <form onSubmit={handleSubmit}>
-                                <div className="w-50">
+                            <h2 className=" text-xl text-orange font-bold h-fit pb-5">
+                                Poniżej możesz zaktualizować dane.</h2>
+                        </div>
+                        <div className="flex justify-evenly px-10">
+
+                            <form onSubmit={handleSubmit} >
+                                <div className="flex flex-wrap">
+                                <div className="w-50 p-6">
                                     <label htmlFor="species"
                                            className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Imię:
@@ -361,7 +363,7 @@ export default function AnimalDetails() {
                                         onChange={handleInput}
                                     />
                                 </div>
-                                <div className="w-50">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="species"
                                            className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Informacje/opis:
@@ -374,7 +376,7 @@ export default function AnimalDetails() {
                                         onChange={handleInput}
                                     />
                                 </div>
-                                <div className="">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="species"
                                            className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Gatunek:
@@ -390,7 +392,7 @@ export default function AnimalDetails() {
                                         <option value="CAT">Kot</option>
                                     </select>
                                 </div>
-                                <div className="">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="sex"
                                            className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Płeć:
@@ -407,7 +409,7 @@ export default function AnimalDetails() {
                                         <option value="UNKNOWN">nieznany</option>
                                     </select>
                                 </div>
-                                <div className="">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="age"
                                            className=" block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Wiek:
@@ -425,7 +427,7 @@ export default function AnimalDetails() {
                                         <option value="ELDER">stary</option>
                                     </select>
                                 </div>
-                                <div className="">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="animalStatus"
                                            className=" block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Status zwierzęcia:
@@ -442,7 +444,7 @@ export default function AnimalDetails() {
                                         <option value="READY_FOR_ADOPTION">gotowy do adopcji</option>
                                     </select>
                                 </div>
-                                <div className="">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="birthDate"
                                            className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Data urodzenia:
@@ -456,7 +458,7 @@ export default function AnimalDetails() {
                                         onChange={handleInput}
                                     />
                                 </div>
-                                <div className="">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="sterilized"
                                            className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Wysterylizowany?:
@@ -472,7 +474,7 @@ export default function AnimalDetails() {
                                         <option value={true}>Tak</option>
                                     </select>
                                 </div>
-                                <div className="">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="vaccinated"
                                            className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Szczepienia?:
@@ -488,7 +490,7 @@ export default function AnimalDetails() {
                                         <option value={true}>Tak</option>
                                     </select>
                                 </div>
-                                <div className="">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="kidsFriendly"
                                            className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Przyjazny dzieciom?:
@@ -505,7 +507,7 @@ export default function AnimalDetails() {
                                         <option value={true}>Tak</option>
                                     </select>
                                 </div>
-                                <div className="">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="couchPotato"
                                            className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Kanapowiec?:
@@ -521,7 +523,7 @@ export default function AnimalDetails() {
                                         <option value={true}>Tak</option>
                                     </select>
                                 </div>
-                                <div className="">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="needsActiveness"
                                            className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Potrzebuje dużo ruchu?:
@@ -537,7 +539,7 @@ export default function AnimalDetails() {
                                         <option value={true}>Tak</option>
                                     </select>
                                 </div>
-                                <div className="">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="catsFriendly"
                                            className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Toleruje koty?:
@@ -553,7 +555,7 @@ export default function AnimalDetails() {
                                         <option value={true}>Tak</option>
                                     </select>
                                 </div>
-                                <div className="">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="dogsFriendly"
                                            className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Toleruje psy?:
@@ -569,7 +571,7 @@ export default function AnimalDetails() {
                                         <option value={true}>Tak</option>
                                     </select>
                                 </div>
-                                <div className="w-full md:w-1/2 px-3">
+                                    <div className="w-50 p-6">
                                     <label htmlFor="photo"
                                            className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                         Zdjęcie:
@@ -578,6 +580,7 @@ export default function AnimalDetails() {
                                     {photo && (
                                         <p>Wybrano plik: {photo.name}</p>
                                     )}
+                                </div>
                                 </div>
                                 <div className="m-auto text-center">
                                     <button type="submit"

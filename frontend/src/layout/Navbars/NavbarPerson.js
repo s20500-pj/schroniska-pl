@@ -6,12 +6,12 @@ import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 import axios from "axios";
 
 const navigation = [
-    {name: 'Lista zwierząt', href: '/animalList', current: false},
-    {name: 'Adopcja', href: '/userRealAdoptionList', current: false},
-    {name: 'Adopcja wirtualna', href: '/userVirtualAdoptionList', current: false},
-    {name: 'Wolontariat', href: '/userActivityList', current: false},
-    {name: 'Moje dane', href: '/personsettings', current: false},
-    {name: 'Lista schronisk', href: '/shelterList', current: false}
+    {name: 'LISTA ZWIERZĄT', href: '/animalList', current: false},
+    {name: 'ADOPCJA', href: '/userRealAdoptionList', current: false},
+    {name: 'ADOPCJA WIRTUALNA', href: '/userVirtualAdoptionList', current: false},
+    {name: 'WOLONTARIAT', href: '/userActivityList', current: false},
+    {name: 'MOJE DANE', href: '/personsettings', current: false},
+    {name: 'LISTA SCHRONISK', href: '/shelterList', current: false}
 
 ]
 
@@ -34,7 +34,7 @@ export default function NavbarPerson() {
         <Disclosure as="nav" className="bg-white">
             {({open}) => (
                 <>
-                    <div className="mx-auto max-w-6xl px-2 sm:px-4 lg:px-4">
+                    <div className="mx-auto max-w-6xl px-2 sm:px-4">
                         <div className="relative flex h-16 items-center justify-between">
                             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                                 {/* Mobile menu button*/}
@@ -65,20 +65,19 @@ export default function NavbarPerson() {
                                 </Link>
 
                                 <div className="hidden sm:ml-6 sm:block">
-                                    <div className="flex space-x-4">
+                                    <div className="flex m-4">
                                         {navigation.map((item) => (
                                             <a
                                                 key={item.name}
                                                 href={item.href}
                                                 className={classNames(
-                                                    item.current ? ' text-brown' : 'text-brown hover:text-orange',
-                                                    'rounded-md px-3 py-5 text-sm font-medium'
+                                                    item.current ? ' text-brown text-center ' : 'text-brown hover:text-orange hover:underline-offset-1',
+                                                    'm-2 text-sm'
                                                 )}
                                                 aria-current={item.current ? 'page' : undefined}
                                             >
                                                 {item.name}
                                             </a>
-
                                         ))}
                                     </div>
                                 </div>
@@ -86,7 +85,7 @@ export default function NavbarPerson() {
                             </div>
                             <div
                                 className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                                <button className="flex ml-4 hover:text-orange " onClick={handleLogout}>
+                                <button className="flex ml-2 hover:text-orange " onClick={handleLogout}>
 
                                     <div className="flex">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6"

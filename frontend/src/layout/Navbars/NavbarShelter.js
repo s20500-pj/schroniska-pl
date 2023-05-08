@@ -6,12 +6,12 @@ import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 import axios from "axios";
 
 const navigation = [
-    {name: 'Lista zwierząt w schronisku', href: '/shelterAnimalList', current: false},
-    {name: 'Dodaj zwierzę', href: '/addAnimal', current: false},
-    {name: 'Adopcja', href: '/shelterRealAdoptionList', current: false},
-    {name: 'Adopcja wirtualna', href: '/shelterVirtualAdoptionList', current: false},
-    {name: 'Wolontariat', href: '/shelterActivityList', current: false},
-    {name: 'Dane schroniska', href: `/shelterdetails/${localStorage.getItem("userId")}`, current: false}
+    {name: 'ZWIERZĘTA W SCHORNISKU', href: '/shelterAnimalList', current: false},
+    {name: 'DODAJ ZWIERZĘ', href: '/addAnimal', current: false},
+    {name: 'ADOPCJE', href: '/shelterRealAdoptionList', current: false},
+    {name: 'ADOPCJE WIRTUALNE', href: '/shelterVirtualAdoptionList', current: false},
+    {name: 'WOLONTARIAT', href: '/shelterActivityList', current: false},
+    {name: 'DANE SCHRONISKA ', href: `/shelterdetails/${localStorage.getItem("userId")}`, current: false}
 ]
 
 function classNames(...classes) {
@@ -33,7 +33,7 @@ export default function NavbarShelter() {
         <Disclosure as="nav" className="bg-white">
             {({open}) => (
                 <>
-                    <div className="mx-auto max-w-6xl px-2 sm:px-4 lg:px-4">
+                    <div className="mx-auto max-w-7xl px-2 sm:px-4">
                         <div className="relative flex h-16 items-center justify-between">
                             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                                 {/* Mobile menu button*/}
@@ -63,15 +63,14 @@ export default function NavbarShelter() {
                                     </div>
                                 </Link>
 
-                                <div className="hidden sm:ml-6 sm:block">
-                                    <div className="flex space-x-4">
+                                <div className="hidden sm:block">
+                                    <div className="flex justify-end">
                                         {navigation.map((item) => (
-                                            <a
-                                                key={item.name}
+                                            <a key={item.name}
                                                 href={item.href}
                                                 className={classNames(
-                                                    item.current ? ' text-brown' : 'text-brown hover:text-orange',
-                                                    'rounded-md px-3 py-5 text-sm font-medium'
+                                                    item.current ? ' text-brown text-center ' : 'text-brown hover:text-orange hover:underline-offset-1',
+                                                    'mt-6 mx-3 text-sm'
                                                 )}
                                                 aria-current={item.current ? 'page' : undefined}
                                             >
