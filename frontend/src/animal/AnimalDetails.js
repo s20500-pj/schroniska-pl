@@ -7,6 +7,8 @@ import ShelterServerConstants from "../util/ShelterServerConstants";
 import Messages from "../util/Messages";
 import VirtualAdoptionBtn from "../adoption/VirtualAdoptionBtn";
 import {arrayToDate, formatDate} from "../util/DateUtils";
+import PopupSuccessAdd from "./PopupSuccessAdd";
+import PopupSuccessActivity from "../activity/PopupSuccessActitity";
 
 export default function AnimalDetails() {
     axios.defaults.withCredentials = true;
@@ -34,6 +36,7 @@ export default function AnimalDetails() {
     const [activityFormVisible, setActivityFormVisible] = useState(false);
     const [activityDate, setActivityDate] = useState(null);
     const [activityResponseMessage, setActivityResponseMessage] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const placeholderImage = icon;
 
@@ -129,7 +132,8 @@ export default function AnimalDetails() {
             })
             .then((response) => {
                 setActivityFormVisible(false);
-                setActivityResponseMessage(Messages.ACTIVITY_SUCCESS_REGISTRATION + formatDate(activityDate) + ' ' + ShelterServerConstants.ACTIVITY_TIME);
+                setModalOpen(true);
+                // setActivityResponseMessage(Messages.ACTIVITY_SUCCESS_REGISTRATION + formatDate(activityDate) + ' ' + ShelterServerConstants.ACTIVITY_TIME);
             })
             .catch((error) => {
                 alert(error.response.data);
@@ -286,23 +290,38 @@ export default function AnimalDetails() {
                             </div>
                         )}
                         {activityFormVisible && (
-                            <form onSubmit={handleActivity}>
-                                <p>{Messages.ACTIVITY_INFORMATION}</p>
-                                <label>
-                                    Wybierz dzień:
-                                    <input type="date" min={minDate} max={maxDate}
-                                           onChange={(e) => setActivityDate(e.target.value)}/>
-                                </label>
-                                <button type="submit">Zarezerwuj termin</button>
+                            <form onSubmit={handleActivity}
+                                  className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50">
+                                <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                    <div
+                                        className="p-4 border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                        <h2 className="text-center text-xl text-orange font-bold h-fit">
+                                            Wolontariat
+                                        </h2>
+                                    <p className="">{Messages.ACTIVITY_INFORMATION}</p>
+                                    <label className="flex justify-center p-6 focus:outline-orange">
+                                        <p className="font-bold text-orange">Wybierz dzień: </p>
+                                        <input type="date" min={minDate} max={maxDate}
+                                               onChange={(e) => setActivityDate(e.target.value)}
+                                        className="mx-2"/>
+                                    </label>
+                                    <button
+                                        className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
+                                        type="submit" >
+                                        <p>Zarezerwuj termin</p>
+                                    </button>
+                                    </div>
+                                </div>
                             </form>
                         )}
                         <div>
-                        {activityResponseMessage && <div>{activityResponseMessage}</div>}
-                        {alreadyVirtuallyAdopted(animal) ? (
-                                <div>
-                                    <p className=" pt-6 text-orange font-bold">Adoptowałeś już to zwierzę wirtualnie</p>
-                                </div>) :
-                            (<VirtualAdoptionBtn isPerson={isPerson} animal={animal}/>)}
+                            {modalOpen && <PopupSuccessActivity setOpenModal={setModalOpen}/>}
+                            {activityResponseMessage && <div>{activityResponseMessage}</div>}
+                            {alreadyVirtuallyAdopted(animal) ? (
+                                    <div>
+                                        <p className=" pt-6 text-orange font-bold">Adoptowałeś już to zwierzę wirtualnie</p>
+                                    </div>) :
+                                (<VirtualAdoptionBtn isPerson={isPerson} animal={animal}/>)}
                         </div>
                     </div>
                 </>
@@ -310,32 +329,6 @@ export default function AnimalDetails() {
                 <p>Ładowanie danych zwierzaka...</p>
             )}
 
-                <div>
-                    {activityFormVisible && (
-                        <div className="">
-                            <form onSubmit={handleActivity}>
-                                <div className="px-50 ">
-                                    <h2 className="text-left text-xl text-orange font-bold h-fit">
-                                        Wolontariat
-                                    </h2>
-                                    <p className="w-48">{Messages.ACTIVITY_INFORMATION}</p>
-                                </div>
-                                <label>
-                                    <p className='font-bold pt-2'>Wybierz dzień: </p>
-                                    <input type="date" min={minDate} max={maxDate}
-                                           onChange={(e) => setActivityDate(e.target.value)}/>
-                                </label>
-                                <button
-                                    className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
-                                    type="submit">Zarezerwuj termin
-                                </button>
-                            </form>
-                        </div>)}
-                    {activityResponseMessage &&
-                        <div><h2 className="text-left text-xl text-orange font-bold h-fit">
-                            Wolontariat
-                        </h2><p className="w-48 p-4">{activityResponseMessage}</p></div>}
-                </div>
 
                 {animal && userType === "SHELTER" ? (
                     <div className="text-center">
