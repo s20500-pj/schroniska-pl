@@ -184,7 +184,7 @@ export default function AnimalDetails() {
     }
 
     const handleInput = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setAnimalEdit((prevState) => ({
             ...prevState,
             [name]: value,
@@ -199,6 +199,7 @@ export default function AnimalDetails() {
             return filtered;
         }, {});
     }
+
     const deleteAnimal = async (id) => {
         try {
             await axios.delete(`http://localhost:8080/animal/delete/${animal.id}`)
@@ -249,75 +250,79 @@ export default function AnimalDetails() {
                                     <p>{animal.shelter.address.krsNumber}</p>
                                     <p className='font-bold pt-2'>Telefon do schroniska:</p>
                                     <p> {animal.shelter.address.phone}</p>
-                                    <div className='block justify-end py-10'>
-                                        {animal && canAdopt(animal) && (
-                                            <div>
-                                                <button
-                                                    className="bg-orange text-white font-bold py-2 px-4 rounded m-5"
-                                                    onClick={() => handleAdoption(animal.id)}
-                                                >
-                                                    Adoptuj
-                                                </button>
-                                            </div>
-                                        )}
-                                        {animal && entitledForActivity(animal) && (
-                                            <div>
-                                                <button
-                                                    className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
-                                                    onClick={showActivityForm}
-                                                >
-                                                    Wolontariat
-                                                </button>
-                                            </div>
-                                        )}
-                                        <div>
-                                        </div>
-                                        {activityFormVisible && (
-                                            <form onSubmit={handleActivity}>
-                                                <p>{Messages.ACTIVITY_INFORMATION}</p>
-                                                <label>
-                                                    Wybierz dzień:
-                                                    <input type="date" min={minDate} max={maxDate}
-                                                           onChange={(e) => setActivityDate(e.target.value)}/>
-                                                </label>
-                                                <button type="submit">Zarezerwuj termin</button>
-                                            </form>
-                                        )}
-                                        {activityResponseMessage && <div>{activityResponseMessage}</div>}
-                                    </div>
-                                    <VirtualAdoptionBtn isPerson={isPerson} animal={animal}/>
                                 </div>
-                                {activityFormVisible && (
-                                    <div className="">
-                                        <form onSubmit={handleActivity}>
-                                            <div className="px-50 ">
-                                                <h2 className="text-left text-xl text-orange font-bold h-fit">
-                                                    Wolontariat
-                                                </h2>
-                                                <p className="w-48">{Messages.ACTIVITY_INFORMATION}</p>
-                                            </div>
-                                            <label>
-                                                <p className='font-bold pt-2'>Wybierz dzień: </p>
-                                                <input type="date" min={minDate} max={maxDate}
-                                                       onChange={(e) => setActivityDate(e.target.value)}/>
-                                            </label>
-                                            <button
-                                                className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
-                                                type="submit">Zarezerwuj termin
-                                            </button>
-                                        </form>
-                                    </div>)}
-                                {activityResponseMessage &&
-                                    <div><h2 className="text-left text-xl text-orange font-bold h-fit">
-                                        Wolontariat
-                                    </h2><p className="w-48 p-4">{activityResponseMessage}</p></div>}
                             </div>
+
                         </>
                     ) : (
                         <p>Ładowanie danych zwierzaka...</p>
                     )}
 
                 </div>
+                <div className='flex justify-center py-10'>
+                    {animal && canAdopt(animal) && (
+                        <div>
+                            <button
+                                className="bg-orange text-white font-bold py-2 px-4 rounded m-5"
+                                onClick={() => handleAdoption(animal.id)}
+                            >
+                                Adoptuj
+                            </button>
+                        </div>
+                    )}
+                    {animal && entitledForActivity(animal) && (
+                        <div>
+                            <button
+                                className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
+                                onClick={showActivityForm}
+                            >
+                                Wolontariat
+                            </button>
+                        </div>
+                    )}
+                    <div>
+                    </div>
+                    {activityFormVisible && (
+                        <form onSubmit={handleActivity}>
+                            <p>{Messages.ACTIVITY_INFORMATION}</p>
+                            <label>
+                                Wybierz dzień:
+                                <input type="date" min={minDate} max={maxDate}
+                                       onChange={(e) => setActivityDate(e.target.value)}/>
+                            </label>
+                            <button type="submit">Zarezerwuj termin</button>
+                        </form>
+                    )}
+                    {activityResponseMessage && <div>{activityResponseMessage}</div>}
+                    <VirtualAdoptionBtn isPerson={isPerson} animal={animal}/>
+                </div>
+                <div>
+                    {activityFormVisible && (
+                        <div className="">
+                            <form onSubmit={handleActivity}>
+                                <div className="px-50 ">
+                                    <h2 className="text-left text-xl text-orange font-bold h-fit">
+                                        Wolontariat
+                                    </h2>
+                                    <p className="w-48">{Messages.ACTIVITY_INFORMATION}</p>
+                                </div>
+                                <label>
+                                    <p className='font-bold pt-2'>Wybierz dzień: </p>
+                                    <input type="date" min={minDate} max={maxDate}
+                                           onChange={(e) => setActivityDate(e.target.value)}/>
+                                </label>
+                                <button
+                                    className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
+                                    type="submit">Zarezerwuj termin
+                                </button>
+                            </form>
+                        </div>)}
+                    {activityResponseMessage &&
+                        <div><h2 className="text-left text-xl text-orange font-bold h-fit">
+                            Wolontariat
+                        </h2><p className="w-48 p-4">{activityResponseMessage}</p></div>}
+                </div>
+
                 {animal && userType === "SHELTER" ? (
                     <div className="text-center">
                         <div>

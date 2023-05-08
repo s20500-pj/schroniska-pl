@@ -69,32 +69,41 @@ export default function VirtualAdoptionBtn({isPerson, animal}) {
             {alreadyVirtuallyAdopted(animal) && (<p>Adoptowałeś już to zwierzę wirtualnie</p>)}
             {!showForm ? (
                 <button
-                    className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded"
+                    className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
                     onClick={showVirtualAdoptionForm}
                 >
                     Adoptuj wirtualnie
                 </button>
             ) : (
                 <form onSubmit={(e) => handleVirtualAdoption(e)}
-                      className="bg-white mt-4 p-4 rounded-md shadow-orange shadow-2xl max-w-4xl mx-auto">
-                    <p className="mb-4">{Messages.VIRTUAL_ADOPTION_INFORMATION_BTN}</p>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 font-semibold mb-2">Kwota [PLN]:</label>
-                        <input type="number" value={amount}
-                               onChange={(e) => setAmount(e.target.value)} required
-                               className="w-full border border-gray-300 p-2 rounded-md"/>
-                        {errorMessage && (
-                            <div className="text-red-500">{errorMessage}</div>
-                        )}
-                    </div>
-                    <div className="flex justify-between">
-                        <button type="button" onClick={(e) => handleBack(e)}
-                                className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded-md">Anuluj
-                        </button>
-                        <button type="submit"
-                                className="bg-green hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-md">
-                            Zaadoptuj zwierzątko
-                        </button>
+                      className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50">
+                    <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                        <div
+                            className="p-4 border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                            <h2 className="text-center text-xl text-orange font-bold p-5 h-fit">
+                                Wirtualna adopcja </h2>
+                            <p className="mb-4">{Messages.VIRTUAL_ADOPTION_INFORMATION_BTN}</p>
+                            <div
+                                className="flex items-start justify-between p-5 border-solid border-orange-200 rounded-t">
+                                <label className="block text-brownfont-semibold ">Kwota [PLN]:</label>
+                                <input type="number" value={amount}
+                                       onChange={(e) => setAmount(e.target.value)} required
+                                       className="w-full border border-gray-300 p-2 rounded-md"/>
+                                {errorMessage && (
+                                    <div className="text-red-500 font-semibold">{errorMessage}</div>
+                                )}
+                            </div>
+                            <div className="flex justify-between">
+                                <button type="button" onClick={(e) => handleBack(e)}
+                                        className=" px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                    <p className="py-15 justify-center text-base text-center text-brown font-medium	">Anuluj</p>
+                                </button>
+                                <button type="submit"
+                                        className=" px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                    <p className="py-15 justify-center text-base text-center text-brown font-medium	">  Zaadoptuj zwierzątko </p>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             )
