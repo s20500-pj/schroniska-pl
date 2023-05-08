@@ -421,7 +421,7 @@ export default function AnimalDetails() {
                                         <option value="VERY_YOUNG">bardzo młody</option>
                                         <option value="YOUNG">młody</option>
                                         <option value="ADULT">dorosły</option>
-                                        <option value="ELDER">stary</option>
+                                        <option value="ELDER">podeszły wiek</option>
                                     </select>
                                 </div>
                                 <div className="">
