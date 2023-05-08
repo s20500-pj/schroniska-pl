@@ -12,6 +12,7 @@ export default function AnimalDetails() {
     axios.defaults.withCredentials = true;
     const navigate = useNavigate();
     const {id} = useParams();
+    const [isProperShelter, setIsProperShelter] = useState(false);
     const [animal, setAnimal] = useState(null);
     const [animalEdit, setAnimalEdit] = useState({
         id: id,
@@ -149,6 +150,15 @@ export default function AnimalDetails() {
             .catch((error) => console.error("Error fetching animal data:", error));
     }, [id, reload]);
 
+    useEffect(() => {
+        if (animal) {
+            setIsProperShelter(
+                localStorage.getItem("userType") === "SHELTER" &&
+                localStorage.getItem("userId") == animal.shelter.id
+            );
+        }
+    }, [animal]);
+
     const now = new Date();
     if (now.getHours() >= 14) {
         now.setDate(now.getDate() + 1);
@@ -184,7 +194,7 @@ export default function AnimalDetails() {
     }
 
     const handleInput = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setAnimalEdit((prevState) => ({
             ...prevState,
             [name]: value,
@@ -199,6 +209,7 @@ export default function AnimalDetails() {
             return filtered;
         }, {});
     }
+
     const deleteAnimal = async (id) => {
         try {
             await axios.delete(`http://localhost:8080/animal/delete/${animal.id}`)
@@ -318,7 +329,7 @@ export default function AnimalDetails() {
                     )}
 
                 </div>
-                {animal && userType === "SHELTER" ? (
+                {animal && isProperShelter ? (
                     <div className="text-center">
                         <div>
                             <h2 className=" text-xl text-orange font-bold h-fit pb-5">
