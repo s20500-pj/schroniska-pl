@@ -160,10 +160,10 @@ public class ShelterRegistrationService implements RegistrationService {
     private User persistTheUser(UserDto userDto) {
         User newUser = userMapper.toEntity(userDto);
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        newUser.setIban(shelterEncryptor.encrypt(userDto.getIban()));
         newUser.setDisabled(true);
         ERole roleName;
         if (isShelter(newUser)) {
+            newUser.setIban(shelterEncryptor.encrypt(userDto.getIban()));
             roleName = ERole.ROLE_SHELTER;
         } else {
             roleName = ERole.ROLE_USER;
