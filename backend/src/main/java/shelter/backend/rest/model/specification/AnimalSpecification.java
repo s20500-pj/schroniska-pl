@@ -93,6 +93,8 @@ public class AnimalSpecification implements Specification<Animal> {
                 case ADOPTED -> {
                     if (value.equals("false")) {
                         predicates.add(criteriaBuilder.notEqual(root.get(ANIMAL_STATUS), AnimalStatus.ADOPTED));
+                    } else if (value.equals("true")) {
+                        predicates.add(criteriaBuilder.equal(root.get(ANIMAL_STATUS), AnimalStatus.ADOPTED));
                     }
                 }
             }
