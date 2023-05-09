@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, {useState, useEffect} from "react";
 import AnimalCard from "./AnimalCard";
+import ShelterServerConstants from "../util/ShelterServerConstants";
 
 function ShelterAnimalList() {
     axios.defaults.withCredentials = true;
-
+    const [isAdopted, setIsAdopted] = useState(false);
     const [error, setError] = useState("");
     const [animal, setAnimal] = useState({
         name: "",
@@ -21,7 +22,8 @@ function ShelterAnimalList() {
         needsActiveness: "",
         catsFriendly: "",
         dogsFriendly: "",
-        imagePath: ""
+        imagePath: "",
+        adopted: 'false'
     });
 
     const onInputChange = (e) => {
@@ -41,26 +43,24 @@ function ShelterAnimalList() {
         couchPotato,
         needsActiveness,
         catsFriendly,
-        dogsFriendly
+        dogsFriendly,
+        adopted
     } = animal;
 
     // data state to store the TV Maze API data. Its initial value is an empty array
     const [data, setData] = useState([]);
 
-    const enteredAnimalFields = Object.fromEntries(
-        Object.entries(animal)
-            .filter(([_, value]) => value !== "")
-            .map(([key, value]) => [`"${key}"`, value])
-    );
+    const animalMap = new Map(Object.entries(animal)
+        .filter(([key, value]) => value !== ""));
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const result = await axios.post(
             "http://localhost:8080/animal/getShelterAnimals",
-            JSON.stringify(enteredAnimalFields), {
+            JSON.stringify(Object.fromEntries(animalMap)), {
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'text/plain'
+                    'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON
                 }
             }
         );
@@ -71,10 +71,10 @@ function ShelterAnimalList() {
         (async () => {
             const result = await axios.post(
                 "http://localhost:8080/animal/getShelterAnimals",
-                JSON.stringify(enteredAnimalFields), {
+                JSON.stringify(Object.fromEntries(animalMap)), {
                     withCredentials: true,
                     headers: {
-                        'Content-Type': 'text/plain'
+                        'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON
                     }
                 }
             );
@@ -83,7 +83,24 @@ function ShelterAnimalList() {
     }, []);
 
     const handleClear = () => {
-        setAnimal({});
+        setAnimal({
+            name: "",
+            information: "",
+            species: "",
+            sex: "",
+            age: "",
+            birthDate: "",
+            animalStatus: "",
+            sterilized: "",
+            vaccinated: "",
+            kidsFriendly: "",
+            couchPotato: "",
+            needsActiveness: "",
+            catsFriendly: "",
+            dogsFriendly: "",
+            imagePath: "",
+            adopted: 'false'
+        });
     };
 
     return (
@@ -155,7 +172,7 @@ function ShelterAnimalList() {
                                     <option value="VERY_YOUNG">bardzo młody</option>
                                     <option value="YOUNG">młody</option>
                                     <option value="ADULT">dorosły</option>
-                                    <option value="ELDER">stary</option>
+                                    <option value="ELDER">senior</option>
                                 </select>
                             </div>
                             <div className="w-full px-3">
@@ -274,6 +291,25 @@ function ShelterAnimalList() {
                                     <option value={false}>Nie</option>
                                     <option value={true}>Tak</option>
                                 </select>
+                            </div>
+                            <div className="w-full px-3 mb-9">
+                                <label className="block uppercase tracking-wide text-brown text-md font-bold">
+                                    Pokaż listę zwierząt zaadoptowanych:
+                                </label>
+                                <input
+                                    className="toggle-checkbox absolute block w-6 h-6 rounded-full border-4 cursor-pointer"
+                                    type="checkbox"
+                                    name="adopted"
+                                    checked={isAdopted}
+                                    onChange={(e) => {
+                                        const checkedAsString = e.target.checked ? 'true' : 'false';
+                                        setIsAdopted(e.target.checked);
+                                        onInputChange({
+                                            ...e,
+                                            target: {...e.target, value: checkedAsString, name: 'adopted'}
+                                        });
+                                    }}
+                                />
                             </div>
                             <div className="w-full px-3">
                                 <div className="flex justify-around py-2">

@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import shelter.backend.login.service.AuthenticationService;
 import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.rest.model.entity.Activity;
@@ -22,8 +23,9 @@ import shelter.backend.storage.repository.UserRepository;
 import shelter.backend.utils.basic.ClientInterceptor;
 
 import java.util.List;
+import java.util.Map;
 
-import static shelter.backend.animals.service.ShelterAnimalService.parseSearchParams;
+import static shelter.backend.rest.model.specification.UserSpecification.USER_TYPE;
 
 @RequiredArgsConstructor
 @Service
@@ -37,8 +39,9 @@ public class ShelterUserService implements UserService {
     private final AdoptionRepository adoptionRepository;
     private final ActivityRepository activityRepository;
 
-    public List<UserDto> search(String searchParams) {
-        UserSpecification userSpecification = new UserSpecification(parseSearchParams(searchParams));
+    public List<UserDto> search(@RequestBody Map<String, String> searchParams) {
+        searchParams.put(USER_TYPE, UserType.PERSON.toString());
+        UserSpecification userSpecification = new UserSpecification(searchParams);
         return userMapper.toDtoList(userRepository.findAll(userSpecification));
     }
 

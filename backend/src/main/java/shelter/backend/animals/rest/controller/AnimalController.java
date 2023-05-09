@@ -13,6 +13,7 @@ import shelter.backend.animals.service.AnimalService;
 import shelter.backend.rest.model.dtos.AnimalDto;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -53,14 +54,14 @@ public class AnimalController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(value = "/search", consumes = MediaType.TEXT_PLAIN_VALUE)
-    ResponseEntity<List<AnimalDto>> search(@RequestBody String searchParams) {
+    @PostMapping(value = "/search", consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<List<AnimalDto>> search(@RequestBody Map<String, String> searchParams) {
         return ResponseEntity.ok(animalService.search(searchParams));
     }
 
     @PreAuthorize("hasRole('SHELTER')")
-    @PostMapping(value = "/getShelterAnimals", consumes = MediaType.TEXT_PLAIN_VALUE)
-    ResponseEntity<List<AnimalDto>> getShelterAnimals(@RequestBody String searchParams) {
+    @PostMapping(value = "/getShelterAnimals", consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<List<AnimalDto>> getShelterAnimals(@RequestBody Map<String, String> searchParams) {
         return ResponseEntity.ok(animalService.getShelterAnimals(searchParams));
     }
 }

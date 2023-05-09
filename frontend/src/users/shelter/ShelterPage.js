@@ -3,7 +3,6 @@ import React from "react";
 export default function ShelterPage() {
 
     const shelterName = localStorage.getItem("shelterName");
-    const lastName = localStorage.getItem("lastName");
     return (
         <div className="flex">
             <section className="w-full bg-cover bg-center py-48 bg-background-hero">

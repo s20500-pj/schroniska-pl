@@ -26,7 +26,7 @@ export default function AddAnimal() {
     });
 
     const [photo, setPhoto] = useState(null);
-
+    const currentDate = new Date().toISOString().slice(0, 10);
     const handlePhotoChange = (event) => {
         const selectedFile = event.target.files[0];
         setPhoto(selectedFile);
@@ -167,7 +167,7 @@ export default function AddAnimal() {
                                 <option value="VERY_YOUNG">bardzo młody</option>
                                 <option value="YOUNG">młody</option>
                                 <option value="ADULT">dorosły</option>
-                                <option value="ELDER">stary</option>
+                                <option value="ELDER">senior</option>
                             </select>
                         </div>
                         <div className="w-full md:w-1/2 px-3">
@@ -201,6 +201,7 @@ export default function AddAnimal() {
                                 value={birthDate}
                                 onChange={(e) => onInputChange(e)}
                                 required
+                                max={currentDate}
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">

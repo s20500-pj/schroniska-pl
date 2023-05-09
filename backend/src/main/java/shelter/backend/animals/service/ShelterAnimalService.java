@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 import shelter.backend.rest.model.dtos.AnimalDto;
 import shelter.backend.rest.model.entity.Animal;
@@ -25,6 +26,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import static shelter.backend.rest.model.specification.AnimalSpecification.ADOPTED;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -90,33 +93,16 @@ public class ShelterAnimalService implements AnimalService {
         }
     }
 
-    public List<AnimalDto> search(String searchParams) {
-        AnimalSpecification animalSpecification = new AnimalSpecification(parseSearchParams(searchParams));
+    public List<AnimalDto> search(Map<String, String> searchParams) {
+        searchParams.put(ADOPTED, Boolean.FALSE.toString());
+        AnimalSpecification animalSpecification = new AnimalSpecification(searchParams);
         return animalMapper.toDtoList(animalRepository.findAll(animalSpecification));
     }
 
-    //fixme fix this weire searchParams everywhere in project.restore the map
-    public List<AnimalDto> getShelterAnimals(String searchParams) {
-        Map<String, String> parsedSearchParams = parseSearchParams(searchParams);
-        parsedSearchParams.put(SpecificationConstants.SHELTER_ID, getLoggedUser().getId().toString());
-        AnimalSpecification animalSpecification = new AnimalSpecification(parsedSearchParams);
+    public List<AnimalDto> getShelterAnimals(@RequestBody Map<String, String> searchParams) {
+        searchParams.put(SpecificationConstants.SHELTER_ID, getLoggedUser().getId().toString());
+        AnimalSpecification animalSpecification = new AnimalSpecification(searchParams);
         return animalMapper.toDtoList(animalRepository.findAll(animalSpecification));
-    }
-
-    static public Map<String, String> parseSearchParams(String searchParams) {
-        Map<String, String> params = new HashMap<>();
-
-        JSONObject jsonObject = new JSONObject(searchParams);
-        Iterator<String> keys = jsonObject.keys();
-
-        while (keys.hasNext()) {
-            String key = keys.next();
-            String value = jsonObject.getString(key);
-            key = key.replaceAll("^\"|\"$", "");
-            params.put(key, value);
-        }
-
-        return params;
     }
 
     private User getLoggedUser() {
