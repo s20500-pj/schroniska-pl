@@ -1,5 +1,6 @@
 package shelter.backend.registration.service;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,8 +23,10 @@ import shelter.backend.storage.repository.PayUClientCredentialsRepository;
 import shelter.backend.storage.repository.RoleRepository;
 import shelter.backend.storage.repository.UserRepository;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -44,27 +47,21 @@ class ShelterRegistrationServiceTest {
     @Mock
     private UserRepository userRepository;
     @Mock
-    private RoleRepository roleRepository;
-    @Mock
-    private PayUClientCredentialsRepository payUClientCredentialsRepository;
-    @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
     private TokenService tokenService;
-    @Mock
-    private ApprovalProvider approvalProvider;
     @Mock
     private UserValidator userValidator;
     @Mock
     private AddressRepository addressRepository;
     @Mock
     private UserMapper userMapper = new UserMapper(userRepository, addressRepository);
-    @Mock
-    private PayUClientCredentialsMapper payUClientCredentialsMapper;
 
     private User user;
 
     private UserDto userDto;
+
+    private Token token;
 
     @BeforeEach
     void steup() {
@@ -86,6 +83,9 @@ class ShelterRegistrationServiceTest {
                 .firstName("firstName")
                 .lastName("lastName")
                 .build();
+
+        token = new Token("1", UUID.randomUUID().toString(), user.getEmail(), new Date());
+
     }
 
 
@@ -115,7 +115,7 @@ class ShelterRegistrationServiceTest {
                 .roles(user.getRoles())
                 .isDisabled(true)
                 .build());
-        when(tokenService.generateToken(anyInt(), any())).thenReturn(new Token("1", UUID.randomUUID().toString(), user.getEmail(), new Date()));
+        when(tokenService.generateToken(anyInt(), any())).thenReturn(token);
         doNothing().when(shelterEmailService).sendConfirmationEmail(any(), any(), any(), any());
         //
         //
@@ -125,18 +125,25 @@ class ShelterRegistrationServiceTest {
     }
 
     @Test
-    void confirmToken() {
-    }
+    void confirmTokenUserEnabled() {
+        //
+        when(tokenService.getToken(any())).thenReturn(token);
+        when(userRepository.findUserByEmail(any())).thenReturn(user);
+        Assertions.assertTrue(registrationService.confirmToken("confirmationToken"));
+        verify(userRepository, times(1)).save(user);
+        verify(tokenService, times(1)).deleteToken(token);
 
-    @Test
-    void checkApprovalStatus() {
-    }
-
-    @Test
-    void enableShelterAccounts() {
     }
 
     @Test
     void deleteUnusedTokensUnconfirmedUsers() {
+        //
+        Token expired = new Token("2", UUID.randomUUID().toString(), "test2@expired.com", DateUtils.addHours(new Date(), -1));
+        //
+        when(tokenService.findAll()).thenReturn(List.of(expired, token));
+        when(tokenService.isExpired(expired)).thenReturn(true);
+        //
+        registrationService.deleteUnusedTokensUnconfirmedUsers();
+        verify(tokenService, times(1)).deleteToken(expired);
     }
 }
