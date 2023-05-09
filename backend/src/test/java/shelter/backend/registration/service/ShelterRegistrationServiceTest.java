@@ -16,14 +16,11 @@ import shelter.backend.rest.model.entity.Address;
 import shelter.backend.rest.model.entity.Token;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.UserType;
-import shelter.backend.rest.model.mapper.PayUClientCredentialsMapper;
 import shelter.backend.rest.model.mapper.UserMapper;
 import shelter.backend.storage.repository.AddressRepository;
-import shelter.backend.storage.repository.PayUClientCredentialsRepository;
 import shelter.backend.storage.repository.RoleRepository;
 import shelter.backend.storage.repository.UserRepository;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -46,6 +43,8 @@ class ShelterRegistrationServiceTest {
     private EmailService shelterEmailService;
     @Mock
     private UserRepository userRepository;
+    @Mock
+    RoleRepository repository;
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
