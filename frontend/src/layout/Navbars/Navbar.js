@@ -5,8 +5,7 @@ import {Disclosure, Menu, Transition} from '@headlessui/react'
 import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 
 const navigation = [
-    {name: 'O nas', href: '#', current: false},
-    {name: 'Kontakt', href: '#', current: false},
+    {name: 'Kontakt', href: '/contact', current: false},
     {name: 'Lista schronisk', href: '/shelterList', current: false}
 ]
 
