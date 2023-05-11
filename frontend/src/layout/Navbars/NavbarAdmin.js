@@ -6,8 +6,8 @@ import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 import axios from "axios";
 
 const navigation = [
-    {name: 'Lista użytkowników', href: '/userList', current: false},
-    {name: 'Lista schronisk', href: '/shelterList', current: false}
+    {name: 'LISTA UŻYTKOWNIKÓW', href: '/userList', current: false},
+    {name: 'LISTA SCHRONISK', href: '/shelterList', current: false}
 ]
 
 function classNames(...classes) {
@@ -60,7 +60,7 @@ export default function NavbarAdmin() {
                                 </Link>
 
                                 <div className="hidden sm:ml-6 sm:block">
-                                    <div className="flex space-x-4">
+                                    <div className="flex m-4">
                                         {navigation.map((item) => (
                                             <a
                                                 key={item.name}
