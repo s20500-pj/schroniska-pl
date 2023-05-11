@@ -63,6 +63,7 @@ function App() {
                     <Route exact path="/shelterList" element={<ShelterList/>}/>
                     <Route exact path="/shelterDetails/:id" element={<ShelterDetails/>}/>
                     <Route exact path="/userList" element={<UsersList/>}/>
+                    <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/>
                     {userType === "SHELTER" ? <Route exact path="/addAnimal" element={<AddAnimal/>}/> :
                         <Route exact path="/" element={<Home/>}/>}
                     {userType === "SHELTER" ? <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/> :
