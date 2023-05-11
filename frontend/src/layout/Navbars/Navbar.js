@@ -5,8 +5,10 @@ import {Disclosure, Menu, Transition} from '@headlessui/react'
 import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 
 const navigation = [
-    {name: 'Kontakt', href: '/contact', current: false},
-    {name: 'Lista schronisk', href: '/shelterList', current: false}
+    {name: 'LISTA SCHRONISK', href: '/shelterList', current: false},
+    {name: 'LISTA ZWIERZĄT', href: '/animalList', current: false},
+    {name: 'KONTAKT', href: '/contact', current: false}
+
 ]
 
 function classNames(...classes) {
@@ -49,14 +51,14 @@ export default function Nav() {
                                 </Link>
 
                                 <div className="hidden sm:ml-6 sm:block">
-                                    <div className="flex">
+                                    <div className="flex m-4">
                                         {navigation.map((item) => (
                                             <a
                                                 key={item.name}
                                                 href={item.href}
                                                 className={classNames(
-                                                    item.current ? ' text-brown' : 'text-brown hover:text-orange',
-                                                    'rounded-md px-3 py-5 text-sm font-medium active:text-bold'
+                                                    item.current ? ' text-brown text-center ' : 'text-brown hover:text-orange hover:underline-offset-1',
+                                                    'm-2 text-sm'
                                                 )}
                                                 aria-current={item.current ? 'page' : undefined}
                                             >
