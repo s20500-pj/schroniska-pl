@@ -136,12 +136,7 @@ function ShelterList() {
     };
 
     const userType = localStorage.getItem("userType");
-
-
-
-
     const [modalOpen, setModalOpen] = useState(false);
-
 
     return (
         <div className="md:flex p-5 h-fit sm:block sm:h-fit">
