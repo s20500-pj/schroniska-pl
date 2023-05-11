@@ -29,7 +29,7 @@ function UsersList() {
                     accessor: "id",
                     Cell: ({value}) => (
                         <>
-                            {modalOpen && <PopupDeleteUser setOpenModal={setModalOpen} fetchData={fetchData} id={value}/>}
+                            {modalOpen && <PopupDeleteUser setOpenModal={setModalOpen} fetchData={fetchData} id={value} user={user}/>}
                             <button type="submit"
                                     onClick={() => setModalOpen(true)}
                                     className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">

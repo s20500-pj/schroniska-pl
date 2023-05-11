@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import ShelterServerConstants from "../util/ShelterServerConstants";
 
-function PopupDeleteUser({setOpenModal, fetchData, id, sheltersMap}) {
+function PopupDeleteUser({setOpenModal, fetchData, id, sheltersMap, shelterName, shelter}) {
 
     const deleteShelter = async (id) => {
         try {
@@ -45,7 +45,7 @@ function PopupDeleteUser({setOpenModal, fetchData, id, sheltersMap}) {
                         </div>
                         <div className="relative p-6 flex-auto">
                             <p className="my-4 text-orange text-lg leading-relaxed">
-                                Czy na pewno chcesz usunąć schronisko ?</p>
+                                Czy na pewno chcesz usunąć schronisko?</p>
                         </div>
                         <div
                             className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">

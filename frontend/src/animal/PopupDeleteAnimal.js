@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
-function PopupDeleteUser({setOpenModal, id, animal, navigate}) {
+function PopupDeleteUser({setOpenModal, id, animal, navigate,name}) {
 
     const deleteAnimal = async (id) => {
         try {
@@ -36,7 +36,7 @@ function PopupDeleteUser({setOpenModal, id, animal, navigate}) {
                         </div>
                         <div className="relative p-6 flex-auto">
                             <p className="my-4 text-orange text-lg leading-relaxed">
-                                Czy na pewno chcesz usunąć zwierze ?</p>
+                                Czy na pewno chcesz usunąć zwierze o imieniu {animal.name}?</p>
                         </div>
                         <div
                             className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
