@@ -4,6 +4,8 @@ import ShelterAnimalList from "../../animal/ShelterAnimalList";
 import {useParams} from "react-router-dom";
 import {Link, useNavigate} from "react-router-dom";
 import ShelterServerConstants from "../../util/ShelterServerConstants";
+import PopupDeleteShelterByShelter from "../shelter/PopupDeleteShelterByShelter";
+import PopupDeleteUserByUser from "./PopupDeleteUserByUser";
 
 /* eslint-disable */
 
@@ -42,16 +44,16 @@ function PersonSettings() {
             });
     }, [id]);
 
-
-    const deleteUser = async (id) => {
-        axios.defaults.withCredentials = true;
-        console.log(user.id);
-        await axios.delete(`http://localhost:8080/user/delete/${user.id}`);
-        localStorage.clear();
-        navigate('/');
-        await window.location.reload();
-        setLoading(false);
-    }
+    const [modalOpen, setModalOpen] = useState(false);
+    // const deleteUser = async (id) => {
+    //     axios.defaults.withCredentials = true;
+    //     console.log(user.id);
+    //     await axios.delete(`http://localhost:8080/user/delete/${user.id}`);
+    //     localStorage.clear();
+    //     navigate('/');
+    //     await window.location.reload();
+    //     setLoading(false);
+    // }
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -129,9 +131,10 @@ function PersonSettings() {
                            className=" tracking-wide text-brown text-s mb-2">
                         Telefon kontaktowy:<p className="font-bold text-xl">{user.address && user.address.phone} </p>
                     </label>
+                    {modalOpen && <PopupDeleteUserByUser setOpenModal={setModalOpen} setLoading={setLoading} navigate={navigate} id={id} user={user}/>}
                     <button
                         type="button"
-                        onClick={deleteUser}
+                        onClick={() => setModalOpen(true)}
                         className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown"
                     >
                         <p className="py-15 justify-center text-base text-center text-brown font-medium">
