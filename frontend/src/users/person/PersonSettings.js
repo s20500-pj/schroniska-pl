@@ -45,15 +45,6 @@ function PersonSettings() {
     }, [id]);
 
     const [modalOpen, setModalOpen] = useState(false);
-    // const deleteUser = async (id) => {
-    //     axios.defaults.withCredentials = true;
-    //     console.log(user.id);
-    //     await axios.delete(`http://localhost:8080/user/delete/${user.id}`);
-    //     localStorage.clear();
-    //     navigate('/');
-    //     await window.location.reload();
-    //     setLoading(false);
-    // }
 
     function handleSubmit(e) {
         e.preventDefault();
