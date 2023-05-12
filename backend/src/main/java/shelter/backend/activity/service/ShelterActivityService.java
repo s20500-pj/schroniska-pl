@@ -90,10 +90,11 @@ public class ShelterActivityService implements ActivityService {
 
     private boolean dateTimeIsValid(Animal animal, LocalDate activityDate) {
         LocalTime timeNow = LocalTime.now();
-        LocalDateTime todayAtDefaultTime = LocalDateTime.of(LocalDate.now(), defaultTimeOfActivity);
-        LocalDateTime registerDate = LocalDateTime.of(activityDate, timeNow);
-        if (!registerDate.isAfter(todayAtDefaultTime)) {
-            log.info("Animal can't be registered for activity. Animal: {}. Time is before today: {}", animal.getId(), registerDate);
+        LocalDate dateNow = LocalDate.now();
+        LocalDateTime todayAtDefaultTime = LocalDateTime.of(dateNow, defaultTimeOfActivity);
+        LocalDateTime registerDateTime = LocalDateTime.of(activityDate, timeNow);
+        if ((activityDate.isBefore(dateNow)) || (activityDate.isEqual(dateNow) && !registerDateTime.isBefore(todayAtDefaultTime))) {
+            log.info("Animal can't be registered for activity. Animal: {}. Too late for activity: {}", animal.getId(), registerDateTime);
             throw new ActivityException("Wybrany termin jest niepoprawny");
         }
         return true;
