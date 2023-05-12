@@ -47,7 +47,7 @@ public class ShelterActivityService implements ActivityService {
 
     private final AnimalMapper animalMapper;
 
-    private final LocalTime defaultTimeOfActivity = LocalTime.of(16, 0); //todo add to Preferences
+        private final LocalTime defaultTimeOfActivity = LocalTime.of(16, 0); //todo add to Preferences
 
     private final String ACTIVITY_TIME_FIELD = "activityTime";
 

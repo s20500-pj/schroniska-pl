@@ -1,3 +1,5 @@
+package shelter.backend.user.service;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,12 +19,12 @@ import shelter.backend.rest.model.mapper.UserMapper;
 import shelter.backend.storage.repository.ActivityRepository;
 import shelter.backend.storage.repository.AdoptionRepository;
 import shelter.backend.storage.repository.UserRepository;
-import shelter.backend.user.service.ShelterUserService;
 import shelter.backend.utils.basic.ClientInterceptor;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.any;
@@ -59,6 +61,7 @@ public class ShelterUserServiceTest {
     @BeforeEach
     public void setUp() {
         user = User.builder()
+                .id(1L)
                 .email("john@doe.com")
                 .password("password")
                 .userType(UserType.PERSON)
@@ -69,6 +72,7 @@ public class ShelterUserServiceTest {
                 .build();
 
         userDto = UserDto.builder()
+                .id(1L)
                 .email("john@doe.com")
                 .password("password")
                 .userType(UserType.PERSON)
@@ -81,7 +85,7 @@ public class ShelterUserServiceTest {
     @Test
     public void search() {
         //
-        String searchParams = "{\"firstName\": \"" + "John" + "\"}";
+        Map<String, String> searchParams = Map.of("firstName", "John");
         List<User> users = new ArrayList<>();
         users.add(user);
         List<UserDto> userDtos = new ArrayList<>();
