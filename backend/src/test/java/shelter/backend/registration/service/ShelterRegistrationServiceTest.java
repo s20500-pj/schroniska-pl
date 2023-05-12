@@ -146,3 +146,4 @@ class ShelterRegistrationServiceTest {
         verify(tokenService, times(1)).deleteToken(expired);
     }
 }
+

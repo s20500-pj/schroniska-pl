@@ -2,8 +2,6 @@ package shelter.backend.payment.payu.service;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class PayUServiceTest {
 
     @Test
@@ -22,3 +20,5 @@ class PayUServiceTest {
     void callForPaymentStatus() {
     }
 }
+
+
