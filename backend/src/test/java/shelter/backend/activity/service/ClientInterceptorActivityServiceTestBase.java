@@ -1,54 +1,43 @@
 package shelter.backend.activity.service;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import shelter.backend.ClientInterceptorTestBase;
 import shelter.backend.activity.rest.req.ActivityRegisterReq;
 import shelter.backend.rest.model.dtos.ActivityDto2;
 import shelter.backend.rest.model.dtos.AnimalDto;
 import shelter.backend.rest.model.entity.Activity;
-import shelter.backend.rest.model.entity.Address;
 import shelter.backend.rest.model.entity.Animal;
-import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.ActivityType;
 import shelter.backend.rest.model.enums.AnimalStatus;
-import shelter.backend.rest.model.enums.UserType;
 import shelter.backend.rest.model.mapper.ActivityMapper;
 import shelter.backend.rest.model.mapper.AnimalMapper;
 import shelter.backend.storage.repository.ActivityRepository;
 import shelter.backend.storage.repository.AnimalRepository;
-import shelter.backend.storage.repository.UserRepository;
-import shelter.backend.utils.basic.ClientInterceptor;
+import shelter.backend.utils.exception.ActivityException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ShelterActivityServiceTest {
+class ClientInterceptorActivityServiceTestBase extends ClientInterceptorTestBase {
 
     @InjectMocks
     ShelterActivityService activityService;
-
-    @Mock
-    private UserRepository userRepository;
 
     @Mock
     private ActivityRepository activityRepository;
@@ -68,8 +57,6 @@ class ShelterActivityServiceTest {
 
     private Activity activity;
 
-    private User user;
-
     @BeforeEach
     public void setUp() {
 
@@ -82,17 +69,6 @@ class ShelterActivityServiceTest {
                 .id(1L)
                 .build();
 
-        user = User.builder()
-                .id(1L)
-                .email("john@doe.com")
-                .password("password")
-                .userType(UserType.PERSON)
-                .address(new Address())
-                .firstName("John")
-                .lastName("Doe")
-                .roles(new HashSet<>())
-                .build();
-
         activity = Activity.builder()
                 .activityTime(LocalDateTime.of(LocalDate.now(), defaultTimeOfActivity))
                 .activityType(ActivityType.WALKING)
@@ -101,15 +77,6 @@ class ShelterActivityServiceTest {
                 .user(user)
                 .build();
 
-        String email = "john@doe.com";
-        mockStatic(ClientInterceptor.class);
-        when(ClientInterceptor.getCurrentUsername()).thenReturn(email);
-        lenient().when(userRepository.findUserByEmail(any())).thenReturn(user);
-    }
-
-    @AfterEach
-    void tearDown() {
-        Mockito.framework().clearInlineMock(ClientInterceptor.class);
     }
 
     @Test
@@ -122,13 +89,19 @@ class ShelterActivityServiceTest {
         Animal animal = new Animal();
         animal.setAnimalStatus(AnimalStatus.READY_FOR_ADOPTION);
         when(animalRepository.findAnimalById(any())).thenReturn(animal);
-        when(activityMapper.toDto2(any())).thenReturn(activityDto2);
         //
-        ActivityDto2 result = activityService.registerActivity(activityRegisterReq);
-        //
-        verify(animalRepository, times(1)).save(animal);
-        verify(activityRepository, times(1)).save(any());
-        Assertions.assertEquals(result, activityDto2);
+        if (LocalTime.now().isBefore(defaultTimeOfActivity)) {
+            when(activityMapper.toDto2(any())).thenReturn(activityDto2);
+            ActivityDto2 result = activityService.registerActivity(activityRegisterReq);
+            //
+            verify(animalRepository, times(1)).save(animal);
+            verify(activityRepository, times(1)).save(any());
+            Assertions.assertEquals(result, activityDto2);
+        } else {
+            Assertions.assertThrows(ActivityException.class,
+                    () -> activityService.registerActivity(activityRegisterReq),
+                    "Wybrany termin jest niepoprawny");
+        }
     }
 
 

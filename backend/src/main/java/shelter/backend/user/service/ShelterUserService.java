@@ -104,3 +104,4 @@ public class ShelterUserService implements UserService {
         return userRepository.findUserByEmail(currentUsername);
     }
 }
+
