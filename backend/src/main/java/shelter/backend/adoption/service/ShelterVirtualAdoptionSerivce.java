@@ -140,7 +140,10 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
                 .toList();
         for (Adoption adoption : expiredAdoptions) {
             delete(adoption.getId());
-            //fixme send email. if adoption was PENDING -> adopcja anulowana, if was VIRTUAL_ADOPTED -> uplynal okres adopcji
+            if (adoption.getAdoptionStatus() == AdoptionStatus.VIRTUAL_ADOPTED){
+                emailService.sendVirtualAdoptionTimeout(adoption.getUser().getEmail(), adoption.getAnimal().getName(),
+                        adoption.getAnimal().getShelter().getShelterName());
+            }
         }
         log.debug("virtual adoption scheduler finished");
     }

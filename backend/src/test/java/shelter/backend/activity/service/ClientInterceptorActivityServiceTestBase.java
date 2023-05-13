@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import shelter.backend.ClientInterceptorTestBase;
 import shelter.backend.activity.rest.req.ActivityRegisterReq;
+import shelter.backend.email.EmailService;
 import shelter.backend.rest.model.dtos.ActivityDto2;
 import shelter.backend.rest.model.dtos.AnimalDto;
 import shelter.backend.rest.model.entity.Activity;
@@ -50,6 +51,9 @@ class ClientInterceptorActivityServiceTestBase extends ClientInterceptorTestBase
 
     @Mock
     private AnimalMapper animalMapper;
+
+    @Mock
+    private EmailService emailService;
 
     private final LocalTime defaultTimeOfActivity = LocalTime.of(16, 0);
 

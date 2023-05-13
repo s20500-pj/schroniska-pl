@@ -18,6 +18,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import shelter.backend.adoption.service.VirtualAdoptionService;
 import shelter.backend.configuration.ContextDelegateAware;
+import shelter.backend.email.EmailService;
 import shelter.backend.payment.payu.configuration.PayUConfigurationProperties;
 import shelter.backend.payment.payu.rest.model.Buyer;
 import shelter.backend.payment.payu.rest.model.Product;
@@ -67,6 +68,8 @@ public class PayUService implements PaymentService {
 
     private final ContextDelegateAware contextDelegateAware;
 
+    private final EmailService emailService;
+
     @Value("${payment.payu.validUntil}")
     private Long expiresIn;
 
@@ -92,8 +95,8 @@ public class PayUService implements PaymentService {
         }
         log.info("PaymentOrder loaded successfully, {}", order);
         if (error.isEmpty()) {
-            order.getShelterName();
-            //fixme send confirmation email. "platnosc odnotowana. po potwierdzeniu platnosci otrzymasz maila z potwierdzeniem"
+            emailService.sendPaymentInfo(order.getUserName(), order.getPurpose().name(),
+                    String.valueOf(order.getAmount()), order.getShelterName());
         }
         return callForPaymentStatus(order, false);
     }
@@ -127,7 +130,8 @@ public class PayUService implements PaymentService {
             case CANCELED -> {
                 log.info("Payment has been canceled, processing canceled payment flow.");
                 handleCanceledPayment(paymentOrder);
-                //FIXME email service platnosc anulowana
+                emailService.sendPaymentFailure(paymentOrder.getUserName(), paymentOrder.getPurpose().name(),
+                        String.valueOf(paymentOrder.getAmount()), paymentOrder.getShelterName());
             }
             case COMPLETED -> {
                 log.info("Payment confirmed and completed, processing successful payment flow.");
