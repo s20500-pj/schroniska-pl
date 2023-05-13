@@ -275,7 +275,7 @@ public class PayUService implements PaymentService {
         log.debug("payu scheduler started");
         Iterable<PaymentOrder> paymentOrders = paymentOrderRepository.findAll();
         for (PaymentOrder paymentOrder : paymentOrders) {
-            callForPaymentStatus(paymentOrder, false);
+            callForPaymentStatus(paymentOrder, true);
         }
         log.debug("payu scheduler finished");
     }
