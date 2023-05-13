@@ -12,3 +12,4 @@ class CharsNormalizerTest {
         assertEquals(result, "eoaslzzcnEOASLZZCN");
     }
 }
+

@@ -30,7 +30,6 @@ import shelter.backend.utils.constants.ShelterConstants;
 public class WebSecurityConfig {
 
     private final JwtAthFilter jwtAuthFilter;
-    private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
     private final UserDetailsService userDetailsService;
 
     @Value("${shelter.web.security.allowedPaths}")
@@ -59,8 +58,6 @@ public class WebSecurityConfig {
                 .and().logout().deleteCookies(ShelterConstants.AUTHORIZATION_COOKIE_NAME)
                 .and()
                 .authenticationProvider(authenticationProvider())
-                .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
-                .and()
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers().frameOptions().disable();//TODO delete it on PROD, used for H2 console to work properly
         return http.build();
