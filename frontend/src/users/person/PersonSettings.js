@@ -181,7 +181,7 @@ function PersonSettings() {
                                 placeholder="Podaj kod pocztowy."
                                 name="postalCode"
                                 pattern="\d{2}-\d{3}"
-                                defaultValue={user.address && user.address.postalCode && user.address.postalCode.slice(0, 2) + '-' + user.address.postalCode.slice(2)}
+                                defaultValue={user.address && user.address.postalCode && user.address.postalCode.slice(0, 2) +'-' + user.address.postalCode.slice(2)}
                                 onChange={handleInput}
                             />
                         </div>
@@ -200,7 +200,7 @@ function PersonSettings() {
                                 type={"text"}
                                 className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                 placeholder="Podaj numer mieszkania."
-                                name="flat_number"
+                                name="flatNumber"
                                 defaultValue={user.address && user.address.flatNumber}
                                 onChange={handleInput}
                             />

@@ -10,9 +10,8 @@ const navigation = [
     {name: 'ADOPCJA', href: '/userRealAdoptionList', current: false},
     {name: 'ADOPCJA WIRTUALNA', href: '/userVirtualAdoptionList', current: false},
     {name: 'WOLONTARIAT', href: '/userActivityList', current: false},
-    {name: 'MOJE DANE', href: '/personsettings', current: false},
-    {name: 'LISTA SCHRONISK', href: '/shelterList', current: false}
-
+    {name: 'LISTA SCHRONISK', href: '/shelterList', current: false},
+    {name: 'MOJE DANE', href: '/personsettings', current: false}
 ]
 
 function classNames(...classes) {

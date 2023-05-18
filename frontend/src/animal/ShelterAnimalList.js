@@ -6,7 +6,6 @@ import {useParams} from "react-router-dom";
 function ShelterAnimalList() {
     axios.defaults.withCredentials = true;
     const {id} = useParams();
-
     const [error, setError] = useState("");
     const [animal, setAnimal] = useState({
         name: "",

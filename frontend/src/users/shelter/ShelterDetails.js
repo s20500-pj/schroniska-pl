@@ -70,16 +70,6 @@ export default function ShelterDetails() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
-    // const deleteShelter = async (id) => {
-    //     axios.defaults.withCredentials = true;
-    //     console.log(shelter.id);
-    //     await axios.delete(`http://localhost:8080/user/delete/${shelter.id}`);
-    //     localStorage.clear();
-    //     navigate('/');
-    //     await window.location.reload();
-    //     setLoading(false);
-    // }
-
     function handleSubmit(e) {
         e.preventDefault();
         axios
@@ -140,15 +130,15 @@ export default function ShelterDetails() {
                                             <p className='font-bold pt-2 text-left'>Kontakt do schroniska: </p>
                                             <p className=' pt-2'>Telefon: {shelter.address.phone}</p>
                                             <p className=' pt-2'>E-mail: {shelter.email}</p>
-                                            {userType !== "SHELTER" ? (
-                                                <Link to={`/shelteranimalList`}>
-                                                    <button type="submit"
-                                                            className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                                                        <p className="py-15 justify-center text-base text-center text-brown font-medium	">Pokaż
-                                                            zwierzęta
-                                                        </p>
-                                                    </button>
-                                                </Link> ):(null)}
+                                            {/*{userType !== "SHELTER" ? (*/}
+                                            {/*    <Link to={`/shelteranimalListUnlogged`}>*/}
+                                            {/*        <button type="submit"*/}
+                                            {/*                className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">*/}
+                                            {/*            <p className="py-15 justify-center text-base text-center text-brown font-medium	">Pokaż*/}
+                                            {/*                zwierzęta*/}
+                                            {/*            </p>*/}
+                                            {/*        </button>*/}
+                                            {/*    </Link> ):(null)}*/}
                                             {userType === "SHELTER" ? (
                                                 <Link to={`/shelteranimalList`}>
                                                 <button type="submit"
