@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, {useState, useEffect} from "react";
 import AnimalCard from "./AnimalCard";
+import {useParams} from "react-router-dom";
 
 function ShelterAnimalList() {
     axios.defaults.withCredentials = true;
+    const {id} = useParams();
 
     const [error, setError] = useState("");
     const [animal, setAnimal] = useState({

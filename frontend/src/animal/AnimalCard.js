@@ -19,9 +19,9 @@ export default function AnimalCard({data, rename}) {
         .slice(pagesVisited, pagesVisited + animalsPerPage)
         .map(data => {
             return (
-                <div className="p-5 flex " key={data.id}>
+                <div className="p-5 flex" key={data.id}>
                     <div className="bg-orange rounded-3xl shadow-xl overflow-hidden hover:scale-105 ">
-                        <div className="w-[200px] ">
+                        <div className="w-[220px] ">
                             <Link to={`/animalDetails/${data.id}`}>
                                 <img src={data.imagePath ? data.imagePath : placeholderImage}
                                      onError={onImageError}
@@ -47,10 +47,10 @@ export default function AnimalCard({data, rename}) {
     };
 
     return (
-        <div className="md:h-fit sm:h-fit ">
+        <div className="md:h-fit sm:h-fit p-5 ">
             {(userType === "SHELTER" ) ? <h3 className="font-display text-center text-brown font-bold text-2xl">Zwierzęta w schronisku</h3>
                 : <h3 className="font-display text-center text-brown font-bold text-2xl">Zwierzęta w schroniskach</h3> }
-            <div className="flex flex-wrap h-fit justify-start">
+            <div className="flex flex-wrap h-fit justify-between">
                 {displayAnimals}
             </div>
             <ReactPaginate
