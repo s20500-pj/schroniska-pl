@@ -1,10 +1,8 @@
 import axios from "axios";
 import React, {useState, useEffect} from "react";
-import {Link} from "react-router-dom";
 import Table from "../util/Table";
+import PopupDeleteUser from "./PopupDeleteUser";
 import ShelterServerConstants from "../util/ShelterServerConstants";
-import Modal from "../users/unlogged/Modal";
-
 
 function UsersList() {
     const columns = [
@@ -32,8 +30,9 @@ function UsersList() {
                     accessor: "id",
                     Cell: ({value}) => (
                         <>
+                            {modalOpen && <PopupDeleteUser setOpenModal={setModalOpen} fetchData={fetchData} id={value} user={user}/>}
                             <button type="submit"
-                                    onClick={() => deleteUser(value)}
+                                    onClick={() => setModalOpen(true)}
                                     className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                                 <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Usuń
                                     użytkownika
@@ -107,15 +106,8 @@ function UsersList() {
         setUser({});
     };
 
-    const deleteUser = async (id) => {
-        try {
-            await axios.delete(`http://localhost:8080/user/delete/${id}`);
-            fetchData();
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
+    const [modalOpen, setModalOpen] = useState(false);
 
     return (
         <div className="md:flex p-5 h-fit sm:block sm:h-fit">

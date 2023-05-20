@@ -8,6 +8,8 @@ import Messages from "../util/Messages";
 import VirtualAdoptionBtn from "../adoption/VirtualAdoptionBtn";
 import {arrayToDate, formatDate} from "../util/DateUtils";
 import PopupSuccessActivity from "../activity/PopupSuccessActitity";
+import PopupDeleteUserByUser from "../users/person/PopupDeleteUserByUser";
+import PopupDeleteAnimal from "./PopupDeleteAnimal";
 
 export default function AnimalDetails() {
     axios.defaults.withCredentials = true;
@@ -37,9 +39,7 @@ export default function AnimalDetails() {
     const [activityDate, setActivityDate] = useState(null);
     const [activityResponseMessage, setActivityResponseMessage] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
-
     const placeholderImage = icon;
-
     const userType = localStorage.getItem("userType");
 
     const onImageError = (e) => {
@@ -338,267 +338,272 @@ export default function AnimalDetails() {
                 <p>Ładowanie danych zwierzaka...</p>
             )}
 
-            </div>
-            {animal && isProperShelter ? (
-                <div className="text-center">
-                    <div>
-                        <h2 className=" text-xl text-orange font-bold h-fit pb-5">
-                            Poniżej możesz zaktualizować dane.</h2>
-                    </div>
-                    <div className="flex justify-evenly px-10">
-                        <div className="">
-                            <button
-                                type="button"
-                                onClick={deleteAnimal}
-                                className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown"
-                            >
-                                <p className="py-15 justify-center text-base text-center text-brown font-medium">
-                                    Usuń zwierzę
-                                </p></button>
-                        </div>
-                        <form onSubmit={handleSubmit}>
-                            <div className="w-50">
-                                <label htmlFor="species"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Imię:
-                                </label>
-                                <input
-                                    type={"text"}
-                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="name"
-                                    defaultValue={animal.name}
-                                    onChange={handleInput}
-                                />
-                            </div>
-                            <div className="w-50">
-                                <label htmlFor="species"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Informacje/opis:
-                                </label>
-                                <input
-                                    type={"text"}
-                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="information"
-                                    defaultValue={animal.information}
-                                    onChange={handleInput}
-                                />
-                            </div>
-                            <div className="">
-                                <label htmlFor="species"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Gatunek:
-                                </label>
-                                <select
-                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="species"
-                                    onChange={handleInput}
-                                    value={animal.species}
-                                >
-                                    <option value="">Wybierz gatunek</option>
-                                    <option value="DOG">Pies</option>
-                                    <option value="CAT">Kot</option>
-                                </select>
-                            </div>
-                            <div className="">
-                                <label htmlFor="sex"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Płeć:
-                                </label>
-                                <select
-                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="sex"
-                                    value={animal.sex}
-                                    onChange={handleInput}
-                                >
-                                    <option value="">Wybierz płeć</option>
-                                    <option value="MALE">samiec</option>
-                                    <option value="FEMALE">samica</option>
-                                    <option value="UNKNOWN">nieznany</option>
-                                </select>
-                            </div>
-                            <div className="">
-                                <label htmlFor="age"
-                                       className=" block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Wiek:
-                                </label>
-                                <select
-                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="age"
-                                    value={animal.age}
-                                    onChange={handleInput}
-                                >
-                                    <option value="">Wybierz wiek</option>
-                                    <option value="VERY_YOUNG">bardzo młody</option>
-                                    <option value="YOUNG">młody</option>
-                                    <option value="ADULT">dorosły</option>
-                                    <option value="ELDER">senior</option>
-                                </select>
-                            </div>
-                            <div className="">
-                                <label htmlFor="animalStatus"
-                                       className=" block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Status zwierzęcia:
-                                </label>
-                                <select
-                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="animalStatus"
-                                    value={animal.animalStatus}
-                                    onChange={handleInput}
-                                >
-                                    <option value="">Wybierz status</option>
-                                    <option value="UNKNOWN">nieznany</option>
-                                    <option value="NEEDS_MEDICAL_TREATMENT">potrzebuje opieki medycznej</option>
-                                    <option value="READY_FOR_ADOPTION">gotowy do adopcji</option>
-                                </select>
-                            </div>
-                            <div className="">
-                                <label htmlFor="birthDate"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Data urodzenia:
-                                </label>
-                                <input
-                                    type={"date"}
-                                    className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    placeholder="Data urodzenia"
-                                    name="birthDate"
-                                    defaultValue={arrayToDate(animal.birthDate)}
-                                    onChange={handleInput}
-                                />
-                            </div>
-                            <div className="">
-                                <label htmlFor="sterilized"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Wysterylizowany?:
-                                </label>
-                                <select
-                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="sterilized"
-                                    defaultValue={animal.sterilized}
-                                    onChange={handleInput}
-                                >
-                                    <option value="">Wysterylizowany?</option>
-                                    <option value={false}>Nie</option>
-                                    <option value={true}>Tak</option>
-                                </select>
-                            </div>
-                            <div className="">
-                                <label htmlFor="vaccinated"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Szczepienia?:
-                                </label>
-                                <select
-                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="vaccinated"
-                                    defaultValue={animal.vaccinated}
-                                    onChange={handleInput}
-                                >
-                                    <option value="">Szczepiony?</option>
-                                    <option value={false}>Nie</option>
-                                    <option value={true}>Tak</option>
-                                </select>
-                            </div>
-                            <div className="">
-                                <label htmlFor="kidsFriendly"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Przyjazny dzieciom?:
-                                </label>
-                                <select
-                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="kidsFriendly"
-                                    defaultValue={animal.kidsFriendly}
-                                    onChange={handleInput}
 
-                                >
-                                    <option value="">Wybierz z listy</option>
-                                    <option value={false}>Nie</option>
-                                    <option value={true}>Tak</option>
-                                </select>
-                            </div>
+                {animal && userType === "SHELTER" ? (
+                    <div className="text-center">
+                        <div>
                             <div className="">
-                                <label htmlFor="couchPotato"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Kanapowiec?:
-                                </label>
-                                <select
-                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="couchPotato"
-                                    defaultValue={animal.couchPotato}
-                                    onChange={handleInput}
+                                {modalOpen && <PopupDeleteAnimal setOpenModal={setModalOpen} navigate={navigate} id={id} animal={animal}/>}
+                                <button
+                                    type="button"
+                                    onClick={() => setModalOpen(true)}
+                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown"
                                 >
-                                    <option value="">Wybierz z listy</option>
-                                    <option value={false}>Nie</option>
-                                    <option value={true}>Tak</option>
-                                </select>
+                                    <p className="py-15 justify-center text-base text-center text-brown font-medium">
+                                        Usuń zwierzę
+                                    </p></button>
                             </div>
-                            <div className="">
-                                <label htmlFor="needsActiveness"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Potrzebuje dużo ruchu?:
-                                </label>
-                                <select
-                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="needsActiveness"
-                                    defaultValue={animal.needsActiveness}
-                                    onChange={handleInput}
-                                >
-                                    <option value="">Wybierz z listy</option>
-                                    <option value={false}>Nie</option>
-                                    <option value={true}>Tak</option>
-                                </select>
-                            </div>
-                            <div className="">
-                                <label htmlFor="catsFriendly"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Toleruje koty?:
-                                </label>
-                                <select
-                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="catsFriendly"
-                                    defaultValue={animal.catsFriendly}
-                                    onChange={handleInput}
-                                >
-                                    <option value="">Wybierz z listy</option>
-                                    <option value={false}>Nie</option>
-                                    <option value={true}>Tak</option>
-                                </select>
-                            </div>
-                            <div className="">
-                                <label htmlFor="dogsFriendly"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Toleruje psy?:
-                                </label>
-                                <select
-                                    className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    name="dogsFriendly"
-                                    defaultValue={animal.dogsFriendly}
-                                    onChange={handleInput}
-                                >
-                                    <option value="">Wybierz z listy</option>
-                                    <option value={false}>Nie</option>
-                                    <option value={true}>Tak</option>
-                                </select>
-                            </div>
-                            <div className="w-full md:w-1/2 px-3">
-                                <label htmlFor="photo"
-                                       className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
-                                    Zdjęcie:
-                                </label>
-                                <input type="file" name="photo" onChange={handlePhotoChange}/>
-                                {photo && (
-                                    <p>Wybrano plik: {photo.name}</p>
-                                )}
-                            </div>
-                            <div className="m-auto text-center">
-                                <button type="submit"
-                                        className=" px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                                    <p className="py-15 justify-center text-base text-center text-brown font-medium	">Aktualizuj
-                                        dane</p>
-                                </button>
-                            </div>
-                        </form>
+                            <h2 className=" text-xl text-orange font-bold h-fit pb-5">
+                                Poniżej możesz zaktualizować dane.</h2>
+                        </div>
+                        <div className="flex justify-evenly px-10">
+
+                            <form onSubmit={handleSubmit}>
+                                <div className="flex flex-wrap">
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="species"
+                                               className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Imię:
+                                        </label>
+                                        <input
+                                            type={"text"}
+                                            className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            name="name"
+                                            defaultValue={animal.name}
+                                            onChange={handleInput}
+                                        />
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="species"
+                                               className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Informacje/opis:
+                                        </label>
+                                        <input
+                                            type={"text"}
+                                            className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            name="information"
+                                            defaultValue={animal.information}
+                                            onChange={handleInput}
+                                        />
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="species"
+                                               className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Gatunek:
+                                        </label>
+                                        <select
+                                            className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            name="species"
+                                            onChange={handleInput}
+                                            value={animal.species}
+                                        >
+                                            <option value="">Wybierz gatunek</option>
+                                            <option value="DOG">Pies</option>
+                                            <option value="CAT">Kot</option>
+                                        </select>
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="sex"
+                                               className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Płeć:
+                                        </label>
+                                        <select
+                                            className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            name="sex"
+                                            value={animal.sex}
+                                            onChange={handleInput}
+                                        >
+                                            <option value="">Wybierz płeć</option>
+                                            <option value="MALE">samiec</option>
+                                            <option value="FEMALE">samica</option>
+                                            <option value="UNKNOWN">nieznany</option>
+                                        </select>
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="age"
+                                               className=" block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Wiek:
+                                        </label>
+                                        <select
+                                            className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            name="age"
+                                            value={animal.age}
+                                            onChange={handleInput}
+                                        >
+                                            <option value="">Wybierz wiek</option>
+                                            <option value="VERY_YOUNG">bardzo młody</option>
+                                            <option value="YOUNG">młody</option>
+                                            <option value="ADULT">dorosły</option>
+                                            <option value="ELDER">stary</option>
+                                        </select>
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="animalStatus"
+                                               className=" block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Status zwierzęcia:
+                                        </label>
+                                        <select
+                                            className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            name="animalStatus"
+                                            value={animal.animalStatus}
+                                            onChange={handleInput}
+                                        >
+                                            <option value="">Wybierz status</option>
+                                            <option value="UNKNOWN">nieznany</option>
+                                            <option value="NEEDS_MEDICAL_TREATMENT">potrzebuje opieki medycznej</option>
+                                            <option value="READY_FOR_ADOPTION">gotowy do adopcji</option>
+                                        </select>
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="birthDate"
+                                               className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Data urodzenia:
+                                        </label>
+                                        <input
+                                            type={"date"}
+                                            className="appearance-none block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            placeholder="Data urodzenia"
+                                            name="birthDate"
+                                            defaultValue={arrayToDate(animal.birthDate)}
+                                            onChange={handleInput}
+                                        />
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="sterilized"
+                                               className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Wysterylizowany?:
+                                        </label>
+                                        <select
+                                            className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            name="sterilized"
+                                            defaultValue={animal.sterilized}
+                                            onChange={handleInput}
+                                        >
+                                            <option value="">Wysterylizowany?</option>
+                                            <option value={false}>Nie</option>
+                                            <option value={true}>Tak</option>
+                                        </select>
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="vaccinated"
+                                               className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Szczepienia?:
+                                        </label>
+                                        <select
+                                            className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            name="vaccinated"
+                                            defaultValue={animal.vaccinated}
+                                            onChange={handleInput}
+                                        >
+                                            <option value="">Szczepiony?</option>
+                                            <option value={false}>Nie</option>
+                                            <option value={true}>Tak</option>
+                                        </select>
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="kidsFriendly"
+                                               className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Przyjazny dzieciom?:
+                                        </label>
+                                        <select
+                                            className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            name="kidsFriendly"
+                                            defaultValue={animal.kidsFriendly}
+                                            onChange={handleInput}
+
+                                        >
+                                            <option value="">Wybierz z listy</option>
+                                            <option value={false}>Nie</option>
+                                            <option value={true}>Tak</option>
+                                        </select>
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="couchPotato"
+                                               className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Kanapowiec?:
+                                        </label>
+                                        <select
+                                            className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            name="couchPotato"
+                                            defaultValue={animal.couchPotato}
+                                            onChange={handleInput}
+                                        >
+                                            <option value="">Wybierz z listy</option>
+                                            <option value={false}>Nie</option>
+                                            <option value={true}>Tak</option>
+                                        </select>
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="needsActiveness"
+                                               className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Potrzebuje dużo ruchu?:
+                                        </label>
+                                        <select
+                                            className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            name="needsActiveness"
+                                            defaultValue={animal.needsActiveness}
+                                            onChange={handleInput}
+                                        >
+                                            <option value="">Wybierz z listy</option>
+                                            <option value={false}>Nie</option>
+                                            <option value={true}>Tak</option>
+                                        </select>
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="catsFriendly"
+                                               className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Toleruje koty?:
+                                        </label>
+                                        <select
+                                            className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            name="catsFriendly"
+                                            defaultValue={animal.catsFriendly}
+                                            onChange={handleInput}
+                                        >
+                                            <option value="">Wybierz z listy</option>
+                                            <option value={false}>Nie</option>
+                                            <option value={true}>Tak</option>
+                                        </select>
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="dogsFriendly"
+                                               className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Toleruje psy?:
+                                        </label>
+                                        <select
+                                            className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                            name="dogsFriendly"
+                                            defaultValue={animal.dogsFriendly}
+                                            onChange={handleInput}
+                                        >
+                                            <option value="">Wybierz z listy</option>
+                                            <option value={false}>Nie</option>
+                                            <option value={true}>Tak</option>
+                                        </select>
+                                    </div>
+                                    <div className="w-50 p-6">
+                                        <label htmlFor="photo"
+                                               className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                            Zdjęcie:
+                                        </label>
+                                        <input type="file" name="photo" onChange={handlePhotoChange}/>
+                                        {photo && (
+                                            <p>Wybrano plik: {photo.name}</p>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="m-auto text-center">
+                                    <button type="submit"
+                                            className=" px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                        <p className="py-15 justify-center text-base text-center text-brown font-medium	">Aktualizuj
+                                            dane</p>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            ) : (<></>)}
+                ) : (<></>)}
+            </div>
         </div>
     );
 }

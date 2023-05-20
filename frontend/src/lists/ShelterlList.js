@@ -4,6 +4,8 @@ import {Link} from "react-router-dom";
 import Table from "../util/Table";
 import ShelterServerConstants from "../util/ShelterServerConstants";
 import {ADOPTION_STATUS_OPTIONS, SHELTER_APPROVAL_STATUS_OPTIONS} from "../util/Enums";
+import PopupDeleteUser from "./PopupDeleteUser";
+import PopupDeleteShelter from "./PopupDeleteShelter";
 
 function ShelterList() {
     const columns = [
@@ -45,13 +47,16 @@ function ShelterList() {
                             </Link>
                             <div>
                                 {userType === "ADMIN" ? (
+                                    <>
+                                    {modalOpen && <PopupDeleteShelter setOpenModal={setModalOpen} fetchData={fetchData} id={value} sheltersMap={sheltersMap} shelterName={shelterName} shelter={shelter}/>}
                                     <button type="submit"
-                                            onClick={() => deleteShelter(value)}
+                                            onClick={() => setModalOpen(true)}
                                             className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                                         <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Usuń
                                             schronisko
                                         </p>
                                     </button>
+                                    </>
                                 ) : (<> </>)}
                             </div>
                         </>
@@ -131,24 +136,7 @@ function ShelterList() {
     };
 
     const userType = localStorage.getItem("userType");
-
-
-    const deleteShelter = async (id) => {
-        try {
-            const result =
-                await axios.delete(`http://localhost:8080/user/delete/${id}`,
-                    JSON.stringify(Object.fromEntries(sheltersMap)),
-                    {
-                        headers: {
-                            'Content-Type': ShelterServerConstants.HEADER_APPLICATION_JSON,
-                        }
-                    });
-            fetchData();
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
+    const [modalOpen, setModalOpen] = useState(false);
 
     return (
         <div className="md:flex p-5 h-fit sm:block sm:h-fit">

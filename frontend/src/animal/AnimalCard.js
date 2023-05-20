@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import {Link} from "react-router-dom";
-import {AGE_OPTIONS, SEX_OPTIONS} from "../util/Enums";
+import {AGE_OPTIONS, SEX_OPTIONS, SPECIES_OPTIONS} from "../util/Enums";
 import icon from  '../dog-cat-icon.jpeg';
 export default function AnimalCard({data, rename}) {
     axios.defaults.withCredentials = true;
@@ -19,9 +19,9 @@ export default function AnimalCard({data, rename}) {
         .slice(pagesVisited, pagesVisited + animalsPerPage)
         .map(data => {
             return (
-                <div className="p-5 flex " key={data.id}>
+                <div className="p-5 flex" key={data.id}>
                     <div className="bg-orange rounded-3xl shadow-xl overflow-hidden hover:scale-105 ">
-                        <div className="w-[200px] ">
+                        <div className="w-[220px] ">
                             <Link to={`/animalDetails/${data.id}`}>
                                 <img src={data.imagePath ? data.imagePath : placeholderImage}
                                      onError={onImageError}
@@ -29,9 +29,10 @@ export default function AnimalCard({data, rename}) {
                                      className="object-cover h-48 w-64"/>
                             </Link>
                             <div className="bg-orange p-4 w-30 sm:p-6 ">
+                                <p className="text-[18px] font-medium">{SPECIES_OPTIONS[data.species]}</p>
                                 <p className="text-[22px] font-bold">{data.name}</p>
                                 <div className="flex">
-                                    <p className="font-bold text-gray-700 text-[16px] mb-1">{SEX_OPTIONS[data.sex]}</p>
+                                    <p className="font-medium text-brown text-[16px] mb-1">{SEX_OPTIONS[data.sex]}</p>
                                 </div>
                                 <p className="font-[15px]">{AGE_OPTIONS[data.age]}</p>
                             </div>
@@ -46,10 +47,10 @@ export default function AnimalCard({data, rename}) {
     };
 
     return (
-        <div className="md:h-fit sm:h-fit ">
+        <div className="md:h-fit sm:h-fit p-5 ">
             {(userType === "SHELTER" ) ? <h3 className="font-display text-center text-brown font-bold text-2xl">Zwierzęta w schronisku</h3>
                 : <h3 className="font-display text-center text-brown font-bold text-2xl">Zwierzęta w schroniskach</h3> }
-            <div className="flex flex-wrap h-fit justify-start">
+            <div className="flex flex-wrap h-fit justify-between">
                 {displayAnimals}
             </div>
             <ReactPaginate

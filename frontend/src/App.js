@@ -21,7 +21,6 @@ import NavbarPerson from "./layout/Navbars/NavbarPerson";
 import ShelterAnimalList from "./animal/ShelterAnimalList";
 import UserVirtualAdoptionList from "./adoption/UserVirtualAdoptionList";
 import UserRealAdoptionList from "./adoption/UserRealAdoptionList";
-import RODO from "./users/unlogged/RODO";
 import PersonSettings from "./users/person/PersonSettings";
 import AnimalDetails from "./animal/AnimalDetails";
 import ShelterRealAdoptionList from "./adoption/ShelterRealAdoptionList";
@@ -34,6 +33,8 @@ import MailConfirmationPage from "./origin/MailConfirmationPage";
 import PayUConfirmationPage from "./origin/PayUConfirmationPage";
 import UserActivityList from "./activity/UserActivityList";
 import ShelterActivityList from "./activity/ShelterActivityList";
+import Contact from "./users/unlogged/Contact";
+// import ShelterAnimalListUnlogged from "./animal/ShelterAnimalListUnlogged";
 
 function App() {
     axios.defaults.withCredentials = true
@@ -55,7 +56,7 @@ function App() {
                             <Hero/>}/>
                     <Route exact path="/adduser" element={<AddUser/>}/>
                     <Route exact path="/addshelter" element={<AddShelter/>}/>
-                    <Route exact path="/rodo" component={<RODO/>}/>
+                    <Route exact path="/contact" element={<Contact/>}/>
                     <Route exact path="/loggedinuser" element={<LoggedInUser/>}/>
                     <Route exact path="/login" element={<Login loggingInfo={loggingInfo}/>}/>
                     <Route exact path="/animalList" element={<AnimalList/>}/>
@@ -63,6 +64,8 @@ function App() {
                     <Route exact path="/shelterList" element={<ShelterList/>}/>
                     <Route exact path="/shelterDetails/:id" element={<ShelterDetails/>}/>
                     <Route exact path="/userList" element={<UsersList/>}/>
+                    <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/>
+                    {/*<Route exact path="/shelterAnimalListUnlogged" element={<ShelterAnimalListUnlogged/>}/>*/}
                     {userType === "SHELTER" ? <Route exact path="/addAnimal" element={<AddAnimal/>}/> :
                         <Route exact path="/" element={<Home/>}/>}
                     {userType === "SHELTER" ? <Route exact path="/shelterAnimalList" element={<ShelterAnimalList/>}/> :
