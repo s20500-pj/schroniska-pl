@@ -10,10 +10,10 @@ export const SEX_OPTIONS = {
 };
 
 export const AGE_OPTIONS = {
-    VERY_YOUNG: "Bardzo młody",
+    VERY_YOUNG: "bardzo młody",
     YOUNG: "młody",
     ADULT: "dorosły",
-    ELDER: "stary"
+    ELDER: "senior"
 };
 
 export const ADOPTION_STATUS_OPTIONS = {

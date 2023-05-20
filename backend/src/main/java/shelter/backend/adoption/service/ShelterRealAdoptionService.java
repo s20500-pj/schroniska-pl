@@ -221,8 +221,9 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
         List<Activity> animalActivities = animal.getActivities();
         animal.setActivities(null);
         if (!animalActivities.isEmpty()) {
-            //FIXME notify the volunteer that activity is cancelled, emailService
             activityRepository.deleteAll(animalActivities);
+            animalActivities.forEach((activity) -> emailService.sendActivityCancellation(activity.getUser().getEmail(),
+                    activity.getAnimal().getName()));
         }
         animalRepository.save(animal);
         adoptionRepository.save(adoption);

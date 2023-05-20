@@ -1,7 +1,6 @@
 package shelter.backend.email;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
@@ -22,6 +21,8 @@ public class ShelterEmailService implements EmailService {
     private final MessageSource messageSource;
 
     private final String ADOPTION_PROPERTIES = "shelter.mail.adoption";
+
+    private final String PAYMENT_PROPERTIES = "shelter.mail.payment";
 
 
     @Value("${spring.mail.username}")
@@ -82,6 +83,38 @@ public class ShelterEmailService implements EmailService {
         final String messageProperty = "shelter.mail.shelter.registration.confirmation";
         final String subjectProperty = messageProperty + ".subject";
         String[] params = {shelterName};
+        sendEmail(email, subjectProperty, messageProperty, params);
+    }
+
+    @Override
+    public void sendVirtualAdoptionTimeout(String email, String animalName, String shelterName) {
+        final String messageProperty = ADOPTION_PROPERTIES + ".virtual.timeout";
+        final String subjectProperty = messageProperty + ".subject";
+        String[] params = {animalName, shelterName};
+        sendEmail(email, subjectProperty, messageProperty, params);
+    }
+
+    @Override
+    public void sendActivityCancellation(String email, String animalName) {
+        final String messageProperty = "shelter.mail.activity.cancellation";
+        final String subjectProperty = messageProperty + ".subject";
+        String[] params = {animalName};
+        sendEmail(email, subjectProperty, messageProperty, params);
+    }
+
+    @Override
+    public void sendPaymentInfo(String email, String purpose, String amount, String shelterName) {
+        final String messageProperty = PAYMENT_PROPERTIES + ".info";
+        final String subjectProperty = messageProperty + ".subject";
+        String[] params = {purpose, amount, shelterName};
+        sendEmail(email, subjectProperty, messageProperty, params);
+    }
+
+    @Override
+    public void sendPaymentFailure(String email, String purpose, String amount, String shelterName) {
+        final String messageProperty = PAYMENT_PROPERTIES + ".failure";
+        final String subjectProperty = messageProperty + ".subject";
+        String[] params = {purpose, amount, shelterName};
         sendEmail(email, subjectProperty, messageProperty, params);
     }
 

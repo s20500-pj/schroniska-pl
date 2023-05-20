@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import shelter.backend.activity.rest.req.ActivityRegisterReq;
+import shelter.backend.email.EmailService;
 import shelter.backend.rest.model.dtos.ActivityDto2;
 import shelter.backend.rest.model.dtos.AnimalDto;
 import shelter.backend.rest.model.entity.Activity;
@@ -46,6 +47,8 @@ public class ShelterActivityService implements ActivityService {
     private final ActivityMapper activityMapper;
 
     private final AnimalMapper animalMapper;
+
+    private final EmailService emailService;
 
     private final LocalTime defaultTimeOfActivity = LocalTime.of(16, 0); //todo add to Preferences
 
@@ -90,10 +93,11 @@ public class ShelterActivityService implements ActivityService {
 
     private boolean dateTimeIsValid(Animal animal, LocalDate activityDate) {
         LocalTime timeNow = LocalTime.now();
-        LocalDateTime todayAtDefaultTime = LocalDateTime.of(LocalDate.now(), defaultTimeOfActivity);
-        LocalDateTime registerDate = LocalDateTime.of(activityDate, timeNow);
-        if (!registerDate.isAfter(todayAtDefaultTime)) {
-            log.info("Animal can't be registered for activity. Animal: {}. Time is before today: {}", animal.getId(), registerDate);
+        LocalDate dateNow = LocalDate.now();
+        LocalDateTime todayAtDefaultTime = LocalDateTime.of(dateNow, defaultTimeOfActivity);
+        LocalDateTime registerDateTime = LocalDateTime.of(activityDate, timeNow);
+        if ((activityDate.isBefore(dateNow)) || (activityDate.isEqual(dateNow) && !registerDateTime.isBefore(todayAtDefaultTime))) {
+            log.info("Animal can't be registered for activity. Animal: {}. Too late for activity: {}", animal.getId(), registerDateTime);
             throw new ActivityException("Wybrany termin jest niepoprawny");
         }
         return true;
@@ -131,7 +135,7 @@ public class ShelterActivityService implements ActivityService {
             throw new ActivityException("Aktywność o podanym ID nie isnieje");
         }
         activityRepository.delete(activity);
-        //FIXME notify the volunteer that activity is cancelled, emailService
+        emailService.sendActivityCancellation(activity.getUser().getEmail(), activity.getAnimal().getName());
     }
 
     @Override

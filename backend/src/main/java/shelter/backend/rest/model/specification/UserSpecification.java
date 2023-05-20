@@ -17,21 +17,13 @@ import java.util.Map;
 public class UserSpecification implements Specification<User> {
 
     private static final String FIRST_NAME = "firstName";
-
     private static final String LAST_NAME = "lastName";
-
     private static final String EMAIL = "email";
-
     private static final String SHELTER_NAME = "shelterName";
-
     private static final String IS_DISABLED = "isDisabled";
-
     private static final String APPROVAL_STATUS = "approvalStatus";
-
-    private static final String USER_TYPE = "userType";
-
+    public static final String USER_TYPE = "userType";
     private static final String CITY = "city";
-
 
     private final Map<String, String> searchParams;
 
@@ -44,16 +36,21 @@ public class UserSpecification implements Specification<User> {
             String value = entry.getValue();
 
             switch (key) {
-                case FIRST_NAME -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(FIRST_NAME)), "%" + value.toLowerCase() + "%"));
-                case LAST_NAME -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(LAST_NAME)), "%" + value.toLowerCase() + "%"));
-                case EMAIL -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EMAIL)), "%" + value.toLowerCase() + "%"));
-                case SHELTER_NAME -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(SHELTER_NAME)), "%" + value.toLowerCase() + "%"));
+                case FIRST_NAME ->
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(FIRST_NAME)), "%" + value.toLowerCase() + "%"));
+                case LAST_NAME ->
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(LAST_NAME)), "%" + value.toLowerCase() + "%"));
+                case EMAIL ->
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EMAIL)), "%" + value.toLowerCase() + "%"));
+                case SHELTER_NAME ->
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(SHELTER_NAME)), "%" + value.toLowerCase() + "%"));
                 case IS_DISABLED ->
                         predicates.add(criteriaBuilder.equal(root.get(IS_DISABLED), Boolean.valueOf(value)));
                 case APPROVAL_STATUS ->
                         predicates.add(criteriaBuilder.equal(root.get(APPROVAL_STATUS), ApprovalStatus.valueOf(value)));
                 case USER_TYPE -> predicates.add(criteriaBuilder.equal(root.get(USER_TYPE), UserType.valueOf(value)));
-                case CITY -> predicates.add(criteriaBuilder.like(criteriaBuilder.lower(addressJoin.get(CITY)), "%" + value.toLowerCase() + "%"));
+                case CITY ->
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(addressJoin.get(CITY)), "%" + value.toLowerCase() + "%"));
             }
         }
 

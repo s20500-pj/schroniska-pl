@@ -14,14 +14,16 @@ import shelter.backend.rest.mockService.EmailServiceMock;
 public class ContextConfiguration {
 
     @Bean
+    @ConditionalOnProperty(name = "enable.mock.krs", havingValue = "true")
     @Primary
-    public ApprovalProvider approvalProviderMock(){
+    public ApprovalProvider approvalProviderMock() {
         return new ApprovalProviderMock();
     }
 
     @Bean
+    @ConditionalOnProperty(name = "enable.mock.email", havingValue = "true")
     @Primary
-    public EmailService emailServiceMock(){
+    public EmailService emailServiceMock() {
         return new EmailServiceMock();
     }
 }

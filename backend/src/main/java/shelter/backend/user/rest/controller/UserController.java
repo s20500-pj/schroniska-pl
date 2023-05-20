@@ -12,6 +12,7 @@ import shelter.backend.rest.model.dtos.UserDto;
 import shelter.backend.user.service.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,8 +28,8 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/search", consumes = MediaType.TEXT_PLAIN_VALUE)
-    ResponseEntity<List<UserDto>> search(@RequestBody String searchParams) {
+    @PostMapping(value = "/search", consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<List<UserDto>> search(@RequestBody Map<String, String> searchParams) {
         return ResponseEntity.ok(userService.search(searchParams));
     }
 

@@ -7,7 +7,6 @@ import ShelterServerConstants from "../util/ShelterServerConstants";
 import Messages from "../util/Messages";
 import VirtualAdoptionBtn from "../adoption/VirtualAdoptionBtn";
 import {arrayToDate, formatDate} from "../util/DateUtils";
-import PopupSuccessAdd from "./PopupSuccessAdd";
 import PopupSuccessActivity from "../activity/PopupSuccessActitity";
 import PopupDeleteUserByUser from "../users/person/PopupDeleteUserByUser";
 import PopupDeleteAnimal from "./PopupDeleteAnimal";
@@ -16,6 +15,7 @@ export default function AnimalDetails() {
     axios.defaults.withCredentials = true;
     const navigate = useNavigate();
     const {id} = useParams();
+    const [isProperShelter, setIsProperShelter] = useState(false);
     const [animal, setAnimal] = useState(null);
     const [animalEdit, setAnimalEdit] = useState({
         id: id,
@@ -152,6 +152,15 @@ export default function AnimalDetails() {
             .then((response) => setAnimal(response.data))
             .catch((error) => console.error("Error fetching animal data:", error));
     }, [id, reload]);
+
+    useEffect(() => {
+        if (animal) {
+            setIsProperShelter(
+                localStorage.getItem("userType") === "SHELTER" &&
+                localStorage.getItem("userId") == animal.shelter.id
+            );
+        }
+    }, [animal]);
 
     const now = new Date();
     if (now.getHours() >= 14) {

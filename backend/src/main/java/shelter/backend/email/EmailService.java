@@ -9,4 +9,8 @@ public interface EmailService{
     void sendAdoptionSuspension(String email, String shelterName, long id);
     void sendVirtualAdoptionConfirmationAdopted(String email, String shelterName, String animalName, String adoptionPeriod);
     void sendShelterApprovalConfirmation(String email, String shelterName);
+    void sendVirtualAdoptionTimeout(String email, String animalName, String shelterName);
+    void sendActivityCancellation(String email, String animalName);
+    void sendPaymentInfo(String email, String purpose, String amount, String shelterName);
+    void sendPaymentFailure(String email, String purpose, String amount, String shelterName);
 }
