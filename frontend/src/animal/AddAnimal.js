@@ -91,7 +91,7 @@ export default function AddAnimal() {
                     <div className="flex flex-wrap">
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">
                             <label htmlFor="name"
-                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Imię:
                             </label>
                             <input
@@ -105,7 +105,7 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="information"
-                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Informacje/opis:
                             </label>
                             <input
@@ -119,7 +119,7 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="species"
-                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Gatunek:
                             </label>
                             <select
@@ -135,7 +135,7 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="sex"
-                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Płeć:
                             </label>
                             <select
@@ -153,7 +153,7 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="age"
-                                   className=" block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className=" block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Wiek:
                             </label>
                             <select
@@ -172,7 +172,7 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="animalStatus"
-                                   className=" block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className=" block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Status zwierzęcia:
                             </label>
                             <select
@@ -190,7 +190,7 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="birthDate"
-                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Data urodzenia:
                             </label>
                             <input
@@ -206,7 +206,7 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="sterilized"
-                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Wysterylizowany?:
                             </label>
                             <select
@@ -223,7 +223,7 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="vaccinated"
-                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Szczepienia?:
                             </label>
                             <select
@@ -240,7 +240,7 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="kidsFriendly"
-                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Przyjazny dzieciom?:
                             </label>
                             <select
@@ -257,7 +257,7 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="couchPotato"
-                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Kanapowiec?:
                             </label>
                             <select
@@ -274,7 +274,7 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="needsActiveness"
-                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Potrzebuje dużo ruchu?:
                             </label>
                             <select
@@ -291,7 +291,7 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="catsFriendly"
-                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Toleruje koty?:
                             </label>
                             <select
@@ -308,7 +308,7 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="dogsFriendly"
-                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Toleruje psy?:
                             </label>
                             <select
@@ -325,13 +325,17 @@ export default function AddAnimal() {
                         </div>
                         <div className="w-full md:w-1/2 px-3">
                             <label htmlFor="photo"
-                                   className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
+                                   className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Zdjęcie:
                             </label>
-                            <input type="file" name="photo" onChange={handlePhotoChange}/>
                             {photo && (
-                                <p>Wybrano plik: {photo.name}</p>
+                                <p
+                                    className="block uppercase tracking-wide text-orange text-md font-bold mb-2">
+                                    Wybrano plik: {photo.name}</p>
                             )}
+                            <input type="file" name="photo"
+                                   onChange={handlePhotoChange}/>
+
                         </div>
 
 
