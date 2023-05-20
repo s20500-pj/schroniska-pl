@@ -2,6 +2,7 @@ import axios from "axios";
 import React, {useState, useEffect} from "react";
 import Table from "../util/Table";
 import PopupDeleteUser from "./PopupDeleteUser";
+import ShelterServerConstants from "../util/ShelterServerConstants";
 
 function UsersList() {
     const columns = [

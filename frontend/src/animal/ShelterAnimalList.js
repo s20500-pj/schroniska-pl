@@ -2,8 +2,10 @@ import axios from "axios";
 import React, {useState, useEffect} from "react";
 import AnimalCard from "./AnimalCard";
 import {useParams} from "react-router-dom";
+import ShelterServerConstants from "../util/ShelterServerConstants";
 
 function ShelterAnimalList() {
+    const [isAdopted, setIsAdopted] = useState(false);
     axios.defaults.withCredentials = true;
     const {id} = useParams();
     const [error, setError] = useState("");
