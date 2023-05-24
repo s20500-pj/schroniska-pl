@@ -3,6 +3,7 @@ import axios from "axios";
 import SuccessPopup from "./SuccessPopup";
 import {Link, useNavigate} from "react-router-dom";
 import Modal from "./Modal";
+import PopupErrorRegistration from "./PopupErrorRegistration";
 
 export default function AddShelter() {
     const [error, setError] = useState("");
@@ -24,7 +25,7 @@ export default function AddShelter() {
             krsNumber: ""
         }
     });
-
+    const [errorOpen, setErrorOpen] = useState(false);
     const handleCancelClick = () => {
         navigate("/");
     };
@@ -47,6 +48,8 @@ export default function AddShelter() {
         } catch (error) {
             console.log(error)
             setError(error.response?.data?.message || "Something went wrong");
+            setErrorOpen(true);
+
         }
     };
 
@@ -69,6 +72,7 @@ export default function AddShelter() {
             <div className="px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Zarejestruj schronisko</h2>
                 {modalOpen && <Modal setOpenModal={setModalOpen}/>}
+                {errorOpen && <PopupErrorRegistration setOpenError={setErrorOpen}/>}
                 <form onSubmit={(e) => onSubmit(e)} className="w-full max-w-lg m-auto py-10">
                     <div className="flex flex-wrap">
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">

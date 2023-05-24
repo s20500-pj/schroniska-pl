@@ -34,7 +34,6 @@ function Modal({setOpenModal}) {
                                 onClick={() => {
                                     setOpenModal(false)
                                     navigate('/')
-
                                 }}
                             >
                                 Zamknij
