@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import Modal from "./Modal";
+import PopupErrorRegistration from "./PopupErrorRegistration";
 export default function AddUser() {
     const [error, setError] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
@@ -21,7 +22,7 @@ export default function AddUser() {
             phone: "",
         },
     });
-
+    const [errorOpen, setErrorOpen] = useState(false);
 
     const onInputChange = (e) => {
         setUser({...user, [e.target.name]: e.target.value});
@@ -46,6 +47,7 @@ export default function AddUser() {
             setModalOpen(true);
         } catch (error) {
             setError(error.response?.data?.message || "Something went wrong");
+            setErrorOpen(true);
         }
     };
 
@@ -56,6 +58,7 @@ export default function AddUser() {
             <div className="px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Załóż konto</h2>
                 {modalOpen && <Modal setOpenModal={setModalOpen}/>}
+                {errorOpen && <PopupErrorRegistration setOpenError={setErrorOpen}/>}
                 <form onSubmit={(e) => onSubmit(e)} className="w-full max-w-lg m-auto py-10">
                     <div className="flex flex-wrap">
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">

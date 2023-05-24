@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import PopupErrorLogin from "../unlogged/PopupErrorLogin";
 
 function Login({loggingInfo}) {
     axios.defaults.withCredentials = true
@@ -10,6 +11,7 @@ function Login({loggingInfo}) {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [storageFilled, setStorageFilled] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
     };
@@ -42,6 +44,7 @@ function Login({loggingInfo}) {
             await window.location.reload();
         } catch (error) {
             setError(error.response?.data?.message || "Something went wrong");
+            setModalOpen(true);
         } finally {
             setLoading(false);
         }
@@ -49,7 +52,7 @@ function Login({loggingInfo}) {
 
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
-            {error && <p>{error}</p>}
+            {modalOpen && <PopupErrorLogin setOpenModal={setModalOpen}/>}
             <div className="px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Zaloguj</h2>
                 <form onSubmit={handleSubmit}>
