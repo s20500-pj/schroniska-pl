@@ -49,8 +49,8 @@ const columns = [
                 Cell: ({value}) => (
                     <Link to={`/animalDetails/${value}`}>
                         <button type="submit"
-                                className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                            <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Zobacz
+                                className="px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
+                            <p className="py-15 justify-center text-base text-center text-brown font-medium	">Zobacz
                                 zwierzę</p>
                         </button>
                     </Link>

@@ -39,7 +39,7 @@ function ShelterList() {
                         <>
                             <Link to={`/shelterDetails/${value}`}>
                                 <button type="submit"
-                                        className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                        className="px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
                                     <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Dane
                                         schroniska
                                     </p>
@@ -51,7 +51,7 @@ function ShelterList() {
                                     {modalOpen && <PopupDeleteShelter setOpenModal={setModalOpen} fetchData={fetchData} id={value} sheltersMap={sheltersMap} shelterName={shelterName} shelter={shelter}/>}
                                     <button type="submit"
                                             onClick={() => setModalOpen(true)}
-                                            className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                            className="px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
                                         <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Usuń
                                             schronisko
                                         </p>
