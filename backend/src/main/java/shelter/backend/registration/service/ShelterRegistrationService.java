@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,10 +26,8 @@ import shelter.backend.storage.repository.RoleRepository;
 import shelter.backend.storage.repository.UserRepository;
 import shelter.backend.utils.exception.MessageNotSendException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 @RequiredArgsConstructor
@@ -67,11 +64,11 @@ public class ShelterRegistrationService implements RegistrationService {
         log.debug("Confirmation token {} created for user: {}", token.getId(), user.getEmail());
         try {
             if (isShelter(user)) {
-                shelterEmailService.sendConfirmationEmail(user.getEmail(), token.getId(), expTime, user.getUserType());
+                shelterEmailService.sendConfirmationEmail(user.getEmail(), token.getId(), expTime, user.getUserType(), user.getShelterName());
                 user.setApprovalStatus(ApprovalStatus.EMAIL_NOT_CONFIRMED);
                 userRepository.save(user);
             } else {
-                shelterEmailService.sendConfirmationEmail(user.getEmail(), token.getId(), expTime, user.getUserType());
+                shelterEmailService.sendConfirmationEmail(user.getEmail(), token.getId(), expTime, user.getUserType(), user.getFirstName());
             }
         } catch (MessageNotSendException e) {
             userRepository.deleteById(user.getId());

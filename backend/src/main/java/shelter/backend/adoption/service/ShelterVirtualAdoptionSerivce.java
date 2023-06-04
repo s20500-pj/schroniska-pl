@@ -97,12 +97,14 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
         Adoption adoption = adoptionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje wirtualna adopcja dla wybranego id"));
         log.info("[finalizeVirtualAdoption] :: finalize virtual adoptionID: {}, username: {}, animalId: {}", adoption.getId(), adoption.getUser().getEmail(), adoption.getAnimal().getId());
-        int months = calculateAdoptionPeriod(amount/100);
+        int months = calculateAdoptionPeriod(amount / 100);
         adoption.setAdoptionStatus(AdoptionStatus.VIRTUAL_ADOPTED);
         LocalDate adoptionTime = LocalDate.now().plusMonths(months);
         adoption.setValidUntil(adoptionTime);
         adoptionRepository.save(adoption);
-        emailService.sendVirtualAdoptionConfirmationAdopted(adoption.getUser().getEmail(), adoption.getAnimal().getShelter().getShelterName(), adoption.getAnimal().getName(), adoptionTime.toString());
+        emailService.sendVirtualAdoptionConfirmationAdopted(adoption.getUser().getEmail(),
+                adoption.getAnimal().getShelter().getShelterName(), adoption.getAnimal().getName(),
+                adoptionTime.toString(), adoption.getUser().getFirstName());
         log.info("Animal adopted virtually. Adoption: {}", adoption);
     }
 
@@ -140,9 +142,9 @@ public class ShelterVirtualAdoptionSerivce extends ShelterAdoptionService implem
                 .toList();
         for (Adoption adoption : expiredAdoptions) {
             delete(adoption.getId());
-            if (adoption.getAdoptionStatus() == AdoptionStatus.VIRTUAL_ADOPTED){
+            if (adoption.getAdoptionStatus() == AdoptionStatus.VIRTUAL_ADOPTED) {
                 emailService.sendVirtualAdoptionTimeout(adoption.getUser().getEmail(), adoption.getAnimal().getName(),
-                        adoption.getAnimal().getShelter().getShelterName());
+                        adoption.getAnimal().getShelter().getShelterName(), adoption.getUser().getFirstName());
             }
         }
         log.debug("virtual adoption scheduler finished");

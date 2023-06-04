@@ -78,7 +78,7 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
             adoption.setValidUntil(LocalDate.now().plusWeeks(VALID_UNTIL));
             emailService.sendAdoptionInvitation(adoption.getUser().getEmail(),
                     adoption.getAnimal().getShelter().getShelterName(), adoption.getValidUntil().toString(),
-                    adoption.getId());
+                    adoption.getId(), adoption.getAnimal().getName(), adoption.getUser().getFirstName());
             adoption.setAdoptionStatus(AdoptionStatus.SHELTER_INVITED);
         } catch (MessageNotSendException e) {
             log.warn("Problem with sending invitation email to the user: {}", adoption.getUser().getEmail());
@@ -130,7 +130,7 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
                     User shelter = getUser();
                     try {
                         emailService.sendAdoptionSuspension(user.getEmail(), shelter.getShelterName(),
-                                adoptionUpdate.getId());
+                                adoptionUpdate.getId(), adoption.getAnimal().getName(), adoption.getUser().getFirstName());
                     } catch (MessageNotSendException e) {
                         log.warn("Adoption suspension mail can't be send. Reason: {}", e.getMessage());
                     }
@@ -172,7 +172,7 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
         adoption.setAdoptionStatus(AdoptionStatus.DECLINED);
         adoptionRepository.save(adoption);
         try {
-            emailService.sendAdoptionCancellation(adoption.getUser().getEmail(), adoption.getUser().getId());
+            emailService.sendAdoptionCancellation(adoption.getUser().getEmail(), adoption.getId(), adoption.getAnimal().getName(), adoption.getUser().getFirstName());
             log.info("Adoption id: {}, has been cancelled", adoptionId);
         } catch (MessageNotSendException e) {
             log.warn("Adoption cancellation email can't be send. Reason: {}", e.getMessage());
@@ -223,7 +223,8 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
         if (!animalActivities.isEmpty()) {
             activityRepository.deleteAll(animalActivities);
             animalActivities.forEach((activity) -> emailService.sendActivityCancellation(activity.getUser().getEmail(),
-                    activity.getAnimal().getName()));
+                    activity.getAnimal().getName(), activity.getActivityTime().toLocalDate().toString(),
+                    activity.getUser().getFirstName()));
         }
         animalRepository.save(animal);
         adoptionRepository.save(adoption);
