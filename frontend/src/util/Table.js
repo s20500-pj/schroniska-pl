@@ -63,7 +63,7 @@ export default function Table({columns, data}) {
                                         <td {...cell.getCellProps() }className='p-5'>
                                             <img src={cell.value ? cell.value : placeholderImage}
                                                  onError={onImageError}
-                                                 className=" shadow-xl border-2 border-orange rounded-xl object-cover h-32 w-48"/>
+                                                 className=" shadow-xl border-2 border-orange rounded object-cover h-32 w-48"/>
                                         </td>
                                     );
                                 } else {

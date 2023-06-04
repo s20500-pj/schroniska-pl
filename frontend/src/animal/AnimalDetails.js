@@ -115,6 +115,7 @@ export default function AnimalDetails() {
 
     const handleActivity = (e) => {
         e.preventDefault();
+
         if (activityDate === null) {
             alert("Proszę wybrać datę");
             return;
@@ -142,6 +143,10 @@ export default function AnimalDetails() {
 
     const showActivityForm = () => {
         setActivityResponseMessage(false);
+        setActivityFormVisible(true);
+    }
+
+    const closeActivityForm = () => {
         setActivityFormVisible(true);
     }
 
@@ -249,18 +254,18 @@ export default function AnimalDetails() {
                         </div>
                         <div className='flex 1/2 lg:pt-24 pb-5 md:justify-center md:p-4'>
                             <div className=''>
-                                <p className='font-bold pt-2'>Gatunek: </p><p>{SPECIES_OPTIONS[animal.species]}</p>
-                                <p className='font-bold pt-2'>Płeć: </p><p>{SEX_OPTIONS[animal.sex]}</p>
-                                <p className='font-bold pt-2'>Wiek: </p><p>{AGE_OPTIONS[animal.age]}</p>
-                                <p className='font-bold pt-2'>Data urodzenia: </p>
+                                <p className='font-bold pt-2 text-brown'>Gatunek: </p><p>{SPECIES_OPTIONS[animal.species]}</p>
+                                <p className='font-bold pt-2 text-brown'>Płeć: </p><p>{SEX_OPTIONS[animal.sex]}</p>
+                                <p className='font-bold pt-2 text-brown'>Wiek: </p><p>{AGE_OPTIONS[animal.age]}</p>
+                                <p className='font-bold pt-2 text-brown'>Data urodzenia: </p>
                                 <p>{formatDate(animal.birthDate)}</p>
-                                <p className='font-bold pt-2'>Status:</p>
+                                <p className='font-bold pt-2 text-brown'>Status:</p>
                                 <p>{ANIMAL_STATUS_OPTIONS[animal.animalStatus]}</p>
-                                <p className='font-bold pt-2'>Dodatkowe informacje:</p><p> {animal.information}</p>
+                                <p className='font-bold pt-2 text-brown'>Dodatkowe informacje:</p><p> {animal.information}</p>
                             </div>
                             <div>
-                                <p className='font-bold pt-2'>Schronisko:</p><p> {animal.shelter.shelterName}</p>
-                                <p className='font-bold pt-2'>
+                                <p className='font-bold pt-2 text-brown'>Schronisko:</p><p> {animal.shelter.shelterName}</p>
+                                <p className='font-bold pt-2 text-brown'>
                                     Adres schroniska: </p>
                                 <p>{animal.shelter.address.street}{" "}
                                     {animal.shelter.address.buildingNumber}{" "}
@@ -268,10 +273,12 @@ export default function AnimalDetails() {
                                     {animal.shelter.address.postalCode.slice(0, 2)}-{animal.shelter.address.postalCode.slice(2)}{" "}
                                     {animal.shelter.address.city}
                                 </p>
-                                <p className='font-bold pt-2'>Numer KRS: </p>
+                                <p className='font-bold pt-2 text-brown'>Numer KRS: </p>
                                 <p>{animal.shelter.address.krsNumber}</p>
-                                <p className='font-bold pt-2'>Telefon do schroniska:</p>
+                                <p className='font-bold pt-2 text-brown'>Telefon do schroniska:</p>
                                 <p> {animal.shelter.address.phone}</p>
+                                <p className='font-bold pt-2 text-brown'>E-mail:</p>
+                                <p> {animal.shelter.email}</p>
                             </div>
                         </div>
 
@@ -281,7 +288,8 @@ export default function AnimalDetails() {
                         {animal && canAdopt(animal) && (
                             <div>
                                 <button
-                                    className="bg-orange text-white font-bold py-2 px-4 rounded m-5"
+                                    className="ml-2 text-brown font-bold py-2 px-4 m-5
+                                     bg-white border-orange text-brown hover:bg-orange border-2 rounded m-3 p-3 hover:scale-105"
                                     onClick={() => handleAdoption(animal.id)}
                                 >
                                     Adoptuj
@@ -291,7 +299,8 @@ export default function AnimalDetails() {
                         {animal && entitledForActivity(animal) && (
                             <div>
                                 <button
-                                    className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
+                                    className=" ml-2 text-brown font-bold py-2 px-4 m-5
+                                     bg-white border-orange text-brown hover:bg-orange border-2 rounded m-3 p-3 hover:scale-105"
                                     onClick={showActivityForm}
                                 >
                                     Wolontariat
@@ -299,12 +308,15 @@ export default function AnimalDetails() {
                             </div>
                         )}
                         {activityFormVisible && (
-                            <form onSubmit={handleActivity}
-                                  className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50">
+                            <form onSubmit={handleActivity}>
+                                 <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50">
                                 <div className="relative w-auto my-6 mx-auto max-w-3xl">
                                     <div
                                         className="p-4 border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                                        <h2 className="text-center text-xl text-orange font-bold h-fit">
+                                       <button onClick={()=>setActivityFormVisible(false)}>
+                                           <h2 className="text-right text-orange">X</h2>
+                                       </button>
+                                        <h2 className="text-center text-xl text-orange font-bold h-fit mb-3">
                                             Wolontariat
                                         </h2>
                                         <p className="">{Messages.ACTIVITY_INFORMATION}</p>
@@ -315,12 +327,13 @@ export default function AnimalDetails() {
                                                    className="mx-2"/>
                                         </label>
                                         <button
-                                            className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
+                                            className="bg-orange ml-2 text-white  py-2 px-4 rounded m-5 hover:scale-103"
                                             type="submit">
                                             <p>Zarezerwuj termin</p>
                                         </button>
                                     </div>
                                 </div>
+                            </div>
                             </form>
                         )}
                         <div>
@@ -347,7 +360,7 @@ export default function AnimalDetails() {
                                 <button
                                     type="button"
                                     onClick={() => setModalOpen(true)}
-                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown"
+                                    className="px-10 py-2 m-5 border-2 border-orange rounded bg-white hover:bg-orange text-white active:bg-brown"
                                 >
                                     <p className="py-15 justify-center text-base text-center text-brown font-medium">
                                         Usuń zwierzę
@@ -395,7 +408,7 @@ export default function AnimalDetails() {
                                             className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                             name="species"
                                             onChange={handleInput}
-                                            value={animal.species}
+                                            defaultValue={animal.species}
                                         >
                                             <option value="">Wybierz gatunek</option>
                                             <option value="DOG">Pies</option>
@@ -410,7 +423,7 @@ export default function AnimalDetails() {
                                         <select
                                             className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                             name="sex"
-                                            value={animal.sex}
+                                            defaultValue={animal.sex}
                                             onChange={handleInput}
                                         >
                                             <option value="">Wybierz płeć</option>
@@ -427,7 +440,7 @@ export default function AnimalDetails() {
                                         <select
                                             className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                             name="age"
-                                            value={animal.age}
+                                            defaultValue={animal.age}
                                             onChange={handleInput}
                                         >
                                             <option value="">Wybierz wiek</option>
@@ -445,7 +458,7 @@ export default function AnimalDetails() {
                                         <select
                                             className="block w-full bg-gray-200 text-brown border border-orange rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                                             name="animalStatus"
-                                            value={animal.animalStatus}
+                                            defaultValue={animal.animalStatus}
                                             onChange={handleInput}
                                         >
                                             <option value="">Wybierz status</option>
@@ -594,7 +607,7 @@ export default function AnimalDetails() {
                                 </div>
                                 <div className="m-auto text-center">
                                     <button type="submit"
-                                            className=" px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                            className=" px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
                                         <p className="py-15 justify-center text-base text-center text-brown font-medium	">Aktualizuj
                                             dane</p>
                                     </button>

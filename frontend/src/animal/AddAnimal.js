@@ -341,14 +341,14 @@ export default function AddAnimal() {
 
                     </div>
                     <button type="submit"
-                            className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                        <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Zarejestruj</p>
+                            className="px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
+                        <p className="py-15 justify-center text-base text-center text-brown font-medium	">Zarejestruj</p>
                     </button>
                     <button onClick={handleCancelClick} type="submit"
-                            className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                            className="px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
                         <a
                             href="/"
-                            className='py-15 justify-center text-base	 text-center text-brown font-medium	'
+                            className='py-15 justify-center text-base text-center text-brown font-medium	'
                         >
                             Anuluj </a>
                     </button>

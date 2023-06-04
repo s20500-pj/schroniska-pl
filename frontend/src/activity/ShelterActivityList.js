@@ -132,8 +132,8 @@ function ShelterActivityList() {
                     Cell: ({row}) => (
                         row.original.activityTime !== null && row.original.activityTime !== undefined ?
                             <button type="submit" onClick={() => handleDelete(row.original.id)}
-                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                                <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Anuluj
+                                    className="px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
+                                <p className="py-15 justify-center text-base text-center text-brown font-medium	">Anuluj
                                     wolontariat</p>
                             </button> : null
                     ),
@@ -199,12 +199,12 @@ function ShelterActivityList() {
                             <div className="w-full">
                                 <div className="flex justify-around py-2">
                                     <button type="submit"
-                                            className="flex px-3 py-2 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                                        <p className=" justify-center text-base	 text-center text-brown font-medium	">Filtruj</p>
+                                            className="flex px-3 py-2 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
+                                        <p className="justify-center text-base	 text-center text-brown font-medium">Filtruj</p>
                                     </button>
                                     <button onClick={handleClear}
-                                            className="px-3 py-2 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                                        <p className="justify-center text-base	 text-center text-brown font-medium	">Czyść
+                                            className="px-3 py-2 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
+                                        <p className="justify-center text-base text-center text-brown font-medium">Czyść
                                             filtry</p>
                                     </button>
                                 </div>

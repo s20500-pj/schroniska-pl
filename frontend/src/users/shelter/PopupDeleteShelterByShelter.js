@@ -41,14 +41,14 @@ function PopupDeleteShelterByShelter({setOpenModal, id, shelter, navigate, setLo
                         <div
                             className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                             <button
-                                className="bg-orange text-white active:bg-emerald-600 font-display uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                className="bg-orange text-white active:bg-orange font-display uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
                                 onClick={() =>deleteShelter(id) }
                             >
                                 TAK
                             </button>
                             <button
-                                className="bg-orange text-white active:bg-emerald-600 font-display uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                className="bg-orange text-white active:bg-orange font-display uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
                                 onClick={() =>setOpenModal(false) }
                             >
