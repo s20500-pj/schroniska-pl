@@ -96,7 +96,7 @@ public class PayUService implements PaymentService {
         log.info("PaymentOrder loaded successfully, {}", order);
         if (error.isEmpty()) {
             emailService.sendPaymentInfo(order.getUserName(), order.getPurpose().name(),
-                    String.valueOf(order.getAmount()), order.getShelterName());
+                    String.valueOf(order.getAmount()), order.getShelterName(), order.getId());
         }
         return callForPaymentStatus(order, false);
     }
@@ -131,7 +131,7 @@ public class PayUService implements PaymentService {
                 log.info("Payment has been canceled, processing canceled payment flow.");
                 handleCanceledPayment(paymentOrder);
                 emailService.sendPaymentFailure(paymentOrder.getUserName(), paymentOrder.getPurpose().name(),
-                        String.valueOf(paymentOrder.getAmount()), paymentOrder.getShelterName());
+                        String.valueOf(paymentOrder.getAmount()), paymentOrder.getShelterName(), paymentOrder.getId());
             }
             case COMPLETED -> {
                 log.info("Payment confirmed and completed, processing successful payment flow.");

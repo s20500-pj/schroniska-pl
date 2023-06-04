@@ -115,11 +115,11 @@ class ShelterRegistrationServiceTest {
                 .isDisabled(true)
                 .build());
         when(tokenService.generateToken(anyInt(), any())).thenReturn(token);
-        doNothing().when(shelterEmailService).sendConfirmationEmail(any(), any(), any(), any());
+        doNothing().when(shelterEmailService).sendConfirmationEmail(any(), any(), any(), any(), any());
         //
         //
         UserDto result = registrationService.register(userDto);
-        verify(shelterEmailService, times(1)).sendConfirmationEmail(any(), any(), any(), any());
+        verify(shelterEmailService, times(1)).sendConfirmationEmail(any(), any(), any(), any(), any());
         Assertions.assertTrue(result.isDisabled());
     }
 

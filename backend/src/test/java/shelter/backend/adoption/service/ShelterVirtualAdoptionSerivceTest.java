@@ -90,7 +90,7 @@ class ShelterVirtualAdoptionSerivceTest extends ClientInterceptorTestBase {
         //
         verify(adoptionRepository, times(1)).save(adoption);
         verify(emailService, times(1))
-                .sendVirtualAdoptionConfirmationAdopted(anyString(), any(), any(), anyString());
+                .sendVirtualAdoptionConfirmationAdopted(anyString(), any(), any(), anyString(), any());
     }
 
     @Test

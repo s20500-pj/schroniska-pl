@@ -135,7 +135,8 @@ public class ShelterActivityService implements ActivityService {
             throw new ActivityException("Aktywność o podanym ID nie isnieje");
         }
         activityRepository.delete(activity);
-        emailService.sendActivityCancellation(activity.getUser().getEmail(), activity.getAnimal().getName());
+        emailService.sendActivityCancellation(activity.getUser().getEmail(), activity.getAnimal().getName(),
+                activity.getActivityTime().toLocalDate().toString(), activity.getUser().getFirstName());
     }
 
     @Override
