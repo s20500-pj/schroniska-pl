@@ -106,6 +106,7 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
         Adoption adoption = adoptionRepository.findById(adoptionId)
                 .orElseThrow(() -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
         adoption.setAdoptionStatus(AdoptionStatus.VISITED);
+        adoption.setValidUntil(null);
         adoptionRepository.save(adoption);
         updateOtherAdoptionsToPendingStatus(adoption);
         return adoption.toDto2(adoption.getAnimal().toSimpleDto());
@@ -169,6 +170,7 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
         if (!declineAll) {
             updateOtherAdoptionsToPreviousStatus(adoption);
         }
+        adoption.setValidUntil(null);
         adoption.setAdoptionStatus(AdoptionStatus.DECLINED);
         adoptionRepository.save(adoption);
         try {
@@ -215,6 +217,7 @@ public class ShelterRealAdoptionService extends ShelterAdoptionService implement
         log.debug("[finalizeAdoption] :: adoptionId: {}", id);
         Adoption adoption = adoptionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Adopcja o podanym ID nie isnieje"));
+        adoption.setValidUntil(null);
         adoption.setAdoptionStatus(AdoptionStatus.ADOPTED);
         Animal animal = adoption.getAnimal();
         animal.setAnimalStatus(AnimalStatus.ADOPTED);
