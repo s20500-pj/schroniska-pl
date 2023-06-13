@@ -24,6 +24,7 @@ public class UserSpecification implements Specification<User> {
     private static final String APPROVAL_STATUS = "approvalStatus";
     public static final String USER_TYPE = "userType";
     private static final String CITY = "city";
+    private static final String STREET = "street";
 
     private final Map<String, String> searchParams;
 
@@ -51,6 +52,8 @@ public class UserSpecification implements Specification<User> {
                 case USER_TYPE -> predicates.add(criteriaBuilder.equal(root.get(USER_TYPE), UserType.valueOf(value)));
                 case CITY ->
                         predicates.add(criteriaBuilder.like(criteriaBuilder.lower(addressJoin.get(CITY)), "%" + value.toLowerCase() + "%"));
+                case STREET ->
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(addressJoin.get(STREET)), "%" + value.toLowerCase() + "%"));
             }
         }
 

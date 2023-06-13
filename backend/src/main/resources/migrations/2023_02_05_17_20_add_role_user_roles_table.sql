@@ -28,19 +28,19 @@ VALUES ('ROLE_USER'),
        ('ROLE_MODERATOR'),
        ('ROLE_ADMIN');
 
-INSERT INTO users(first_name, last_name, email, password, shelter_name, is_disabled)
-VALUES ('Marian', 'Kowalski', 'admin@admin', '$2a$10$jaPzsOA4RXYAusxuPUhSbeizQEla2Pxv7arANT9yr.9pGsyuH5c6i', NULL,
-        FALSE),
-       (NULL, NULL, 'shelter@shelter', '$2a$10$RJT94MguFJUrAFJDGQkg8e6.nQSzRLBJczJ0duJDdUsY5qBGWr.3a', 'Oaza',
-        FALSE),
-       (NULL, NULL, 'shelter2@shelter', '$2a$10$FYP5twQneHvU/z2h.VNWo.4h53lBYqW/Ydl2kodHcdlU9Bfa5O7c6', 'Kociapka',
-        FALSE),
-       ('Zdzisław', 'Wiertara', 'mod@mod', '$2a$10$6902uICXuFG.P5AUJvIYSuINVlt/T2445PrBRW6DCZXODRLFKNc4a', NULL,
-        FALSE),
-       ('Lolita', 'Kowalska', 'user@user', '$2a$10$jaPzsOA4RXYAusxuPUhSbeizQEla2Pxv7arANT9yr.9pGsyuH5c6i', NULL,
-        FALSE),
-       ('Henryk', 'Korcipa', 'user2@user', '$2a$10$a9Iy/BZmvmvbcTCCAsfun.GS7AIWQgHDZVyCzfNMQNFt7BE/BfPC6', NULL,
-        FALSE);
+INSERT INTO users(first_name, last_name, email, password, shelter_name, is_disabled, user_type)
+VALUES ('Marian', 'Kowalski', 'admin@admin.pl', '$2a$10$jaPzsOA4RXYAusxuPUhSbeizQEla2Pxv7arANT9yr.9pGsyuH5c6i', NULL,
+        FALSE, 'ADMIN'),
+       (NULL, NULL, 'shelter@shelter.pl', '$2a$10$RJT94MguFJUrAFJDGQkg8e6.nQSzRLBJczJ0duJDdUsY5qBGWr.3a', 'Oaza',
+        FALSE, 'SHELTER'),
+       (NULL, NULL, 'shelter2@shelter.pl', '$2a$10$FYP5twQneHvU/z2h.VNWo.4h53lBYqW/Ydl2kodHcdlU9Bfa5O7c6', 'Kociapka',
+        FALSE, 'SHELTER'),
+       ('Zdzisław', 'Wiertara', 'mod@mod.pl', '$2a$10$6902uICXuFG.P5AUJvIYSuINVlt/T2445PrBRW6DCZXODRLFKNc4a', NULL,
+        FALSE, 'PERSON'),
+       ('Lolita', 'Kowalska', 'user@user.pl', '$2a$10$jaPzsOA4RXYAusxuPUhSbeizQEla2Pxv7arANT9yr.9pGsyuH5c6i', NULL,
+        FALSE, 'PERSON'),
+       ('Henryk', 'Korcipa', 'user2@user.pl', '$2a$10$a9Iy/BZmvmvbcTCCAsfun.GS7AIWQgHDZVyCzfNMQNFt7BE/BfPC6', NULL,
+        FALSE, 'PERSON');
 
 INSERT INTO user_roles(user_id, role_id)
 VALUES (1, 4),

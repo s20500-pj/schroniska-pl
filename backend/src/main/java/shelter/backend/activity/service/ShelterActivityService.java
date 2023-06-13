@@ -161,7 +161,6 @@ public class ShelterActivityService implements ActivityService {
             log.error(e.getMessage());
             return null;
         }
-        //we should secure the case when e.g user sends params not related to him?
     }
 
     @Override
@@ -186,10 +185,6 @@ public class ShelterActivityService implements ActivityService {
             log.error(e.getMessage());
             return null;
         }
-//        if (localDate == null) {
-//            return animalMapper.toDtoList(animalRepository.findAllAnimalsWithoutActivity(shelter.getId()));
-//        }
-//        return animalMapper.toDtoList(animalRepository.findAllAnimalsWithoutActivityAtDate(reqDate, shelter.getId()));
     }
 
     private boolean isEntitled(User currentUser, Long activityId) {
