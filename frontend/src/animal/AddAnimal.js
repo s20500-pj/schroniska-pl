@@ -334,6 +334,12 @@ export default function AddAnimal() {
                                     Wybrano plik: {photo.name}</p>
                             )}
                             <input type="file" name="photo"
+                                   className="block w-50 text-sm text-gray-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:text-brown file:border-1 file:border-orange
+                                    hover:file:bg-orange"
                                    onChange={handlePhotoChange}/>
 
                         </div>
@@ -341,11 +347,11 @@ export default function AddAnimal() {
 
                     </div>
                     <button type="submit"
-                            className="px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
+                            className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                         <p className="py-15 justify-center text-base text-center text-brown font-medium	">Zarejestruj</p>
                     </button>
                     <button onClick={handleCancelClick} type="submit"
-                            className="px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
+                            className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                         <a
                             href="/"
                             className='py-15 justify-center text-base text-center text-brown font-medium	'

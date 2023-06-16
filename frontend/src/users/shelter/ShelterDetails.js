@@ -142,7 +142,7 @@ export default function ShelterDetails() {
                                             {userType === "SHELTER" ? (
                                                 <Link to={`/shelteranimalList`}>
                                                 <button type="submit"
-                                                        className="px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
+                                                        className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                                                     <p className="py-15 justify-center text-base text-center text-brown font-medium	">Pokaż
                                                         zwierzęta
                                                     </p>
@@ -167,8 +167,8 @@ export default function ShelterDetails() {
                                                             </div>
                                                             <div className="m-auto text-center">
                                                                 <button type="submit"
-                                                                        className=" px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
-                                                                    <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Aktualizuj
+                                                                        className=" px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                                                                    <p className="py-15 justify-center text-base text-center text-brown font-medium	">Aktualizuj
                                                                         dane</p>
                                                                 </button>
                                                             </div>
@@ -176,7 +176,7 @@ export default function ShelterDetails() {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setModalOpen(true)}
-                                                                className="px-10 py-2 m-5 border-2 border-orange rounded bg-white hover:bg-orange text-white active:bg-brown"
+                                                                className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown"
                                                             >
                                                                 <p className="py-15 justify-center text-base text-center text-brown font-medium">
                                                                     Usuń shronisko
@@ -193,7 +193,7 @@ export default function ShelterDetails() {
                             </div>
                             {shelter.disabled && shelter.approvalStatus !== SHELTER_APPROVAL_STATUS_OPTIONS.COMPLETED && userType === "ADMIN" && (
                                 !showForm ? (
-                                    <button className="bg-orange text-white font-bold py-3 mt-3 px-4 rounded"
+                                    <button className="bg-orange text-white font-bold py-3 mt-3 px-4 rounded-2xl"
                                             onClick={handleAproveShelter}>Zatwierdź schronisko</button>
                                 ) : (
                                     <form onSubmit={(e) => handleFinishRegistration(e)}
@@ -232,12 +232,12 @@ export default function ShelterDetails() {
                                         </div>
                                         <div className="flex justify-between">
                                             <button type="button" onClick={(e) => handleBack(e)}
-                                                    className="px-10 py-2 m-5 border-2 border-orange rounded bg-white hover:bg-orange text-white active:bg-brown ">
+                                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown ">
                                                 <p className="py-15 justify-center text-base text-center text-brown font-medium	">
                                                     Anuluj </p>
                                             </button>
                                             <button type="submit"
-                                                    className="px-10 py-2 m-5 border-2 border-orange rounded bg-white hover:bg-orange text-white active:bg-brown ">
+                                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown ">
                                                 <p className="py-15 justify-center text-base text-center text-brown font-medium	">
                                                     Zakończ rejestrację schroniska
                                                 </p>

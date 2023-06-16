@@ -41,13 +41,13 @@ export default function Table({columns, data}) {
 
     return (
         <>
-            <div className="p-5">
-            <table {...getTableProps()} className="min-w-full divide-y divide-gray-300 border-2 border-grey-400 rounded-xl">
+            <div className="overflow-auto p-5">
+            <table {...getTableProps()} className=" w-full divide-y divide-gray-300 border-2 border-grey-400 rounded-xl">
                 <thead className="mt-1 rounded-md border-gray-500 shadow-sm">
                 {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()} >
                         {headerGroup.headers.map((column) => (
-                            <th {...column.getHeaderProps()} className="px-6 py-3 text-s font-bold text-center text-orange uppercase">{column.render("Header")}</th>
+                            <th {...column.getHeaderProps()} className="px-6 py-3 text-s font-bold text-center text-orange uppercase tracking-wide">{column.render("Header")}</th>
                         ))}
                     </tr>
                 ))}
@@ -68,7 +68,7 @@ export default function Table({columns, data}) {
                                     );
                                 } else {
                                     return (
-                                        <td {...cell.getCellProps()} className="p-3 text-center text-brown" >{cell.render("Cell")}</td>
+                                        <td {...cell.getCellProps()} className="p-1 text-center text-brown" >{cell.render("Cell")}</td>
                                     );
                                 }
                             })}
@@ -77,11 +77,25 @@ export default function Table({columns, data}) {
                 })}
                 </tbody>
             </table>
+                <tamplate>
+                    <div className="p-5 h-screen bg-gray">
+                        <h1 className="tet-xl mb-2">Adopcje</h1>
+                    </div>
+
+                    <div className="bg-orange p-4 rounded-lg shadow">
+                        <div className="flex items-center space-x-2 text-sm">
+                            <div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </tamplate>
             <div className="flex justify-center">
-                <button onClick={handlePreviousPage} disabled={!canPreviousPage} className="px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
+                <button onClick={handlePreviousPage} disabled={!canPreviousPage} className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                     <p className="py-15 justify-center text-base text-center text-brown font-medium	">Poprzednia strona</p>
                 </button>
-                <button onClick={handleNextPage} disabled={!canNextPage} className="px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
+                <button onClick={handleNextPage} disabled={!canNextPage} className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                     <p className="py-15 justify-center text-base text-center text-brown font-medium	">Następna strona</p>
                 </button>
                 {pageIndex !== undefined && pageOptions !== undefined ? (

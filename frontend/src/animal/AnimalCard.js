@@ -55,19 +55,19 @@ export default function AnimalCard({data, rename}) {
             </div>
             <ReactPaginate
                 previousLabel={<button
-                    className="px-10 py-2  border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
+                    className="px-10 py-2  border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                     <p className="py-15 justify-center text-base text-center text-brown font-medium	">Poprzednia
                         strona</p>
                 </button>
                 }
                 nextLabel={<button
-                    className="px-10 py-2 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
+                    className="px-10 py-2 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                     <p className="py-15 justify-center text-base text-center text-brown font-medium	">Następna
                         strona</p>
                 </button>}
                 pageCount={pageCount
                 }
-                pageClassName="block bg-white border-orange text-brown hover:bg-orange border-2 rounded m-3 p-3"
+                pageClassName="block bg-white border-orange text-brown hover:bg-orange border-2 rounded-2xl m-3 p-3"
                 onPageChange={changePage}
                 containerClassName={"flex items-center justify-center mt-8"}
                 previousLinkClassName={"previousBttn"}

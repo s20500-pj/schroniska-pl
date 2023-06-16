@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
-function PopupDeleteUser({setOpenModal, id, animal, navigate,name}) {
+function PopupDeleteAnimal({setOpenModal, id, animal, navigate,name}) {
 
     const deleteAnimal = async (id) => {
         try {
@@ -23,7 +23,7 @@ function PopupDeleteUser({setOpenModal, id, animal, navigate,name}) {
                         className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                         <div
                             className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                            <h3 className="text-2xl font-semibold">
+                            <h3 className="text-2xl font-semibold text-brown">
                                 Alert </h3>
                             <button
                                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -41,14 +41,14 @@ function PopupDeleteUser({setOpenModal, id, animal, navigate,name}) {
                         <div
                             className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                             <button
-                                className="bg-orange text-white active:bg-orange font-display uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                className="bg-orange text-white active:bg-orange font-display uppercase text-sm px-6 py-3 rounded-2xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
                                 onClick={() =>deleteAnimal(id) }
                             >
                                 TAK
                             </button>
                             <button
-                                className="bg-orange text-white active:bg-orange font-display uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                className="bg-orange text-white active:bg-orange font-display uppercase text-sm px-6 py-3 rounded-2xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
                                 onClick={() =>setOpenModal(false) }
                             >
@@ -64,4 +64,4 @@ function PopupDeleteUser({setOpenModal, id, animal, navigate,name}) {
     );
 }
 
-export default PopupDeleteUser;
+export default PopupDeleteAnimal;

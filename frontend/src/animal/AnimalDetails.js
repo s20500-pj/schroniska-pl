@@ -289,7 +289,7 @@ export default function AnimalDetails() {
                             <div>
                                 <button
                                     className="ml-2 text-brown font-bold py-2 px-4 m-5
-                                     bg-white border-orange text-brown hover:bg-orange border-2 rounded m-3 p-3 hover:scale-105"
+                                     bg-white border-orange text-brown hover:bg-orange border-2 rounded-2xl m-3 p-3 hover:scale-105"
                                     onClick={() => handleAdoption(animal.id)}
                                 >
                                     Adoptuj
@@ -300,7 +300,7 @@ export default function AnimalDetails() {
                             <div>
                                 <button
                                     className=" ml-2 text-brown font-bold py-2 px-4 m-5
-                                     bg-white border-orange text-brown hover:bg-orange border-2 rounded m-3 p-3 hover:scale-105"
+                                     bg-white border-orange text-brown hover:bg-orange border-2 rounded-2xl m-3 p-3 hover:scale-105"
                                     onClick={showActivityForm}
                                 >
                                     Wolontariat
@@ -327,7 +327,7 @@ export default function AnimalDetails() {
                                                    className="mx-2"/>
                                         </label>
                                         <button
-                                            className="bg-orange ml-2 text-white  py-2 px-4 rounded m-5 hover:scale-103"
+                                            className="bg-orange ml-2 text-white  py-2 px-4 rounded-2xl m-5 hover:scale-103"
                                             type="submit">
                                             <p>Zarezerwuj termin</p>
                                         </button>
@@ -360,7 +360,7 @@ export default function AnimalDetails() {
                                 <button
                                     type="button"
                                     onClick={() => setModalOpen(true)}
-                                    className="px-10 py-2 m-5 border-2 border-orange rounded bg-white hover:bg-orange text-white active:bg-brown"
+                                    className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white hover:bg-orange text-white active:bg-brown"
                                 >
                                     <p className="py-15 justify-center text-base text-center text-brown font-medium">
                                         Usuń zwierzę

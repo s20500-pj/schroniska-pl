@@ -139,10 +139,10 @@ export default function AdoptionDetails() {
                                  alt="Zdjęcie zwierzaka"
                                  className="shadow-xl border-2 border-orange rounded-xl object-cover h-[350px] w-[500px]"/>
                         </div>
-                        <div className="flex py-5">
+                        <div className="flex px-15 py-5 ">
                         <div>
                             <p className='text-xl font-bold text-brown'>Imię: </p>
-                            <p className='text-xl font-bold text-orange pb-5'>{adoption.animal.name}</p>
+                            <p className='text-2xl font-bold text-orange pb-5'>{adoption.animal.name}</p>
                             <p className='font-bold pt-2 text-brown'>Gatunek:</p><p> {SPECIES_OPTIONS[adoption.animal.species]}</p>
                             <p className='font-bold pt-2 text-brown'>Płeć: </p><p>{SEX_OPTIONS[adoption.animal.sex]}</p>
                             <p className='font-bold pt-2 text-brown'>Wiek:</p><p> {AGE_OPTIONS[adoption.animal.age]}</p>
@@ -150,8 +150,8 @@ export default function AdoptionDetails() {
                             <p className='font-bold pt-2 text-brown'>Status:</p><p> {ANIMAL_STATUS_OPTIONS[adoption.animal.animalStatus]}</p>
                             <p className='font-bold pt-2 text-brown'>Dodatkowe informacje:</p><p> {adoption.animal.information}</p>
                         </div>
-                        <div className=''>
-                            <p className='text-xl font-bold text-brown'>Adopcja</p>
+                        <div className='px-10 py-5 ml-10'>
+                            <p className='text-xl font-bold text-orange'>Adopcja</p>
                             <p className='font-bold pt-2 text-brown'>Rodzaj adopcji: </p><p> {ADOPTION_TYPE_OPTIONS[adoption.adoptionType]}</p>
                             <p className='font-bold pt-2 text-brown'>Status adopcji: </p><p> {ADOPTION_STATUS_OPTIONS[adoption.adoptionStatus]}</p>
                             <p className='font-bold pt-2 text-brown'>Ważna do: </p><p> {formatDate(adoption.validUntil)}</p>
@@ -168,10 +168,10 @@ export default function AdoptionDetails() {
                     <p>Ładowanie danych zwierzaka...</p>
                 )}
                 </div>
-                <div className='lg:flex justify-center py-10 m-5 md:block'>
+                <div className='lg:flex justify-center m-5 md:block'>
                     {isProperShelter && (adoption.adoptionStatus === 'REQUEST_REVIEW' || adoption.status === 'PENDING_SHELTER_INVITED' || adoption.status === 'PENDING') && (
                         <button
-                            className="bg-orange text-white font-bold py-2 px-4 m-4 rounded"
+                            className="bg-orange text-white font-bold py-2 px-4 m-4 rounded-2xl"
                             onClick={() => inviteUserToShelter(adoption.id)}
                         >
                             Zaproś użytkownika do schroniska
@@ -179,7 +179,7 @@ export default function AdoptionDetails() {
                     )}
                     {isProperShelter && (adoption.adoptionStatus === 'REQUIRES_MANUAL_INVITATION') && (
                         <button
-                            className="bg-orange text-white font-bold py-2 px-4 m-4 rounded"
+                            className="bg-orange text-white font-bold py-2 px-4 m-4 rounded-2xl"
                             onClick={() => manualInviteUserToShelter(adoption.id)}
                         >
                             Użytkownik zaproszony ręcznie/aktualizacja statusu
@@ -187,7 +187,7 @@ export default function AdoptionDetails() {
                     )}
                     {isProperShelter && (adoption.adoptionStatus === 'SHELTER_INVITED') && (
                         <button
-                            className="bg-orange text-white font-bold py-2 px-4 m-4 rounded"
+                            className="bg-orange text-white font-bold py-2 px-4 m-4 rounded-2xl"
                             onClick={() => userVisitedShelter(adoption.id)}
                         >
                             Użytkownik odwiedził schronisko, aktualizuje status
@@ -195,7 +195,7 @@ export default function AdoptionDetails() {
                     )}
                     {isProperShelter && (adoption.adoptionStatus === 'VISITED') && (
                         <button
-                            className="bg-orange text-white font-bold py-2 px-4 m-4 rounded"
+                            className="bg-orange text-white font-bold py-2 px-4 m-4 rounded-2xl"
                             onClick={() => acceptAdoption(adoption.id)}
                         >
                             Zwierzę zaadoptowane, aktualizuje status
@@ -203,7 +203,7 @@ export default function AdoptionDetails() {
                     )}
                     {(isProperShelter || isProperUser) && (adoption.adoptionStatus !== 'DECLINED' && adoption.adoptionStatus !== 'ADOPTED') && (
                         <button
-                            className="bg-orange text-white font-bold py-2 px-4 m-4 rounded"
+                            className="bg-orange text-white font-bold py-2 px-4 m-4 rounded-2xl"
                             onClick={() => declineAdoption(adoption.id)}
                         >
                             Adopcja odrzucona, aktualizuje status
@@ -211,7 +211,7 @@ export default function AdoptionDetails() {
                     )}
                     {isProperShelter && (adoption.adoptionStatus === 'DECLINED' || adoption.adoptionStatus === 'ADOPTED') && (
                         <button
-                            className="bg-orange text-white font-bold py-2 px-4 m-4 rounded"
+                            className="bg-orange text-white font-bold py-2 px-4 m-4 rounded-2xl"
                             onClick={() => deleteAdoption(adoption.id)}
                         >
                             Usuń adopcje z systemu
