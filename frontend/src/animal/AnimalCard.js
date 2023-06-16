@@ -50,7 +50,7 @@ export default function AnimalCard({data, rename}) {
         <div className="md:h-fit sm:h-fit p-5 ">
             {(userType === "SHELTER" ) ? <h3 className="font-display text-center text-brown font-bold text-2xl">Zwierzęta w schronisku</h3>
                 : <h3 className="font-display text-center text-brown font-bold text-2xl">Zwierzęta w schroniskach</h3> }
-            <div className="flex flex-wrap h-fit justify-between">
+            <div className="flex flex-wrap h-fit">
                 {displayAnimals}
             </div>
             <ReactPaginate
