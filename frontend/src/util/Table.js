@@ -77,20 +77,6 @@ export default function Table({columns, data}) {
                 })}
                 </tbody>
             </table>
-                <tamplate>
-                    <div className="p-5 h-screen bg-gray">
-                        <h1 className="tet-xl mb-2">Adopcje</h1>
-                    </div>
-
-                    <div className="bg-orange p-4 rounded-lg shadow">
-                        <div className="flex items-center space-x-2 text-sm">
-                            <div>
-
-
-                            </div>
-                        </div>
-                    </div>
-                </tamplate>
             <div className="flex justify-center">
                 <button onClick={handlePreviousPage} disabled={!canPreviousPage} className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                     <p className="py-15 justify-center text-base text-center text-brown font-medium	">Poprzednia strona</p>
