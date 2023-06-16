@@ -62,7 +62,7 @@ export default function VirtualAdoptionBtn({isPerson, animal}) {
         <>
             {!showForm ? (
                 <button
-                    className="bg-orange ml-2 text-white font-bold py-2 px-4 rounded m-5"
+                    className="ml-2 text-brown font-bold py-2 px-4 m-5 bg-white border-orange text-brown hover:bg-orange border-2 rounded-2xl hover:scale-105"
                     onClick={showVirtualAdoptionForm}
                 >
                     Adoptuj wirtualnie
