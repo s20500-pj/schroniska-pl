@@ -599,15 +599,23 @@ export default function AnimalDetails() {
                                                className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">
                                             Zdjęcie:
                                         </label>
-                                        <input type="file" name="photo" onChange={handlePhotoChange}/>
+                                        <input type="file" name="photo"
+                                               className="block w-50 text-sm text-gray-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:text-brown file:border-1 file:border-orange
+                                    hover:file:bg-orange"type="file" name="photo" onChange={handlePhotoChange}/>
                                         {photo && (
                                             <p>Wybrano plik: {photo.name}</p>
                                         )}
+
+
                                     </div>
                                 </div>
                                 <div className="m-auto text-center">
                                     <button type="submit"
-                                            className=" px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
+                                            className=" px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
                                         <p className="py-15 justify-center text-base text-center text-brown font-medium	">Aktualizuj
                                             dane</p>
                                     </button>

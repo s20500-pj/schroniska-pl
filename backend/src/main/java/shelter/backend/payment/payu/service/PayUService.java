@@ -33,6 +33,7 @@ import shelter.backend.payment.payu.rest.model.res.PayUAuthToken;
 import shelter.backend.payment.payu.rest.model.res.Status;
 import shelter.backend.rest.model.entity.PayUClientCredentials;
 import shelter.backend.rest.model.entity.PaymentOrder;
+import shelter.backend.rest.model.entity.Token;
 import shelter.backend.rest.model.entity.User;
 import shelter.backend.rest.model.enums.Purpose;
 import shelter.backend.storage.repository.PayUClientCredentialsRepository;
@@ -41,13 +42,11 @@ import shelter.backend.utils.constants.ShelterConstants;
 import shelter.backend.utils.exception.PaymentException;
 
 import java.net.URI;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -95,8 +94,8 @@ public class PayUService implements PaymentService {
         }
         log.info("PaymentOrder loaded successfully, {}", order);
         if (error.isEmpty()) {
-            emailService.sendPaymentInfo(order.getUserName(), order.getPurpose().name(),
-                    String.valueOf(order.getAmount()), order.getShelterName(), order.getId());
+            emailService.sendPaymentInfo(order.getUserName(), order.getPurpose().getPurposeName(),
+                    String.valueOf(order.getAmount()/100), order.getShelterName(), order.getId());
         }
         return callForPaymentStatus(order, false);
     }
