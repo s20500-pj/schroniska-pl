@@ -4,6 +4,7 @@ import SuccessPopup from "./SuccessPopup";
 import {Link, useNavigate} from "react-router-dom";
 import Modal from "./Modal";
 import PopupErrorRegistration from "./PopupErrorRegistration";
+import pdf from "../PolitykaPrywatnosci.pdf";
 
 export default function AddShelter() {
     const [error, setError] = useState("");
@@ -246,8 +247,8 @@ export default function AddShelter() {
                             <label htmlFor="default-radio-1"
                                    className="ml-2 text-sm font-medium text-orange ">
                                 Oświadczam, że zapoznałem się z {' '}
-                                <Link to="/rodo" className="underline">Regulaminem Serwisu </Link>
-                                i akceptuje jego zasady.
+                                <a href = {pdf} target = "_blank" className="underline">Polityką prywatności </a>
+                                i akceptuje jej zasady.
                             </label>
                         </div>
                     </div>

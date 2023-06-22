@@ -3,6 +3,8 @@ import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import Modal from "./Modal";
 import PopupErrorRegistration from "./PopupErrorRegistration";
+import pdf from "../PolitykaPrywatnosci.pdf";
+
 export default function AddUser() {
     const [error, setError] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
@@ -213,8 +215,8 @@ export default function AddUser() {
                             <label htmlFor="default-radio-1"
                                    className="ml-2 text-sm font-medium text-orange ">
                                 Oświadczam, że zapoznałem się z {' '}
-                                <Link to="/rodo" className="underline">Regulaminem Serwisu </Link>
-                                i akceptuje jego zasady.
+                                <a href = {pdf} target = "_blank" className="underline">Polityką prywatności </a>
+                                i akceptuje jej zasady.
                             </label>
                         </div>
                     </div>
