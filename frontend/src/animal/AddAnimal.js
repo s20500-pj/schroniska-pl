@@ -328,6 +328,7 @@ export default function AddAnimal() {
                                    className="block uppercase tracking-wide text-brown text-s font-bold mb-2">
                                 Zdjęcie:
                             </label>
+                            <input type="file" name="photo" onChange={handlePhotoChange}/>
                             {photo && (
                                 <p
                                     className="block uppercase tracking-wide text-orange text-md font-bold mb-2">
