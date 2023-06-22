@@ -95,17 +95,22 @@ function PersonSettings() {
                            className=" tracking-wide text-brown text-s mb-2">
                         E-mail: <p className="font-bold text-xl">{user.email}</p>
                     </label>
+
                     <label htmlFor="City"
                            className=" tracking-wide text-brown text-s mb-2">
                         Miasto: <p className="font-bold text-xl">{user.address && user.address.city}</p>
                     </label>
+
                     <label htmlFor="Postal code"
                            className="tracking-wide text-brown text-s mb-2"
                            pattern="\d{2}-\d{3}">
                         Kod pocztowy:<p className="font-bold text-xl"
                                         pattern="\d{2}-\d{3}"
-                    > {user.address && user.address.postalCode && <p className="pt-2">Kod pocztowy: {user.address.postalCode.slice(0, 2)}-{user.address.postalCode.slice(2)}{" "}</p>}</p>
-                    </label>
+                    >
+                        {user.address && user.address.postalCode.slice(0, 2)}{user.address.postalCode.slice(2)}{" "}</p>
+
+                </label>
+
                     <label htmlFor="Street"
                            className=" tracking-wide text-brown text-s mb-2">
                         Ulica: <p className="font-bold text-xl">{user.address && user.address.street}</p>
