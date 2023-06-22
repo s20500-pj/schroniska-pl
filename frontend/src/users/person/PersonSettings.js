@@ -107,9 +107,8 @@ function PersonSettings() {
                         Kod pocztowy:<p className="font-bold text-xl"
                                         pattern="\d{2}-\d{3}"
                     >
-                        {user.address && user.address.postalCode.slice(0, 2)}{user.address.postalCode.slice(2)}{" "}</p>
-
-                </label>
+                        {user.address && user.address.postalCode && <p className="pt-2">Kod pocztowy: {user.address.postalCode.slice(0, 2)}{user.address.postalCode.slice(2)}{" "}</p>}</p>
+                    </label>
 
                     <label htmlFor="Street"
                            className=" tracking-wide text-brown text-s mb-2">

@@ -128,7 +128,7 @@ function ShelterRealAdoptionList() {
     return (
         <div className="md:flex p-5 h-fit sm:block sm:h-fit">
             <div className="bg-background-pattern bg-opacity-20 max-w-none md:w-1/4 sm:w-fit sm:h-fit">
-                <div className="px-5 font-display bg-white bg-opacity-90">
+                <div className=" font-display bg-white bg-opacity-90">
                     <h2 className="text-center text-2xl text-orange font-bold p-5">Filtry</h2>
                     <form onSubmit={(e) => handleSubmit(e)} className="w-full m-auto">
                         <div className="flex flex-wrap">
