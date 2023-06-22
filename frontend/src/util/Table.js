@@ -41,13 +41,13 @@ export default function Table({columns, data}) {
 
     return (
         <>
-            <div className="p-5">
-            <table {...getTableProps()} className="min-w-full divide-y divide-gray-300 border-2 border-grey-400 rounded-xl">
+            <div className="overflow-auto p-5">
+            <table {...getTableProps()} className=" w-full divide-y divide-gray-300 border-2 border-grey-400 rounded-xl">
                 <thead className="mt-1 rounded-md border-gray-500 shadow-sm">
                 {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()} >
                         {headerGroup.headers.map((column) => (
-                            <th {...column.getHeaderProps()} className="px-6 py-3 text-s font-bold text-center text-orange uppercase">{column.render("Header")}</th>
+                            <th {...column.getHeaderProps()} className="px-6 py-3 text-s font-bold text-center text-orange uppercase tracking-wide">{column.render("Header")}</th>
                         ))}
                     </tr>
                 ))}
@@ -63,12 +63,12 @@ export default function Table({columns, data}) {
                                         <td {...cell.getCellProps() }className='p-5'>
                                             <img src={cell.value ? cell.value : placeholderImage}
                                                  onError={onImageError}
-                                                 className=" shadow-xl border-2 border-orange rounded-xl object-cover h-32 w-48"/>
+                                                 className=" shadow-xl border-2 border-orange rounded object-cover h-32 w-48"/>
                                         </td>
                                     );
                                 } else {
                                     return (
-                                        <td {...cell.getCellProps()} className="p-3 text-center text-brown" >{cell.render("Cell")}</td>
+                                        <td {...cell.getCellProps()} className="p-1 text-center text-brown" >{cell.render("Cell")}</td>
                                     );
                                 }
                             })}

@@ -29,10 +29,6 @@ function PopupDeleteUser({setOpenModal, fetchData, id, user}) {
                             <button
                                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                             >
-                    <span
-                        className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                      ×
-                    </span>
                             </button>
                         </div>
                         <div className="relative p-6 flex-auto">
@@ -42,14 +38,14 @@ function PopupDeleteUser({setOpenModal, fetchData, id, user}) {
                         <div
                             className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                             <button
-                                className="bg-orange text-white active:bg-emerald-600 font-display uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                className="bg-orange text-white active:bg-orange font-display uppercase text-sm px-6 py-3 rounded-2xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
                                 onClick={() =>deleteUser(id) }
                             >
                                 TAK
                             </button>
                             <button
-                                className="bg-orange text-white active:bg-emerald-600 font-display uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                className="bg-orange text-white active:bg-orange font-display uppercase text-sm px-6 py-3 rounded-2xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
                                 onClick={() =>setOpenModal(false) }
                             >

@@ -3,6 +3,8 @@ import axios from "axios";
 import SuccessPopup from "./SuccessPopup";
 import {Link, useNavigate} from "react-router-dom";
 import Modal from "./Modal";
+import PopupErrorRegistration from "./PopupErrorRegistration";
+import pdf from "../PolitykaPrywatnosci.pdf";
 
 export default function AddShelter() {
     const [error, setError] = useState("");
@@ -24,7 +26,7 @@ export default function AddShelter() {
             krsNumber: ""
         }
     });
-
+    const [errorOpen, setErrorOpen] = useState(false);
     const handleCancelClick = () => {
         navigate("/");
     };
@@ -45,8 +47,10 @@ export default function AddShelter() {
             await axios.post("http://localhost:8080/registration/register", shelter);
             setModalOpen(true);
         } catch (error) {
-            console.log(error)
-            setError(error.response?.data?.message || "Something went wrong");
+            console.log(error.response.data)
+            setError(error.response.data || "Something went wrong");
+            setError(error.response.data);
+            setErrorOpen(true);
         }
     };
 
@@ -69,6 +73,7 @@ export default function AddShelter() {
             <div className="px-10 font-display bg-white bg-opacity-90">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Zarejestruj schronisko</h2>
                 {modalOpen && <Modal setOpenModal={setModalOpen}/>}
+                {errorOpen && <PopupErrorRegistration setOpenError={setErrorOpen} error={error}/>}
                 <form onSubmit={(e) => onSubmit(e)} className="w-full max-w-lg m-auto py-10">
                     <div className="flex flex-wrap">
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">
@@ -242,20 +247,20 @@ export default function AddShelter() {
                             <label htmlFor="default-radio-1"
                                    className="ml-2 text-sm font-medium text-orange ">
                                 Oświadczam, że zapoznałem się z {' '}
-                                <Link to="/rodo" className="underline">Regulaminem Serwisu </Link>
-                                i akceptuje jego zasady.
+                                <a href = {pdf} target = "_blank" className="underline">Polityką prywatności </a>
+                                i akceptuje jej zasady.
                             </label>
                         </div>
                     </div>
                     <button type="submit"
-                            className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                            className="px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
                         <p className="py-15 justify-center text-base text-center text-brown font-medium	">Zarejestruj</p>
                     </button>
                     <button onClick={handleCancelClick} type="submit"
-                            className="px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
+                            className="px-10 py-2 m-5 border-2 border-orange rounded bg-white  hover:bg-orange text-white active:bg-brown ">
                         <a
                             href="/"
-                            className='py-15 justify-center text-base	 text-center text-brown font-medium	'
+                            className='py-15 justify-center text-base text-center text-brown font-medium	'
                         >
                             Anuluj </a>
                     </button>

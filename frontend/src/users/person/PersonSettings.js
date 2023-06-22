@@ -95,17 +95,21 @@ function PersonSettings() {
                            className=" tracking-wide text-brown text-s mb-2">
                         E-mail: <p className="font-bold text-xl">{user.email}</p>
                     </label>
+
                     <label htmlFor="City"
                            className=" tracking-wide text-brown text-s mb-2">
                         Miasto: <p className="font-bold text-xl">{user.address && user.address.city}</p>
                     </label>
+
                     <label htmlFor="Postal code"
                            className="tracking-wide text-brown text-s mb-2"
                            pattern="\d{2}-\d{3}">
                         Kod pocztowy:<p className="font-bold text-xl"
                                         pattern="\d{2}-\d{3}"
-                    > {user.address && user.address.postalCode && <p className="pt-2">Kod pocztowy: {user.address.postalCode.slice(0, 2)}-{user.address.postalCode.slice(2)}{" "}</p>}</p>
+                    >
+                        {user.address && user.address.postalCode && <p className="pt-2">Kod pocztowy: {user.address.postalCode.slice(0, 2)}{user.address.postalCode.slice(2)}{" "}</p>}</p>
                     </label>
+
                     <label htmlFor="Street"
                            className=" tracking-wide text-brown text-s mb-2">
                         Ulica: <p className="font-bold text-xl">{user.address && user.address.street}</p>
@@ -218,7 +222,7 @@ function PersonSettings() {
                         <div className="m-auto text-center">
                             <button type="submit"
                                     className=" px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">
-                                <p className="py-15 justify-center text-base	 text-center text-brown font-medium	">Aktualizuj
+                                <p className="py-15 justify-center text-base text-center text-brown font-medium	">Aktualizuj
                                     dane</p>
                             </button>
                         </div>

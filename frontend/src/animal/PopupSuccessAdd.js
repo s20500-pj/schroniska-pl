@@ -7,7 +7,7 @@ function PopupSuccessAdd({setOpenModal}) {
     return (<>
             <div
                 className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50
-                outline-none focus:outline-none font-display">
+                outline-none focus:outline-none font-display w-500">
                 <div className="relative w-auto my-6 mx-auto max-w-3xl">
                     <div
                         className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
@@ -32,7 +32,7 @@ function PopupSuccessAdd({setOpenModal}) {
                         <div
                             className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                             <button
-                                className="bg-orange text-white active:bg-emerald-600 font-display uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                className="bg-orange text-white active:bg-orange font-display uppercase text-sm px-6 py-3 rounded-2xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
                                 onClick={() => {
                                     setOpenModal(false);

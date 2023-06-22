@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import PopupErrorLogin from "../unlogged/PopupErrorLogin";
 
 function Login({loggingInfo}) {
     axios.defaults.withCredentials = true
@@ -10,6 +11,7 @@ function Login({loggingInfo}) {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [storageFilled, setStorageFilled] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
     };
@@ -41,7 +43,8 @@ function Login({loggingInfo}) {
             navigate("/");
             await window.location.reload();
         } catch (error) {
-            setError(error.response?.data?.message || "Something went wrong");
+            setError(error.response.data.message || "Something went wrong");
+            setModalOpen(true);
         } finally {
             setLoading(false);
         }
@@ -49,11 +52,11 @@ function Login({loggingInfo}) {
 
     return (
         <div className="bg-background-pattern bg-opacity-20 max-w-none">
-            {error && <p>{error}</p>}
-            <div className="px-10 font-display bg-white bg-opacity-90">
+            {modalOpen && <PopupErrorLogin setOpenModal={setModalOpen} error={error}/>}
+            <div className="px-10 font-display bg-white bg-opacity-90 h-[34rem]">
                 <h2 className="text-center text-2xl text-orange font-bold p-10">Zaloguj</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="block w-80 m-auto">
+                    <div className="block w-80 m-auto pt-8">
                         <div className="px-3">
                             <label htmlFor="email"
                                    className="block uppercase tracking-wide text-brown text-xs font-bold mb-2">Email:</label>
@@ -70,7 +73,7 @@ function Login({loggingInfo}) {
                                    id="password" value={password} onChange={handlePasswordChange}/>
                         </div>
                         <button type="submit"
-                                className=" px-10 py-2 m-5 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown mb-10"
+                                className=" px-10 py-2 mx-5 mt-10 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown mb-10"
                                 onClick={() => {
                                     loggingInfo(storageFilled);
                                 }}

@@ -250,7 +250,7 @@ function AnimalList() {
                                     <option value={true}>Tak</option>
                                 </select>
                             </div>
-                            <div className="w-full px-3">
+                            <div className="w-full">
                                 <div className="flex justify-around py-2">
                                     <button type="submit"
                                             className="flex px-3 py-2 border-2 border-orange rounded-2xl bg-white  hover:bg-orange text-white active:bg-brown ">

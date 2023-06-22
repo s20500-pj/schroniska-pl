@@ -63,18 +63,14 @@ export default function NavbarShelter() {
                                     </div>
                                 </Link>
 
-                                <div className="hidden sm:block">
+                                <div className="hidden md:block">
                                     <div className="flex justify-end">
                                         {navigation.map((item) => (
                                             <a key={item.name}
                                                 href={item.href}
-                                                className={classNames(
-                                                    item.current ? ' text-brown text-center ' : 'text-brown hover:text-orange hover:underline-offset-1',
-                                                    'mt-6 mx-3 text-sm'
-                                                )}
-                                                aria-current={item.current ? 'page' : undefined}
-                                            >
-                                                {item.name}
+                                                aria-current={item.current ? 'page' : undefined}>
+                                                <p className=' text-brown text-center text-brown hover:text-orange hover:underline-offset-1 mt-4 lg:text-sm lg:px-2 md:mx-1 md:mt-6 text-xs'>
+                                                    {item.name}</p>
                                             </a>
 
                                         ))}
@@ -98,7 +94,7 @@ export default function NavbarShelter() {
                             </div>
                         </div>
                     </div>
-                    <Disclosure.Panel className="sm:hidden">
+                    <Disclosure.Panel className="md:hidden">
                         <div className="space-y-1 px-2 pt-2 pb-3">
                             {navigation.map((item) => (
                                 <Disclosure.Button
